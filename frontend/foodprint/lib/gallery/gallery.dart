@@ -38,7 +38,7 @@ class Gallery extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,

@@ -32,7 +32,7 @@ class _ImageCaptureState extends State<ImageCapture> {
     File selected = await ImagePicker.pickImage(source: source);
 
     // Image file
-    setState(() => _imageFile = selected);
+    if (mounted) setState(() => _imageFile = selected);
   }
 
   // Cropper plugin
@@ -46,14 +46,12 @@ class _ImageCaptureState extends State<ImageCapture> {
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),
     );
-    setState(() {
-      _imageFile = cropped ?? _imageFile;
-    });
+    if (mounted) setState(() {_imageFile = cropped ?? _imageFile;});
   }
 
   // Remove image
   void _clear() {
-    setState(() => _imageFile = null);
+    if (mounted) setState(() => _imageFile = null);
   }
 
   int getSecondsSinceEpoch() {
@@ -62,13 +60,11 @@ class _ImageCaptureState extends State<ImageCapture> {
   }
 
   @override
-  void initState() {
-    _pickImage(ImageSource.camera);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+
+    // Launch camera
+    if (_imageFile == null) _pickImage(ImageSource.camera);
+
     return ListView(
         children: <Widget>[
           if (_imageFile != null) ...[
