@@ -1,34 +1,16 @@
 
-// Here we set up the mySQL connection
-const mysql = require('mysql');
+require('dotenv').config()
+const mysql = require('promise-mysql');
 
-// local mySQL db connection
-const connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'Gosuisbad123)!)!',
-    database : 'foodprint_db'
-});
+let pool;
+const createPool = async () => {
+  pool = await mysql.createPool({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    socketPath: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`,
+  });
+};
+createPool();
 
-// connect to db
-connection.connect((err) => {
-        if (err) throw err;
-
-        /*const setupUsers = 'CREATE TABLE IF NOT EXISTS users (
-          id INT AUTO_INCREMENT PRIMARY KEY
-          first_name VARCHAR(20) NOT NULL,
-          last_name VARCHAR(20) NOT NULL,
-          email VARCHAR(40) NOT NULL,
-          username VARCHAR(20) NOT NULL,
-          password BINARY(60) NOT NULL,
-          last_login INT
-        );
-
-        connection.query(setupUsers, (err, res) => {
-          if (err) throw err;
-          console.log("Users table created!")
-        });*/
-    }
-);
-
-module.exports = connection;
+module.exports = pool;

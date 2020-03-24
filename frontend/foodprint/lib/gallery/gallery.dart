@@ -62,7 +62,6 @@ class Gallery extends StatelessWidget {
     }).toList();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return GridView.count(

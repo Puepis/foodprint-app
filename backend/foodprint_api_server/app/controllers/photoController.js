@@ -4,8 +4,8 @@ const Photo = require('../models/photoModel');
 
 // Database connection instance
 const connection = require('../models/dbConnection.js');
-const util = require('util');
-const query = util.promisify(connection.query).bind(connection);
+//const util = require('util');
+//const query = util.promisify(connection.query).bind(connection);
 
 exports.listPhotos = (req, res) => {
     Photo.getAllPhotos(
@@ -24,7 +24,7 @@ exports.savePhoto = async (req, res) => {
     const newPhoto = new Photo(req.body);
 
     try {
-      const result = await query("INSERT INTO photos (image_data, caption, user_id, price, time_stamp) \
+      const result = await connection.query("INSERT INTO photos (image_data, caption, user_id, price, time_stamp) \
       VALUES (?, ?, ?, ?, ?)", [newPhoto.imageData, newPhoto.caption, newPhoto.userId, newPhoto.price, newPhoto.timeStamp]);
       res.status(200).send("Success in saving photo.");
 

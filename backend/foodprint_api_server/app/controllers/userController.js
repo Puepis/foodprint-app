@@ -9,7 +9,7 @@ const connection = require('../models/dbConnection.js');
 const bcrypt = require('bcrypt');
 
 const util = require('util');
-const query = util.promisify(connection.query).bind(connection);
+//const query = util.promisify(connection.query).bind(connection);
 
 // Bad secret key
 const KEY = "m YiNcredibL y(!!!!)!1)<'SEcret>)Key'!";
@@ -78,7 +78,7 @@ exports.loginUser = async (req, res) => {
     try {
 
         // Get user
-        const rows = await query("SELECT * FROM users WHERE (username) = ?", username);
+        const rows = await connection.query("SELECT * FROM users WHERE (username) = ?", username);
 
         if (rows[0]) {
             // Convert binary object to string
@@ -100,7 +100,7 @@ exports.loginUser = async (req, res) => {
 
                 // Store time created into user table
                 const timeCreated = jwtDecode(token).iat;
-                await query("UPDATE users SET last_login = ? WHERE username = ?", [timeCreated, payload.username]);
+                await connection.query("UPDATE users SET last_login = ? WHERE username = ?", [timeCreated, payload.username]);
                 res.send(token);
 
             } else {
@@ -129,7 +129,7 @@ exports.getData = async (req, res) => {
     try {
         jwt.verify(token, KEY, {algorithm: 'HS256'});
 
-        const query_login = await query("SELECT last_login FROM users WHERE username = ?", username);
+        const query_login = await connection.query("SELECT last_login FROM users WHERE username = ?", username);
 
         // Last login
         const last_login = query_login[0].last_login;
@@ -139,7 +139,7 @@ exports.getData = async (req, res) => {
         }
 
         // Send the id of the user back
-        const query_id = await query("SELECT id FROM users WHERE username = ?", username);
+        const query_id = await connection.query("SELECT id FROM users WHERE username = ?", username);
         const id = query_id[0].id;
         res.send(id.toString());
     } catch {
@@ -158,7 +158,7 @@ exports.logout = async (req, res) => {
 
         // Get current time (seconds since epoch)
         const now = Math.round(Date.now() / 1000);
-        await query('UPDATE users SET last_login = ? WHERE username = ?', [now, username]);
+        await connection.query('UPDATE users SET last_login = ? WHERE username = ?', [now, username]);
         res.status(200);
         res.send("Logged Out");
     } catch (e) {

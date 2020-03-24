@@ -1,4 +1,5 @@
 import 'dart:convert' show json, ascii, base64;
+import 'dart:io';
 import 'package:foodprint/camera/image_capture_2.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
@@ -6,6 +7,7 @@ import 'package:foodprint/gallery/gallery.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 
@@ -33,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: Text('Second Page')),
     Gallery(),
   ];
+  List<FileSystemEntity> _photos = [];
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -54,9 +57,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+
   Widget buildHomePage(BuildContext context, String id) {
     return ChangeNotifierProvider(
-      create: (context) => GalleryModel(),
+      create: (context) => GalleryModel(_photos),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -105,6 +109,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Get all the stored photos
+  void _getPhotos() async {
+    String path = (await getApplicationDocumentsDirectory()).path;
+    setState(() {
+      _photos = Directory('$path/photos/').listSync();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPhotos();
+  }
+
   @override
   Widget build(BuildContext context) =>
     Container(
@@ -112,7 +130,8 @@ class _HomePageState extends State<HomePage> {
         future: http.read('$SERVER_IP/api/users/data', headers: {"Authorization": widget.jwt}),
           builder: (context, snapshot) =>
             snapshot.hasData ?  buildHomePage(context, snapshot.data):
-              snapshot.hasError ? Text("A big error occurred") : CircularProgressIndicator()
+              // Token expired
+              snapshot.hasError ? LoginPage() : CircularProgressIndicator()
         ),
     );
 }
