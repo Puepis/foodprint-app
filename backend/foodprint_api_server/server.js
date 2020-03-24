@@ -13,6 +13,7 @@ app.use('/api/users', require('./app/routes/api/users'));
 app.use('/api/photos', require('./app/routes/api/photos'));
 app.use('/api/restaurants', require('./app/routes/api/restaurants'));
 
+// Test endpoint - not needed
 app.use('/api/test', require('./app/routes/api/test'));
 
 const PORT = process.env.PORT || 3000
