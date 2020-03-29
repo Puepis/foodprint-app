@@ -4,19 +4,8 @@ const Photo = require('../models/photoModel');
 
 // Database connection instance
 const connection = require('../models/dbConnection.js');
-//const util = require('util');
-//const query = util.promisify(connection.query).bind(connection);
-
-exports.listPhotos = (req, res) => {
-    Photo.getAllPhotos(
-        function(err, photo) {
-            if (err) {
-                res.json(err);
-            }
-            res.json(photo);
-        }
-    );
-};
+const util = require('util');
+const query = util.promisify(connection.query).bind(connection);
 
 exports.savePhoto = async (req, res) => {
 
@@ -34,6 +23,7 @@ exports.savePhoto = async (req, res) => {
     }
 };
 
+// Remove these
 exports.getPhoto = function(req, res) {
     Photo.getPhotoById(req.params.photoId,
         function(err, photo) {
@@ -44,7 +34,6 @@ exports.getPhoto = function(req, res) {
         }
     );
 };
-
 exports.deletePhoto = function(req, res) {
     Photo.removePhoto(req.params.photoId,
         function(err, photo) {

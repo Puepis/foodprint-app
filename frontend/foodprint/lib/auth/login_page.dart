@@ -47,6 +47,8 @@ class _LoginPageState extends State<LoginPage> {
           "password": password
         }
     );
+
+    // Make this better
     return (res.statusCode == 200) ? res.body : null;
   }
 
@@ -78,7 +80,6 @@ class _LoginPageState extends State<LoginPage> {
               _usernameController.clear();
               _passwordController.clear();
               var jwt = await attemptLogin(username, password);
-
               if (jwt != null) {
                 storage.write(key: "jwt", value: jwt);
                 Navigator.push(
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(builder: (context) => HomePage.construct(jwt))
                 );
               } else {
-                displayDialog(context, "Invalid Credentials", "Wrong username/password.");
+                displayDialog(context, "Invalid Credentials", "Invalid username/password.");
               }
             }
         ),

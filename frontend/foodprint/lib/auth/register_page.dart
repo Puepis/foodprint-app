@@ -80,7 +80,7 @@ class RegisterPage extends StatelessWidget {
               if (res.statusCode == 201) {
                 // Redirect to login page
                 Navigator.pop(context);
-                displayDialog(context, "Success", "Registration successful! Please log in to your new account.");
+                displayDialog(context, "Success", "Registration successful. You can log in now.");
               }
               else if (res.statusCode == 409) {
                 displayDialog(context, "That email is already registered",
@@ -90,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                 displayDialog(context, "Errors Found", res.body);
               }
               else {
-                displayDialog(context, "Error", "An unknown error occurred.");
+                displayDialog(context, "Error", res.body);
               }
             }
         )

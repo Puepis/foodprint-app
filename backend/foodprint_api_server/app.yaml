@@ -14,6 +14,6 @@
 # [START app_yaml]
 runtime: nodejs10
 beta_settings:
-  cloud_sql_instances: <foodprint-270503:us-central1:first-instance>
+  cloud_sql_instances: foodprint-270503:northamerica-northeast1:foodprint-instance
 
 # [END app_yaml]

@@ -1,7 +1,6 @@
 
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:foodprint/gallery/gallery.dart';
 
 class GalleryModel extends ChangeNotifier {
   // Internal, private state of photos - stores a list of files

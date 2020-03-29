@@ -11,10 +11,9 @@ app.use(express.urlencoded({extended: false}));
 // Routes
 app.use('/api/users', require('./app/routes/api/users'));
 app.use('/api/photos', require('./app/routes/api/photos'));
-app.use('/api/restaurants', require('./app/routes/api/restaurants'));
 
 // Test endpoint - not needed
 app.use('/api/test', require('./app/routes/api/test'));
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => console.log(`REST API server started on port ${PORT}`));

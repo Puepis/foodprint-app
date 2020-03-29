@@ -51,12 +51,12 @@ class _HomePageState extends State<HomePage> {
   // Get the page based on selected index
   Widget getPage(int index, String id) {
     if (index == 1) {
+      // Camera
       return ImageCapture(id: int.parse(id));
     } else {
       return _pages[_selectedPage];
     }
   }
-
 
   Widget buildHomePage(BuildContext context, String id) {
     return ChangeNotifierProvider(
