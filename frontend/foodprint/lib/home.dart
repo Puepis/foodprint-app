@@ -1,6 +1,6 @@
 import 'dart:convert' show json, ascii, base64;
 import 'dart:io';
-import 'package:foodprint/camera/image_capture_2.dart';
+import 'package:foodprint/camera/image_capture.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
