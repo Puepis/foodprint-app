@@ -1,15 +1,16 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:foodprint/auth/tokens.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ImageCapture extends StatefulWidget {
   ImageCapture({Key key, @required this.id}) : super(key: key);
@@ -21,16 +22,102 @@ class ImageCapture extends StatefulWidget {
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
-
   // Active image file
   File _imageFile;
+
+  // Location
+  Position _position;
+  String _address;
+  final Map<int, String> days = {1: "Mon.", 2:"Tues.", 3:"Wed.", 4:"Thurs.", 5:"Fri.", 6:"Sat.", 7:"Sun."};
+  final Map<int, String> months = {1: "Jan.", 2:"Feb.", 3:"Mar.", 4:"Apr.", 5:"May", 6:"June", 7:"July", 8:"Aug.", 9:"Sept.", 10:"Oct.", 11: "Nov.", 12:"Dec."};
+
+  // Fields
+  final TextEditingController _captionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _itemNameController = TextEditingController();
+  String _titleText = "";
+  String _priceText = "";
+  String _captionText = "";
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    _captionController.dispose();
+    _priceController.dispose();
+    _itemNameController.dispose();
+    super.dispose();
+  }
+
+  // Photo information
+  _getContentString() {
+    String pos = "";
+    String addr = "";
+    // TODO: Handle form field validation
+    String name = "Name:$_titleText";
+    String caption = "Caption:$_captionText";
+    String price = "Price:$_priceText";
+    String datetime = "DateTime:${_getDateTime()}";
+    if (_position != null) pos = "Position:${_position.latitude}, ${_position.longitude}";
+    if (_address != null) addr = "Address:$_address";
+    return "$pos\n$addr\n$datetime\n$name\n$caption\n$price";
+  }
+
+  // Get LatLng Coordinates
+  Future<void> _getLocation() async {
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
+    try {
+      Position position = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      setState(() {
+        _position = position;
+      });
+      _getAddressFromLatLng(geolocator);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // Convert LatLng to Address
+  _getAddressFromLatLng(Geolocator geolocator) async {
+    try {
+      List<Placemark> p = await geolocator.placemarkFromCoordinates(
+          _position.latitude, _position.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        _address = "${place.locality}, ${place.postalCode}, ${place.country}";
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // Format datetime
+  String _getDateTime() {
+    final DateTime now = new DateTime.now();
+    String y = now.year.toString();
+    String m = months[now.month];
+    String wd = days[now.weekday];
+    String d = now.day.toString();
+    String h = now.hour.toString();
+    String min = now.minute < 10 ? "0${now.minute.toString()}" : now.minute.toString();
+    return "$wd, $m $d, $y ~ $h.$min";
+  }
 
   // Take a photo
   Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: source);
 
     // Image file
-    if (mounted) setState(() => _imageFile = selected);
+    if (mounted) {
+      // Get location
+      await _getLocation();
+      setState(() {
+        _imageFile = selected;
+      });
+    }
   }
 
   // Cropper plugin
@@ -59,7 +146,7 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
-
+    String contentString = _getContentString();
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera);
 
@@ -73,13 +160,58 @@ class _ImageCaptureState extends State<ImageCapture> {
                   child: Icon(Icons.crop),
                   onPressed: _cropImage,
                 ),
-                // TODO: Remove this
                 FlatButton(
                   child: Icon(Icons.refresh),
                   onPressed: _clear,
                 ),
-                _SaveButton(imageFile: _imageFile)
+                _SaveButton(imageFile: _imageFile, contents: contentString)
               ],
+            ),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  if (_position != null && _address != null)...[
+                    Text("LAT: ${_position.latitude}, LNG: ${_position.longitude}"),
+                    Text(_address)
+                  ],
+                  Text(_getDateTime()),
+                ],
+              ),
+            ),
+            SizedBox(height: 10.0,),
+            TextField(
+              controller: _itemNameController,
+              decoration: InputDecoration(
+                labelText: "Item Name",
+              ),
+              onChanged: (text) {
+                setState(() {
+                  _titleText = text;
+                });
+              },
+            ),
+            TextField(
+              controller: _priceController,
+              decoration: InputDecoration(
+                labelText: "Price",
+              ),
+              onChanged: (text) {
+                setState(() {
+                  _priceText = text;
+                });
+              },
+            ),
+            TextField(
+              controller: _captionController,
+              maxLines: 10,
+              decoration: InputDecoration(
+                labelText: "Caption",
+              ),
+              onChanged: (text) {
+                setState(() {
+                  _captionText = text;
+                });
+              },
             ),
           ]
         ],
@@ -89,9 +221,10 @@ class _ImageCaptureState extends State<ImageCapture> {
 
 class _SaveButton extends StatelessWidget {
   final File imageFile;
-  const _SaveButton({Key key, @required this.imageFile}) : super(key: key);
+  final String contents;
+  const _SaveButton({Key key, @required this.imageFile, @required this.contents}) : super(key: key);
 
-  Future<void> _saveImages(gallery) async {
+  Future<void> _saveImageAndContents(gallery) async {
     try {
       // Get directory where we can save the file
       final path = (await getApplicationDocumentsDirectory()).path;
@@ -100,13 +233,16 @@ class _SaveButton extends StatelessWidget {
       final String fileName = basename(imageFile.path);
 
       // Create folder called photos
-      final newPath = await createFolder(path, 'photos');
+      final photosPath = await createFolder(path, 'photos');
+      final imgPath = await createFolder(photosPath, '$fileName');
 
       // Copy the file to the AppDoc directory
-      final File localImage = await imageFile.copy('$newPath/$fileName');
+      final File localImage = await imageFile.copy('$imgPath/img.jpg');
+      final File localContents = File('$imgPath/contents.txt');
+      localContents.writeAsStringSync(contents);
 
       // Update gallery model
-      gallery.addPhoto(localImage);
+      gallery.addPhotoDir(Directory('$imgPath'));
     } catch (e) {
       print(e);
     }
@@ -140,7 +276,7 @@ class _SaveButton extends StatelessWidget {
       var gallery = Provider.of<GalleryModel>(context);
       return FlatButton(
         child: Icon(Icons.save_alt),
-        onPressed: () => _saveImages(gallery),
+        onPressed: () => _saveImageAndContents(gallery),
       );
     } catch (e) {
       print(e);

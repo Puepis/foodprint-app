@@ -5,17 +5,16 @@ import 'package:foodprint/models/gallery.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-
 class Gallery extends StatelessWidget {
 
   List<Card> _buildPhotos(BuildContext context) {
 
     // Grab state from model
     var gallery = Provider.of<GalleryModel>(context);
-    List<FileSystemEntity> photoFiles = gallery.photos;
+    List<FileSystemEntity> photoDirs = gallery.photoDirs;
 
     // No photos yet
-    if (photoFiles == null || photoFiles.isEmpty){
+    if (photoDirs == null || photoDirs.isEmpty){
       return const <Card>[];
     }
 
@@ -24,8 +23,29 @@ class Gallery extends StatelessWidget {
         locale: Localizations.localeOf(context).toString()
     );
 
+    // Unwrap contents and populate contents Map
+    Map<String, String> _getContents(File file) {
+      Map<String, String> contents = new Map();
+      String contentStr = file.readAsStringSync();
+      List<String> contentsList = contentStr.split("\n");
+      contentsList.forEach((str) {
+        print("Field: $str");
+        List<String> info = str.split(":");
+        String category = info[0].toLowerCase();
+        String information = info[1];
+        contents[category] = information;
+      });
+      return contents;
+    }
     // Render photos
-    return photoFiles.map((file) {
+    return photoDirs.map((dir) {
+      // Files
+      File imgFile = File('${dir.path}/img.jpg');
+      File contentsFile = File('${dir.path}/contents.txt');
+
+      // Disassemble contents
+      Map<String, String> contents = _getContents(contentsFile);
+
       return Card(
         elevation: 0.0,
         clipBehavior: Clip.antiAlias,
@@ -34,7 +54,7 @@ class Gallery extends StatelessWidget {
           children: <Widget>[
             AspectRatio(
               aspectRatio: 18.0 / 11.0,
-              child: Image.file(file),
+              child: Image.file(imgFile),
             ),
             Expanded(
               child: Padding(
@@ -44,13 +64,16 @@ class Gallery extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      file == null ? '' : "Photo",
-                      softWrap: false,
+                      contents.isEmpty ? "" : "Title: ${contents['name']}",
                       maxLines: 1,
                     ),
                     SizedBox(height: 4.0),
                     Text(
-                      file == null ? '' : formatter.format(15),
+                      contents.isEmpty ? "" : "Price: ${contents['price']}",
+                    ),
+                    SizedBox(height: 4.0),
+                    Text(
+                      contents.isEmpty ? "" : "Caption: ${contents['caption']}",
                     ),
                   ],
                 ),
@@ -65,9 +88,8 @@ class Gallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-      // # of columns
-      crossAxisCount: 2,
-      padding: EdgeInsets.all(16.0),
+      crossAxisCount: 2, // columns
+      padding: EdgeInsets.all(5.0),
       childAspectRatio: 8.0/9.0,
       children: _buildPhotos(context),
     );

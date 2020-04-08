@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:foodprint/map.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -30,13 +31,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  final List<Permission> _permissions = [Permission.location, Permission.camera];
   int _selectedPage = 0;
   final _pages = [
     FoodMap(),
     Center(child: Text('Second Page')),
     Gallery(),
   ];
-  List<FileSystemEntity> _photos = [];
+  List<FileSystemEntity> _photoDirs = [];
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildHomePage(BuildContext context, String id) {
     return ChangeNotifierProvider(
-      create: (context) => GalleryModel(_photos),
+      create: (context) => GalleryModel(_photoDirs),
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -114,14 +116,25 @@ class _HomePageState extends State<HomePage> {
   void _getPhotos() async {
     String path = (await getApplicationDocumentsDirectory()).path;
     setState(() {
-      _photos = Directory('$path/photos/').listSync();
+      // TODO: FileSystemException Error
+      _photoDirs = Directory('$path/photos/').listSync();
     });
   }
 
   @override
   void initState() {
     super.initState();
+    // Update gallery with photos
     _getPhotos();
+
+    // Check camera permission
+    _requestPermission();
+  }
+
+  Future<void> _requestPermission() async {
+    for (Permission permission in _permissions) {
+      await permission.request();
+    }
   }
 
   @override

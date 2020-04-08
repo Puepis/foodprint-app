@@ -19,12 +19,12 @@ const User = require('../models/userModel');
 
 exports.registerUser = async (req, res) => {
 
-    const { firstName, lastName, email, username, password, password2} = req.body;
+    const { email, username, password } = req.body;
 
     let errors = [];
 
     // Check required fields
-    if (!firstName || !lastName || !email || !username || !password) {
+    if (!email || !username || !password) {
         errors.push({msg: 'Please fill in all fields'});
     }
 
@@ -47,14 +47,14 @@ exports.registerUser = async (req, res) => {
             res.status(400).json(errors);
         }
         else {
-            const newUser = new User({firstName, lastName, email, username, password});
+            const newUser = new User({email, username, password});
 
             // Hash Passwords
             const salt = await bcrypt.genSalt(10);
             newUser.password = await bcrypt.hash(newUser.password, salt);
 
-            await query("INSERT INTO users (first_name, last_name, email, username, password) \
-            VALUES (?, ?, ?, ?, ?)", [newUser.firstName, newUser.lastName, newUser.email, newUser.username, newUser.password]);
+            await query("INSERT INTO users (email, username, password) \
+            VALUES (?, ?, ?)", [newUser.email, newUser.username, newUser.password]);
 
             res.status(201).send("Success");
         }
@@ -82,8 +82,6 @@ exports.loginUser = async (req, res) => {
             // Correct password
             if (match) {
                 const payload = {
-                    firstName: rows[0].first_name,
-                    lastName: rows[0].last_name,
                     username: rows[0].username,
                 };
 
