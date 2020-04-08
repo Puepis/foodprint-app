@@ -82,6 +82,7 @@ class _ImageDetailState extends State<ImageDetail> {
             photoModel.name = text;
           },
         ),
+        // TODO: Price input validation
         TextField(
           controller: _priceController,
           decoration: InputDecoration(

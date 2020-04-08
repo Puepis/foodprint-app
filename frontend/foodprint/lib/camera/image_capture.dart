@@ -11,11 +11,6 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 
 class ImageCapture extends StatefulWidget {
-  ImageCapture({Key key, @required this.id}) : super(key: key);
-  // User id - inherited from HomePage
-  // TODO: remove this
-  final int id;
-
   @override
   _ImageCaptureState createState() => _ImageCaptureState();
 }

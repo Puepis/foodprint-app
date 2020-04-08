@@ -33,11 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   final List<Permission> _permissions = [Permission.location, Permission.camera];
   int _selectedPage = 0;
-  final _pages = [
-    FoodMap(),
-    Center(child: Text('Second Page')),
-    Gallery(),
-  ];
+  final _pages = [FoodMap(), ImageCapture(), Gallery()];
   List<FileSystemEntity> _photoDirs = [];
 
   // Log out
@@ -51,17 +47,7 @@ class _HomePageState extends State<HomePage> {
     return res.statusCode == 200;
   }
 
-  // Get the page based on selected index
-  Widget getPage(int index, String id) {
-    if (index == 1) {
-      // Camera
-      return ImageCapture(id: int.parse(id));
-    } else {
-      return _pages[_selectedPage];
-    }
-  }
-
-  Widget buildHomePage(BuildContext context, String id) {
+  Widget buildHomePage(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GalleryModel(_photoDirs),
       child: Scaffold(
@@ -85,7 +71,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        body: getPage(_selectedPage, id),
+        body: _pages[_selectedPage],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedPage,
           onTap: (int index) {
@@ -126,12 +112,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // Update gallery with photos
     _getPhotos();
-
-    // Check camera permission
-    _requestPermission();
+    _requestPermissions();
   }
 
-  Future<void> _requestPermission() async {
+  Future<void> _requestPermissions() async {
     for (Permission permission in _permissions) {
       await permission.request();
     }
@@ -143,7 +127,7 @@ class _HomePageState extends State<HomePage> {
       child: FutureBuilder(
         future: http.read('$SERVER_IP/api/users/data', headers: {"Authorization": widget.jwt}),
           builder: (context, snapshot) =>
-            snapshot.hasData ?  buildHomePage(context, snapshot.data):
+            snapshot.hasData ?  buildHomePage(context):
               // Token expired
               snapshot.hasError ? LoginPage() : CircularProgressIndicator()
         ),
