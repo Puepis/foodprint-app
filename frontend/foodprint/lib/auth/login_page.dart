@@ -3,6 +3,7 @@ import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,6 +14,20 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final List<Permission> _permissions = [Permission.location, Permission.camera];
+
+  Future<void> _requestPermissions() async {
+    for (Permission permission in _permissions) {
+      await permission.request();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+  }
 
   @override
   void dispose() {

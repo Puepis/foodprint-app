@@ -41,7 +41,7 @@ class SaveButton extends StatelessWidget {
       msg: "Image saved!",
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIos: 1,
+      timeInSecForIosWeb: 1,
       fontSize: 16.0,
     );
   }

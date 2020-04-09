@@ -5,6 +5,8 @@ import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
 import 'package:foodprint/models/gallery.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,10 +33,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  final List<Permission> _permissions = [Permission.location, Permission.camera];
   int _selectedPage = 0;
-  final _pages = [FoodMap(), ImageCapture(), Gallery()];
   List<FileSystemEntity> _photoDirs = [];
+  LatLng _currentPos;
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -45,6 +46,19 @@ class _HomePageState extends State<HomePage> {
         }
     );
     return res.statusCode == 200;
+  }
+
+  Widget _getPage(int selected) {
+    switch(selected) {
+      case 0: { return FoodMap(initialPos: _currentPos); }
+      break;
+      case 1: { return ImageCapture(); }
+      break;
+      case 2: { return Gallery(); }
+      break;
+      default: { return Text("Default"); }
+      break;
+    }
   }
 
   Widget buildHomePage(BuildContext context) {
@@ -71,7 +85,7 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        body: _pages[_selectedPage],
+        body: _getPage(_selectedPage),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedPage,
           onTap: (int index) {
@@ -81,8 +95,8 @@ class _HomePageState extends State<HomePage> {
           },
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
+              icon: Icon(Icons.map),
+              title: Text('Map'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.camera),
@@ -107,18 +121,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // Get LatLng Coordinates
+  void _getLocation() async {
+    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
+    try {
+      Position pos = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      print("Initializing position...");
+      setState(() {
+        _currentPos = LatLng(pos.latitude, pos.longitude);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   void initState() {
     super.initState();
     // Update gallery with photos
     _getPhotos();
-    _requestPermissions();
-  }
-
-  Future<void> _requestPermissions() async {
-    for (Permission permission in _permissions) {
-      await permission.request();
-    }
+    _getLocation();
   }
 
   @override
