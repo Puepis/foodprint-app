@@ -130,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
   TextFormField usernameField(String title) {
     return TextFormField(
       controller: _usernameController,
@@ -139,7 +138,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
   TextFormField passwordField(String title) {
     return TextFormField(
       controller: _passwordController,

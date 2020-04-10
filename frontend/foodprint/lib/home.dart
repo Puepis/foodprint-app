@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:foodprint/map.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -134,6 +133,7 @@ class _HomePageState extends State<HomePage> {
       print(e);
     }
   }
+
   @override
   void initState() {
     super.initState();
