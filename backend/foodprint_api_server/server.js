@@ -1,12 +1,19 @@
 
 const express = require('express');
 
+var multer = require('multer');
+var upload = multer();
+
 // Create express app
 const app = express()
 app.use(express.json());
 
 // Bodyparser
 app.use(express.urlencoded({extended: false}));
+
+// Parsing form data
+app.use(upload.array()); 
+app.use(express.static('public'));
 
 // Routes
 app.use('/api/users', require('./app/routes/api/users'));

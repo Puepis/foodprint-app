@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 
 class SaveButton extends StatelessWidget {
   final File imageFile;
-  const SaveButton({Key key, @required this.imageFile}) : super(key: key);
+  final GalleryModel gallery;
+  const SaveButton({Key key, @required this.imageFile, @required this.gallery}) : super(key: key);
 
   Future<void> _saveImageAndContents(GalleryModel gallery, PhotoModel photo) async {
     try {
@@ -62,11 +63,17 @@ class SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      var gallery = Provider.of<GalleryModel>(context);
+      print("Building button");
+      if (gallery == null) {
+        print("Gallery null");
+      }
       var photoModel = Provider.of<PhotoModel>(context);
       return FlatButton(
         child: Icon(Icons.save_alt),
-        onPressed: () => _saveImageAndContents(gallery, photoModel),
+        onPressed: () {
+          _saveImageAndContents(gallery, photoModel);
+          Navigator.pop(context);
+        },
       );
     } catch (e) {
       print(e);

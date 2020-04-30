@@ -47,11 +47,10 @@ class _HomePageState extends State<HomePage> {
     return res.statusCode == 200;
   }
 
+  // Render widget
   Widget _getPage(int selected) {
     switch(selected) {
       case 0: { return FoodMap(initialPos: _currentPos); }
-      break;
-      case 1: { return ImageCapture(); }
       break;
       case 2: { return Gallery(); }
       break;
@@ -60,54 +59,71 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // Header
+  Widget appBar(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      title: Text('Foodprint'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.subdirectory_arrow_right),
+          onPressed: () async {
+            // Log out
+            bool successful = await attemptLogout(widget.payload['username']);
+            if (successful) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+            }
+          },
+        )
+      ],
+    );
+  }
+
+  // Nav bar
+  Widget navBar() {
+    return Consumer<GalleryModel>(
+      builder: (context, galleryModel, child) {
+        return BottomNavigationBar(
+            currentIndex: _selectedPage,
+            onTap: (int index) {
+              if (index == 1) { // Camera
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ImageCapture(gallery: galleryModel)
+                ));
+              }
+              else {
+                setState(() {
+                  _selectedPage = index;
+                });
+              }
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map),
+                title: Text('Map'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.camera),
+                title: Text('Camera'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.terrain),
+                title: Text('Gallery'),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
   Widget buildHomePage(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GalleryModel(_photoDirs),
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text('Foodprint'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.subdirectory_arrow_right),
-              onPressed: () async {
-                // Log out
-                bool successful = await attemptLogout(widget.payload['username']);
-                if (successful) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()
-                      )
-                  );
-                }
-              },
-            )
-          ],
+          appBar: appBar(context),
+          body: _getPage(_selectedPage),
+          bottomNavigationBar: navBar()
         ),
-        body: _getPage(_selectedPage),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedPage,
-          onTap: (int index) {
-            setState(() {
-              _selectedPage = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              title: Text('Map'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.camera),
-              title: Text('Camera'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.terrain),
-              title: Text('Gallery'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -126,6 +142,7 @@ class _HomePageState extends State<HomePage> {
     try {
       Position pos = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
       print("Initializing position...");
+      print("${pos.latitude}, ${pos.longitude}");
       setState(() {
         _currentPos = LatLng(pos.latitude, pos.longitude);
       });

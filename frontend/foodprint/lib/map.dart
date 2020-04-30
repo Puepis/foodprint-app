@@ -19,12 +19,6 @@ class _FoodMapState extends State<FoodMap> {
   }
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    print("disposed");
-  }
-  @override
   void initState() {
     _currentPos = widget.initialPos == null ? toronto : widget.initialPos;
     print("Init called");
