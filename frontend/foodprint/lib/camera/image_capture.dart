@@ -44,7 +44,9 @@ class _ImageCaptureState extends State<ImageCapture> {
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),
     );
-    if (mounted) setState(() {_imageFile = cropped ?? _imageFile;});
+    if (mounted) setState(() {
+        _imageFile = cropped;
+      });
   }
 
   // Remove image
@@ -62,14 +64,15 @@ class _ImageCaptureState extends State<ImageCapture> {
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera);
 
+    print(_imageFile.toString());
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => PhotoModel(),
         child: ListView(
             children: <Widget>[
               if (_imageFile != null) ...[
-                Image.file(_imageFile),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     FlatButton(
                       child: Icon(Icons.crop),
@@ -82,6 +85,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                     SaveButton(imageFile: _imageFile, gallery: widget.gallery)
                   ],
                 ),
+                Image.file(_imageFile),
                 SizedBox(height: 10.0),
                 ImageDetail(),
               ]
