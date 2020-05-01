@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/photo.dart';
+import 'package:foodprint/places_data/photo.dart';
+import 'package:foodprint/places_data/place_response.dart';
+import 'package:foodprint/places_data/result.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ImageDetail extends StatefulWidget {
   @override
@@ -10,7 +15,7 @@ class ImageDetail extends StatefulWidget {
 
 class _ImageDetailState extends State<ImageDetail> {
 
-  // Location
+  // Date
   final Map<int, String> days = {1: "Mon.", 2:"Tues.", 3:"Wed.", 4:"Thurs.", 5:"Fri.", 6:"Sat.", 7:"Sun."};
   final Map<int, String> months =
   {1: "Jan.", 2:"Feb.", 3:"Mar.", 4:"Apr.", 5:"May", 6:"June", 7:"July", 8:"Aug.", 9:"Sept.", 10:"Oct.", 11: "Nov.", 12:"Dec."};
@@ -20,16 +25,60 @@ class _ImageDetailState extends State<ImageDetail> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
 
-  // Get LatLng Coordinates
-  Future<void> _setLocation(var photoModel) async {
+  Position _position;
+  String _address;
+  List<Result> _restaurants;
+
+  // Google Maps Search
+  static const String _API_KEY = 'AIzaSyAUL23sK22O2cNSb6VVCEYeRJn_Tg8MCzo';
+  static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+
+  Future<void> _setLocationAndAddress(PhotoModel photoModel) async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
     try {
-      Position position = await geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      photoModel.coords = "${position.latitude}, ${position.longitude}";
-      photoModel.address = await _getAddressFromLatLng(geolocator, position);
+      print("Initializing position details");
+      _position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+
+      // Update model
+      photoModel.coords = "${_position.latitude}, ${_position.longitude}";
+      photoModel.address = await _getAddressFromLatLng(geolocator, _position);
+
+      print("Searching for nearby restaurants");
+      String url = '$baseUrl?key=$_API_KEY&location=${_position.latitude},${_position.longitude}&radius=1000';
+      print(url);
+      final response = await http.get(url);
+      final data = json.decode(response.body);
+      _handleResponse(data);
     } catch (e) {
       print(e);
+    }
+  }
+
+  // Search for nearby restaurants
+  Future<void> searchNearby(double latitude, double longitude) async {
+    print("Searching for nearby restaurants");
+    String url = '$baseUrl?key=$_API_KEY&location=$latitude,$longitude&radius=10000';
+    print(url);
+    try {
+      final response = await http.get(url);
+      final data = json.decode(response.body);
+      _handleResponse(data);
+    } catch (e) {
+      print(e);
+      throw Exception('An error occurred getting places nearby');
+    }
+  }
+
+  // Parse nearby restaurant results
+  void _handleResponse(data){
+    // bad api key or otherwise
+    if (data['status'] == "REQUEST_DENIED") {
+      throw Exception('Request denied');
+    } else if (data['status'] == "OK") {
+      _restaurants = PlaceResponse.parseResults(data['results']);
+      print(_restaurants);
+    } else {
+      print(data);
     }
   }
 
@@ -58,19 +107,11 @@ class _ImageDetailState extends State<ImageDetail> {
     return "$wd, $m $d, $y ~ $h.$min";
   }
 
-  void clearListeners() {
-    _itemNameController.clear();
-    _priceController.clear();
-    _captionController.clear();
-  }
-
   @override
   Widget build(BuildContext context) {
-    var photoModel = Provider.of<PhotoModel>(context);
-    _setLocation(photoModel);
+    PhotoModel photoModel = Provider.of<PhotoModel>(context);
+    _setLocationAndAddress(photoModel);
     photoModel.datetime = _getDateTime();
-
-    if (photoModel.saved) clearListeners();
     return Column(
       children: <Widget>[
         TextField(

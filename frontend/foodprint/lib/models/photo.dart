@@ -9,10 +9,4 @@ class PhotoModel extends ChangeNotifier {
   String name = "";
   String caption = "";
   String price = "";
-  bool _saved = false;
-  bool get saved => _saved;
-  void setSaved() {
-    _saved = true;
-    notifyListeners();
-  }
 }

@@ -32,7 +32,6 @@ class SaveButton extends StatelessWidget {
 
       // Update models
       gallery.addPhotoDir(Directory('$imgPath'));
-      photo.setSaved();
     } catch (e) {
       print(e);
     }
