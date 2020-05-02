@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:location/location.dart';
 
 class ImageDetail extends StatefulWidget {
   @override
@@ -25,8 +26,7 @@ class _ImageDetailState extends State<ImageDetail> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _itemNameController = TextEditingController();
 
-  Position _position;
-  String _address;
+  LocationData _position;
   List<Result> _restaurants;
 
   // Google Maps Search
@@ -34,17 +34,19 @@ class _ImageDetailState extends State<ImageDetail> {
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
   Future<void> _setLocationAndAddress(PhotoModel photoModel) async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
+    final Location location = Location();
+
     try {
       print("Initializing position details");
-      _position = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      _position = await location.getLocation();
+      print("${_position.latitude}, ${_position.longitude}");
 
       // Update model
       photoModel.coords = "${_position.latitude}, ${_position.longitude}";
-      photoModel.address = await _getAddressFromLatLng(geolocator, _position);
+      //photoModel.address = await _getAddressFromLatLng(geolocator, _position);
 
       print("Searching for nearby restaurants");
-      String url = '$baseUrl?key=$_API_KEY&location=${_position.latitude},${_position.longitude}&radius=1000';
+      String url = '$baseUrl?key=$_API_KEY&location=${_position.latitude},${_position.longitude}&rankby=distance&type=restaurant';
       print(url);
       final response = await http.get(url);
       final data = json.decode(response.body);
@@ -54,36 +56,21 @@ class _ImageDetailState extends State<ImageDetail> {
     }
   }
 
-  // Search for nearby restaurants
-  Future<void> searchNearby(double latitude, double longitude) async {
-    print("Searching for nearby restaurants");
-    String url = '$baseUrl?key=$_API_KEY&location=$latitude,$longitude&radius=10000';
-    print(url);
-    try {
-      final response = await http.get(url);
-      final data = json.decode(response.body);
-      _handleResponse(data);
-    } catch (e) {
-      print(e);
-      throw Exception('An error occurred getting places nearby');
-    }
-  }
-
   // Parse nearby restaurant results
   void _handleResponse(data){
     // bad api key or otherwise
     if (data['status'] == "REQUEST_DENIED") {
       throw Exception('Request denied');
     } else if (data['status'] == "OK") {
-      _restaurants = PlaceResponse.parseResults(data['results']);
-      print(_restaurants);
+      _restaurants = PlaceResponse.parseResults(data['results']).sublist(0, 5);
+      _restaurants.forEach((element) => print(element.name));
     } else {
       print(data);
     }
   }
 
   // Convert LatLng to Address
-  Future<String> _getAddressFromLatLng(Geolocator geolocator, Position position) async {
+  /*Future<String> _getAddressFromLatLng(Geolocator geolocator, Position position) async {
     Placemark place;
     try {
       List<Placemark> p = await geolocator.placemarkFromCoordinates(
@@ -93,7 +80,7 @@ class _ImageDetailState extends State<ImageDetail> {
       print(e);
     }
     return '${place.locality}, ${place.postalCode}, ${place.country}';
-  }
+  }*/
 
   // Format datetime
   String _getDateTime() {
@@ -143,6 +130,7 @@ class _ImageDetailState extends State<ImageDetail> {
             photoModel.caption = text;
           },
         ),
+
       ],
     );
   }

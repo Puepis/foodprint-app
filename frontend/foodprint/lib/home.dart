@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:foodprint/map.dart';
+import 'package:location/location.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -136,27 +137,44 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  // Get LatLng Coordinates
-  void _getLocation() async {
-    final Geolocator geolocator = Geolocator()..forceAndroidLocationManager = true;
-    try {
-      Position pos = await geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-      print("Initializing position...");
-      print("${pos.latitude}, ${pos.longitude}");
-      setState(() {
-        _currentPos = LatLng(pos.latitude, pos.longitude);
-      });
-    } catch (e) {
-      print(e);
+  // Set LatLng coordinates
+  void _setLocation() async {
+    final Location location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData pos;
+
+    // Check service
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
     }
+
+    // Check permissions
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+    print("Initializing position...");
+    pos = await location.getLocation();
+    print("${pos.latitude}, ${pos.longitude}");
+    print("Accuracy: ${pos.accuracy}m");
+    setState(() {
+      _currentPos = LatLng(pos.latitude, pos.longitude);
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    // Update gallery with photos
-    _getPhotos();
-    _getLocation();
+    _getPhotos(); // update gallery with photos
+    _setLocation(); // set current location
   }
 
   @override

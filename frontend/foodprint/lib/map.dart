@@ -19,20 +19,23 @@ class _FoodMapState extends State<FoodMap> {
   }
 
   @override
-  void initState() {
-    _currentPos = widget.initialPos == null ? toronto : widget.initialPos;
-    print("Init called");
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print("Build called");
+    _currentPos = widget.initialPos == null ? toronto : widget.initialPos;
+
+    // Move camera to location
+    if (widget.initialPos != null) {
+      mapController.moveCamera(
+        CameraUpdate.newLatLng(
+          LatLng(_currentPos.latitude, _currentPos.longitude)
+        )
+      );
+    }
+
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: _currentPos,
-        zoom: 12.0,
+          target: _currentPos,
+          zoom: 17.0 // 18.5 for closeup
       ),
       onCameraMove: (CameraPosition position) {
         _currentPos = position.target;

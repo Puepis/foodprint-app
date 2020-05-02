@@ -23,7 +23,7 @@ class SaveButton extends StatelessWidget {
       final photosPath = await createFolder(path, 'photos');
       final imgPath = await createFolder(photosPath, '$fileName');
 
-      String contents = "LatLng: ${photo.coords}\nAddress: ${photo.address}\nDateTime: ${photo.datetime}\nName: ${photo.name}\nPrice: ${photo.price}\nCaption: ${photo.caption}";
+      String contents = "LatLng: ${photo.coords}\nDateTime: ${photo.datetime}\nName: ${photo.name}\nPrice: ${photo.price}\nCaption: ${photo.caption}";
 
       // Copy the file to the AppDoc directory
       await imageFile.copy('$imgPath/img.jpg');

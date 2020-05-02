@@ -64,7 +64,6 @@ class _ImageCaptureState extends State<ImageCapture> {
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera);
 
-    print(_imageFile.toString());
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => PhotoModel(),
