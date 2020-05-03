@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/save_button.dart';
+import 'package:foodprint/camera/restaurant_listing.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/models/photo.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -84,7 +84,14 @@ class _ImageCaptureState extends State<ImageCapture> {
                 child: Icon(Icons.refresh),
                 onPressed: _clear,
               ),
-              SaveButton(imageFile: _imageFile, gallery: widget.gallery)
+              RaisedButton(
+                child: Icon(Icons.save_alt),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => RestaurantSelection(imageFile: _imageFile, gallery: widget.gallery)
+                  ));
+                },
+              ),
             ],
           ),
         ),
