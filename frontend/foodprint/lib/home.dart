@@ -5,7 +5,6 @@ import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
 import 'package:foodprint/models/gallery.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

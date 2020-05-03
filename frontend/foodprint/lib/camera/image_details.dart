@@ -28,12 +28,13 @@ class _ImageDetailState extends State<ImageDetail> {
 
   LocationData _position;
   List<Result> _restaurants;
+  List<bool> checked = [false, false, false, false, false];
 
   // Google Maps Search
   static const String _API_KEY = 'AIzaSyAUL23sK22O2cNSb6VVCEYeRJn_Tg8MCzo';
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
-  Future<void> _setLocationAndAddress(PhotoModel photoModel) async {
+  Future<void> _findRestaurants(PhotoModel photoModel) async {
     final Location location = Location();
 
     try {
@@ -50,19 +51,21 @@ class _ImageDetailState extends State<ImageDetail> {
       print(url);
       final response = await http.get(url);
       final data = json.decode(response.body);
-      _handleResponse(data);
+      _parseRestaurants(data);
     } catch (e) {
       print(e);
     }
   }
 
   // Parse nearby restaurant results
-  void _handleResponse(data){
+  void _parseRestaurants(data){
     // bad api key or otherwise
     if (data['status'] == "REQUEST_DENIED") {
       throw Exception('Request denied');
     } else if (data['status'] == "OK") {
-      _restaurants = PlaceResponse.parseResults(data['results']).sublist(0, 5);
+      setState(() {
+        _restaurants = PlaceResponse.parseResults(data['results']).sublist(0, 5); // 5 closest restaurants
+      });
       _restaurants.forEach((element) => print(element.name));
     } else {
       print(data);
@@ -94,10 +97,31 @@ class _ImageDetailState extends State<ImageDetail> {
     return "$wd, $m $d, $y ~ $h.$min";
   }
 
+  Widget _listRestaurants() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: 5,
+      itemBuilder: (context, index) => Row(
+        children: [
+          Checkbox(
+            value: checked[index],
+            onChanged: (value) {
+              setState(() {
+                checked[index] = value;
+              });
+            },
+          ),
+          Text(_restaurants[index].name)
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     PhotoModel photoModel = Provider.of<PhotoModel>(context);
-    _setLocationAndAddress(photoModel);
+    _findRestaurants(photoModel);
     photoModel.datetime = _getDateTime();
     return Column(
       children: <Widget>[
@@ -130,7 +154,7 @@ class _ImageDetailState extends State<ImageDetail> {
             photoModel.caption = text;
           },
         ),
-
+        if (_restaurants != null) _listRestaurants()
       ],
     );
   }

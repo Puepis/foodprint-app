@@ -20,15 +20,17 @@ class _FoodMapState extends State<FoodMap> {
 
   @override
   Widget build(BuildContext context) {
-    _currentPos = widget.initialPos == null ? toronto : widget.initialPos;
 
     // Move camera to location
     if (widget.initialPos != null) {
+      _currentPos = widget.initialPos;
       mapController.moveCamera(
         CameraUpdate.newLatLng(
           LatLng(_currentPos.latitude, _currentPos.longitude)
         )
       );
+    } else {
+      _currentPos = toronto;
     }
 
     return GoogleMap(
