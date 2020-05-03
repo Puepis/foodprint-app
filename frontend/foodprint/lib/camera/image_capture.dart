@@ -1,6 +1,4 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/image_details.dart';
 import 'package:foodprint/camera/save_button.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/models/photo.dart';
@@ -67,29 +65,29 @@ class _ImageCaptureState extends State<ImageCapture> {
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => PhotoModel(),
-        child: ListView(
+        child: Container(
+          alignment: Alignment(-1.0, 0.9),
+          decoration: _imageFile == null ? BoxDecoration() : BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              image: FileImage(_imageFile)
+            )
+          ),
+          child: _imageFile == null ? Row() : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              if (_imageFile != null) ...[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    FlatButton(
-                      child: Icon(Icons.crop),
-                      onPressed: _cropImage,
-                    ),
-                    FlatButton(
-                      child: Icon(Icons.refresh),
-                      onPressed: _clear,
-                    ),
-                    SaveButton(imageFile: _imageFile, gallery: widget.gallery)
-                  ],
-                ),
-                Image.file(_imageFile),
-                SizedBox(height: 10.0),
-                ImageDetail(),
-              ]
+              /*RaisedButton(
+                child: Icon(Icons.crop),
+                onPressed: _cropImage,
+              ),*/
+              RaisedButton(
+                child: Icon(Icons.refresh),
+                onPressed: _clear,
+              ),
+              SaveButton(imageFile: _imageFile, gallery: widget.gallery)
             ],
           ),
+        ),
       ),
     );
   }

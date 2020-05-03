@@ -63,11 +63,8 @@ class SaveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     try {
       print("Building button");
-      if (gallery == null) {
-        print("Gallery null");
-      }
       var photoModel = Provider.of<PhotoModel>(context);
-      return FlatButton(
+      return RaisedButton(
         child: Icon(Icons.save_alt),
         onPressed: () {
           _saveImageAndContents(gallery, photoModel);
@@ -76,7 +73,7 @@ class SaveButton extends StatelessWidget {
       );
     } catch (e) {
       print(e);
-      return FlatButton(
+      return RaisedButton(
         child: Icon(Icons.save_alt),
         onPressed: () => {},
       );
