@@ -11,7 +11,7 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
-class RestaurantSelection extends StatefulWidget {
+  class RestaurantSelection extends StatefulWidget {
   final File imageFile;
   final GalleryModel gallery;
   RestaurantSelection({Key key, @required this.imageFile, @required this.gallery}) : super(key: key);
