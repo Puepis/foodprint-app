@@ -22,7 +22,6 @@ class RestaurantSelection extends StatefulWidget {
 class _RestaurantSelectionState extends State<RestaurantSelection> {
   LocationData _position;
   List<Result> _restaurants;
-  List<bool> checked = [false, false, false, false, false];
 
   // Google Maps Search
   static const String _API_KEY = 'AIzaSyAUL23sK22O2cNSb6VVCEYeRJn_Tg8MCzo';
@@ -70,17 +69,18 @@ class _RestaurantSelectionState extends State<RestaurantSelection> {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: 5,
-        itemBuilder: (context, index) => Row(
+        itemBuilder: (context, index) => Column(
           children: [
-            Checkbox(
-              value: checked[index],
-              onChanged: (value) {
-                setState(() {
-                  checked[index] = value;
-                });
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ImageDetail(imageFile: widget.imageFile,
+                      gallery: widget.gallery, restaurant: _restaurants[index],
+                    position: _position)
+                ));
               },
-            ),
-            Text(_restaurants[index].name)
+              child: Text(_restaurants[index].name),
+            )
           ],
         )
     );
@@ -106,17 +106,6 @@ class _RestaurantSelectionState extends State<RestaurantSelection> {
             if (_restaurants != null) _listRestaurants()
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Save restaurant info
-          // Fill in image details
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ImageDetail(imageFile: widget.imageFile, gallery: widget.gallery)
-          ));
-        },
-        child: Icon(Icons.keyboard_arrow_right),
-        backgroundColor: Colors.blueAccent,
       ),
     );
   }

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/camera/restaurant_listing.dart';
 import 'package:foodprint/models/gallery.dart';
-import 'package:foodprint/models/photo.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
-import 'package:provider/provider.dart';
 
 class ImageCapture extends StatefulWidget {
   final GalleryModel gallery;
@@ -52,50 +50,42 @@ class _ImageCaptureState extends State<ImageCapture> {
     if (mounted) setState(() => _imageFile = null);
   }
 
-  int getSecondsSinceEpoch() {
-    var ms = (new DateTime.now()).millisecondsSinceEpoch;
-    return (ms / 1000).round();
-  }
-
   @override
   Widget build(BuildContext context) {
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera);
 
     return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => PhotoModel(),
-        child: Container(
-          alignment: Alignment(-1.0, 0.9),
-          decoration: _imageFile == null ? BoxDecoration() : BoxDecoration(
+      body: Container(
+        alignment: Alignment(-1.0, 0.9),
+        decoration: _imageFile == null ? BoxDecoration() : BoxDecoration(
             image: DecorationImage(
-              fit: BoxFit.fitHeight,
-              image: FileImage(_imageFile)
+                fit: BoxFit.fitHeight,
+                image: FileImage(_imageFile)
             )
-          ),
-          child: _imageFile == null ? Row() : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              /*RaisedButton(
+        ),
+        child: _imageFile == null ? Row() : Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            /*RaisedButton(
                 child: Icon(Icons.crop),
                 onPressed: _cropImage,
               ),*/
-              RaisedButton(
-                child: Icon(Icons.refresh),
-                onPressed: _clear,
-              ),
-              RaisedButton(
-                child: Icon(Icons.save_alt),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => RestaurantSelection(imageFile: _imageFile, gallery: widget.gallery)
-                  ));
-                },
-              ),
-            ],
-          ),
+            RaisedButton(
+              child: Icon(Icons.refresh),
+              onPressed: _clear,
+            ),
+            RaisedButton(
+              child: Icon(Icons.save_alt),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => RestaurantSelection(imageFile: _imageFile, gallery: widget.gallery)
+                ));
+              },
+            ),
+          ],
         ),
-      ),
+      )
     );
   }
 }

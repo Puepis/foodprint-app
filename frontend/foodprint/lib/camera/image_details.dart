@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/models/photo.dart';
+import 'package:foodprint/places_data/result.dart';
+import 'package:location/location.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class ImageDetail extends StatefulWidget {
+  final LocationData position;
+  final Result restaurant;
   final File imageFile;
   final GalleryModel gallery;
-  ImageDetail({Key key, @required this.imageFile, @required this.gallery}) : super(key: key);
+  ImageDetail({Key key, @required this.imageFile, @required this.gallery,
+    @required this.restaurant, @required this.position}) : super(key: key);
   @override
   _ImageDetailState createState() => _ImageDetailState();
 }
