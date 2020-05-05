@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodprint/map.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/places_data/result.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
