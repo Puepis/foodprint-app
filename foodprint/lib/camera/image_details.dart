@@ -1,13 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodprint/map.dart';
 import 'package:foodprint/models/gallery.dart';
-import 'package:foodprint/models/photo.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 
 class ImageDetail extends StatefulWidget {
   final LocationData position;
@@ -44,7 +44,9 @@ class _ImageDetailState extends State<ImageDetail> {
     return "$wd, $m $d, $y ~ $h.$min";
   }
 
-  Future<void> _saveImageAndContents(GalleryModel gallery, PhotoModel photo) async {
+  Future<void> _saveImageAndContents() async {
+    final pos= widget.position;
+    final dt = _getDateTime();
     try {
       // Get directory where we can save the file
       final path = (await getApplicationDocumentsDirectory()).path;
@@ -54,15 +56,21 @@ class _ImageDetailState extends State<ImageDetail> {
       final photosPath = await createFolder(path, 'photos');
       final imgPath = await createFolder(photosPath, '$fileName');
 
-      String contents = "LatLng: ${photo.coords}\nDateTime: ${photo.datetime}\nName: ${photo.name}\nPrice: ${photo.price}\nCaption: ${photo.caption}";
+      final coordsStr = "LatLng: ${pos.latitude}, ${pos.longitude}";
+      final dtStr = "DateTime: $dt";
+      final nameStr = "Name: ${_itemNameController.text.trim()}";
+      final priceStr = "Price: ${_priceController.text.trim()}";
+      final captionStr = "Caption: ${_captionController.text.trim()}";
+      final restaurantStr = "Restaurant: ${widget.restaurant.name}";
+      String contents = "$coordsStr\n$dtStr\n$nameStr\n$priceStr\n$captionStr\n$restaurantStr";
 
       // Copy the file to the AppDoc directory
       await widget.imageFile.copy('$imgPath/img.jpg');
       final File localContents = File('$imgPath/contents.txt');
       localContents.writeAsStringSync(contents);
 
-      // Update models
-      gallery.addPhotoDir(Directory('$imgPath'));
+      // Update gallery model
+      widget.gallery.addPhotoDir(Directory('$imgPath'));
     } catch (e) {
       print(e);
     }
@@ -92,8 +100,6 @@ class _ImageDetailState extends State<ImageDetail> {
 
   @override
   Widget build(BuildContext context) {
-    PhotoModel photoModel = Provider.of<PhotoModel>(context);
-    photoModel.datetime = _getDateTime();
     return Scaffold(
       body: Container(
         child: Column(
@@ -104,9 +110,6 @@ class _ImageDetailState extends State<ImageDetail> {
               decoration: InputDecoration(
                 labelText: "Item Name",
               ),
-              onChanged: (text) {
-                photoModel.name = text;
-              },
             ),
             // TODO: Price input validation
             TextField(
@@ -114,9 +117,6 @@ class _ImageDetailState extends State<ImageDetail> {
               decoration: InputDecoration(
                 labelText: "Price",
               ),
-              onChanged: (text) {
-                photoModel.price = text;
-              },
             ),
             TextField(
               controller: _captionController,
@@ -124,9 +124,6 @@ class _ImageDetailState extends State<ImageDetail> {
               decoration: InputDecoration(
                 labelText: "Caption",
               ),
-              onChanged: (text) {
-                photoModel.caption = text;
-              },
             ),
           ],
         ),
@@ -134,9 +131,13 @@ class _ImageDetailState extends State<ImageDetail> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Save contents
-          _saveImageAndContents(widget.gallery, photoModel);
-          Navigator.pop(context); // go back to map
+          _saveImageAndContents();
+          int count = 0;
+          Navigator.popUntil(context, (route) {
+            return count++ == 3; // pop back 3 times
+          });
         },
+        child: Icon(Icons.save_alt),
       ),
     );
   }

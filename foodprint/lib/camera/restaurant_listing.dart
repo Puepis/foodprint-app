@@ -2,16 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/camera/image_details.dart';
 import 'package:foodprint/models/gallery.dart';
-import 'package:foodprint/models/photo.dart';
 import 'package:foodprint/places_data/place_response.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:provider/provider.dart';
-
-  class RestaurantSelection extends StatefulWidget {
+class RestaurantSelection extends StatefulWidget {
   final File imageFile;
   final GalleryModel gallery;
   RestaurantSelection({Key key, @required this.imageFile, @required this.gallery}) : super(key: key);
@@ -94,10 +91,6 @@ class _RestaurantSelectionState extends State<RestaurantSelection> {
 
   @override
   Widget build(BuildContext context) {
-    PhotoModel photoModel = Provider.of<PhotoModel>(context); // TODO: might need to use consumer
-    if (_position != null) {
-      photoModel.coords = "${_position.latitude}, ${_position.longitude}";
-    }
     return Scaffold(
       body: Container(
         child: Column(
