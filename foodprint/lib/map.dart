@@ -13,6 +13,7 @@ class _FoodMapState extends State<FoodMap> {
   GoogleMapController mapController;
   LatLng _currentPos;
   final LatLng toronto = LatLng(43.651070, -79.347015);
+  List<Marker> markers = <Marker>[];
 
   void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
@@ -21,26 +22,40 @@ class _FoodMapState extends State<FoodMap> {
   @override
   Widget build(BuildContext context) {
 
-    _currentPos = widget.initialPos == null ? toronto : widget.initialPos;
-    // Move camera to location
-    if (widget.initialPos != null && mapController != null) {
-      mapController.moveCamera(
-        CameraUpdate.newLatLng(
-          LatLng(_currentPos.latitude, _currentPos.longitude)
-        )
+    // Add marker indicating current location
+    if (widget.initialPos != null) {
+      _currentPos = widget.initialPos;
+      markers.add(
+          Marker(
+            markerId: MarkerId("current"),
+            position: widget.initialPos,
+            onTap: () {},
+          )
       );
+
+      // Move camera to current location
+      if (mapController != null) {
+        mapController.moveCamera(
+            CameraUpdate.newLatLng(
+                LatLng(_currentPos.latitude, _currentPos.longitude)
+            )
+        );
+      }
+    } else {
+      _currentPos = toronto; // default location
     }
 
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
           target: _currentPos,
-          zoom: 17.0 // 18.5 for closeup
+          zoom: 18.5
       ),
       onCameraMove: (CameraPosition position) {
         _currentPos = position.target;
         print(position.target.toString());
       },
+      markers: Set<Marker>.of(markers),
     );
   }
 }
