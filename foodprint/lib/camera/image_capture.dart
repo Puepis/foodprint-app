@@ -16,10 +16,13 @@ class ImageCapture extends StatefulWidget {
 class _ImageCaptureState extends State<ImageCapture> {
   // Active image file
   File _imageFile;
+  FileImage loadedImage;
 
   // Take a photo
   Future<void> _pickImage(ImageSource source) async {
     File selected = await ImagePicker.pickImage(source: source);
+    loadedImage = FileImage(selected);
+    await precacheImage(loadedImage, context); // precache the image
 
     // Image file
     if (mounted) {
@@ -61,7 +64,7 @@ class _ImageCaptureState extends State<ImageCapture> {
         decoration: _imageFile == null ? BoxDecoration() : BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fitHeight,
-                image: FileImage(_imageFile)
+                image: loadedImage
             )
         ),
         child: _imageFile == null ? Row() : Row(
