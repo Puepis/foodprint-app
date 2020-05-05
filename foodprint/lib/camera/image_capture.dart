@@ -76,7 +76,7 @@ class _ImageCaptureState extends State<ImageCapture> {
               onPressed: _clear,
             ),
             RaisedButton(
-              child: Icon(Icons.save_alt),
+              child: Icon(Icons.keyboard_arrow_right),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantSelection(imageFile: _imageFile, gallery: widget.gallery)
