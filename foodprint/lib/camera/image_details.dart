@@ -102,7 +102,13 @@ class _ImageDetailState extends State<ImageDetail> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Text("Fill in the details!"),
+            Text(
+                "Fill in the details!",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30
+                ),
+            ),
             TextField(
               controller: _itemNameController,
               decoration: InputDecoration(

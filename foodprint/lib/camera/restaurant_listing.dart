@@ -95,7 +95,13 @@ class _RestaurantSelectionState extends State<RestaurantSelection> {
       body: Container(
         child: Column(
           children: <Widget>[
-            Text("Here's what we found"),
+            Text(
+              "Here's what we found",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30
+              ),
+            ),
             if (_restaurants != null) _listRestaurants()
           ],
         ),
