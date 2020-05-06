@@ -70,7 +70,7 @@ class Gallery extends StatelessWidget {
                     SizedBox(height: 4.0),
                     // TODO: format currency
                     Text(
-                      contents.isEmpty ? "" : "Price: ${contents['price']}",
+                      contents.isEmpty ? "" : "Price: ${formatter.format(double.parse(contents['price']))}",
                     ),
                     SizedBox(height: 4.0),
                     Text(

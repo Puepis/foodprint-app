@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/places_data/result.dart';
@@ -20,15 +22,16 @@ class ImageDetail extends StatefulWidget {
 
 class _ImageDetailState extends State<ImageDetail> {
 
+  final _formKey = GlobalKey<FormState>();
+
   // Date
   final Map<int, String> days = {1: "Mon.", 2:"Tues.", 3:"Wed.", 4:"Thurs.", 5:"Fri.", 6:"Sat.", 7:"Sun."};
   final Map<int, String> months =
   {1: "Jan.", 2:"Feb.", 3:"Mar.", 4:"Apr.", 5:"May", 6:"June", 7:"July", 8:"Aug.", 9:"Sept.", 10:"Oct.", 11: "Nov.", 12:"Dec."};
 
-  // Fields
-  final TextEditingController _captionController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _itemNameController = TextEditingController();
+  String _itemName = "";
+  String _price = "";
+  String _caption = "";
 
   // Format datetime
   String _getDateTime() {
@@ -56,9 +59,9 @@ class _ImageDetailState extends State<ImageDetail> {
 
       final coordsStr = "LatLng: ${pos.latitude}, ${pos.longitude}";
       final dtStr = "DateTime: $dt";
-      final nameStr = "Name: ${_itemNameController.text.trim()}";
-      final priceStr = "Price: ${_priceController.text.trim()}";
-      final captionStr = "Caption: ${_captionController.text.trim()}";
+      final nameStr = "Name: $_itemName";
+      final priceStr = "Price: $_price";
+      final captionStr = "Caption: $_caption";
       final restaurantStr = "Restaurant: ${widget.restaurant.name}";
       String contents = "$coordsStr\n$dtStr\n$nameStr\n$priceStr\n$captionStr\n$restaurantStr";
 
@@ -99,58 +102,77 @@ class _ImageDetailState extends State<ImageDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      appBar: AppBar(
+        title: Text("Fill in the details!"),
+      ),
+      body: Form(
+        key: _formKey,
         child: Column(
-          children: <Widget>[
-            Text(
-                "Fill in the details!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                icon: Icon(Icons.fastfood),
+                hintText: 'What are you eating/drinking?',
+                labelText: 'Item Name',
+              ),
+              onSaved: (String value) {
+                _itemName = value.trim();
+              },
+              validator: (String value) {
+                return value.isEmpty ? 'Please enter the name of the item' : null;
+              },
+            ),
+            SizedBox(height: 10.0,),
+            TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                icon: Icon(Icons.attach_money),
+                hintText: 'How much does it cost?',
+                labelText: 'Price',
+              ),
+              onSaved: (String value) {
+                _price = value.trim();
+              },
+              validator: (String value) {
+                return value.isEmpty ? 'Please enter the price' : null;
+              },
+            ),
+            SizedBox(height: 10.0,),
+            TextFormField(
+                decoration: InputDecoration(
+                  icon: Icon(Icons.description),
+                  hintText: 'Any comments?',
+                  labelText: 'Caption',
                 ),
+                onSaved: (String value) {
+                  _caption = value.trim();
+                },
+                validator: (String value) {
+                  return null;
+                }
             ),
-            TextField(
-              controller: _itemNameController,
-              decoration: InputDecoration(
-                labelText: "Item Name",
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              child: FloatingActionButton(
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save(); // save fields
+                    _saveImageAndContents(); // save contents
+                    int count = 0;
+                    Navigator.popUntil(context, (route) {
+                      return count++ == 3; // pop back 3 times
+                    });
+                  }
+                },
+                child: Icon(Icons.save_alt),
               ),
-            ),
-            // TODO: Price input validation
-            TextField(
-              controller: _priceController,
-              decoration: InputDecoration(
-                labelText: "Price",
-              ),
-            ),
-            TextField(
-              controller: _captionController,
-              maxLines: 10,
-              decoration: InputDecoration(
-                labelText: "Caption",
-              ),
-            ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Save contents
-          _saveImageAndContents();
-          int count = 0;
-          Navigator.popUntil(context, (route) {
-            return count++ == 3; // pop back 3 times
-          });
-        },
-        child: Icon(Icons.save_alt),
-      ),
+      )
     );
-  }
-
-  @override
-  void dispose() {
-    _captionController.dispose();
-    _priceController.dispose();
-    _itemNameController.dispose();
-    super.dispose();
   }
 }
