@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.map),
-                title: Text('Map'),
+                title: Text('My Foodprint'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.camera),
@@ -130,10 +130,15 @@ class _HomePageState extends State<HomePage> {
   // Get all the stored photos
   void _getPhotos() async {
     String path = (await getApplicationDocumentsDirectory()).path;
-    setState(() {
-      // TODO: FileSystemException Error
-      _photoDirs = Directory('$path/photos/').listSync();
-    });
+    try {
+      setState(() {
+        _photoDirs = Directory('$path/photos/').listSync();
+      });
+    }
+    on FileSystemException {
+      print("Directory not initialized");
+    }
+
   }
 
   // Set LatLng coordinates
@@ -160,10 +165,10 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-    print("Initializing position...");
-    pos = await location.getLocation();
+
+    pos = await location.getLocation(); // get location
     print("${pos.latitude}, ${pos.longitude}");
-    print("Accuracy: ${pos.accuracy}m");
+    print("Accuracy: ${pos.accuracy}");
     setState(() {
       _currentPos = LatLng(pos.latitude, pos.longitude);
     });

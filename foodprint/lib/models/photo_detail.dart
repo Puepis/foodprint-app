@@ -1,4 +1,7 @@
 
+/*
+ * This model class defines the information stored with every photograph taken.
+ */
 class PhotoDetail {
   final String name;
   final double price;

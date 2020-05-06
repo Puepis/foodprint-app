@@ -53,7 +53,6 @@ class _FoodMapState extends State<FoodMap> {
       ),
       onCameraMove: (CameraPosition position) {
         _currentPos = position.target;
-        print(position.target.toString());
       },
       markers: Set<Marker>.of(markers),
     );
