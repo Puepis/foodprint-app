@@ -19,8 +19,13 @@ class _ImageCaptureState extends State<ImageCapture> {
   FileImage loadedImage;
 
   // Take a photo
-  Future<void> _pickImage(ImageSource source) async {
+  Future<void> _pickImage(ImageSource source, BuildContext context) async {
     File selected = await ImagePicker.pickImage(source: source);
+    if (selected == null) { // Image not taken
+      Navigator.pop(context);
+      return;
+    }
+
     loadedImage = FileImage(selected);
     await precacheImage(loadedImage, context); // precache the image
 
@@ -56,7 +61,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   @override
   Widget build(BuildContext context) {
     // Launch camera
-    if (_imageFile == null) _pickImage(ImageSource.camera);
+    if (_imageFile == null) _pickImage(ImageSource.camera, context);
 
     return Scaffold(
       body: Container(
