@@ -1,11 +1,19 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/photo_detail.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Gallery extends StatelessWidget {
+
+  // Unwrap content
+  PhotoDetail _getContents(File file) {
+    Map<String, dynamic> photoDetail = jsonDecode(file.readAsStringSync()); // decode JSON string
+    return PhotoDetail.fromJson(photoDetail); // create instance
+  }
 
   List<Card> _buildPhotos(BuildContext context) {
 
@@ -23,28 +31,14 @@ class Gallery extends StatelessWidget {
         locale: Localizations.localeOf(context).toString()
     );
 
-    // Unwrap contents and populate contents Map
-    Map<String, String> _getContents(File file) {
-      Map<String, String> contents = new Map();
-      String contentStr = file.readAsStringSync();
-      List<String> contentsList = contentStr.split("\n");
-      contentsList.forEach((str) {
-        print("Field: $str");
-        List<String> info = str.split(":");
-        String category = info[0].toLowerCase();
-        String information = info[1];
-        contents[category] = information;
-      });
-      return contents;
-    }
     // Render photos
     return photoDirs.map((dir) {
       // Files
       File imgFile = File('${dir.path}/img.jpg');
-      File contentsFile = File('${dir.path}/contents.txt');
+      File contentsFile = File('${dir.path}/contents.json');
 
       // Disassemble contents
-      Map<String, String> contents = _getContents(contentsFile);
+      PhotoDetail contents = _getContents(contentsFile);
 
       return Card(
         elevation: 0.0,
@@ -64,17 +58,16 @@ class Gallery extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      contents.isEmpty ? "" : "Title: ${contents['name']}",
+                      "Item: ${contents.name}",
                       maxLines: 1,
                     ),
                     SizedBox(height: 4.0),
-                    // TODO: format currency
                     Text(
-                      contents.isEmpty ? "" : "Price: ${formatter.format(double.parse(contents['price']))}",
+                      "Price: ${formatter.format(contents.price)}",
                     ),
                     SizedBox(height: 4.0),
                     Text(
-                      contents.isEmpty ? "" : "Caption: ${contents['caption']}",
+                      "Caption: ${contents.caption}",
                     ),
                   ],
                 ),

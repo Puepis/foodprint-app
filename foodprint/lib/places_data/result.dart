@@ -27,7 +27,7 @@ class Result {
       name: json['name'],
       photos: json['photos'] != null ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList(): [],
       placeId: json['place_id'],
-      rating: json['rating'] != null ? json['rating'].toDouble(): 0.0,
+      rating: json['rating'] != null ? json['rating'].toDouble(): -1.0,
       reference: json['reference'],
       scope: json['scope'],
       types: List<String>.from(json['types']),

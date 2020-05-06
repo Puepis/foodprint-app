@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:location/location.dart';
 import 'package:path/path.dart';
@@ -57,18 +59,23 @@ class _ImageDetailState extends State<ImageDetail> {
       final photosPath = await createFolder(path, 'photos');
       final imgPath = await createFolder(photosPath, '$fileName');
 
-      final coordsStr = "LatLng: ${pos.latitude}, ${pos.longitude}";
-      final dtStr = "DateTime: $dt";
-      final nameStr = "Name: $_itemName";
-      final priceStr = "Price: $_price";
-      final captionStr = "Caption: $_caption";
-      final restaurantStr = "Restaurant: ${widget.restaurant.name}";
-      String contents = "$coordsStr\n$dtStr\n$nameStr\n$priceStr\n$captionStr\n$restaurantStr";
+      PhotoDetail contents = PhotoDetail(
+        name: _itemName,
+        price: double.parse(_price),
+        caption: _caption,
+        restaurantName: widget.restaurant.name,
+        rating: widget.restaurant.rating,
+        datetime: dt,
+        latitude: pos.latitude,
+        longitude: pos.longitude
+      );
+
+      String json = jsonEncode(contents); // convert to json string
 
       // Copy the file to the AppDoc directory
       await widget.imageFile.copy('$imgPath/img.jpg');
-      final File localContents = File('$imgPath/contents.txt');
-      localContents.writeAsStringSync(contents);
+      final File localContents = File('$imgPath/contents.json');
+      localContents.writeAsStringSync(json);
 
       // Update gallery model
       widget.gallery.addPhotoDir(Directory('$imgPath'));
@@ -125,9 +132,9 @@ class _ImageDetailState extends State<ImageDetail> {
             SizedBox(height: 10.0,),
             TextFormField(
               keyboardType: TextInputType.number,
-              inputFormatters: [
+              /*inputFormatters: [
                 WhitelistingTextInputFormatter.digitsOnly
-              ],
+              ]*/
               decoration: InputDecoration(
                 icon: Icon(Icons.attach_money),
                 hintText: 'How much does it cost?',
