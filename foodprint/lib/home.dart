@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   // Header
   Widget appBar(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       automaticallyImplyLeading: false,
       title: Text('Foodprint'),
       actions: <Widget>[

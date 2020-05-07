@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:foodprint/gallery/image.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/models/photo_detail.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +16,7 @@ class Gallery extends StatelessWidget {
     return PhotoDetail.fromJson(photoDetail); // create instance
   }
 
-  List<Card> _buildPhotos(BuildContext context) {
+  List<Widget> _buildPhotos(BuildContext context) {
 
     // Grab state from model
     var gallery = Provider.of<GalleryModel>(context);
@@ -40,40 +41,21 @@ class Gallery extends StatelessWidget {
       // Disassemble contents
       PhotoDetail contents = _getContents(contentsFile);
 
-      return Card(
-        elevation: 0.0,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: 18.0 / 11.0,
-              child: Image.file(imgFile),
+      return GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(
+          builder: (context) => FullImage(imageFile: imgFile)
+        )),
+        child: Card(
+          elevation: 0.0,
+          clipBehavior: Clip.antiAlias,
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(imgFile),
+                fit: BoxFit.cover
+              )
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      "Item: ${contents.name}",
-                      maxLines: 1,
-                    ),
-                    SizedBox(height: 4.0),
-                    Text(
-                      "Price: ${formatter.format(contents.price)}",
-                    ),
-                    SizedBox(height: 4.0),
-                    Text(
-                      "Caption: ${contents.caption}",
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       );
     }).toList();
@@ -83,8 +65,9 @@ class Gallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2, // columns
-      padding: EdgeInsets.all(5.0),
-      childAspectRatio: 8.0/9.0,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      padding: EdgeInsets.all(10.0),
       children: _buildPhotos(context),
     );
   }
