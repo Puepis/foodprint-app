@@ -1,6 +1,6 @@
 import 'dart:convert' show json, ascii, base64;
 import 'dart:io';
-import 'package:foodprint/camera/image_capture.dart';
+import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
             onTap: (int index) {
               if (index == 1) { // Camera
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ImageCapture(gallery: galleryModel)
+                    builder: (context) => Camera(gallery: galleryModel)
                 ));
               }
               else {
