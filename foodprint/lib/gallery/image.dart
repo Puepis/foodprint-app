@@ -9,9 +9,12 @@ class FullImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
-        child: Image.file(imageFile),
-      ),
+        child: Center(
+          child: Image.file(imageFile),
+        ),
+      )
     );
   }
 }
