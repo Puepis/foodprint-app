@@ -58,7 +58,6 @@ class _ImageDetailState extends State<ImageDetail> {
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
       final imgPath = await createFolder(path, '${widget.username}/photos/$fileName');
-      //final imgPath = await createFolder(photosPath, '$fileName');
 
       PhotoDetail contents = PhotoDetail(
         name: _itemName,
@@ -133,9 +132,6 @@ class _ImageDetailState extends State<ImageDetail> {
             SizedBox(height: 10.0,),
             TextFormField(
               keyboardType: TextInputType.number,
-              /*inputFormatters: [
-                WhitelistingTextInputFormatter.digitsOnly
-              ]*/
               decoration: InputDecoration(
                 icon: Icon(Icons.attach_money),
                 hintText: 'How much does it cost?',
