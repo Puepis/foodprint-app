@@ -12,11 +12,12 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageDetail extends StatefulWidget {
+  final String username;
   final LocationData position;
   final Result restaurant;
   final File imageFile;
   final GalleryModel gallery;
-  ImageDetail({Key key, @required this.imageFile, @required this.gallery,
+  ImageDetail({Key key, @required this.username, @required this.imageFile, @required this.gallery,
     @required this.restaurant, @required this.position}) : super(key: key);
   @override
   _ImageDetailState createState() => _ImageDetailState();
@@ -56,8 +57,8 @@ class _ImageDetailState extends State<ImageDetail> {
 
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      final photosPath = await createFolder(path, 'photos');
-      final imgPath = await createFolder(photosPath, '$fileName');
+      final imgPath = await createFolder(path, '${widget.username}/photos/$fileName');
+      //final imgPath = await createFolder(photosPath, '$fileName');
 
       PhotoDetail contents = PhotoDetail(
         name: _itemName,

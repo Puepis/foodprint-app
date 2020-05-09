@@ -89,7 +89,10 @@ class _HomePageState extends State<HomePage> {
             onTap: (int index) {
               if (index == 1) { // Camera
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Camera(gallery: galleryModel)
+                    builder: (context) => Camera(
+                      username: widget.payload['username'],
+                      gallery: galleryModel
+                    )
                 ));
               }
               else {
@@ -133,13 +136,12 @@ class _HomePageState extends State<HomePage> {
     String path = (await getApplicationDocumentsDirectory()).path;
     try {
       setState(() {
-        _photoDirs = Directory('$path/photos/').listSync();
+        _photoDirs = Directory('$path/${widget.payload['username']}/photos/').listSync();
       });
     }
     on FileSystemException {
       print("Directory not initialized");
     }
-
   }
 
   // Set LatLng coordinates

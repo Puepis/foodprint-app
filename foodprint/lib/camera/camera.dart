@@ -9,8 +9,9 @@ import 'dart:async';
 import 'package:location/location.dart';
 
 class Camera extends StatefulWidget {
+  final String username;
   final GalleryModel gallery;
-  Camera({Key key, @required this.gallery}) : super(key: key);
+  Camera({Key key, @required this.username, @required this.gallery}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -103,10 +104,11 @@ class _CameraState extends State<Camera> {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
-                        imageFile: _imageFile,
-                        gallery: widget.gallery,
-                        position: _position,
-                        restaurants: _restaurants
+                      username: widget.username,
+                      imageFile: _imageFile,
+                      gallery: widget.gallery,
+                      position: _position,
+                      restaurants: _restaurants
                     )
                 ));
               },
