@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/gallery/image.dart';
 import 'package:foodprint/models/gallery.dart';
 import 'package:foodprint/models/photo_detail.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Gallery extends StatelessWidget {
@@ -17,7 +16,6 @@ class Gallery extends StatelessWidget {
   }
 
   List<Widget> _buildPhotos(BuildContext context) {
-
     // Grab state from model
     var gallery = Provider.of<GalleryModel>(context);
     List<FileSystemEntity> photoDirs = gallery.photoDirs;
@@ -26,11 +24,6 @@ class Gallery extends StatelessWidget {
     if (photoDirs == null || photoDirs.isEmpty){
       return const <Card>[];
     }
-
-    // Currency formatter
-    final NumberFormat formatter = NumberFormat.simpleCurrency(
-        locale: Localizations.localeOf(context).toString()
-    );
 
     // Render photos
     return photoDirs.map((dir) {
@@ -43,7 +36,7 @@ class Gallery extends StatelessWidget {
 
       return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(
-          builder: (context) => FullImage(imageFile: imgFile)
+          builder: (context) => FullImage(imageFile: imgFile, contents: contents)
         )),
         child: Card(
           elevation: 0.0,
