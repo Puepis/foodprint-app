@@ -4,7 +4,7 @@ import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Get all the stored photos
-  void _getPhotos() async {
+  void _loadPhotos() async {
     String path = (await getApplicationDocumentsDirectory()).path;
     try {
       setState(() {
@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _getPhotos(); // update gallery with photos
+    _loadPhotos(); // update gallery with photos
     _setLocation(); // set current location
   }
 

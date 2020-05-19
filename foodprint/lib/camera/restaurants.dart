@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/camera/image_details.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/places_data/place_response.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:location/location.dart';

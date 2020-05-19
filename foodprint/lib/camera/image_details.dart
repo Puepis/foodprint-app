@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:location/location.dart';
@@ -24,7 +24,6 @@ class ImageDetail extends StatefulWidget {
 }
 
 class _ImageDetailState extends State<ImageDetail> {
-
   final _formKey = GlobalKey<FormState>();
 
   // Date
@@ -35,10 +34,12 @@ class _ImageDetailState extends State<ImageDetail> {
   String _itemName = "";
   String _price = "";
   String _caption = "";
+  int secondsSinceEpoch;
 
   // Format datetime
   String _getDateTime() {
     final DateTime now = new DateTime.now();
+    secondsSinceEpoch = (now.millisecondsSinceEpoch / 1000).round();
     String y = now.year.toString();
     String m = months[now.month];
     String wd = days[now.weekday];
@@ -57,7 +58,7 @@ class _ImageDetailState extends State<ImageDetail> {
 
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      final imgPath = await createFolder(path, '${widget.username}/photos/$fileName');
+      final imgPath = await createFolder(path, '${widget.username}/photos/$secondsSinceEpoch-$fileName');
 
       PhotoDetail contents = PhotoDetail(
         name: _itemName,

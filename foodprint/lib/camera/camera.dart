@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/camera/restaurants.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';

@@ -3,11 +3,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/gallery/image.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_detail.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class Gallery extends StatelessWidget {
+
+  // Get image time taken from directory
+  int getTimeTaken(FileSystemEntity dir) {
+    String name = basename(dir.path);
+    return int.parse(name.split("-")[0]);
+  }
 
   // Unwrap content
   PhotoDetail _getContents(File file) {
@@ -24,6 +31,9 @@ class Gallery extends StatelessWidget {
     if (photoDirs == null || photoDirs.isEmpty){
       return const <Card>[];
     }
+
+    // Sort directories from newest to oldest
+    photoDirs.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
 
     // Render photos
     return photoDirs.map((dir) {
