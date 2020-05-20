@@ -1,10 +1,10 @@
 
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/gallery/image.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_detail.dart';
+import 'package:foodprint/service/storage.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +14,6 @@ class Gallery extends StatelessWidget {
   int getTimeTaken(FileSystemEntity dir) {
     String name = basename(dir.path);
     return int.parse(name.split("-")[0]);
-  }
-
-  // Unwrap content
-  PhotoDetail _getContents(File file) {
-    Map<String, dynamic> photoDetail = jsonDecode(file.readAsStringSync()); // decode JSON string
-    return PhotoDetail.fromJson(photoDetail); // create instance
   }
 
   List<Widget> _buildPhotos(BuildContext context) {
@@ -38,11 +32,11 @@ class Gallery extends StatelessWidget {
     // Render photos
     return photoDirs.map((dir) {
       // Files
-      File imgFile = File('${dir.path}/img.jpg');
-      File contentsFile = File('${dir.path}/contents.json');
+      File imgFile = PhotoManager.openImgFile(dir);
+      File contentsFile = PhotoManager.openContentFile(dir);
 
       // Disassemble contents
-      PhotoDetail contents = _getContents(contentsFile);
+      PhotoDetail contents = PhotoManager.getContents(contentsFile);
 
       return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(

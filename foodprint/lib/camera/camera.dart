@@ -63,9 +63,11 @@ class _CameraState extends State<Camera> {
     if (mounted) setState(() => _imageFile = null);
   }
 
+  // Search for nearby restaurants
   Future<void> _findRestaurants() async {
     _position = await Locator.getLocation();
     _restaurants = await Locator.getRestaurants(_position);
+    setState(() {});
   }
 
   @override
@@ -107,7 +109,6 @@ class _CameraState extends State<Camera> {
                       username: widget.username,
                       imageFile: _imageFile,
                       gallery: widget.gallery,
-                      position: _position,
                       restaurants: _restaurants
                     )
                 ));

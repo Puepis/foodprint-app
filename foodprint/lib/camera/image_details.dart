@@ -7,18 +7,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/places_data/result.dart';
-import 'package:location/location.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageDetail extends StatefulWidget {
   final String username;
-  final LocationData position;
   final Result restaurant;
   final File imageFile;
   final GalleryModel gallery;
   ImageDetail({Key key, @required this.username, @required this.imageFile, @required this.gallery,
-    @required this.restaurant, @required this.position}) : super(key: key);
+    @required this.restaurant}) : super(key: key);
   @override
   _ImageDetailState createState() => _ImageDetailState();
 }
@@ -50,7 +48,6 @@ class _ImageDetailState extends State<ImageDetail> {
   }
 
   Future<void> _saveImageAndContents() async {
-    final pos= widget.position;
     final dt = _getDateTime();
     try {
       // Get directory where we can save the file
@@ -64,11 +61,12 @@ class _ImageDetailState extends State<ImageDetail> {
         name: _itemName,
         price: double.parse(_price),
         caption: _caption,
+        restaurantId: widget.restaurant.placeId,
         restaurantName: widget.restaurant.name,
         rating: widget.restaurant.rating,
         datetime: dt,
-        latitude: pos.latitude,
-        longitude: pos.longitude
+        latitude: widget.restaurant.geometry.location.lat,
+        longitude: widget.restaurant.geometry.location.long
       );
 
       String json = jsonEncode(contents); // convert to json string

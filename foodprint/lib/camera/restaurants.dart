@@ -12,10 +12,9 @@ class RestaurantListing extends StatelessWidget {
   final String username;
   final File imageFile;
   final GalleryModel gallery;
-  final LocationData position;
   final List<Result> restaurants;
   RestaurantListing({Key key, @required this.username, @required this.imageFile, @required this.gallery,
-    @required this.position, @required this.restaurants}) : super(key: key);
+     @required this.restaurants}) : super(key: key);
 
   Widget _listRestaurants() {
     return ListView.builder(
@@ -32,7 +31,6 @@ class RestaurantListing extends StatelessWidget {
                       imageFile: imageFile,
                       gallery: gallery,
                       restaurant: restaurants[index],
-                      position: position
                     )
                 ));
               },

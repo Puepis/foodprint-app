@@ -5,6 +5,9 @@ import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
 import 'package:foodprint/models/gallery_model.dart';
+import 'package:foodprint/models/photo_detail.dart';
+import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -35,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
   List<FileSystemEntity> _photoDirs = [];
   LatLng _currentPos;
+  Map<Restaurant, List<File>> restaurantPhotos = Map();
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -50,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   // Render widget
   Widget _getPage(int selected) {
     switch(selected) {
-      case 0: { return FoodMap(initialPos: _currentPos); }
+      case 0: { return FoodMap(initialPos: _currentPos, restaurantPhotos: restaurantPhotos); }
       break;
       case 2: { return Gallery(); }
       break;
@@ -131,17 +135,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Get all the stored photos
-  void _loadPhotos() async {
+    dynamic restaurantVisited(Restaurant res, Map photos) {
+    for (Restaurant restaurant in photos.keys) {
+      if (res.id.compareTo(restaurant.id) == 0) {
+        return restaurant;
+      }
+    }
+    return null;
+  }
+
+  void _loadUserFoodprint() async {
+    // Get folders
     String path = (await getApplicationDocumentsDirectory()).path;
+
     try {
-      setState(() {
-        _photoDirs = Directory('$path/${widget.payload['username']}/photos/').listSync();
-      });
+      _photoDirs = Directory('$path/${widget.payload['username']}/photos/').listSync();
     }
     on FileSystemException {
       print("Directory not initialized");
     }
+
+    // Unwrap contents, get each unique restaurant visited from PhotoDetail (id, name, rating)
+    _photoDirs.forEach((dir) {
+       File imgFile = PhotoManager.openImgFile(dir);
+       File contentsFile = PhotoManager.openContentFile(dir);
+       PhotoDetail contents = PhotoManager.getContents(contentsFile);
+
+       // TODO: placeIds may change over time so try to find a way around it
+       Restaurant res = Restaurant(
+         id: contents.restaurantId,
+         name: contents.restaurantName,
+         rating: contents.rating,
+         latitude: contents.latitude,
+         longitude: contents.longitude
+       );
+
+       var rv = restaurantVisited(res, restaurantPhotos);
+       if (rv == null) {
+         print("Unique restaurant");
+         restaurantPhotos[res] = [imgFile];
+       }
+       else {
+         print("Restaurant visited before");
+         restaurantPhotos[rv].insert(0, imgFile);
+       }
+    });
+    setState(() {});
   }
 
   // Set LatLng coordinates
@@ -180,7 +219,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _loadPhotos(); // update gallery with photos
+    _loadUserFoodprint(); // update gallery with photos
     _setLocation(); // set current location
   }
 
