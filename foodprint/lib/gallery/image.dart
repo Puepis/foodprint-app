@@ -138,6 +138,7 @@ class FullImage extends StatelessWidget {
     );
   }
 
+  // TODO: Duplicate code
   List<Widget> getRatings(double rating) {
     List<Widget> ratings = [];
     for (int i = 0; i < 5; ++i) {

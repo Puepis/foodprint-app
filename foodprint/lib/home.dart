@@ -172,11 +172,9 @@ class _HomePageState extends State<HomePage> {
 
        var rv = restaurantVisited(res, restaurantPhotos);
        if (rv == null) {
-         print("Unique restaurant");
          restaurantPhotos[res] = [imgFile];
        }
        else {
-         print("Restaurant visited before");
          restaurantPhotos[rv].insert(0, imgFile);
        }
     });

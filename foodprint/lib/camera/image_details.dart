@@ -111,69 +111,73 @@ class _ImageDetailState extends State<ImageDetail> {
       appBar: AppBar(
         title: Text("Fill in the details!"),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.fastfood),
-                hintText: 'What are you eating/drinking?',
-                labelText: 'Item Name',
-              ),
-              onSaved: (String value) {
-                _itemName = value.trim();
-              },
-              validator: (String value) {
-                return value.isEmpty ? 'Please enter the name of the item' : null;
-              },
-            ),
-            SizedBox(height: 10.0,),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                icon: Icon(Icons.attach_money),
-                hintText: 'How much does it cost?',
-                labelText: 'Price',
-              ),
-              onSaved: (String value) {
-                _price = value.trim();
-              },
-              validator: (String value) {
-                return value.isEmpty ? 'Please enter the price' : null;
-              },
-            ),
-            SizedBox(height: 10.0,),
-            TextFormField(
+      body: Center(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextFormField(
                 decoration: InputDecoration(
-                  icon: Icon(Icons.description),
-                  hintText: 'Any comments?',
-                  labelText: 'Caption',
+                  icon: Icon(Icons.fastfood),
+                  hintText: 'What are you eating/drinking?',
+                  labelText: 'Item Name',
                 ),
                 onSaved: (String value) {
-                  _caption = value.trim();
+                  _itemName = value.trim();
                 },
                 validator: (String value) {
-                  return null;
-                }
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    _formKey.currentState.save(); // save fields
-                    _saveImageAndContents(); // save contents
-                    int count = 0;
-                    Navigator.popUntil(context, (route) {
-                      return count++ == 3; // pop back 3 times
-                    });
-                  }
+                  return value.isEmpty ? 'Please enter the name of the item' : null;
                 },
-                child: Icon(Icons.save_alt),
               ),
-            )
-          ],
+              SizedBox(height: 10.0,),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.attach_money),
+                  hintText: 'How much does it cost?',
+                  labelText: 'Price',
+                ),
+                onSaved: (String value) {
+                  _price = value.trim();
+                },
+                validator: (String value) {
+                  return value.isEmpty ? 'Please enter the price' : null;
+                },
+              ),
+              SizedBox(height: 10.0,),
+              TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.description),
+                    hintText: 'Any comments?',
+                    labelText: 'Caption',
+                  ),
+                  onSaved: (String value) {
+                    _caption = value.trim();
+                  },
+                  validator: (String value) {
+                    return null;
+                  }
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save(); // save fields
+                      _saveImageAndContents(); // save contents
+                      int count = 0;
+                      Navigator.popUntil(context, (route) {
+                        return count++ == 3; // pop back 3 times
+                      });
+                    }
+                  },
+                  child: Icon(Icons.save_alt),
+                ),
+              )
+            ],
+          ),
         ),
       )
     );

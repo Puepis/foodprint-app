@@ -101,7 +101,7 @@ class _CameraState extends State<Camera> {
               child: Icon(Icons.refresh),
               onPressed: _clear,
             ),
-            RaisedButton(
+            if (_restaurants != null) RaisedButton(
               child: Icon(Icons.keyboard_arrow_right),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
