@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:foodprint/map.dart';
+import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/map/map.dart';
 import 'package:location/location.dart';
 
 
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
   List<FileSystemEntity> _photoDirs = [];
   LatLng _currentPos;
-  Map<Restaurant, List<File>> restaurantPhotos = Map();
+  Map<Restaurant, List<List<Object>>> restaurantPhotos = Map();
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -172,10 +172,10 @@ class _HomePageState extends State<HomePage> {
 
        var rv = restaurantVisited(res, restaurantPhotos);
        if (rv == null) {
-         restaurantPhotos[res] = [imgFile];
+         restaurantPhotos[res] = [[imgFile, contents]];
        }
        else {
-         restaurantPhotos[rv].insert(0, imgFile);
+         restaurantPhotos[rv].insert(0, [imgFile, contents]);
        }
     });
     setState(() {});
