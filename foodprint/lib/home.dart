@@ -135,49 +135,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-    dynamic restaurantVisited(Restaurant res, Map photos) {
-    for (Restaurant restaurant in photos.keys) {
-      if (res.id.compareTo(restaurant.id) == 0) {
-        return restaurant;
-      }
-    }
-    return null;
-  }
-
   void _loadUserFoodprint() async {
-    // Get folders
-    String path = (await getApplicationDocumentsDirectory()).path;
-
-    try {
-      _photoDirs = Directory('$path/${widget.payload['username']}/photos/').listSync();
-    }
-    on FileSystemException {
-      print("Directory not initialized");
-    }
-
-    // Unwrap contents, get each unique restaurant visited from PhotoDetail (id, name, rating)
-    _photoDirs.forEach((dir) {
-       File imgFile = PhotoManager.openImgFile(dir);
-       File contentsFile = PhotoManager.openContentFile(dir);
-       PhotoDetail contents = PhotoManager.getContents(contentsFile);
-
-       // TODO: placeIds may change over time so try to find a way around it
-       Restaurant res = Restaurant(
-         id: contents.restaurantId,
-         name: contents.restaurantName,
-         rating: contents.rating,
-         latitude: contents.latitude,
-         longitude: contents.longitude
-       );
-
-       var rv = restaurantVisited(res, restaurantPhotos);
-       if (rv == null) {
-         restaurantPhotos[res] = [[imgFile, contents]];
-       }
-       else {
-         restaurantPhotos[rv].insert(0, [imgFile, contents]);
-       }
-    });
+    String path = await PhotoManager.getAppDocDir();
+    _photoDirs = PhotoManager.getPhotoDirs(path, widget.payload['username']);
+    restaurantPhotos = PhotoManager.organizePhotos(_photoDirs);
     setState(() {});
   }
 
@@ -207,8 +168,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     pos = await location.getLocation(); // get location
-    print("${pos.latitude}, ${pos.longitude}");
-    print("Accuracy: ${pos.accuracy}");
     setState(() {
       _currentPos = LatLng(pos.latitude, pos.longitude);
     });

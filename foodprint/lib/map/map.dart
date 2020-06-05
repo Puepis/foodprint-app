@@ -29,18 +29,20 @@ class _FoodMapState extends State<FoodMap> {
           final marker = Marker(
               markerId: MarkerId(res.id),
               position: LatLng(res.latitude, res.longitude),
-              // TODO: display photos
               infoWindow: InfoWindow(
                   title: res.name,
                   snippet: photos.length == 1 ? "You've taken one photo here!"
                       : "You've taken ${photos.length} photos here!"
               ),
               onTap: () {
+                // Increase marker size
+
+                // Show restaurant info
                 showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
                     builder: (context) => RestaurantCard(
-                      restaurant: res,
+                     restaurant: res,
                       photos: photos,
                     )
                 );
@@ -83,7 +85,7 @@ class _FoodMapState extends State<FoodMap> {
           onMapCreated: createMap(context),
           initialCameraPosition: CameraPosition(
               target: _currentPos,
-              zoom: 18.5
+              zoom: 16.0
           ),
           onCameraMove: (CameraPosition position) {
             _currentPos = position.target;

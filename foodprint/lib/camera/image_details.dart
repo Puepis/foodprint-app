@@ -4,9 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodprint/map/map.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:foodprint/service/storage.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -33,6 +36,7 @@ class _ImageDetailState extends State<ImageDetail> {
   String _price = "";
   String _caption = "";
   int secondsSinceEpoch;
+  String appDocPath;
 
   // Format datetime
   String _getDateTime() {
@@ -51,11 +55,11 @@ class _ImageDetailState extends State<ImageDetail> {
     final dt = _getDateTime();
     try {
       // Get directory where we can save the file
-      final path = (await getApplicationDocumentsDirectory()).path;
+      appDocPath = await PhotoManager.getAppDocDir();
 
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      final imgPath = await createFolder(path, '${widget.username}/photos/$secondsSinceEpoch-$fileName');
+      final imgPath = await createFolder(appDocPath, '${widget.username}/photos/$secondsSinceEpoch-$fileName');
 
       PhotoDetail contents = PhotoDetail(
         name: _itemName,
@@ -167,10 +171,25 @@ class _ImageDetailState extends State<ImageDetail> {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save(); // save fields
                       _saveImageAndContents(); // save contents
+
+                      // Refresh photos and content
+                      List photoDirs = PhotoManager.getPhotoDirs(appDocPath, widget.username);
+                      Map photos = PhotoManager.organizePhotos(photoDirs);
+
                       int count = 0;
                       Navigator.popUntil(context, (route) {
-                        return count++ == 3; // pop back 3 times
+                        return count++ == 3;
                       });
+                      //  Refresh foodprint map
+                      /*Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => FoodMap(
+                          initialPos: LatLng(
+                            widget.restaurant.geometry.location.lat,
+                            widget.restaurant.geometry.location.long
+                          ),
+                          restaurantPhotos: photos,
+                        )
+                      ));*/
                     }
                   },
                   child: Icon(Icons.save_alt),
