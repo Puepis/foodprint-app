@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         }
     );
 
-    // Make this better
+    // TODO: Return json body also
     return (res.statusCode == 200) ? res.body : null;
   }
 
