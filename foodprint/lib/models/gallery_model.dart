@@ -12,9 +12,8 @@ class GalleryModel extends ChangeNotifier {
 
   List<FileSystemEntity> get photoDirs => _photoDirs;
 
-  // Add a new photo to gallery
   void addPhotoDir(Directory photoDir) {
-    _photoDirs.add(photoDir);
+    _photoDirs.add(photoDir); // add to end of list
     notifyListeners(); // Rebuild gallery
   }
 

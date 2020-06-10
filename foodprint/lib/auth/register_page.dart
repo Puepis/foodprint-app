@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
               var username = _usernameController.text.trim();
               var password = _passwordController.text.trim();
               var res = await attemptSignUp(email, username, password);
-              if (res.statusCode == 201) {
+              if (res.statusCode == 200) {
                 // Redirect to login page
                 Navigator.pop(context);
                 displayDialog(context, "Success", "Registration successful. You can log in now.");

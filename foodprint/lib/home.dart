@@ -1,16 +1,19 @@
 import 'dart:convert' show json, ascii, base64;
 import 'dart:io';
-import 'package:foodprint/camera/image_capture.dart';
+import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
-import 'package:foodprint/models/gallery.dart';
+import 'package:foodprint/models/gallery_model.dart';
+import 'package:foodprint/models/photo_detail.dart';
+import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:foodprint/map.dart';
+import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/map/map.dart';
 import 'package:location/location.dart';
 
 
@@ -35,6 +38,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedPage = 0;
   List<FileSystemEntity> _photoDirs = [];
   LatLng _currentPos;
+  Map<Restaurant, List<List<Object>>> restaurantPhotos = Map();
 
   // Log out
   Future<bool> attemptLogout(String username) async {
@@ -50,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   // Render widget
   Widget _getPage(int selected) {
     switch(selected) {
-      case 0: { return FoodMap(initialPos: _currentPos); }
+      case 0: { return FoodMap(initialPos: _currentPos, restaurantPhotos: restaurantPhotos); }
       break;
       case 2: { return Gallery(); }
       break;
@@ -62,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   // Header
   Widget appBar(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       automaticallyImplyLeading: false,
       title: Text('Foodprint'),
       actions: <Widget>[
@@ -88,7 +93,10 @@ class _HomePageState extends State<HomePage> {
             onTap: (int index) {
               if (index == 1) { // Camera
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ImageCapture(gallery: galleryModel)
+                    builder: (context) => Camera(
+                      username: widget.payload['username'],
+                      gallery: galleryModel
+                    )
                 ));
               }
               else {
@@ -100,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.map),
-                title: Text('Map'),
+                title: Text('My Foodprint'),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.camera),
@@ -127,13 +135,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Get all the stored photos
-  void _getPhotos() async {
-    String path = (await getApplicationDocumentsDirectory()).path;
-    setState(() {
-      // TODO: FileSystemException Error
-      _photoDirs = Directory('$path/photos/').listSync();
-    });
+  void _loadUserFoodprint() async {
+    String path = await PhotoManager.getAppDocDir();
+    _photoDirs = PhotoManager.getPhotoDirs(path, widget.payload['username']);
+    restaurantPhotos = PhotoManager.organizePhotos(_photoDirs);
+    setState(() {});
   }
 
   // Set LatLng coordinates
@@ -160,10 +166,8 @@ class _HomePageState extends State<HomePage> {
         return;
       }
     }
-    print("Initializing position...");
-    pos = await location.getLocation();
-    print("${pos.latitude}, ${pos.longitude}");
-    print("Accuracy: ${pos.accuracy}m");
+
+    pos = await location.getLocation(); // get location
     setState(() {
       _currentPos = LatLng(pos.latitude, pos.longitude);
     });
@@ -172,7 +176,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _getPhotos(); // update gallery with photos
+    _loadUserFoodprint(); // update gallery with photos
     _setLocation(); // set current location
   }
 

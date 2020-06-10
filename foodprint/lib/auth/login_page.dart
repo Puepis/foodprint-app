@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         }
     );
 
-    // Make this better
+    // TODO: Return json body also
     return (res.statusCode == 200) ? res.body : null;
   }
 
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
               _passwordController.clear();
               var jwt = await attemptLogin(username, password);
               if (jwt != null) {
-                storage.write(key: "jwt", value: jwt);
+                storage.write(key: "jwt", value: jwt); // store token locally
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => HomePage.construct(jwt))
