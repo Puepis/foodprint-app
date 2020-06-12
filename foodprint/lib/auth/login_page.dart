@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -70,8 +70,7 @@ class _LoginPageState extends State<LoginPage> {
           "password": password
         }
     );
-
-    // TODO: Return json body also
+    // TODO: Handle other status codes
     return (res.statusCode == 200) ? res.body : null;
   }
 
@@ -102,12 +101,13 @@ class _LoginPageState extends State<LoginPage> {
               var password = _passwordController.text.trim();
               _usernameController.clear();
               _passwordController.clear();
-              var jwt = await attemptLogin(username, password);
-              if (jwt != null) {
-                storage.write(key: "jwt", value: jwt); // store token locally
+              var token = await attemptLogin(username, password);
+              if (token != null) {
+                // TODO: Delete JWT after expiry
+                storage.write(key: "jwt", value: token); // TODO: don't store token locally
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage.construct(jwt))
+                    MaterialPageRoute(builder: (context) => HomePage.construct(token))
                 );
               } else {
                 displayDialog(context, "Invalid Credentials", "Invalid username/password.");

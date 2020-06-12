@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/restaurants.dart';
+import 'package:foodprint/camera/restaurant_listing.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,9 +9,9 @@ import 'dart:async';
 import 'package:location/location.dart';
 
 class Camera extends StatefulWidget {
-  final String username;
+  final int id;
   final GalleryModel gallery;
-  Camera({Key key, @required this.username, @required this.gallery}) : super(key: key);
+  Camera({Key key, @required this.id, @required this.gallery}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -106,7 +106,7 @@ class _CameraState extends State<Camera> {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
-                      username: widget.username,
+                      id: widget.id,
                       imageFile: _imageFile,
                       gallery: widget.gallery,
                       restaurants: _restaurants

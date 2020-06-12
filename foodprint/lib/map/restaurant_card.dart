@@ -1,13 +1,14 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/photo_detail.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:intl/intl.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
-  final List<List<Object>> photos;
+  final List<FoodprintPhoto> photos;
   const RestaurantCard({Key key, this.restaurant, this.photos}) : super(key: key);
 
   @override
@@ -71,13 +72,13 @@ class RestaurantCard extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: photos.length,
         itemBuilder: (BuildContext context, int index) {
-          File imgFile = photos[index][0];
+          FoodprintPhoto photo = photos[index];
           return Container(
             width: 100,
             margin: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: FileImage(imgFile),
+                    image: MemoryImage(photo.imgBytes),
                     fit: BoxFit.cover
                 )
             ),
@@ -130,7 +131,7 @@ class RestaurantCard extends StatelessWidget {
 
 class RestaurantPage extends StatelessWidget {
   final Restaurant restaurant;
-  final List<List<Object>> photos;
+  final List<FoodprintPhoto> photos;
   final List<Widget> ratings;
   const RestaurantPage({Key key, this.restaurant, this.photos, this.ratings}) : super(key: key);
   @override
@@ -232,8 +233,7 @@ class RestaurantPage extends StatelessWidget {
               ),
               itemCount: photos.length,
               itemBuilder: (context, index) {
-                File imgFile = photos[index][0];
-                PhotoDetail contents = photos[index][1];
+                FoodprintPhoto photo = photos[index];
                 return Stack(
                   children: [
                     Container(
@@ -255,7 +255,7 @@ class RestaurantPage extends StatelessWidget {
                                 Container(
                                   width: 120.0,
                                   child: Text(
-                                    contents.name,
+                                    photo.name,
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
@@ -265,7 +265,7 @@ class RestaurantPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  formatter.format(contents.price),
+                                  formatter.format(photo.price),
                                   style: TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.bold
@@ -276,13 +276,13 @@ class RestaurantPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                             ),
                             Text(
-                              contents.caption,
+                              photo.caption,
                               style: TextStyle(
                                 color: Colors.grey
                               ),
                             ),
                             SizedBox(height: 10.0),
-                            Text(contents.datetime)
+                            Text(photo.timestamp)
                           ],
                         ),
                       ),
@@ -293,8 +293,8 @@ class RestaurantPage extends StatelessWidget {
                       bottom: 15.0,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
-                        child: Image.file(
-                          imgFile,
+                        child: Image.memory(
+                          photo.imgBytes,
                           width: 110.0,
                           fit: BoxFit.cover,
                         ),

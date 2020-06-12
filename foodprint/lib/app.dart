@@ -6,14 +6,11 @@ import 'package:foodprint/auth/tokens.dart';
 import 'dart:convert' show json, ascii, base64;
 
 class FoodprintApp extends StatelessWidget {
-
-  // Constructor
   const FoodprintApp();
 
   Future<String> get jwtOrEmpty async {
     var jwt = await storage.read(key: "jwt");
-    if (jwt == null) return "";
-    return jwt;
+    return jwt == null ? "" : jwt;
   }
 
   @override
@@ -29,26 +26,28 @@ class FoodprintApp extends StatelessWidget {
 
             // JSON Web Token
             if (snapshot.data != "") {
-              var str = snapshot.data;
-              var jwt = str.split(".");
+              print("JWT Data");
+              print(snapshot.data);
+              String jwtStr = snapshot.data;
+              List jwtParts = jwtStr.split(".");
 
-              // Empty token
-              if (jwt.length != 3) {
-                return LoginPage();
+              if (jwtParts.length != 3) {
+                print("Invalid token");
+                return LoginPage(); // invalid token
               } else {
+                // Decode the payload
+                var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwtParts[1]))));
+                print("Decoded payload");
+                print(payload);
 
-                // Get payload
-                var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
-
-                // Token hasn't expired
-                if (DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
-                  return HomePage(str, payload);
-                } else {
-                  return LoginPage();
-                }
+                // Check if token expired
+                DateTime expiry = DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000);
+                print(expiry.isAfter(DateTime.now()));
+                return expiry.isAfter(DateTime.now()) ? HomePage(jwtStr, payload) : LoginPage(); // expired
               }
             } else {
-              return LoginPage();
+              print("No existing token");
+              return LoginPage(); // No existing token
             }
           },
         )

@@ -9,11 +9,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class RestaurantListing extends StatelessWidget {
-  final String username;
+  final int id;
   final File imageFile;
   final GalleryModel gallery;
   final List<Result> restaurants;
-  RestaurantListing({Key key, @required this.username, @required this.imageFile, @required this.gallery,
+  RestaurantListing({Key key, @required this.id, @required this.imageFile, @required this.gallery,
      @required this.restaurants}) : super(key: key);
 
   Widget _listRestaurants() {
@@ -27,7 +27,7 @@ class RestaurantListing extends StatelessWidget {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => ImageDetail(
-                      username: username,
+                      id: id,
                       imageFile: imageFile,
                       gallery: gallery,
                       restaurant: restaurants[index],
@@ -64,7 +64,7 @@ class RestaurantListing extends StatelessWidget {
 
 class Locator {
   // Google Maps Search
-  static const String _API_KEY = 'AIzaSyAUL23sK22O2cNSb6VVCEYeRJn_Tg8MCzo';
+  static const String _API_KEY = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
   static Future<LocationData> getLocation() async {

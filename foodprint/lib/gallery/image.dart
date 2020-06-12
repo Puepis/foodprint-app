@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/photo_detail.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:intl/intl.dart';
 
 class FullImage extends StatelessWidget {
-  final File imageFile;
-  final PhotoDetail contents;
-  FullImage({Key key, @required this.imageFile, @required this.contents}) : super(key: key);
-
+  final FoodprintPhoto image;
+  FullImage({Key key, @required this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +41,7 @@ class FullImage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        contents.name,
+                        image.name,
                         style: TextStyle(
                           color: Colors.grey,
                           fontFamily: "Gotham",
@@ -54,7 +50,7 @@ class FullImage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        formatter.format(contents.price),
+                        formatter.format(image.price),
                         style: TextStyle(
                           color: Colors.grey,
                           fontFamily: "Gotham",
@@ -68,7 +64,7 @@ class FullImage extends StatelessWidget {
                         thickness: 1,
                       ),
                       Text(
-                        contents.datetime,
+                        image.timestamp,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",
@@ -77,7 +73,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        contents.caption,
+                        image.caption,
                         style: TextStyle(
                           color: Colors.grey,
                           fontFamily: "Gotham",
@@ -95,7 +91,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        contents.restaurantName,
+                        image.restaurantName,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",
@@ -104,7 +100,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0,),
                       Text(
-                        "Rating: ${contents.rating.toString()}",
+                        "Rating: ${image.restaurantRating.toString()}",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",
@@ -113,11 +109,11 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0),
                       Row(
-                        children: getRatings(contents.rating),
+                        children: getRatings(image.restaurantRating),
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        "${contents.latitude}, ${contents.longitude}",
+                        "${image.latitude}, ${image.longitude}",
                         style: TextStyle(
                           fontFamily: "Gotham",
                           color: Colors.grey,
@@ -131,14 +127,14 @@ class FullImage extends StatelessWidget {
             }
           },
          child: Center(
-            child: Image.file(imageFile),
+            child: Image.memory(image.imgBytes),
           ),
         ),
       )
     );
   }
 
-  // TODO: Duplicate code
+  // TODO: Remove duplicate code
   List<Widget> getRatings(double rating) {
     List<Widget> ratings = [];
     for (int i = 0; i < 5; ++i) {

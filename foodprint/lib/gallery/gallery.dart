@@ -1,46 +1,30 @@
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/gallery/image.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/gallery_model.dart';
-import 'package:foodprint/models/photo_detail.dart';
-import 'package:foodprint/service/storage.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class Gallery extends StatelessWidget {
 
-  // Get image time taken from directory
-  int getTimeTaken(FileSystemEntity dir) {
-    String name = basename(dir.path);
-    return int.parse(name.split("-")[0]);
-  }
-
   List<Widget> _buildPhotos(BuildContext context) {
     // Grab state from model
     var gallery = Provider.of<GalleryModel>(context);
-    List<FileSystemEntity> photoDirs = gallery.photoDirs;
+    List<FoodprintPhoto> photos = gallery.photos;
 
     // No photos yet
-    if (photoDirs == null || photoDirs.isEmpty){
+    if (photos == null || photos.isEmpty){
       return const <Card>[];
     }
 
     // Sort directories from newest to oldest
-    photoDirs.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
+    //photos.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
 
     // Render photos
-    return photoDirs.map((dir) {
-      // Files
-      File imgFile = PhotoManager.openImgFile(dir);
-      File contentsFile = PhotoManager.openContentFile(dir);
-
-      // Disassemble contents
-      PhotoDetail contents = PhotoManager.getContents(contentsFile);
-
+    return photos.map((photo) {
       return GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(
-          builder: (context) => FullImage(imageFile: imgFile, contents: contents)
+          builder: (context) => FullImage(image: photo)
         )),
         child: Card(
           elevation: 0.0,
@@ -48,7 +32,7 @@ class Gallery extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: FileImage(imgFile),
+                image: MemoryImage(photo.imgBytes),
                 fit: BoxFit.cover
               )
             ),
