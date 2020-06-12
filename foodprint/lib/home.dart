@@ -8,8 +8,8 @@ import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:location/location.dart';
@@ -36,26 +36,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   // TODO: Organize constants
-  static const int AUTHORIZED = 1;
   static const int UNAUTHORIZED = 0;
+  static const int AUTHORIZED = 1;
   static const int PENDING = 2;
-  final LatLng toronto = LatLng(43.651070, -79.347015);
+  static const LatLng toronto = LatLng(43.651070, -79.347015);
   int _selectedPage = 0;
   LatLng _currentPos;
   PhotoResponse _photoResponse;
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint = Map();
   int _authStatus = PENDING;
 
-  // TODO: organize auth methods into one file
-  Future<bool> attemptLogout(String username) async {
-    var res = await http.post(
-        "$SERVER_IP/api/users/logout",
-        body: {
-          "username": username
-        }
-    );
-    return res.statusCode == 200;
-  }
 
   Map<Restaurant, List<FoodprintPhoto>> _sortByRestaurant(PhotoResponse response) {
     // TODO: sort photos chronologically
@@ -63,7 +53,6 @@ class _HomePageState extends State<HomePage> {
     response.photos.forEach((photo) {
       var rv = _restaurantKey(photo.restaurantId, result);
       if (rv == null) { // generate new key
-        // TODO: placeIds may change over time so try to find a way around it
         Restaurant place = Restaurant(
             id: photo.restaurantId,
             name: photo.restaurantName,
@@ -213,7 +202,7 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.subdirectory_arrow_right),
           onPressed: () async {
             // Log out
-            bool successful = await attemptLogout(widget.payload['username']);
+            bool successful = await AuthService.attemptLogout(widget.payload['username']);
             if (successful) {
               Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
             }

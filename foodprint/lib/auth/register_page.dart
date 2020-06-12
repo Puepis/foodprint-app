@@ -1,6 +1,8 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:foodprint/auth/tokens.dart';
+import 'package:foodprint/service/auth.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
@@ -12,6 +14,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void handleRegisterResponse(BuildContext context, http.Response res) {
+    switch(res.statusCode) {
+      case 200: {
+        Navigator.pop(context); // login page
+        displayDialog(context, "Success", "Registration successful! You can log in now.");
+      }
+      break;
+      case 400: {
+        List errors = jsonDecode(res.body)['errors']; //
+        displayDialog(context, "Errors Found", errors);
+      }
+      break;
+      case 409: {
+        displayDialog(context, "Email already registered",
+          "Please sign up using a different email or log in if you already have an account");
+      }
+      break;
+      default: {
+        print(res.body);
+        displayDialog(context, "Error", "An unexpected error occurred");
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -47,18 +73,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
   );
 
-  Future<http.Response> attemptSignUp(String email, String username, String password) async {
-    var res = await http.post(
-        '$SERVER_IP/api/users/register',
-        body: {
-          "email": email,
-          "username": username,
-          "password": password
-        }
-    );
-    return res;
-  }
-
   ButtonBar buttonSection(BuildContext context) {
     return ButtonBar(
       children: <Widget>[
@@ -79,25 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              var email = _emailController.text.trim();
-              var username = _usernameController.text.trim();
-              var password = _passwordController.text.trim();
-              var res = await attemptSignUp(email, username, password);
-              if (res.statusCode == 200) {
-                // Redirect to login page
-                Navigator.pop(context);
-                displayDialog(context, "Success", "Registration successful. You can log in now.");
-              }
-              else if (res.statusCode == 409) {
-                displayDialog(context, "That email is already registered",
-                    "Please sign up using a different email or log in if you already have an account.");
-              }
-              else if (res.statusCode == 400) {
-                displayDialog(context, "Errors Found", res.body);
-              }
-              else {
-                displayDialog(context, "Error", res.body);
-              }
+              String email = _emailController.text.trim();
+              String username = _usernameController.text.trim();
+              String password = _passwordController.text.trim();
+              http.Response res = await AuthService.attemptSignUp(email, username, password);
+              handleRegisterResponse(context, res);
             }
         )
       ],

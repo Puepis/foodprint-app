@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
+import 'package:foodprint/service/auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,6 +54,30 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void handleLoginResponse(BuildContext context, http.Response res) {
+    switch (res.statusCode) {
+      case 200: { // success
+        String token = res.body;
+        // TODO: Delete JWT after expiry
+        storage.write(
+          key: "jwt", value: token); // TODO: don't store token locally
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage.construct(token))
+        );
+      }
+      break;
+      case 401: {
+          displayDialog(context, "Error", res.body);
+      }
+      break;
+      default: {
+          print(res.body);
+          displayDialog(context, "Unexpected error", res.body);
+      }
+    }
+  }
+
   void displayDialog(context, title, text) => showDialog(
     context: context,
     builder: (context) =>
@@ -61,18 +86,6 @@ class _LoginPageState extends State<LoginPage> {
             content: Text(text)
         ),
   );
-
-  Future<String> attemptLogin(String username, String password) async {
-    var res = await http.post(
-        "$SERVER_IP/api/users/login",
-        body: {
-          "username": username,
-          "password": password
-        }
-    );
-    // TODO: Handle other status codes
-    return (res.statusCode == 200) ? res.body : null;
-  }
 
   ButtonBar buttonSection() {
     return ButtonBar(
@@ -97,21 +110,13 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              var username = _usernameController.text.trim();
-              var password = _passwordController.text.trim();
+              String username = _usernameController.text.trim();
+              String password = _passwordController.text.trim();
               _usernameController.clear();
               _passwordController.clear();
-              var token = await attemptLogin(username, password);
-              if (token != null) {
-                // TODO: Delete JWT after expiry
-                storage.write(key: "jwt", value: token); // TODO: don't store token locally
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage.construct(token))
-                );
-              } else {
-                displayDialog(context, "Invalid Credentials", "Invalid username/password.");
-              }
+              http.Response res = await AuthService.attemptLogin(
+                  username, password);
+              handleLoginResponse(context, res);
             }
         ),
       ],
