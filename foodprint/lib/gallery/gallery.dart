@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/gallery/image.dart';
+import 'package:foodprint/gallery/full_image.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:provider/provider.dart';

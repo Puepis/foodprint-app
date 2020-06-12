@@ -73,7 +73,6 @@ class Locator {
     try {
       print("Initializing position details");
       pos = await location.getLocation();
-      print("${pos.latitude}, ${pos.longitude}");
     }
     catch (e) {
       print(e);
@@ -104,7 +103,6 @@ class Locator {
       throw Exception('Request denied');
     } else if (data['status'] == "OK") {
       final restaurants = PlaceResponse.parseResults(data['results']).sublist(0, 5); // 5 closest restaurants
-      restaurants.forEach((element) => print(element.name));
       return restaurants;
     } else {
       print(data);

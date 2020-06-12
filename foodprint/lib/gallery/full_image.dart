@@ -100,7 +100,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0,),
                       Text(
-                        "Rating: ${image.restaurantRating.toString()}",
+                        "Rating: ${image.restaurantRating}",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",

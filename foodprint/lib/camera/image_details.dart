@@ -41,10 +41,10 @@ class _ImageDetailState extends State<ImageDetail> {
     final DateTime now = new DateTime.now();
     secondsSinceEpoch = (now.millisecondsSinceEpoch / 1000).round();
     String y = now.year.toString();
-    String m = now.month < 10 ? "0${now.month.toString()}" : now.month.toString();
+    String m = now.month < 10 ? "0${now.month}" : now.month.toString();
     String d = now.day.toString();
     String h = now.hour.toString();
-    String min = now.minute < 10 ? "0${now.minute.toString()}" : now.minute.toString();
+    String min = now.minute < 10 ? "0${now.minute}" : now.minute.toString();
     String second = now.second < 10 ? "0${now.second}" : now.second.toString();
     return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
   }
@@ -52,13 +52,10 @@ class _ImageDetailState extends State<ImageDetail> {
   Future<void> _saveImage() async {
     print("Saving image");
     String timestamp = _getTimestamp();
-    print(timestamp);
     try {
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      print(fileName);
-      final imgPath = '${widget.id}/photos/$secondsSinceEpoch-$fileName';
-      print(imgPath);
+      final String imgPath = '${widget.id}/photos/$secondsSinceEpoch-$fileName';
       final Uint8List imgData = widget.imageFile.readAsBytesSync();
 
       String body = jsonEncode({
@@ -118,6 +115,7 @@ class _ImageDetailState extends State<ImageDetail> {
         caption: _caption,
         restaurantId: widget.restaurant.placeId,
         restaurantName: widget.restaurant.name,
+        restaurantRating: widget.restaurant.rating,
         timestamp: timestamp,
         latitude: widget.restaurant.geometry.location.lat,
         longitude: widget.restaurant.geometry.location.long

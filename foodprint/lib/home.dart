@@ -98,7 +98,6 @@ class _HomePageState extends State<HomePage> {
 
     if (res.statusCode == 200) {
       print("Photos retrieved");
-      print(jsonDecode(res.body)['photos']);
       PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
       setState(() {
         _authStatus = AUTHORIZED;
