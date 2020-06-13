@@ -36,7 +36,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // TODO: Organize constants
   static const int UNAUTHORIZED = 0;
   static const int AUTHORIZED = 1;
   static const int PENDING = 2;

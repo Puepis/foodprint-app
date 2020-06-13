@@ -37,7 +37,14 @@ class FoodprintApp extends StatelessWidget {
 
                 // Check if token expired
                 DateTime expiry = DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000);
-                return expiry.isAfter(DateTime.now()) ? HomePage(jwtStr, payload) : LoginPage(); // expired
+                if (expiry.isAfter(DateTime.now())) {
+                   return HomePage(jwtStr, payload); // not expired
+                }
+                else {
+                  // Delete expired token
+                  storage.delete(key: "jwt");
+                  return LoginPage();
+                }
               }
             } else {
               return LoginPage(); // No existing token
