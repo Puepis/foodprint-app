@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
-import 'package:http/http.dart' as http;
+import 'package:foodprint/service/auth.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,10 +12,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
+  String _username, _password;
   final List<Permission> _permissions = [Permission.location, Permission.camera];
 
   Future<void> _requestPermissions() async {
@@ -30,27 +29,42 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    _passwordController.dispose();
-    _usernameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            headerSection(),
-            credentialSection(),
-            buttonSection()
+            header(),
+            loginForm(),
           ],
         ),
       ),
     );
+  }
+
+  void handleLoginResponse(BuildContext context, http.Response res) {
+    switch (res.statusCode) {
+      case 200: { // success
+        String token = res.body;
+        // TODO: Delete JWT after expiry
+        storage.write(
+          key: "jwt", value: token); // TODO: don't store token locally
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage.construct(token))
+        );
+      }
+      break;
+      case 401: {
+          displayDialog(context, "Error", res.body);
+      }
+      break;
+      default: {
+          print(res.body);
+          displayDialog(context, "Unexpected error", res.body);
+      }
+    }
   }
 
   void displayDialog(context, title, text) => showDialog(
@@ -62,20 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
   );
 
-  Future<String> attemptLogin(String username, String password) async {
-    var res = await http.post(
-        "$SERVER_IP/api/users/login",
-        body: {
-          "username": username,
-          "password": password
-        }
-    );
-
-    // TODO: Return json body also
-    return (res.statusCode == 200) ? res.body : null;
-  }
-
-  ButtonBar buttonSection() {
+  ButtonBar buttons() {
     return ButtonBar(
       children: <Widget>[
         RaisedButton(
@@ -85,10 +86,8 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()
-                  ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()
+              ));
             }
         ),
         RaisedButton(
@@ -98,59 +97,77 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              var username = _usernameController.text.trim();
-              var password = _passwordController.text.trim();
-              _usernameController.clear();
-              _passwordController.clear();
-              var jwt = await attemptLogin(username, password);
-              if (jwt != null) {
-                storage.write(key: "jwt", value: jwt); // store token locally
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage.construct(jwt))
-                );
-              } else {
-                displayDialog(context, "Invalid Credentials", "Invalid username/password.");
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _formKey.currentState.reset();
+                http.Response res = await AuthService.attemptLogin(_username, _password);
+                handleLoginResponse(context, res);
               }
             }
         ),
       ],
     );
   }
-  Container credentialSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      margin: EdgeInsets.only(top: 30.0),
-      child: Column(
-        children: <Widget>[
-          usernameField("Username"),
-          SizedBox(height: 12.0),
-          passwordField("Password")
-        ],
-      ),
-    );
-  }
-  TextFormField usernameField(String title) {
-    return TextFormField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-    );
-  }
-  TextFormField passwordField(String title) {
-    return TextFormField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-      obscureText: true,
-    );
-  }
-  Container headerSection() {
+
+  Container header() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
       child: Text("Foodprint"),
+    );
+  }
+
+  Container loginForm() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20.0),
+      margin: EdgeInsets.only(top: 30.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Username"
+              ),
+              onSaved: (String value) {
+                _username = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a username';
+                }
+                else if (value.length > 20) {
+                  return 'Username must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              },
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Password"
+              ),
+              onSaved: (String value) {
+                _password = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a password';
+                }
+                else if (value.length > 20) {
+                  return 'Password must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              },
+              obscureText: true,
+            ),
+            buttons()
+          ],
+        ),
+      ),
     );
   }
 }

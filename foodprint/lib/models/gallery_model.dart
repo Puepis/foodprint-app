@@ -1,25 +1,27 @@
 
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 
 class GalleryModel extends ChangeNotifier {
   // Internal, private state of photos - stores a list of files
-  List<FileSystemEntity> _photoDirs;
+  List<FoodprintPhoto> _photos;
 
-  GalleryModel(List photoDirs) {
-    _photoDirs = photoDirs;
+  GalleryModel(List<FoodprintPhoto> photos) {
+    _photos = photos;
   }
 
-  List<FileSystemEntity> get photoDirs => _photoDirs;
+  List<FoodprintPhoto> get photos => _photos;
 
-  void addPhotoDir(Directory photoDir) {
-    _photoDirs.add(photoDir); // add to end of list
+  void addPhotoDir(FoodprintPhoto photo) {
+    _photos.add(photo); // add to end of list
     notifyListeners(); // Rebuild gallery
   }
 
+  // TODO: Photo edit/deletion feature
   // Delete all photos
   void removeAll() {
-    _photoDirs.clear();
+    _photos.clear();
     notifyListeners();
   }
 

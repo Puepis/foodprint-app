@@ -3,13 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:foodprint/map/restaurant_card.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FoodMap extends StatefulWidget {
   final LatLng initialPos;
-  final Map<Restaurant, List<List<Object>>> restaurantPhotos; // TODO: sort photos chronologically
-  FoodMap({Key key, @required this.initialPos, @required this.restaurantPhotos}) : super(key: key);
+  final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
+  FoodMap({Key key, @required this.initialPos, @required this.userFoodprint}) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
@@ -25,30 +26,28 @@ class _FoodMapState extends State<FoodMap> {
     void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
       setState(() {
-        widget.restaurantPhotos.forEach((res, photos) {
+        widget.userFoodprint.forEach((rest, photoList) {
           final marker = Marker(
-              markerId: MarkerId(res.id),
-              position: LatLng(res.latitude, res.longitude),
+              markerId: MarkerId(rest.id),
+              position: LatLng(rest.latitude, rest.longitude),
               infoWindow: InfoWindow(
-                  title: res.name,
-                  snippet: photos.length == 1 ? "You've taken one photo here!"
-                      : "You've taken ${photos.length} photos here!"
+                  title: rest.name,
+                  snippet: photoList.length == 1 ? "You've taken one photo here!"
+                      : "You've taken ${photoList.length} photos here!"
               ),
               onTap: () {
-                // Increase marker size
-
                 // Show restaurant info
                 showModalBottomSheet(
                     backgroundColor: Colors.transparent,
                     context: context,
                     builder: (context) => RestaurantCard(
-                     restaurant: res,
-                      photos: photos,
+                     restaurant: rest,
+                      photos: photoList,
                     )
                 );
               }
           );
-          _markers[res.name] = marker;
+          _markers[rest.name] = marker;
         });
       });
     }

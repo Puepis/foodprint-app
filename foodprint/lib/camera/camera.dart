@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/restaurants.dart';
+import 'package:foodprint/camera/restaurant_listing.dart';
 import 'package:foodprint/models/gallery_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -9,9 +9,9 @@ import 'dart:async';
 import 'package:location/location.dart';
 
 class Camera extends StatefulWidget {
-  final String username;
+  final int id;
   final GalleryModel gallery;
-  Camera({Key key, @required this.username, @required this.gallery}) : super(key: key);
+  Camera({Key key, @required this.id, @required this.gallery}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -25,19 +25,20 @@ class _CameraState extends State<Camera> {
 
   // Take a photo
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
-    File selected = await ImagePicker.pickImage(source: source);
-    if (selected == null) { // Image not taken
+    File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
+    if (imageFile == null) { // Image not taken
       Navigator.pop(context);
       return;
     }
 
-    loadedImage = FileImage(selected);
+    print("Chosen image size: ${imageFile.lengthSync()}");
+    loadedImage = FileImage(imageFile);
     await precacheImage(loadedImage, context); // precache the image
 
     // Image file
     if (mounted) {
       setState(() {
-        _imageFile = selected;
+        _imageFile = imageFile;
       });
     }
   }
@@ -106,7 +107,7 @@ class _CameraState extends State<Camera> {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
-                      username: widget.username,
+                      id: widget.id,
                       imageFile: _imageFile,
                       gallery: widget.gallery,
                       restaurants: _restaurants

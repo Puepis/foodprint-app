@@ -1,6 +1,6 @@
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foodprint/auth/tokens.dart';
+import 'package:foodprint/service/auth.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
@@ -9,17 +9,26 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _email, _username, _password;
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    _passwordController.dispose();
-    _usernameController.dispose();
-    _emailController.dispose();
-    super.dispose();
+  void handleRegisterResponse(BuildContext context, http.Response res) {
+    switch(res.statusCode) {
+      case 200: {
+        Navigator.pop(context); // login page
+        displayDialog(context, "Success", "Registration successful! You can log in now.");
+      }
+      break;
+      case 409: {
+        displayDialog(context, "Email already registered",
+          "Please sign up using a different email or log in if you already have an account");
+      }
+      break;
+      default: {
+        print(res.body);
+        displayDialog(context, "Error", "An unexpected error occurred");
+      }
+    }
   }
 
   @override
@@ -29,9 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            headerSection(),
-            infoSection(),
-            buttonSection(context)
+            header(),
+            registerForm(),
           ],
         ),
       ),
@@ -47,19 +55,91 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
   );
 
-  Future<http.Response> attemptSignUp(String email, String username, String password) async {
-    var res = await http.post(
-        '$SERVER_IP/api/users/register',
-        body: {
-          "email": email,
-          "username": username,
-          "password": password
-        }
+  Container header() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      child: Text("Register New Account"),
     );
-    return res;
   }
 
-  ButtonBar buttonSection(BuildContext context) {
+  Container registerForm() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20.0),
+      margin: EdgeInsets.only(top: 30.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Email"
+              ),
+              onSaved: (String value) {
+                _email = value.trim();
+              },
+              validator: (String value) {
+                RegExp re = new RegExp(r"\S+@\S+\.\S+"); // matches anystring@anystring.anystring
+                if (value.isEmpty) {
+                  return 'Please enter an email';
+                }
+                else if (!re.hasMatch(value)) {
+                  return 'Please enter a valid email';
+                }
+                else {
+                  return null; // valid
+                }
+              }
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Username"
+              ),
+              onSaved: (String value) {
+                _username = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a username';
+                }
+                else if (value.length > 20) {
+                  return 'Username must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              }
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Password"
+              ),
+              onSaved: (String value) {
+                _password = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a password';
+                }
+                else if (value.length > 20) {
+                  return 'Password must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              },
+              obscureText: true,
+            ),
+            buttons()
+          ],
+        ),
+      ),
+    );
+  }
+
+  ButtonBar buttons() {
     return ButtonBar(
       children: <Widget>[
         RaisedButton(
@@ -79,79 +159,15 @@ class _RegisterPageState extends State<RegisterPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              var email = _emailController.text.trim();
-              var username = _usernameController.text.trim();
-              var password = _passwordController.text.trim();
-              var res = await attemptSignUp(email, username, password);
-              if (res.statusCode == 200) {
-                // Redirect to login page
-                Navigator.pop(context);
-                displayDialog(context, "Success", "Registration successful. You can log in now.");
-              }
-              else if (res.statusCode == 409) {
-                displayDialog(context, "That email is already registered",
-                    "Please sign up using a different email or log in if you already have an account.");
-              }
-              else if (res.statusCode == 400) {
-                displayDialog(context, "Errors Found", res.body);
-              }
-              else {
-                displayDialog(context, "Error", res.body);
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _formKey.currentState.reset();
+                http.Response res = await AuthService.attemptSignUp(_email, _username, _password);
+                handleRegisterResponse(context, res);
               }
             }
         )
       ],
-    );
-  }
-
-  Container infoSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      margin: EdgeInsets.only(top: 30.0),
-      child: Column(
-        children: <Widget>[
-          emailField("Email"),
-          SizedBox(height: 12.0),
-          usernameField("Username"),
-          SizedBox(height: 12.0),
-          passwordField("Password")
-        ],
-      ),
-    );
-  }
-
-  TextFormField emailField(String title) {
-    return TextFormField(
-      controller: _emailController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-    );
-  }
-
-  TextFormField usernameField(String title) {
-    return TextFormField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-    );
-  }
-
-  TextFormField passwordField(String title) {
-    return TextFormField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-      obscureText: true,
-    );
-  }
-
-  Container headerSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Text("Register New Account"),
     );
   }
 }

@@ -1,13 +1,24 @@
 
-import 'dart:convert';
 import 'dart:io';
-
-import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Contains methods for retrieving content and basic file methods
 class PhotoManager {
+
+  // Create new folder in AppDoc, returns the path
+  Future<String> createFolder(String path, String folderName) async {
+    final Directory _folder = new Directory('$path/$folderName/');
+
+    // If folder exists, return path
+    if (await _folder.exists()) {
+      return _folder.path;
+    } else { // Create new folder, then return
+      final Directory _newFolder = await _folder.create(recursive: true);
+      return _newFolder.path;
+    }
+  }
+
   static Future<String> getAppDocDir() async {
     return (await getApplicationDocumentsDirectory()).path;
   }
@@ -21,34 +32,6 @@ class PhotoManager {
       print("Directory not initialized.");
     }
     return res;
-  }
-
-  static Map<Restaurant, List<List<Object>>> organizePhotos(List<FileSystemEntity> dirs) {
-    // Unwrap contents, get each unique restaurant visited from PhotoDetail (id, name, rating)
-    Map<Restaurant, List<List<Object>>> result = Map();
-    dirs.forEach((dir) {
-      File imgFile = PhotoManager.openImgFile(dir);
-      File contentsFile = PhotoManager.openContentFile(dir);
-      PhotoDetail contents = PhotoManager.getContents(contentsFile);
-
-      // TODO: placeIds may change over time so try to find a way around it
-      Restaurant place = Restaurant(
-          id: contents.restaurantId,
-          name: contents.restaurantName,
-          rating: contents.rating,
-          latitude: contents.latitude,
-          longitude: contents.longitude
-      );
-
-      var rv = _restaurantVisited(place, result);
-      if (rv == null) {
-        result[place] = [[imgFile, contents]];
-      }
-      else {
-        result[rv].insert(0, [imgFile, contents]);
-      }
-    });
-    return result;
   }
 
   // Check if restaurant already exists in the Map<>
@@ -68,11 +51,4 @@ class PhotoManager {
   static File openContentFile(FileSystemEntity dir) {
     return File('${dir.path}/contents.json');
   }
-
-  // Fetch photo details
-  static PhotoDetail getContents(File file) {
-    Map<String, dynamic> photoDetail = jsonDecode(file.readAsStringSync()); // decode JSON string
-    return PhotoDetail.fromJson(photoDetail);
-  }
-
 }

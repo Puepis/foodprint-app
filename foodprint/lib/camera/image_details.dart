@@ -1,24 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodprint/map/map.dart';
+import 'package:foodprint/auth/tokens.dart';
+import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/gallery_model.dart';
-import 'package:foodprint/models/photo_detail.dart';
 import 'package:foodprint/places_data/result.dart';
-import 'package:foodprint/service/storage.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class ImageDetail extends StatefulWidget {
-  final String username;
+  final int id;
   final Result restaurant;
   final File imageFile;
   final GalleryModel gallery;
-  ImageDetail({Key key, @required this.username, @required this.imageFile, @required this.gallery,
+  ImageDetail({Key key, @required this.id, @required this.imageFile, @required this.gallery,
     @required this.restaurant}) : super(key: key);
   @override
   _ImageDetailState createState() => _ImageDetailState();
@@ -36,76 +35,97 @@ class _ImageDetailState extends State<ImageDetail> {
   String _price = "";
   String _caption = "";
   int secondsSinceEpoch;
-  String appDocPath;
 
   // Format datetime
-  String _getDateTime() {
+  String _getTimestamp() {
     final DateTime now = new DateTime.now();
     secondsSinceEpoch = (now.millisecondsSinceEpoch / 1000).round();
     String y = now.year.toString();
-    String m = months[now.month];
-    String wd = days[now.weekday];
+    String m = now.month < 10 ? "0${now.month}" : now.month.toString();
     String d = now.day.toString();
     String h = now.hour.toString();
-    String min = now.minute < 10 ? "0${now.minute.toString()}" : now.minute.toString();
-    return "$wd, $m $d, $y ~ $h.$min";
+    String min = now.minute < 10 ? "0${now.minute}" : now.minute.toString();
+    String second = now.second < 10 ? "0${now.second}" : now.second.toString();
+    return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
   }
 
-  Future<void> _saveImageAndContents() async {
-    final dt = _getDateTime();
+  Future<void> _saveImage() async {
+    print("Saving image");
+    String timestamp = _getTimestamp();
     try {
-      // Get directory where we can save the file
-      appDocPath = await PhotoManager.getAppDocDir();
 
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      final imgPath = await createFolder(appDocPath, '${widget.username}/photos/$secondsSinceEpoch-$fileName');
+      final String imgPath = '${widget.id}/photos/$secondsSinceEpoch-$fileName';
+      final Uint8List imgBytes = widget.imageFile.readAsBytesSync();
+      print("Image size: ${imgBytes.lengthInBytes}");
 
-      PhotoDetail contents = PhotoDetail(
+      String body = jsonEncode({
+        "userId": widget.id.toString(),
+        "image": {
+          "path": imgPath,
+          "data": imgBytes.toString(),
+          "details": {
+            "name": _itemName,
+            "price": _price,
+            "caption": _caption,
+            "timestamp": timestamp,
+          },
+          "location": {
+            "id": widget.restaurant.placeId,
+            "name": widget.restaurant.name,
+            "rating": widget.restaurant.rating.toString(),
+            "lat": widget.restaurant.geometry.location.lat.toString(),
+            "lng": widget.restaurant.geometry.location.long.toString()
+          }
+        }
+      });
+      
+      var res = await http.post(
+        "$SERVER_IP/api/photos/save",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: body
+      );
+
+      if (res.statusCode == 200) {
+        // Display toast
+        Fluttertoast.showToast(
+          msg: "Image saved!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0,
+        );
+      } else if (res.statusCode == 401) {
+        // Display toast
+        Fluttertoast.showToast(
+          msg: res.body,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0,
+        );
+      }
+
+      FoodprintPhoto newPhoto = FoodprintPhoto(
+        storagePath: imgPath,
+        imgBytes: imgBytes,
         name: _itemName,
         price: double.parse(_price),
         caption: _caption,
         restaurantId: widget.restaurant.placeId,
         restaurantName: widget.restaurant.name,
-        rating: widget.restaurant.rating,
-        datetime: dt,
+        restaurantRating: widget.restaurant.rating,
+        timestamp: timestamp,
         latitude: widget.restaurant.geometry.location.lat,
         longitude: widget.restaurant.geometry.location.long
       );
-
-      String json = jsonEncode(contents); // convert to json string
-
-      // Copy the file to the AppDoc directory
-      await widget.imageFile.copy('$imgPath/img.jpg');
-      final File localContents = File('$imgPath/contents.json');
-      localContents.writeAsStringSync(json);
-
       // Update gallery model
-      widget.gallery.addPhotoDir(Directory('$imgPath'));
+      widget.gallery.addPhotoDir(newPhoto);
     } catch (e) {
       print(e);
-    }
-
-    // Display toast
-    Fluttertoast.showToast(
-      msg: "Image saved!",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      fontSize: 16.0,
-    );
-  }
-
-  // Create new folder in AppDoc, returns the path
-  Future<String> createFolder(String path, String folderName) async {
-    final Directory _folder = new Directory('$path/$folderName/');
-
-    // If folder exists, return path
-    if (await _folder.exists()) {
-      return _folder.path;
-    } else { // Create new folder, then return
-      final Directory _newFolder = await _folder.create(recursive: true);
-      return _newFolder.path;
     }
   }
 
@@ -170,26 +190,13 @@ class _ImageDetailState extends State<ImageDetail> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       _formKey.currentState.save(); // save fields
-                      _saveImageAndContents(); // save contents
-
-                      // Refresh photos and content
-                      List photoDirs = PhotoManager.getPhotoDirs(appDocPath, widget.username);
-                      Map photos = PhotoManager.organizePhotos(photoDirs);
+                      _saveImage(); // save contents
 
                       int count = 0;
                       Navigator.popUntil(context, (route) {
                         return count++ == 3;
                       });
                       //  Refresh foodprint map
-                      /*Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => FoodMap(
-                          initialPos: LatLng(
-                            widget.restaurant.geometry.location.lat,
-                            widget.restaurant.geometry.location.long
-                          ),
-                          restaurantPhotos: photos,
-                        )
-                      ));*/
                     }
                   },
                   child: Icon(Icons.save_alt),
