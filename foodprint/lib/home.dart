@@ -1,4 +1,5 @@
 import 'dart:convert' show ascii, base64, json, jsonDecode;
+import 'dart:typed_data';
 import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
@@ -85,32 +86,40 @@ class _HomePageState extends State<HomePage> {
       headers: {"authorization": "Bearer ${widget.jwt}"}
     );
 
-    if (res.statusCode == 200) {
-      print("Photos retrieved");
-      PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
-      setState(() {
-        _authStatus = AUTHORIZED;
-        _currentPos = location;
-        _photoResponse = response;
-        _userFoodprint = _sortByRestaurant(response);
-      });
-    } else if (res.statusCode == 403) { // unauthorized
-      print(res.body); // TODO? display dialog
-      setState(() {
-        _authStatus = UNAUTHORIZED;
-      });
-    } else if (res.statusCode == 400) { // error getting photos
-     print(res.body);
-     setState(() {
-       _authStatus = AUTHORIZED;
-       _currentPos = location;
-     });
-    } else {
-      print(res.statusCode);
-      print(res.body);
-      setState(() {
-        _authStatus = UNAUTHORIZED; // TODO: Handle unexpected error
-      });
+    switch(res.statusCode) {
+      case 200: {
+        print("Photos retrieved");
+        PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
+        setState(() {
+          _authStatus = AUTHORIZED;
+          _currentPos = location;
+          _photoResponse = response;
+          _userFoodprint = _sortByRestaurant(response);
+        });
+      }
+      break;
+      case 403: { // unauthorized
+        print(res.body); // TODO? display dialog
+        setState(() {
+          _authStatus = UNAUTHORIZED;
+        });
+      }
+      break;
+      case 400: { // error getting photos
+        print(res.body);
+        setState(() {
+          _authStatus = AUTHORIZED;
+          _currentPos = location;
+        });
+      }
+      break;
+      default: { // unexpected error
+        print(res.statusCode);
+        print(res.body);
+        setState(() {
+          _authStatus = UNAUTHORIZED; // TODO: Handle unexpected error
+        });
+      }
     }
   }
 

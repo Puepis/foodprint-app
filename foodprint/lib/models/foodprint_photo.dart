@@ -7,7 +7,7 @@ import 'dart:typed_data';
 
 class FoodprintPhoto {
   final String storagePath;
-  final Uint8List imgBytes;
+  Uint8List imgBytes;
   final String name;
   final double price;
   final String caption;
@@ -24,7 +24,7 @@ class FoodprintPhoto {
 
   factory FoodprintPhoto.fromPG(Map<String, dynamic> json) {
     return FoodprintPhoto(
-      imgBytes: castImgData(json['data']),
+      imgBytes: parseImgData(json['data']),
       name: json['photo_name'],
       price: double.parse(json['price']),
       caption: json['caption'],
@@ -38,12 +38,13 @@ class FoodprintPhoto {
   }
 
   // Manually cast String to Uint8List
-  static Uint8List castImgData(String json) {
+  static Uint8List parseImgData(String json) {
     List<int> bytes = [];
     List<dynamic> decoded = jsonDecode(json);
     for (final byte in decoded) {
       bytes.add(byte);
     }
+
     return Uint8List.fromList(bytes);
   }
 }

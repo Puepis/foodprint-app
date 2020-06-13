@@ -12,10 +12,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
+  String _username, _password;
   final List<Permission> _permissions = [Permission.location, Permission.camera];
 
   Future<void> _requestPermissions() async {
@@ -31,23 +29,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    _passwordController.dispose();
-    _usernameController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            headerSection(),
-            credentialSection(),
-            buttonSection()
+            header(),
+            loginForm(),
           ],
         ),
       ),
@@ -87,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
   );
 
-  ButtonBar buttonSection() {
+  ButtonBar buttons() {
     return ButtonBar(
       children: <Widget>[
         RaisedButton(
@@ -97,10 +86,8 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()
-                  ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()
+              ));
             }
         ),
         RaisedButton(
@@ -110,52 +97,77 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
-              String username = _usernameController.text.trim();
-              String password = _passwordController.text.trim();
-              _usernameController.clear();
-              _passwordController.clear();
-              http.Response res = await AuthService.attemptLogin(
-                  username, password);
-              handleLoginResponse(context, res);
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                _formKey.currentState.reset();
+                http.Response res = await AuthService.attemptLogin(_username, _password);
+                handleLoginResponse(context, res);
+              }
             }
         ),
       ],
     );
   }
-  Container credentialSection() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      margin: EdgeInsets.only(top: 30.0),
-      child: Column(
-        children: <Widget>[
-          usernameField("Username"),
-          SizedBox(height: 12.0),
-          passwordField("Password")
-        ],
-      ),
-    );
-  }
-  TextFormField usernameField(String title) {
-    return TextFormField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-    );
-  }
-  TextFormField passwordField(String title) {
-    return TextFormField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-          labelText:title
-      ),
-      obscureText: true,
-    );
-  }
-  Container headerSection() {
+
+  Container header() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
       child: Text("Foodprint"),
+    );
+  }
+
+  Container loginForm() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20.0),
+      margin: EdgeInsets.only(top: 30.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Username"
+              ),
+              onSaved: (String value) {
+                _username = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a username';
+                }
+                else if (value.length > 20) {
+                  return 'Username must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              },
+            ),
+            SizedBox(height: 12.0),
+            TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Password"
+              ),
+              onSaved: (String value) {
+                _password = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a password';
+                }
+                else if (value.length > 20) {
+                  return 'Password must not be longer than 20 characters';
+                }
+                else {
+                  return null;
+                }
+              },
+              obscureText: true,
+            ),
+            buttons()
+          ],
+        ),
+      ),
     );
   }
 }

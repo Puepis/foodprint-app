@@ -25,19 +25,20 @@ class _CameraState extends State<Camera> {
 
   // Take a photo
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
-    File selected = await ImagePicker.pickImage(source: source);
-    if (selected == null) { // Image not taken
+    File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
+    if (imageFile == null) { // Image not taken
       Navigator.pop(context);
       return;
     }
 
-    loadedImage = FileImage(selected);
+    print("Chosen image size: ${imageFile.lengthSync()}");
+    loadedImage = FileImage(imageFile);
     await precacheImage(loadedImage, context); // precache the image
 
     // Image file
     if (mounted) {
       setState(() {
-        _imageFile = selected;
+        _imageFile = imageFile;
       });
     }
   }

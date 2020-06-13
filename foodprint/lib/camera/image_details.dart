@@ -53,16 +53,18 @@ class _ImageDetailState extends State<ImageDetail> {
     print("Saving image");
     String timestamp = _getTimestamp();
     try {
+
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
       final String imgPath = '${widget.id}/photos/$secondsSinceEpoch-$fileName';
-      final Uint8List imgData = widget.imageFile.readAsBytesSync();
+      final Uint8List imgBytes = widget.imageFile.readAsBytesSync();
+      print("Image size: ${imgBytes.lengthInBytes}");
 
       String body = jsonEncode({
         "userId": widget.id.toString(),
         "image": {
           "path": imgPath,
-          "data": imgData.toString(),
+          "data": imgBytes.toString(),
           "details": {
             "name": _itemName,
             "price": _price,
@@ -109,7 +111,7 @@ class _ImageDetailState extends State<ImageDetail> {
 
       FoodprintPhoto newPhoto = FoodprintPhoto(
         storagePath: imgPath,
-        imgBytes: imgData,
+        imgBytes: imgBytes,
         name: _itemName,
         price: double.parse(_price),
         caption: _caption,
