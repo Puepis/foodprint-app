@@ -1,5 +1,5 @@
 
-import 'package:foodprint/auth/tokens.dart';
+import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:http/http.dart' as http;
 
 class AuthenticationService {

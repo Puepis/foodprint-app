@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/auth/tokens.dart';
-import 'package:foodprint/home.dart';
+import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/widgets/home.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/widgets/auth/login_page.dart';
+import 'package:foodprint/widgets/auth/tokens.dart';
 import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:location/location.dart';
-import 'package:foodprint/auth/login_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 

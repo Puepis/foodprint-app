@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/auth/tokens.dart';
-import 'package:foodprint/home.dart';
-import 'package:foodprint/auth/register_page.dart';
-import 'package:foodprint/authorization_portal.dart';
 import 'package:foodprint/service/authentication.dart';
+import 'package:foodprint/widgets/auth/tokens.dart';
+import 'package:foodprint/widgets/authorization_portal.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 

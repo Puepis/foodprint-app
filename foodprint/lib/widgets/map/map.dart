@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/map/restaurant_card.dart';
+import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/widgets/map/restaurant_card.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
@@ -44,7 +44,7 @@ class _FoodMapState extends State<FoodMap> {
         onTap: () {},
       );
 
-      // Move camera to current location
+      // Move widgets.camera to current location
       if (mapController != null) {
         mapController.moveCamera(
             CameraUpdate.newLatLng(

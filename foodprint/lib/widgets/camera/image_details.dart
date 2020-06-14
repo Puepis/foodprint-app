@@ -3,12 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:foodprint/auth/tokens.dart';
-import 'package:foodprint/home.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/home_page_args.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 

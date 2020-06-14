@@ -1,12 +1,11 @@
-import 'package:foodprint/camera/camera.dart';
-import 'package:foodprint/auth/login_page.dart';
-import 'package:foodprint/gallery/gallery.dart';
-import 'package:foodprint/map/map.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/service/authentication.dart';
 import 'package:flutter/material.dart';
+import 'package:foodprint/widgets/camera/camera.dart';
+import 'package:foodprint/widgets/gallery/gallery.dart';
+import 'package:foodprint/widgets/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 

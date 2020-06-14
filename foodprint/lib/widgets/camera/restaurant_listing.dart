@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/image_details.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:foodprint/widgets/camera/image_details.dart';
 
 class RestaurantListing extends StatelessWidget {
   final UserModel user;

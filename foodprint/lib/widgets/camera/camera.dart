@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/camera/restaurant_listing.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/service/locator.dart';
+import 'package:foodprint/widgets/camera/restaurant_listing.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:location/location.dart';
-import 'package:provider/provider.dart';
 
 class Camera extends StatefulWidget {
   final UserModel user;
@@ -81,7 +80,7 @@ class _CameraState extends State<Camera> {
   @override
   Widget build(BuildContext context) {
 
-    // Launch camera
+    // Launch widgets.camera
     if (_imageFile == null) _pickImage(ImageSource.camera, context);
 
     return Scaffold(

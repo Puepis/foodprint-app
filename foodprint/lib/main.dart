@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/home.dart';
 import 'package:foodprint/models/home_page_args.dart';
-import 'package:foodprint/token_verification.dart';
-import 'package:foodprint/auth/login_page.dart';
-import 'package:foodprint/auth/register_page.dart';
+import 'package:foodprint/widgets/auth/login_page.dart';
+import 'package:foodprint/widgets/auth/register_page.dart';
+import 'package:foodprint/widgets/home.dart';
+import 'package:foodprint/widgets/token_verification.dart';
 
 void main() {
   runApp(
