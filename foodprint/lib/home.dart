@@ -1,5 +1,4 @@
 import 'dart:convert' show ascii, base64, json, jsonDecode;
-import 'dart:typed_data';
 import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
@@ -46,9 +45,7 @@ class _HomePageState extends State<HomePage> {
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint = Map();
   int _authStatus = PENDING;
 
-
   Map<Restaurant, List<FoodprintPhoto>> _sortByRestaurant(PhotoResponse response) {
-    // TODO: sort photos chronologically
     Map<Restaurant, List<FoodprintPhoto>> result = Map();
     response.photos.forEach((photo) {
       var rv = _restaurantKey(photo.restaurantId, result);

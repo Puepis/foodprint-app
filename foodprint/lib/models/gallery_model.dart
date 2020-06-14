@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 
 class GalleryModel extends ChangeNotifier {
-  // Internal, private state of photos - stores a list of files
   List<FoodprintPhoto> _photos;
 
   GalleryModel(List<FoodprintPhoto> photos) {
@@ -13,8 +12,8 @@ class GalleryModel extends ChangeNotifier {
 
   List<FoodprintPhoto> get photos => _photos;
 
-  void addPhotoDir(FoodprintPhoto photo) {
-    _photos.add(photo); // add to end of list
+  void addPhoto(FoodprintPhoto photo) {
+    _photos.insert(0, photo); // add to front of list
     notifyListeners(); // Rebuild gallery
   }
 

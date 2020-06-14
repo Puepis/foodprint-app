@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
     switch (res.statusCode) {
       case 200: { // success
         String token = res.body;
-        // TODO: Delete JWT after expiry
         storage.write(
           key: "jwt", value: token); // TODO: don't store token locally
         Navigator.push(

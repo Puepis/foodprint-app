@@ -26,11 +26,6 @@ class ImageDetail extends StatefulWidget {
 class _ImageDetailState extends State<ImageDetail> {
   final _formKey = GlobalKey<FormState>();
 
-  // Date
-  final Map<int, String> days = {1: "Mon.", 2:"Tues.", 3:"Wed.", 4:"Thurs.", 5:"Fri.", 6:"Sat.", 7:"Sun."};
-  final Map<int, String> months =
-  {1: "Jan.", 2:"Feb.", 3:"Mar.", 4:"Apr.", 5:"May", 6:"June", 7:"July", 8:"Aug.", 9:"Sept.", 10:"Oct.", 11: "Nov.", 12:"Dec."};
-
   String _itemName = "";
   String _price = "";
   String _caption = "";
@@ -123,7 +118,7 @@ class _ImageDetailState extends State<ImageDetail> {
         longitude: widget.restaurant.geometry.location.long
       );
       // Update gallery model
-      widget.gallery.addPhotoDir(newPhoto);
+      widget.gallery.addPhoto(newPhoto);
     } catch (e) {
       print(e);
     }

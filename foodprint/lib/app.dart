@@ -5,6 +5,8 @@ import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'dart:convert' show json, ascii, base64;
 
+import 'package:provider/provider.dart';
+
 class FoodprintApp extends StatelessWidget {
   const FoodprintApp();
 
@@ -16,41 +18,41 @@ class FoodprintApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Foodprint',
-        theme: _foodprintTheme,
-        home: FutureBuilder(
-          future: jwtOrEmpty,
-          builder: (context, snapshot) {
-            // Loading
-            if(!snapshot.hasData) return CircularProgressIndicator();
+      title: 'Foodprint',
+      theme: _foodprintTheme,
+      home: FutureBuilder(
+        future: jwtOrEmpty,
+        builder: (context, snapshot) {
+          // Loading
+          if(!snapshot.hasData) return CircularProgressIndicator();
 
-            // JSON Web Token
-            if (snapshot.data != "") {
-              String jwtStr = snapshot.data;
-              List jwtParts = jwtStr.split(".");
+          // JSON Web Token
+          if (snapshot.data != "") {
+            String jwtStr = snapshot.data;
+            List jwtParts = jwtStr.split(".");
 
-              if (jwtParts.length != 3) {
-                return LoginPage(); // invalid token
-              } else {
-                // Decode the payload
-                var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwtParts[1]))));
-
-                // Check if token expired
-                DateTime expiry = DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000);
-                if (expiry.isAfter(DateTime.now())) {
-                   return HomePage(jwtStr, payload); // not expired
-                }
-                else {
-                  // Delete expired token
-                  storage.delete(key: "jwt");
-                  return LoginPage();
-                }
-              }
+            if (jwtParts.length != 3) {
+              return LoginPage(); // invalid token
             } else {
-              return LoginPage(); // No existing token
+              // Decode the payload
+              var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwtParts[1]))));
+
+              // Check if token expired
+              DateTime expiry = DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000);
+              if (expiry.isAfter(DateTime.now())) {
+                 return HomePage(jwtStr, payload); // not expired
+              }
+              else {
+                // Delete expired token
+                storage.delete(key: "jwt");
+                return LoginPage();
+              }
             }
-          },
-        )
+          } else {
+            return LoginPage(); // No existing token
+          }
+        },
+      ),
     );
   }
 }
