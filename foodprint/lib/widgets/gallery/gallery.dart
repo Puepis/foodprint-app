@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/widgets/gallery/full_image.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/user_model.dart';
+import 'package:foodprint/widgets/gallery/full_image.dart';
 import 'package:provider/provider.dart';
 
 class Gallery extends StatelessWidget {
@@ -16,10 +16,6 @@ class Gallery extends StatelessWidget {
       return const <Card>[];
     }
 
-    photos.forEach((photo) {
-       print(photo.imgBytes.lengthInBytes);
-    });
-    
     // Sort directories from newest to oldest
     //photos.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
 

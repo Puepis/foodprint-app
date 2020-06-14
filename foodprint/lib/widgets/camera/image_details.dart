@@ -42,7 +42,6 @@ class _ImageDetailState extends State<ImageDetail> {
   }
 
   Future<void> _saveImage() async {
-    print("Saving image");
     String timestamp = _getTimestamp();
     try {
 
@@ -50,7 +49,6 @@ class _ImageDetailState extends State<ImageDetail> {
       final String fileName = basename(widget.imageFile.path);
       final String imgPath = '${widget.user.id}/photos/$secondsSinceEpoch-$fileName';
       final Uint8List imgBytes = widget.imageFile.readAsBytesSync();
-      print("Image size: ${imgBytes.lengthInBytes}");
 
       String body = jsonEncode({
         "userId": widget.user.id.toString(),

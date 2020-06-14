@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/widgets/map/restaurant_card.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
+import 'package:foodprint/service/locator.dart';
+import 'package:foodprint/widgets/map/restaurant_card.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,6 @@ class FoodMap extends StatefulWidget {
 class _FoodMapState extends State<FoodMap> {
   GoogleMapController mapController;
   LatLng _currentPos;
-  final LatLng toronto = LatLng(43.651070, -79.347015);
   Map<String, Marker> _markers = {};
 
   // Returns a void function
@@ -32,7 +32,6 @@ class _FoodMapState extends State<FoodMap> {
   Widget build(BuildContext context) {
     UserModel user = Provider.of<UserModel>(context);
     _markers = generateMarkers(user.foodprint);
-    print("Number of restaurants: ${user.foodprint.keys.length}");
 
     // Add marker indicating current location
     if (widget.initialPos != null) {
@@ -52,7 +51,7 @@ class _FoodMapState extends State<FoodMap> {
         );
       }
     } else {
-      _currentPos = toronto; // default location
+      _currentPos = Geolocator.toronto; // default location
     }
 
     return Stack(
@@ -76,7 +75,6 @@ class _FoodMapState extends State<FoodMap> {
   Map<String, Marker> generateMarkers(Map<Restaurant, List<FoodprintPhoto>> foodprint) {
     Map<String, Marker> result = {};
     foodprint.forEach((rest, photoList) {
-      print("${rest.name}, ${photoList.length} photos");
       final marker = Marker(
           markerId: MarkerId(rest.id),
           position: LatLng(rest.latitude, rest.longitude),

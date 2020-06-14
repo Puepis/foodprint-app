@@ -1,28 +1,45 @@
 import 'package:foodprint/places_data/place_response.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Locator {
+class Geolocator {
   // Google Maps Search
   static const String _API_KEY = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+  static const LatLng toronto = LatLng(43.651070, -79.347015);
 
-  static Future<LocationData> getLocation() async {
+  static Future<LatLng> getLocation() async {
+
     final Location location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
     LocationData pos;
-    try {
-      print("Initializing position details");
-      pos = await location.getLocation();
+
+    // Check service
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return toronto; // default location
+      }
     }
-    catch (e) {
-      print(e);
+
+    // Check permissions
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return toronto;
+      }
     }
-    return pos;
+    pos = await location.getLocation(); // get location
+    return LatLng(pos.latitude, pos.longitude);
   }
 
-  static Future<List<Result>> getRestaurants(LocationData location) async {
+  static Future<List<Result>> getRestaurants(LatLng location) async {
 
     print("Searching for nearby restaurants");
     String url = '$baseUrl?key=$_API_KEY&location=${location.latitude},${location.longitude}&rankby=distance&type=restaurant';

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/Philips/Documents/Projects/Foodprint/frontend/foodprint_app/foodprint/lib/widgets/home.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
+import 'package:foodprint/widgets/home.dart';
 import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -72,37 +73,10 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
     return result;
   }
 
-  // Set LatLng coordinates
-  Future<LatLng> getLocation() async {
 
-    final Location location = Location();
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData pos;
-
-    // Check service
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return toronto; // default location
-      }
-    }
-
-    // Check permissions
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return toronto;
-      }
-    }
-    pos = await location.getLocation(); // get location
-    return LatLng(pos.latitude, pos.longitude);
-  }
 
   void _setUserFoodprintAndLocation() async {
-    LatLng location = await getLocation();
+    LatLng location = await Geolocator.getLocation();
     var res = await http.get(
         '$SERVER_IP/api/users/photos',
         headers: {"authorization": "Bearer ${widget.jwt}"}

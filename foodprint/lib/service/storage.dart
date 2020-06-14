@@ -4,7 +4,7 @@ import 'package:foodprint/models/restaurant_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Contains methods for retrieving content and basic file methods
-class PhotoManager {
+class FileManager {
 
   // Create new folder in AppDoc, returns the path
   Future<String> createFolder(String path, String folderName) async {
@@ -23,10 +23,10 @@ class PhotoManager {
     return (await getApplicationDocumentsDirectory()).path;
   }
 
-  static List<FileSystemEntity> getPhotoDirs(String path, String username) {
+  static List<FileSystemEntity> getAllFromPath(String path) {
     List<FileSystemEntity> res = [];
     try {
-      res = Directory('$path/$username/photos/').listSync();
+      res = Directory('$path').listSync();
     }
     on FileSystemException {
       print("Directory not initialized.");
@@ -34,21 +34,7 @@ class PhotoManager {
     return res;
   }
 
-  // Check if restaurant already exists in the Map<>
-  static dynamic _restaurantVisited(Restaurant res, Map photos) {
-    for (Restaurant restaurant in photos.keys) {
-      if (res.id.compareTo(restaurant.id) == 0) {
-        return restaurant;
-      }
-    }
-    return null;
-  }
-
-  static File openImgFile(FileSystemEntity dir) {
-    return File('${dir.path}/img.jpg');
-  }
-
-  static File openContentFile(FileSystemEntity dir) {
-    return File('${dir.path}/contents.json');
+  static File openFile(FileSystemEntity dir, String filename) {
+    return File('${dir.path}/$filename');
   }
 }

@@ -3,6 +3,7 @@ import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/camera/restaurant_listing.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -20,18 +21,17 @@ class _CameraState extends State<Camera> {
   // Active image file
   File _imageFile;
   FileImage loadedImage;
-  LocationData _position;
+  LatLng _location;
   List<Result> _restaurants;
 
   // Take a photo
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
     File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
-    print(imageFile);
     if (imageFile == null) { // Image not taken
       Navigator.pop(context); // TODO: change this
+      return;
     }
 
-    print("Chosen image size: ${imageFile.lengthSync()}");
     loadedImage = FileImage(imageFile);
     await precacheImage(loadedImage, context); // precache the image
 
@@ -66,8 +66,8 @@ class _CameraState extends State<Camera> {
 
   // Search for nearby restaurants
   Future<void> _findRestaurants() async {
-    _position = await Locator.getLocation();
-    _restaurants = await Locator.getRestaurants(_position);
+    _location = await Geolocator.getLocation();
+    _restaurants = await Geolocator.getRestaurants(_location);
     setState(() {});
   }
 
