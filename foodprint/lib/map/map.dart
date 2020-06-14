@@ -1,16 +1,15 @@
 
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:foodprint/map/restaurant_card.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 class FoodMap extends StatefulWidget {
   final LatLng initialPos;
-  final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
-  FoodMap({Key key, @required this.initialPos, @required this.userFoodprint}) : super(key: key);
+  FoodMap({Key key, @required this.initialPos }) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
@@ -23,10 +22,11 @@ class _FoodMapState extends State<FoodMap> {
 
   // Returns a void function
   Function createMap(BuildContext context) {
+    UserModel user = Provider.of<UserModel>(context);
     void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
       setState(() {
-        widget.userFoodprint.forEach((rest, photoList) {
+        user.foodprint.forEach((rest, photoList) {
           final marker = Marker(
               markerId: MarkerId(rest.id),
               position: LatLng(rest.latitude, rest.longitude),
@@ -57,6 +57,7 @@ class _FoodMapState extends State<FoodMap> {
   @override
   Widget build(BuildContext context) {
 
+    // TODO: remove this marker?
     // Add marker indicating current location
     if (widget.initialPos != null) {
       _currentPos = widget.initialPos;

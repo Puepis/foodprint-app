@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
+import 'package:foodprint/portal.dart';
 import 'package:foodprint/service/auth.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
           key: "jwt", value: token); // TODO: don't store token locally
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage.construct(token))
+          MaterialPageRoute(builder: (context) => Portal.fromJWT(token))
         );
       }
       break;

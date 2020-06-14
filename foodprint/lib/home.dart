@@ -1,202 +1,113 @@
-import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:foodprint/camera/camera.dart';
 import 'package:foodprint/auth/login_page.dart';
-import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/gallery/gallery.dart';
 import 'package:foodprint/map/map.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/gallery_model.dart';
-import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/service/auth.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
-  // Constructor
-  HomePage(this.jwt, this.payload);
-
-  // Web Token and Payload
+  final LatLng location;
+  final List<FoodprintPhoto> photos;
+  final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
   final String jwt;
   final Map<String, dynamic> payload;
 
-  // Factory constructor - decode the payload
-  factory HomePage.construct(String jwt) {
-    String payload = jwt.split(".")[1];
-    return HomePage(jwt, json.decode(ascii.decode(base64.decode(base64.normalize(payload)))));
-  }
-
+  const HomePage({Key key, @required this.location, @required this.photos,
+    @required this.userFoodprint, @required this.jwt, @required this.payload}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-  static const int UNAUTHORIZED = 0;
-  static const int AUTHORIZED = 1;
-  static const int PENDING = 2;
-  static const LatLng toronto = LatLng(43.651070, -79.347015);
-  int _selectedPage = 0;
-  LatLng _currentPos;
-  PhotoResponse _photoResponse;
-  Map<Restaurant, List<FoodprintPhoto>> _userFoodprint = Map();
-  int _authStatus = PENDING;
-
-  Map<Restaurant, List<FoodprintPhoto>> _sortByRestaurant(PhotoResponse response) {
-    Map<Restaurant, List<FoodprintPhoto>> result = Map();
-    response.photos.forEach((photo) {
-      var rv = _restaurantKey(photo.restaurantId, result);
-      if (rv == null) { // generate new key
-        Restaurant place = Restaurant(
-            id: photo.restaurantId,
-            name: photo.restaurantName,
-            rating: photo.restaurantRating,
-            latitude: photo.latitude,
-            longitude: photo.longitude
-        );
-        result[place] = [photo];
-      }
-      else {
-        result[rv].insert(0, photo);
-      }
-    });
-    return result;
-  }
-
-  dynamic _restaurantKey(String id, Map photos) {
-    for (Restaurant restaurant in photos.keys) {
-      if (id.compareTo(restaurant.id) == 0) { // compare restaurant ids
-        return restaurant;
-      }
-    }
-    return null;
-  }
-
-  void _setUserFoodprintAndLocation() async {
-    LatLng location = await getLocation();
-    var res = await http.get(
-      '$SERVER_IP/api/users/photos',
-      headers: {"authorization": "Bearer ${widget.jwt}"}
-    );
-
-    switch(res.statusCode) {
-      case 200: {
-        print("Photos retrieved");
-        PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
-        setState(() {
-          _authStatus = AUTHORIZED;
-          _currentPos = location;
-          _photoResponse = response;
-          _userFoodprint = _sortByRestaurant(response);
-        });
-      }
-      break;
-      case 403: { // unauthorized
-        print(res.body); // TODO? display dialog
-        setState(() {
-          _authStatus = UNAUTHORIZED;
-        });
-      }
-      break;
-      case 400: { // error getting photos
-        print(res.body);
-        setState(() {
-          _authStatus = AUTHORIZED;
-          _currentPos = location;
-        });
-      }
-      break;
-      default: { // unexpected error
-        print(res.statusCode);
-        print(res.body);
-        setState(() {
-          _authStatus = UNAUTHORIZED; // TODO: Handle unexpected error
-        });
-      }
-    }
-  }
-
-  // Set LatLng coordinates
-  Future<LatLng> getLocation() async {
-
-    final Location location = Location();
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData pos;
-
-    // Check service
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return toronto; // default location
-      }
-    }
-
-    // Check permissions
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return toronto;
-      }
-    }
-    pos = await location.getLocation(); // get location
-    return LatLng(pos.latitude, pos.longitude);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _setUserFoodprintAndLocation(); // initialize user foodprint + location
-  }
+  PageController _pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
-    Widget result;
-    switch(_authStatus) {
-      case AUTHORIZED: {result = buildHomePage(context);}
-      break;
-      case PENDING: {
-        result =  Container(
-          child: CircularProgressIndicator()
-        );
-      }
-      break;
-      case UNAUTHORIZED: {result = LoginPage();}
-      break;
-    }
-    return result;
-  }
-
-  Widget buildHomePage(BuildContext context) {
-    List<FoodprintPhoto> initPhotos = _photoResponse == null ? [] : _photoResponse.photos;
     return ChangeNotifierProvider(
-      create: (context) => GalleryModel(initPhotos),
+      create: (context) => UserModel(widget.jwt, widget.payload, widget.photos, widget.userFoodprint),
       child: Scaffold(
-          appBar: appBar(context),
-          body: _getPage(_selectedPage),
-          bottomNavigationBar: navBar()
-      ),
+        appBar: appBar(context),
+        body: PageView(
+          controller: _pageController,
+          children: [
+            FoodMap(initialPos: widget.location),
+            Gallery()
+          ],
+          physics: NeverScrollableScrollPhysics(), // disable swipe
+        ),
+        bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          child: Container(
+            height: 60,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(
+                  iconSize: 30.0,
+                  icon: Icon(Icons.map),
+                  onPressed: () {
+                    setState(() {
+                      _pageController.jumpToPage(0);
+                    });
+                  },
+                ),
+                IconButton(
+                  iconSize: 30.0,
+                  icon: Icon(Icons.landscape),
+                  onPressed: () {
+                    setState(() {
+                      _pageController.jumpToPage(1);
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: Container(
+          height: 75,
+          width: 75,
+          child: FittedBox(
+            child: FloatingActionButton(
+              elevation: 20.0,
+              onPressed: () {
+                Navigator.of(context).push(_cameraRoute());
+              },
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 35.0,
+              ),
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      )
     );
   }
 
-  // Render widget
-  Widget _getPage(int selected) {
-    switch(selected) {
-      case 0: { return FoodMap(initialPos: _currentPos, userFoodprint: _userFoodprint); }
-      break;
-      case 2: { return Gallery(); }
-      break;
-      default: { return Text("Default"); }
-      break;
-    }
+  Route _cameraRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => Camera(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      }
+    );
   }
 
-  // Header
   Widget appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
@@ -217,43 +128,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Nav bar
-  Widget navBar() {
-    return Consumer<GalleryModel>(
-        builder: (context, galleryModel, child) {
-          return BottomNavigationBar(
-            currentIndex: _selectedPage,
-            onTap: (int index) {
-              if (index == 1) { // Camera
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => Camera(
-                        id: widget.payload['sub'], // TODO: use better state management
-                        gallery: galleryModel
-                    )
-                ));
-              }
-              else {
-                setState(() {
-                  _selectedPage = index;
-                });
-              }
-            },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                title: Text('My Foodprint'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.camera),
-                title: Text('Camera'),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.terrain),
-                title: Text('Gallery'),
-              ),
-            ],
-          );
-        }
-    );
-  }
+
 }

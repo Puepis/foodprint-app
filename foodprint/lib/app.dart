@@ -1,11 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/login_page.dart';
 import 'package:foodprint/auth/tokens.dart';
+import 'package:foodprint/portal.dart';
 import 'dart:convert' show json, ascii, base64;
-
-import 'package:provider/provider.dart';
 
 class FoodprintApp extends StatelessWidget {
   const FoodprintApp();
@@ -40,7 +38,10 @@ class FoodprintApp extends StatelessWidget {
               // Check if token expired
               DateTime expiry = DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000);
               if (expiry.isAfter(DateTime.now())) {
-                 return HomePage(jwtStr, payload); // not expired
+                 return Portal(
+                   jwt: jwtStr,
+                   payload: payload,
+                 ); // not expired
               }
               else {
                 // Delete expired token

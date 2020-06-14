@@ -1,23 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/gallery_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
-import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 class ImageDetail extends StatefulWidget {
-  final int id;
+  final UserModel user;
   final Result restaurant;
   final File imageFile;
-  final GalleryModel gallery;
-  ImageDetail({Key key, @required this.id, @required this.imageFile, @required this.gallery,
+  ImageDetail({Key key, @required this.user, @required this.imageFile,
     @required this.restaurant}) : super(key: key);
   @override
   _ImageDetailState createState() => _ImageDetailState();
@@ -51,12 +48,12 @@ class _ImageDetailState extends State<ImageDetail> {
 
       // Get filename of the image
       final String fileName = basename(widget.imageFile.path);
-      final String imgPath = '${widget.id}/photos/$secondsSinceEpoch-$fileName';
+      final String imgPath = '${widget.user.id}/photos/$secondsSinceEpoch-$fileName';
       final Uint8List imgBytes = widget.imageFile.readAsBytesSync();
       print("Image size: ${imgBytes.lengthInBytes}");
 
       String body = jsonEncode({
-        "userId": widget.id.toString(),
+        "userId": widget.user.id.toString(),
         "image": {
           "path": imgPath,
           "data": imgBytes.toString(),
@@ -117,8 +114,9 @@ class _ImageDetailState extends State<ImageDetail> {
         latitude: widget.restaurant.geometry.location.lat,
         longitude: widget.restaurant.geometry.location.long
       );
-      // Update gallery model
-      widget.gallery.addPhoto(newPhoto);
+      
+      // Update foodprint
+      widget.user.addPhoto(newPhoto);
     } catch (e) {
       print(e);
     }

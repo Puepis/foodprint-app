@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/camera/restaurant_listing.dart';
-import 'package:foodprint/models/gallery_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
+import 'package:foodprint/service/locator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class Camera extends StatefulWidget {
-  final int id;
-  final GalleryModel gallery;
-  Camera({Key key, @required this.id, @required this.gallery}) : super(key: key);
+  final UserModel userModel;
+  const Camera({Key key, @required this.userModel}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -27,7 +28,7 @@ class _CameraState extends State<Camera> {
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
     File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
     if (imageFile == null) { // Image not taken
-      Navigator.pop(context);
+      Navigator.pop(context); // TODO: change this
       return;
     }
 
@@ -79,6 +80,8 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<UserModel>(context);
+
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera, context);
 
@@ -107,9 +110,8 @@ class _CameraState extends State<Camera> {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
-                      id: widget.id,
+                      user: user,
                       imageFile: _imageFile,
-                      gallery: widget.gallery,
                       restaurants: _restaurants
                     )
                 ));
