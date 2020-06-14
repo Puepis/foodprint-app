@@ -24,7 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  PageController _pageController = PageController(initialPage: 0);
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,7 @@ class _HomePageState extends State<HomePage> {
       create: (context) => UserModel(widget.jwt, widget.payload, widget.photos, widget.userFoodprint),
       child: Scaffold(
         appBar: appBar(context),
-        body: PageView(
-          controller: _pageController,
-          children: [
-            FoodMap(initialPos: widget.location),
-            Gallery()
-          ],
-          physics: NeverScrollableScrollPhysics(), // disable swipe
-        ),
+        body: _selectedIndex == 0 ? FoodMap(initialPos: widget.location) : Gallery(),
         bottomNavigationBar: BottomAppBar(
           shape: CircularNotchedRectangle(),
           child: Container(
@@ -53,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.location_on),
                   onPressed: () {
                     setState(() {
-                      _pageController.jumpToPage(0);
+                      _selectedIndex = 0;
                     });
                   },
                 ),
@@ -62,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   icon: Icon(Icons.collections),
                   onPressed: () {
                     setState(() {
-                      _pageController.jumpToPage(1);
+                      _selectedIndex = 1;
                     });
                   },
                 )
