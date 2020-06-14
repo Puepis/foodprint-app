@@ -21,41 +21,18 @@ class _FoodMapState extends State<FoodMap> {
   Map<String, Marker> _markers = {};
 
   // Returns a void function
-  Function createMap(BuildContext context) {
-    UserModel user = Provider.of<UserModel>(context);
+  Function createMap(BuildContext context, Map foodprint) {
     void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
-      setState(() {
-        user.foodprint.forEach((rest, photoList) {
-          final marker = Marker(
-              markerId: MarkerId(rest.id),
-              position: LatLng(rest.latitude, rest.longitude),
-              infoWindow: InfoWindow(
-                  title: rest.name,
-                  snippet: photoList.length == 1 ? "You've taken one photo here!"
-                      : "You've taken ${photoList.length} photos here!"
-              ),
-              onTap: () {
-                // Show restaurant info
-                showModalBottomSheet(
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (context) => RestaurantCard(
-                     restaurant: rest,
-                      photos: photoList,
-                    )
-                );
-              }
-          );
-          _markers[rest.name] = marker;
-        });
-      });
     }
     return _onMapCreated;
   }
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = Provider.of<UserModel>(context);
+    _markers = generateMarkers(user.foodprint);
+    print("Number of restaurants: ${user.foodprint.keys.length}");
 
     // TODO: remove this marker?
     // Add marker indicating current location
@@ -82,7 +59,7 @@ class _FoodMapState extends State<FoodMap> {
     return Stack(
       children: [
         GoogleMap(
-          onMapCreated: createMap(context),
+          onMapCreated: createMap(context, user.foodprint),
           initialCameraPosition: CameraPosition(
               target: _currentPos,
               zoom: 16.0
@@ -95,6 +72,35 @@ class _FoodMapState extends State<FoodMap> {
         // TODO: Search bar
       ]
     );
+  }
+
+  Map<String, Marker> generateMarkers(Map<Restaurant, List<FoodprintPhoto>> foodprint) {
+    Map<String, Marker> result = {};
+    foodprint.forEach((rest, photoList) {
+      print("${rest.name}, ${photoList.length} photos");
+      final marker = Marker(
+          markerId: MarkerId(rest.id),
+          position: LatLng(rest.latitude, rest.longitude),
+          infoWindow: InfoWindow(
+              title: rest.name,
+              snippet: photoList.length == 1 ? "You've taken one photo here!"
+                  : "You've taken ${photoList.length} photos here!"
+          ),
+          onTap: () {
+            // Show restaurant info
+            showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                context: context,
+                builder: (context) => RestaurantCard(
+                  restaurant: rest,
+                  photos: photoList,
+                )
+            );
+          }
+      );
+      result[rest.name] = marker;
+    });
+    return result;
   }
 }
 

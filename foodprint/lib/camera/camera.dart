@@ -11,8 +11,8 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 class Camera extends StatefulWidget {
-  final UserModel userModel;
-  const Camera({Key key, @required this.userModel}) : super(key: key);
+  final UserModel user;
+  const Camera({Key key, @required this.user}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -80,7 +80,6 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel user = Provider.of<UserModel>(context);
 
     // Launch camera
     if (_imageFile == null) _pickImage(ImageSource.camera, context);
@@ -110,7 +109,7 @@ class _CameraState extends State<Camera> {
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
-                      user: user,
+                      user: widget.user,
                       imageFile: _imageFile,
                       restaurants: _restaurants
                     )

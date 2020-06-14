@@ -5,12 +5,13 @@ import 'package:foodprint/map/map.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/service/auth.dart';
+import 'package:foodprint/service/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = "/home";
   final LatLng location;
   final List<FoodprintPhoto> photos;
   final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
@@ -70,31 +71,35 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        floatingActionButton: Container(
-          height: 75,
-          width: 75,
-          child: FittedBox(
-            child: FloatingActionButton(
-              elevation: 20.0,
-              onPressed: () {
-                Navigator.of(context).push(_cameraRoute());
-              },
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 35.0,
+        floatingActionButton: Consumer<UserModel>(
+          builder: (context, userModel, child) {
+            return Container(
+              height: 75,
+              width: 75,
+              child: FittedBox(
+                child: FloatingActionButton(
+                  elevation: 20.0,
+                  onPressed: () {
+                    Navigator.of(context).push(_cameraRoute(userModel));
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 35.0,
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       )
     );
   }
 
-  Route _cameraRoute() {
+  Route _cameraRoute(UserModel user) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => Camera(),
+      pageBuilder: (context, animation, secondaryAnimation) => Camera(user: user),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(0.0, 1.0);
         var end = Offset.zero;
@@ -118,9 +123,9 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.subdirectory_arrow_right),
           onPressed: () async {
             // Log out
-            bool successful = await AuthService.attemptLogout(widget.payload['username']);
+            bool successful = await AuthenticationService.attemptLogout(widget.payload['username']);
             if (successful) {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+              Navigator.pushNamed(context, "/login");
             }
           },
         )

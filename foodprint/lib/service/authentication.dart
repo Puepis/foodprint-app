@@ -2,7 +2,7 @@
 import 'package:foodprint/auth/tokens.dart';
 import 'package:http/http.dart' as http;
 
-class AuthService {
+class AuthenticationService {
   static Future<http.Response> attemptSignUp(String email, String username, String password) async {
     var res = await http.post(
         '$SERVER_IP/api/users/register',

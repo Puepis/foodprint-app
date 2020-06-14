@@ -11,25 +11,25 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 // Think of this as middleware
-class Portal extends StatefulWidget {
+class AuthorizationPortal extends StatefulWidget {
   final String jwt;
   final Map<String, dynamic> payload;
 
-  Portal({Key key, @required this.jwt, @required this.payload}) : super(key: key);
+  AuthorizationPortal({Key key, @required this.jwt, @required this.payload}) : super(key: key);
 
-  factory Portal.fromJWT(String jwt) {
+  factory AuthorizationPortal.fromJWT(String jwt) {
     String payloadStr = jwt.split(".")[1];
-    return Portal(
+    return AuthorizationPortal(
       jwt: jwt,
       payload: json.decode(ascii.decode(base64.decode(base64.normalize(payloadStr))))
     );
   }
 
   @override
-  _PortalState createState() => _PortalState();
+  _AuthorizationPortalState createState() => _AuthorizationPortalState();
 }
 
-class _PortalState extends State<Portal> {
+class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
   static const LatLng toronto = LatLng(43.651070, -79.347015);
   int _authStatus = PENDING;

@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/auth/tokens.dart';
 import 'package:foodprint/home.dart';
 import 'package:foodprint/auth/register_page.dart';
-import 'package:foodprint/portal.dart';
-import 'package:foodprint/service/auth.dart';
+import 'package:foodprint/authorization_portal.dart';
+import 'package:foodprint/service/authentication.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
+  static const routeName = '/login';
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   final _formKey = GlobalKey<FormState>();
   String _username, _password;
   final List<Permission> _permissions = [Permission.location, Permission.camera];
@@ -52,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
           key: "jwt", value: token); // TODO: don't store token locally
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Portal.fromJWT(token))
+          MaterialPageRoute(builder: (context) => AuthorizationPortal.fromJWT(token))
         );
       }
       break;
@@ -85,9 +87,8 @@ class _LoginPageState extends State<LoginPage> {
             shape: BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
-            onPressed:() async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage()
-              ));
+            onPressed:() {
+              Navigator.pushNamed(context, "/register");
             }
         ),
         RaisedButton(
@@ -100,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _formKey.currentState.reset();
-                http.Response res = await AuthService.attemptLogin(_username, _password);
+                http.Response res = await AuthenticationService.attemptLogin(_username, _password);
                 handleLoginResponse(context, res);
               }
             }

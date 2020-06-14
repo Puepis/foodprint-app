@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:foodprint/service/auth.dart';
+import 'package:foodprint/service/authentication.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
+  static const routeName = "/register";
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -162,7 +163,7 @@ class _RegisterPageState extends State<RegisterPage> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _formKey.currentState.reset();
-                http.Response res = await AuthService.attemptSignUp(_email, _username, _password);
+                http.Response res = await AuthenticationService.attemptSignUp(_email, _username, _password);
                 handleRegisterResponse(context, res);
               }
             }
