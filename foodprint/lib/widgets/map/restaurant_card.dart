@@ -159,7 +159,7 @@ class RestaurantPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30.0),
                   child: Image(
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/stock_restaurant.jpg'),
+                    image: AssetImage('assets/images/stock_restaurant.jpg'),
                   ),
                 ),
               ),

@@ -137,7 +137,7 @@ class _ImageDetailState extends State<ImageDetail> {
             children: [
               TextFormField(
                 decoration: InputDecoration(
-                  icon: Icon(Icons.fastfood),
+                  icon: Icon(Icons.restaurant_menu),
                   hintText: 'What are you eating/drinking?',
                   labelText: 'Item Name',
                 ),
@@ -166,7 +166,7 @@ class _ImageDetailState extends State<ImageDetail> {
               SizedBox(height: 10.0,),
               TextFormField(
                   decoration: InputDecoration(
-                    icon: Icon(Icons.description),
+                    icon: Icon(Icons.rate_review),
                     hintText: 'Any comments?',
                     labelText: 'Caption',
                   ),

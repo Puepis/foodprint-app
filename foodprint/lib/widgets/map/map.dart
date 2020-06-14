@@ -34,15 +34,14 @@ class _FoodMapState extends State<FoodMap> {
     _markers = generateMarkers(user.foodprint);
     print("Number of restaurants: ${user.foodprint.keys.length}");
 
-    // TODO: remove this marker?
     // Add marker indicating current location
     if (widget.initialPos != null) {
       _currentPos = widget.initialPos;
-      _markers["current_location"] = Marker(
-        markerId: MarkerId("current"),
-        position: widget.initialPos,
-        onTap: () {},
-      );
+     // _markers["current_location"] = Marker(
+     //   markerId: MarkerId("current"),
+     //   position: widget.initialPos,
+     //   onTap: () {},
+     // );
 
       // Move widgets.camera to current location
       if (mapController != null) {

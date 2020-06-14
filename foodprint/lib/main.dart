@@ -18,6 +18,7 @@ void main() {
           RegisterPage.routeName: (context) => RegisterPage(),
         },
         onGenerateRoute: (settings) {
+          // Extract arguments and build route
           if (settings.name == HomePage.routeName) {
             final HomePageArgs args = settings.arguments;
             return MaterialPageRoute(

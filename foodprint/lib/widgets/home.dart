@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   iconSize: 30.0,
-                  icon: Icon(Icons.map),
+                  icon: Icon(Icons.location_on),
                   onPressed: () {
                     setState(() {
                       _pageController.jumpToPage(0);
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   iconSize: 30.0,
-                  icon: Icon(Icons.landscape),
+                  icon: Icon(Icons.collections),
                   onPressed: () {
                     setState(() {
                       _pageController.jumpToPage(1);
@@ -117,9 +117,13 @@ class _HomePageState extends State<HomePage> {
       centerTitle: true,
       automaticallyImplyLeading: false,
       title: Text('Foodprint'),
+      leading: IconButton(
+        icon: Icon(Icons.person),
+        onPressed: () {},
+      ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.subdirectory_arrow_right),
+          icon: Icon(Icons.exit_to_app),
           onPressed: () async {
             // Log out
             bool successful = await AuthenticationService.attemptLogout(widget.payload['username']);

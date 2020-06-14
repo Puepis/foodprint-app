@@ -26,9 +26,9 @@ class _CameraState extends State<Camera> {
   // Take a photo
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
     File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
+    print(imageFile);
     if (imageFile == null) { // Image not taken
       Navigator.pop(context); // TODO: change this
-      return;
     }
 
     print("Chosen image size: ${imageFile.lengthSync()}");
@@ -100,11 +100,15 @@ class _CameraState extends State<Camera> {
                 onPressed: _cropImage,
               ),*/
             RaisedButton(
+              child: Icon(Icons.cancel),
+              onPressed: () => Navigator.pop(context),
+            ),
+            RaisedButton(
               child: Icon(Icons.refresh),
               onPressed: _clear,
             ),
             if (_restaurants != null) RaisedButton(
-              child: Icon(Icons.keyboard_arrow_right),
+              child: Icon(Icons.navigate_next),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => RestaurantListing(
