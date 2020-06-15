@@ -124,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             TextFormField(
+              maxLength: 20,
               decoration: InputDecoration(
                   labelText: "Username"
               ),
@@ -131,19 +132,12 @@ class _LoginPageState extends State<LoginPage> {
                 _username = value.trim();
               },
               validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter a username';
-                }
-                else if (value.length > 20) {
-                  return 'Username must not be longer than 20 characters';
-                }
-                else {
-                  return null;
-                }
+                return value.isEmpty ? 'Please enter a username' : null;
               },
             ),
             SizedBox(height: 12.0),
             TextFormField(
+              maxLength: 20,
               decoration: InputDecoration(
                   labelText: "Password"
               ),
@@ -151,15 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                 _password = value.trim();
               },
               validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter a password';
-                }
-                else if (value.length > 20) {
-                  return 'Password must not be longer than 20 characters';
-                }
-                else {
-                  return null;
-                }
+                return value.isEmpty ? 'Please enter a password' : null;
               },
               obscureText: true,
             ),
