@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                   elevation: 20.0,
                   onPressed: () {
-                    Navigator.of(context).push(_cameraRoute(userModel));
+                    _takePicture(context, userModel);
                   },
                   child: Icon(
                     Icons.add,
@@ -89,7 +89,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Route _cameraRoute(UserModel user) {
+  // Animate transition to camera
+  Route<bool> _cameraRoute(UserModel user) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => Camera(user: user),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -118,10 +119,9 @@ class _HomePageState extends State<HomePage> {
         IconButton(
           icon: Icon(Icons.exit_to_app),
           onPressed: () async {
-            // Log out
             bool successful = await AuthenticationService.attemptLogout(widget.payload['username']);
             if (successful) {
-              Navigator.pushNamed(context, "/login");
+              Navigator.pushNamed(context, "/login"); // log out
             }
           },
         )
@@ -129,5 +129,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
+  // Display a snackbar if saved
+  void _takePicture(BuildContext context, UserModel userModel) async {
+    final bool saved = await Navigator.of(context).push(_cameraRoute(userModel));
+    if (saved != null && saved) {
+    Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
+      SnackBar(content: Text("Image saved!")));
+    }
+  }
 }

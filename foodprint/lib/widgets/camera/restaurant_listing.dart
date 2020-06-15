@@ -14,7 +14,7 @@ class RestaurantListing extends StatelessWidget {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        itemCount: 5,
+        itemCount: restaurants.length,
         itemBuilder: (context, index) => Column(
           children: [
             RaisedButton(
@@ -25,7 +25,12 @@ class RestaurantListing extends StatelessWidget {
                       imageFile: imageFile,
                       restaurant: restaurants[index],
                     )
-                ));
+                )).then((result) {
+                  bool saved = result as bool;
+                  if (saved != null) {
+                    Navigator.of(context).pop(result); // pop back to camera
+                  }
+                });
               },
               child: Text(restaurants[index].name),
             )
@@ -37,17 +42,28 @@ class RestaurantListing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120.0),
+        child: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          flexibleSpace: Center(
+            child: Text(
+              "Select your location!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+              ),
+            ),
+          ),
+        ),
+      ),
       body: Container(
         child: Column(
           children: <Widget>[
-            Text(
-              "Here's what we found",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30
-              ),
-            ),
-            if (restaurants != null) _listRestaurants()
+            if (restaurants.length > 0) _listRestaurants()
           ],
         ),
       ),

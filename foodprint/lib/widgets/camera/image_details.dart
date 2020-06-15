@@ -9,6 +9,7 @@ import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ImageDetail extends StatefulWidget {
   final UserModel user;
@@ -23,10 +24,119 @@ class ImageDetail extends StatefulWidget {
 class _ImageDetailState extends State<ImageDetail> {
   final _formKey = GlobalKey<FormState>();
 
+  bool saving = false;
   String _itemName = "";
   String _price = "";
   String _caption = "";
   int secondsSinceEpoch;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(120.0),
+          child: AppBar(
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            flexibleSpace: Center(
+              child: Text(
+                "Fill in the details!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
+              ),
+            ),
+          ),
+        ),
+        body: Container(
+          margin: EdgeInsets.fromLTRB(7.5, 10.0, 7.5, 0),
+          padding: EdgeInsets.symmetric(horizontal: 5.0),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.restaurant_menu),
+                      hintText: 'What are you eating/drinking?',
+                      labelText: 'Item Name',
+                    ),
+                    onSaved: (String value) {
+                      _itemName = value.trim();
+                    },
+                    validator: (String value) {
+                      return value.isEmpty ? 'Please enter the name of the item' : null;
+                    },
+                  ),
+                  SizedBox(height: 10.0,),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.attach_money),
+                      labelText: 'Price',
+                    ),
+                    onSaved: (String value) {
+                      _price = value.trim();
+                    },
+                    validator: (String value) {
+                      return value.isEmpty ? 'Please enter the price' : null;
+                    },
+                  ),
+                  SizedBox(height: 10.0,),
+                  TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      maxLength: 200,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.rate_review),
+                        labelText: 'Comments',
+                      ),
+                      onSaved: (String value) {
+                        _caption = value.trim();
+                      },
+                      validator: (String value) {
+                        return null;
+                      }
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      child: saving ? SpinKitThreeBounce(
+                        color: Colors.blue,
+                        size: 15.0
+                        ) : FloatingActionButton.extended(
+                        label: Text(
+                          'SAVE',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        icon: Icon(Icons.save_alt),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _formKey.currentState.save(); // save fields
+                            _saveImage(context); // save contents
+                            setState(() {
+                              saving = true;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        )
+    );
+  }
 
   // Format datetime
   String _getTimestamp() {
@@ -41,7 +151,7 @@ class _ImageDetailState extends State<ImageDetail> {
     return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
   }
 
-  Future<void> _saveImage() async {
+  Future<void> _saveImage(BuildContext context) async {
     String timestamp = _getTimestamp();
     try {
 
@@ -50,6 +160,7 @@ class _ImageDetailState extends State<ImageDetail> {
       final String imgPath = '${widget.user.id}/photos/$secondsSinceEpoch-$fileName';
       final Uint8List imgBytes = widget.imageFile.readAsBytesSync();
 
+      // Image information
       String body = jsonEncode({
         "userId": widget.user.id.toString(),
         "image": {
@@ -80,15 +191,29 @@ class _ImageDetailState extends State<ImageDetail> {
       );
 
       if (res.statusCode == 200) {
-        // Display toast
-        Fluttertoast.showToast(
-          msg: "Image saved!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          fontSize: 16.0,
+        FoodprintPhoto newPhoto = FoodprintPhoto(
+            storagePath: imgPath,
+            imgBytes: imgBytes,
+            name: _itemName,
+            price: double.parse(_price),
+            caption: _caption,
+            restaurantId: widget.restaurant.placeId,
+            restaurantName: widget.restaurant.name,
+            restaurantRating: widget.restaurant.rating,
+            timestamp: timestamp,
+            latitude: widget.restaurant.geometry.location.lat,
+            longitude: widget.restaurant.geometry.location.long
         );
-      } else if (res.statusCode == 401) {
+
+        widget.user.addPhoto(newPhoto); // update foodprint
+        Navigator.pop(context, true); // pop result back
+      }
+      else if (res.statusCode == 401) {
+       // TODO: Handle 401 error
+        setState(() {
+          saving = false;
+        });
+
         // Display toast
         Fluttertoast.showToast(
           msg: res.body,
@@ -98,105 +223,8 @@ class _ImageDetailState extends State<ImageDetail> {
           fontSize: 16.0,
         );
       }
-
-      FoodprintPhoto newPhoto = FoodprintPhoto(
-        storagePath: imgPath,
-        imgBytes: imgBytes,
-        name: _itemName,
-        price: double.parse(_price),
-        caption: _caption,
-        restaurantId: widget.restaurant.placeId,
-        restaurantName: widget.restaurant.name,
-        restaurantRating: widget.restaurant.rating,
-        timestamp: timestamp,
-        latitude: widget.restaurant.geometry.location.lat,
-        longitude: widget.restaurant.geometry.location.long
-      );
-      
-      // Update foodprint
-      widget.user.addPhoto(newPhoto);
     } catch (e) {
       print(e);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Fill in the details!"),
-      ),
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextFormField(
-                decoration: InputDecoration(
-                  icon: Icon(Icons.restaurant_menu),
-                  hintText: 'What are you eating/drinking?',
-                  labelText: 'Item Name',
-                ),
-                onSaved: (String value) {
-                  _itemName = value.trim();
-                },
-                validator: (String value) {
-                  return value.isEmpty ? 'Please enter the name of the item' : null;
-                },
-              ),
-              SizedBox(height: 10.0,),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.attach_money),
-                  hintText: 'How much does it cost?',
-                  labelText: 'Price',
-                ),
-                onSaved: (String value) {
-                  _price = value.trim();
-                },
-                validator: (String value) {
-                  return value.isEmpty ? 'Please enter the price' : null;
-                },
-              ),
-              SizedBox(height: 10.0,),
-              TextFormField(
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.rate_review),
-                    hintText: 'Any comments?',
-                    labelText: 'Caption',
-                  ),
-                  onSaved: (String value) {
-                    _caption = value.trim();
-                  },
-                  validator: (String value) {
-                    return null;
-                  }
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: FloatingActionButton(
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save(); // save fields
-                      _saveImage(); // save contents
-
-                      int count = 0;
-                      Navigator.popUntil(context, (route) {
-                        return count++ == 3;
-                      });
-                      //  Refresh foodprint map
-                    }
-                  },
-                  child: Icon(Icons.save_alt),
-                ),
-              )
-            ],
-          ),
-        ),
-      )
-    );
   }
 }

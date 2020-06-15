@@ -32,7 +32,6 @@ class AuthorizationPortal extends StatefulWidget {
 
 class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
-  static const LatLng toronto = LatLng(43.651070, -79.347015);
   int _authStatus = PENDING;
   static const int UNAUTHORIZED = 0;
   static const int AUTHORIZED = 1;
@@ -73,8 +72,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
     return result;
   }
 
-
-
+  // Authorize token, retrieve data, and set location
   void _setUserFoodprintAndLocation() async {
     LatLng location = await Geolocator.getLocation();
     var res = await http.get(

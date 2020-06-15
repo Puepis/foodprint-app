@@ -116,7 +116,12 @@ class _CameraState extends State<Camera> {
                       imageFile: _imageFile,
                       restaurants: _restaurants
                     )
-                ));
+                )).then((result) {
+                  bool saved = result as bool;
+                  if (saved != null) {
+                    Navigator.of(context).pop(result); // pop back to home
+                  }
+                });
               },
             ),
           ],
