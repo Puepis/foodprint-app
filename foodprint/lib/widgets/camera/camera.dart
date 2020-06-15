@@ -18,7 +18,6 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-  // Active image file
   File _imageFile;
   FileImage loadedImage;
   LatLng _location;
