@@ -4,7 +4,7 @@ import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/service/locator.dart';
-import 'package:foodprint/widgets/map/restaurant_card.dart';
+import 'package:foodprint/widgets/map/restaurant_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 

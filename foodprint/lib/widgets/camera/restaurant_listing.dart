@@ -11,13 +11,20 @@ class RestaurantListing extends StatelessWidget {
   RestaurantListing({Key key, @required this.imageFile, @required this.restaurants, @required this.user}) : super(key: key);
 
   Widget _listRestaurants() {
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: restaurants.length,
-        itemBuilder: (context, index) => Column(
-          children: [
-            RaisedButton(
+    return Expanded(
+      child: ListView.builder(
+        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: restaurants.length,
+          itemBuilder: (context, index) => Container(
+            height: 50,
+            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)
+              ),
+              color: Colors.blue,
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => ImageDetail(
@@ -32,10 +39,31 @@ class RestaurantListing extends StatelessWidget {
                   }
                 });
               },
-              child: Text(restaurants[index].name),
-            )
-          ],
-        )
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(Icons.restaurant, color: Colors.white),
+                  ),
+                  Flexible(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                      child: Text(
+                        restaurants[index].name,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                        )
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+      ),
     );
   }
 
@@ -61,11 +89,13 @@ class RestaurantListing extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: Column(
+        child: restaurants.length > 0 ? Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            if (restaurants.length > 0) _listRestaurants()
+           _listRestaurants()
           ],
-        ),
+        ) : Text("No restaurants found")
       ),
     );
   }
