@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/service/authentication.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/authorization_portal.dart';
@@ -12,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  bool loading = false;
   final _formKey = GlobalKey<FormState>();
   String _username, _password;
   final List<Permission> _permissions = [Permission.location, Permission.camera];
@@ -45,6 +47,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void handleLoginResponse(BuildContext context, http.Response res) {
+    setState(() {
+      loading = false;
+    });
+
     switch (res.statusCode) {
       case 200: { // success
         String token = res.body;
@@ -80,8 +86,8 @@ class _LoginPageState extends State<LoginPage> {
     return ButtonBar(
       children: <Widget>[
         RaisedButton(
-            elevation: 3.0,
-            child: Text('Sign Up Here'),
+            elevation: 2.0,
+            child: Text('Register Here'),
             shape: BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
@@ -89,29 +95,50 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushNamed(context, "/register");
             }
         ),
-        RaisedButton(
+        loading ? SpinKitWave(color: Colors.orange, size: 30.0) : RaisedButton(
+          color: Colors.orange,
             elevation: 8.0,
-            child: Text('Log In'),
+            child: Text(
+              'Log In',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.0
+              ),
+            ),
             shape: BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
               if (_formKey.currentState.validate()) {
+                setState(() {
+                  loading = true;
+                });
                 _formKey.currentState.save();
                 _formKey.currentState.reset();
                 http.Response res = await AuthenticationService.attemptLogin(_username, _password);
                 handleLoginResponse(context, res);
               }
             }
-        ),
+        )
       ],
     );
   }
 
   Container header() {
     return Container(
+      height: 125,
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Text("Foodprint"),
+      child: Center(
+        child: Text(
+          "Foodprint",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 50.0
+          ),
+        )
+      ),
     );
   }
 
@@ -135,7 +162,6 @@ class _LoginPageState extends State<LoginPage> {
                 return value.isEmpty ? 'Please enter a username' : null;
               },
             ),
-            SizedBox(height: 12.0),
             TextFormField(
               maxLength: 20,
               decoration: InputDecoration(

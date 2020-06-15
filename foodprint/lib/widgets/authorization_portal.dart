@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
@@ -61,8 +62,27 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       }
       break;
       case PENDING: {
-        result =  Container(
-            child: CircularProgressIndicator()
+        result =  Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SpinKitDualRing(color: Colors.blue, size: 70.0,),
+                  SizedBox(height: 20.0),
+                  Text(
+                    "Authorizing",
+                    style: TextStyle(
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  )
+                ],
+              )
+            ),
+          ),
         );
       }
       break;
