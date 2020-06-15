@@ -3,12 +3,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/foodprint_methods.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/home.dart';
 import 'dart:convert' show ascii, base64, json, jsonDecode;
-import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -102,13 +102,12 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
     switch(res.statusCode) {
       case 200: {
-        print("Photos retrieved");
         PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
         setState(() {
           _authStatus = AUTHORIZED;
           _currentPos = location;
           _photoResponse = response;
-          _userFoodprint = _sortByRestaurant(response);
+          _userFoodprint = UserFoodprint.fromResponse(response);
         });
       }
       break;
@@ -135,37 +134,5 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         });
       }
     }
-  }
-
-  // TODO: Move to separate file
-  // Organize the photos to display on the map
-  Map<Restaurant, List<FoodprintPhoto>> _sortByRestaurant(PhotoResponse response) {
-    Map<Restaurant, List<FoodprintPhoto>> result = Map();
-    response.photos.forEach((photo) {
-      var rv = _restaurantKey(photo.restaurantId, result);
-      if (rv == null) { // generate new key
-        Restaurant place = Restaurant(
-            id: photo.restaurantId,
-            name: photo.restaurantName,
-            rating: photo.restaurantRating,
-            latitude: photo.latitude,
-            longitude: photo.longitude
-        );
-        result[place] = [photo];
-      }
-      else {
-        result[rv].insert(0, photo);
-      }
-    });
-    return result;
-  }
-
-  dynamic _restaurantKey(String id, Map photos) {
-    for (Restaurant restaurant in photos.keys) {
-      if (id.compareTo(restaurant.id) == 0) { // compare restaurant ids
-        return restaurant;
-      }
-    }
-    return null;
   }
 }

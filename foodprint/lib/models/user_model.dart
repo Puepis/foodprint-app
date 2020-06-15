@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/service/foodprint_methods.dart';
 
 class UserModel extends ChangeNotifier {
   String _username;
@@ -33,23 +34,7 @@ class UserModel extends ChangeNotifier {
   void addPhoto(FoodprintPhoto photo) {
     bool exists = false;
     _photos.insert(0, photo);
-    String id = photo.restaurantId;
-    for (Restaurant res in _foodprint.keys) {
-      if (id.compareTo(res.id) == 0) {
-        exists = true;
-        _foodprint[res].insert(0, photo);
-      }
-    }
-    if (!exists) {
-      Restaurant newRestaurant = Restaurant(
-        id: photo.restaurantId,
-        name: photo.restaurantName,
-        rating: photo.restaurantRating,
-        latitude: photo.latitude,
-        longitude: photo.longitude
-      );
-      _foodprint[newRestaurant] = [photo];
-    }
+    _foodprint = UserFoodprint.addPhoto(photo, _foodprint);
     notifyListeners();
   }
 
