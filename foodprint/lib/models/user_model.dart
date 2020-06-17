@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/service/foodprint_methods.dart';
+import 'package:foodprint/widgets/auth/tokens.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class UserModel extends ChangeNotifier {
   String _username;
@@ -38,10 +40,22 @@ class UserModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deletePhoto(FoodprintPhoto photo) async {
-    // remove photo from user foodprint
-    // remove photo from photo list
-    // remove photo server-side
-    notifyListeners();
+  Future<void> deletePhoto(FoodprintPhoto photo) async {
+    var res = await http.delete(
+      "$SERVER_IP/api/photos/",
+      headers: {
+        "photo_path": photo.storagePath
+      }
+    );
+    if (res.statusCode == 200) {
+      _photos.removeWhere((e) =>
+      e.storagePath.compareTo(photo.storagePath) == 0);
+      _foodprint = UserFoodprint.removePhoto(photo, _foodprint);
+      notifyListeners();
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }

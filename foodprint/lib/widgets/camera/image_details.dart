@@ -184,7 +184,7 @@ class _ImageDetailState extends State<ImageDetail> {
       });
       
       var res = await http.post(
-        "$SERVER_IP/api/photos/save",
+        "$SERVER_IP/api/photos/",
         headers: {
           "Content-Type": 'application/json'
         },

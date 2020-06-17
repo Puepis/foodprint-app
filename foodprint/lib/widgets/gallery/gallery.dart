@@ -92,8 +92,9 @@ class Gallery extends StatelessWidget {
                               color: Colors.white
                             ),
                           ),
-                          onTap: () {
-                           user.deletePhoto(photo);
+                          onTap: () async {
+                           await user.deletePhoto(photo);
+                           Navigator.pop(context);
                           },
                         )
                       ],

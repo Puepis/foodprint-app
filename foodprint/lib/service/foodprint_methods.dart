@@ -51,4 +51,21 @@ class UserFoodprint {
     }
     return null;
   }
+
+  static Map<Restaurant, List<FoodprintPhoto>> removePhoto(FoodprintPhoto photo,
+      Map<Restaurant, List<FoodprintPhoto>> foodprint) {
+    var removeKey;
+    foodprint.forEach((key, value) {
+      if (key.id.compareTo(photo.restaurant.id) == 0) {
+        value.removeWhere((element) => (element.storagePath.compareTo(photo.storagePath) == 0));
+        if (value.isEmpty) {
+          removeKey = key;
+        }
+      }
+    });
+    if (removeKey != null) {
+      foodprint.remove(removeKey);
+    }
+    return foodprint;
+  }
 }
