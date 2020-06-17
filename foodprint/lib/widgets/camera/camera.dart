@@ -113,52 +113,124 @@ class _CameraState extends State<Camera> {
     );
   }
 
+  // Show confirmation dialogj
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        child: Container(
+          height: 200,
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Text(
+                  "Are you sure you want to \n discard your photo?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 14.0
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0,),
+              ButtonTheme(
+                minWidth: 200,
+                height: 50,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)
+                  ),
+                  color: Colors.black87,
+                  child: Text(
+                    "Confirm",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ),
+              SizedBox(height: 5.0,),
+              FlatButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black
+                  ),
+                ),
+                onPressed: () => Navigator.of(context).pop(false),
+              )
+            ],
+          ),
+        ),
+      )
+    )) ?? false;
+  }
+  
   @override
   Widget build(BuildContext context) {
     if (_imageFile == null) _takePhoto(ImageSource.camera, context);
 
-    return _imageFile == null ? Scaffold(
+    if (_imageFile == null) {
+      return Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
-    ) : Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.fitHeight,
-                image: loadedImage
-            )
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: 30,
-              left: 10,
-              child: IconButton(
-                icon: Icon(Icons.cancel, color: Colors.red, size: 50.0,),
-                onPressed: () => Navigator.pop(context),
-              )
-            ),
-            Positioned(
-              left: 10,
-              bottom: 20,
-              child: IconButton(
-                icon: Icon(Icons.refresh, color: Colors.white, size: 40.0,),
-                onPressed: _clear,
-              ),
-            ),
-            Positioned(
-              bottom: 20,
-              right: 30,
-              child: _restaurants != null ? customButton(context) : SpinKitRing(
-                color: Colors.blue,
-                size: 40.0,
-              )
-            ),
-          ]
-        ),
-      ),
     );
+    } else {
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fitHeight,
+                  image: loadedImage
+              )
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 30,
+                left: 10,
+                child: IconButton(
+                  icon: Icon(Icons.cancel, color: Colors.red, size: 50.0,),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ),
+              Positioned(
+                left: 10,
+                bottom: 20,
+                child: IconButton(
+                  icon: Icon(Icons.refresh, color: Colors.white, size: 40.0,),
+                  onPressed: _clear,
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                right: 30,
+                child: _restaurants != null ? customButton(context) : SpinKitRing(
+                  color: Colors.blue,
+                  size: 40.0,
+                )
+              ),
+            ]
+          ),
+        ),
+    ),
+      );
+    }
   }
 }
 
