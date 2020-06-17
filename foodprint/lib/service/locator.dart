@@ -51,8 +51,8 @@ class Geolocator {
     }
     catch (e) {
       print(e);
+      return [];
     }
-    return [];
   }
 
   // Parse nearby restaurant results

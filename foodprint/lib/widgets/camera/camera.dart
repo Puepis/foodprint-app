@@ -23,16 +23,15 @@ class _CameraState extends State<Camera> {
   LatLng _location;
   List<Result> _restaurants;
 
-  // Take a photo
-  Future<void> _pickImage(ImageSource source, BuildContext context) async {
+  Future<void> _takePhoto(ImageSource source, BuildContext context) async {
     final _picker = ImagePicker();
     PickedFile image = await _picker.getImage(source: source, imageQuality: 70);
-    File imageFile = File(image.path);
-    if (imageFile == null) { // Image not taken
-      Navigator.pop(context); // TODO: change this
+    if (image == null) { // Back button pressed
+      Navigator.pop(context);
       return;
     }
 
+    File imageFile = File(image.path);
     loadedImage = FileImage(imageFile);
     await precacheImage(loadedImage, context); // precache the image
 
@@ -41,6 +40,7 @@ class _CameraState extends State<Camera> {
       setState(() {
         _imageFile = imageFile;
       });
+      _findRestaurants();
     }
   }
 
@@ -69,13 +69,7 @@ class _CameraState extends State<Camera> {
   Future<void> _findRestaurants() async {
     _location = await Geolocator.getLocation();
     _restaurants = await Geolocator.getRestaurants(_location);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _findRestaurants(); // get list of restaurants
+    if (mounted) setState(() {});
   }
 
   Widget customButton(BuildContext context) {
@@ -121,19 +115,21 @@ class _CameraState extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
+    if (_imageFile == null) _takePhoto(ImageSource.camera, context);
 
-    // Launch widgets.camera
-    if (_imageFile == null) _pickImage(ImageSource.camera, context);
-
-    return Scaffold(
+    return _imageFile == null ? Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    ) : Scaffold(
       body: Container(
-        decoration: _imageFile == null ? BoxDecoration() : BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fitHeight,
                 image: loadedImage
             )
         ),
-        child: _imageFile == null ? Stack() : Stack(
+        child: Stack(
           children: [
             Positioned(
               top: 30,

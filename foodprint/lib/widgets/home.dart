@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
@@ -133,8 +135,8 @@ class _HomePageState extends State<HomePage> {
   void _takePicture(BuildContext context, UserModel userModel) async {
     final bool saved = await Navigator.of(context).push(_cameraRoute(userModel));
     if (saved != null && saved) {
-    Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
-      SnackBar(content: Text("Image saved!")));
+      Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
+          SnackBar(content: Text("Image saved!")));
     }
   }
 }
