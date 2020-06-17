@@ -136,7 +136,11 @@ class _HomePageState extends State<HomePage> {
     final bool saved = await Navigator.of(context).push(_cameraRoute(userModel));
     if (saved != null && saved) {
       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
-          SnackBar(content: Text("Image saved!")));
+        SnackBar(
+          content: Text("Image saved!"),
+          behavior: SnackBarBehavior.floating,
+        )
+      );
     }
   }
 }
