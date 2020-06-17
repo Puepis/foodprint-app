@@ -25,7 +25,9 @@ class _CameraState extends State<Camera> {
 
   // Take a photo
   Future<void> _pickImage(ImageSource source, BuildContext context) async {
-    File imageFile = await ImagePicker.pickImage(source: source, imageQuality: 70);
+    final _picker = ImagePicker();
+    PickedFile image = await _picker.getImage(source: source, imageQuality: 70);
+    File imageFile = File(image.path);
     if (imageFile == null) { // Image not taken
       Navigator.pop(context); // TODO: change this
       return;

@@ -24,7 +24,7 @@ dependencies:
   google_maps_flutter: ^0.5.25+3
   camera: ^0.5.7+4
   path_provider: ^1.6.5
-  image_picker: ^0.6.4
+  image_picker: ^0.6.7
   image_cropper: ^1.2.1
   path: ^1.6.4
   fluttertoast: ^4.0.1
