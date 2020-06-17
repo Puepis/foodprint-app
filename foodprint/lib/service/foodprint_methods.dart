@@ -5,14 +5,14 @@ import 'package:foodprint/models/restaurant_model.dart';
 
 class UserFoodprint {
   static Map<Restaurant, List<FoodprintPhoto>> addPhoto(FoodprintPhoto photo, Map foodprint) {
-    var rv = _restaurantKey(photo.restaurantId, foodprint);
+    var rv = _restaurantKey(photo.restaurant.id, foodprint);
     if (rv == null) { // generate new key
       Restaurant place = Restaurant(
-          id: photo.restaurantId,
-          name: photo.restaurantName,
-          rating: photo.restaurantRating,
-          latitude: photo.latitude,
-          longitude: photo.longitude
+          id: photo.restaurant.id,
+          name: photo.restaurant.name,
+          rating: photo.restaurant.rating,
+          latitude: photo.restaurant.latitude,
+          longitude: photo.restaurant.longitude
       );
       foodprint[place] = [photo];
     }
@@ -25,14 +25,14 @@ class UserFoodprint {
   static Map<Restaurant, List<FoodprintPhoto>> fromResponse(PhotoResponse response) {
     Map<Restaurant, List<FoodprintPhoto>> result = Map();
     response.photos.forEach((photo) {
-      var rv = _restaurantKey(photo.restaurantId, result);
+      var rv = _restaurantKey(photo.restaurant.id, result);
       if (rv == null) { // generate new key
         Restaurant place = Restaurant(
-            id: photo.restaurantId,
-            name: photo.restaurantName,
-            rating: photo.restaurantRating,
-            latitude: photo.latitude,
-            longitude: photo.longitude
+            id: photo.restaurant.id,
+            name: photo.restaurant.name,
+            rating: photo.restaurant.rating,
+            latitude: photo.restaurant.latitude,
+            longitude: photo.restaurant.longitude
         );
         result[place] = [photo];
       }

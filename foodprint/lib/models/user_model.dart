@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
+import 'package:foodprint/models/photo_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/service/foodprint_methods.dart';
 
@@ -32,15 +33,15 @@ class UserModel extends ChangeNotifier {
 
   // Update the user's photos and foodprint
   void addPhoto(FoodprintPhoto photo) {
-    bool exists = false;
     _photos.insert(0, photo);
     _foodprint = UserFoodprint.addPhoto(photo, _foodprint);
     notifyListeners();
   }
 
-  // TODO: Deletion feature
-  void removeAll() {
-    _photos.clear();
+  void deletePhoto(FoodprintPhoto photo) async {
+    // remove photo from user foodprint
+    // remove photo from photo list
+    // remove photo server-side
     notifyListeners();
   }
 }

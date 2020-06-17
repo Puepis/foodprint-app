@@ -4,36 +4,36 @@
  */
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:foodprint/models/restaurant_model.dart';
 
 class FoodprintPhoto {
-  final String storagePath;
+  final String storagePath; // unique identifier
   Uint8List imgBytes;
   final String name;
   final double price;
   final String caption;
-  final String restaurantId;
-  final String restaurantName;
-  final double restaurantRating;
+  final Restaurant restaurant;
   final String timestamp;
-  final double latitude;
-  final double longitude;
 
-  FoodprintPhoto({this.storagePath, this.imgBytes, this.name, this.price, this.caption, this.restaurantId,
-    this.restaurantName, this.restaurantRating, this.timestamp, this.latitude, this.longitude}
+  FoodprintPhoto({this.restaurant, this.storagePath, this.imgBytes, this.name,
+    this.price, this.caption, this.timestamp}
   );
 
   factory FoodprintPhoto.fromPG(Map<String, dynamic> json) {
     return FoodprintPhoto(
+      storagePath: json['path'],
       imgBytes: parseImgData(json['data']),
       name: json['photo_name'],
       price: double.parse(json['price']),
       caption: json['caption'],
-      restaurantId: json['restaurant_id'],
-      restaurantName: json['restaurant_name'],
-      restaurantRating: double.parse(json['restaurant_rating']),
+      restaurant: Restaurant(
+        id: json['restaurant_id'],
+        name: json['restaurant_name'],
+        rating: double.parse(json['restaurant_rating']),
+        latitude: double.parse(json['restaurant_lat']),
+        longitude: double.parse(json['restaurant_lng'])
+      ),
       timestamp: json['time_taken'], // TODO: Parse timestamp
-      latitude: double.parse(json['restaurant_lat']),
-      longitude: double.parse(json['restaurant_lng'])
     );
   }
 

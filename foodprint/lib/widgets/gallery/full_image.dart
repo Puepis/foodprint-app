@@ -91,7 +91,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        image.restaurantName,
+                        image.restaurant.name,
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",
@@ -100,7 +100,7 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0,),
                       Text(
-                        "Rating: ${image.restaurantRating}",
+                        "Rating: ${image.restaurant.rating}",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Gotham",
@@ -109,11 +109,11 @@ class FullImage extends StatelessWidget {
                       ),
                       SizedBox(height: 5.0),
                       Row(
-                        children: getRatings(image.restaurantRating),
+                        children: getRatings(image.restaurant.rating),
                       ),
                       SizedBox(height: 10.0),
                       Text(
-                        "${image.latitude}, ${image.longitude}",
+                        "${image.restaurant.latitude}, ${image.restaurant.longitude}",
                         style: TextStyle(
                           fontFamily: "Gotham",
                           color: Colors.grey,

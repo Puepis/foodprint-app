@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
+import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
@@ -197,12 +198,14 @@ class _ImageDetailState extends State<ImageDetail> {
             name: _itemName,
             price: double.parse(_price),
             caption: _caption,
-            restaurantId: widget.restaurant.placeId,
-            restaurantName: widget.restaurant.name,
-            restaurantRating: widget.restaurant.rating,
+            restaurant: new Restaurant(
+              id: widget.restaurant.placeId,
+              name: widget.restaurant.name,
+              rating: widget.restaurant.rating,
+              latitude: widget.restaurant.geometry.location.lat,
+              longitude: widget.restaurant.geometry.location.long
+            ),
             timestamp: timestamp,
-            latitude: widget.restaurant.geometry.location.lat,
-            longitude: widget.restaurant.geometry.location.long
         );
 
         widget.user.addPhoto(newPhoto); // update foodprint
