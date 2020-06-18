@@ -13,13 +13,13 @@ class RestaurantListing extends StatelessWidget {
   Widget _listRestaurants() {
     return Expanded(
       child: ListView.builder(
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+        padding: const EdgeInsets.all(20),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: restaurants.length,
           itemBuilder: (context, index) => Container(
             height: 50,
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+            margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
             child: RaisedButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0)
@@ -42,16 +42,16 @@ class RestaurantListing extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(5.0),
-                    child: Icon(Icons.restaurant, color: Colors.white),
+                    padding: const EdgeInsets.all(5.0),
+                    child: const Icon(Icons.restaurant, color: Colors.white),
                   ),
                   Flexible(
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+                      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
                       child: Text(
                         restaurants[index].name,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.white,
                           fontWeight: FontWeight.bold
@@ -71,15 +71,15 @@ class RestaurantListing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(120.0),
+        preferredSize: const Size.fromHeight(120.0),
         child: AppBar(
           centerTitle: true,
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
-            child: Text(
+            child: const Text(
               "Select your location!",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
@@ -95,7 +95,7 @@ class RestaurantListing extends StatelessWidget {
           children: <Widget>[
            _listRestaurants()
           ],
-        ) : Text("No restaurants found")
+        ) : const Text("No restaurants found")
       ),
     );
   }

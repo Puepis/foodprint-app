@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         appBar: appBar(context),
         body: _selectedIndex == 0 ? FoodMap(initialPos: widget.location) : Gallery(),
         bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
+          shape: const CircularNotchedRectangle(),
           child: Container(
             height: 60,
             child: Row(
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   iconSize: 30.0,
-                  icon: Icon(Icons.location_on),
+                  icon: const Icon(Icons.location_on),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 0;
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   iconSize: 30.0,
-                  icon: Icon(Icons.collections),
+                  icon: const Icon(Icons.collections),
                   onPressed: () {
                     setState(() {
                       _selectedIndex = 1;
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     _takePicture(context, userModel);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.add,
                     color: Colors.white,
                     size: 35.0,
@@ -112,14 +112,14 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      title: Text('Foodprint'),
+      title: const Text('Foodprint'),
       leading: IconButton(
-        icon: Icon(Icons.person),
+        icon: const Icon(Icons.person),
         onPressed: () {},
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.exit_to_app),
+          icon: const Icon(Icons.exit_to_app),
           onPressed: () async {
             bool successful = await AuthenticationService.attemptLogout(widget.payload['username']);
             if (successful) {
@@ -136,8 +136,8 @@ class _HomePageState extends State<HomePage> {
     final bool saved = await Navigator.of(context).push(_cameraRoute(userModel));
     if (saved != null && saved) {
       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
-        SnackBar(
-          content: Text("Image saved!"),
+        const SnackBar(
+          content: const Text("Image saved!"),
           behavior: SnackBarBehavior.floating,
         )
       );

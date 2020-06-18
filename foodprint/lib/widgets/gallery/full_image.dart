@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
+import 'package:foodprint/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 
 class FullImage extends StatelessWidget {
   final FoodprintPhoto image;
   FullImage({Key key, @required this.image}) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
 
@@ -28,101 +30,7 @@ class FullImage extends StatelessWidget {
               showModalBottomSheet(
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
-                    color: Colors.black87
-                  ),
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        image.name,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: "Gotham",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24
-                        ),
-                      ),
-                      Text(
-                        formatter.format(image.price),
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: "Gotham",
-                          fontWeight: FontWeight.bold,
-                          fontSize: 19
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        height: 30,
-                        thickness: 1,
-                      ),
-                      Text(
-                        image.timestamp,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Gotham",
-                          fontSize: 16
-                        ),
-                      ),
-                      SizedBox(height: 5.0),
-                      Text(
-                        image.caption,
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: "Gotham",
-                          fontSize: 16
-                        ),
-                      ),
-                      SizedBox(height: 22.0),
-                      Text(
-                        "LOCATION",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: "Gotham",
-                          fontSize: 10
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(
-                        image.restaurant.name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Gotham",
-                          fontSize: 19
-                        ),
-                      ),
-                      SizedBox(height: 5.0,),
-                      Text(
-                        "Rating: ${image.restaurant.rating}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Gotham",
-                          fontSize: 13
-                        ),
-                      ),
-                      SizedBox(height: 5.0),
-                      Row(
-                        children: getRatings(image.restaurant.rating),
-                      ),
-                      SizedBox(height: 10.0),
-                      Text(
-                        "${image.restaurant.latitude}, ${image.restaurant.longitude}",
-                        style: TextStyle(
-                          fontFamily: "Gotham",
-                          color: Colors.grey,
-                          fontSize: 13
-                        ),
-                      )
-                    ],
-                  ),
-                )
+                builder: (context) => _photoDetails(formatter)
               );
             }
           },
@@ -134,29 +42,118 @@ class FullImage extends StatelessWidget {
     );
   }
 
-  // TODO: Remove duplicate code
+  Widget _photoDetails(formatter) => Container(
+    decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+        color: Colors.black87
+    ),
+    padding: const EdgeInsets.all(20),
+    child: Stack(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              image.name,
+              style: itemNameTextStyle
+            ),
+            Text(
+              formatter.format(image.price),
+              style: subtitleTextStyle
+            ),
+            Divider(
+              color: Colors.grey,
+              height: 30,
+              thickness: 1,
+            ),
+            const Text(
+              "TIMESTAMP",
+              style: labelTextStyle,
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              image.timestamp,
+              style: largeTextStyle
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "COMMENTS",
+              style: labelTextStyle,
+            ),
+            const SizedBox(height: 5.0,),
+            Text(
+              image.caption,
+              style: largeTextStyle
+            ),
+            const SizedBox(height: 20.0),
+            const Text(
+              "LOCATION",
+              style: labelTextStyle
+            ),
+            const SizedBox(height: 5.0),
+            Text(
+              image.restaurant.name,
+              style: subtitleTextStyle
+            ),
+            const SizedBox(height: 5.0,),
+            Row(
+              children: getRatings(image.restaurant.rating),
+            ),
+            const SizedBox(height: 10.0),
+            Text(
+              "${image.restaurant.latitude}, ${image.restaurant.longitude}",
+              style: coordsTextStyle
+            )
+          ],
+        ),
+        Positioned(
+          top: 5.0,
+          right: 5.0,
+          child: IconButton(
+            icon: const Icon(Icons.edit),
+            color: Colors.blue,
+            onPressed: () {},
+          ),
+        )
+      ],
+    ),
+  );
+
   List<Widget> getRatings(double rating) {
-    List<Widget> ratings = [];
+    List<Widget> ratings = [
+      Text(
+        rating.toString(),
+        style: const TextStyle(
+            fontSize: 16,
+            color: Colors.white
+        ),
+      ),
+      SizedBox(width: 5.0,)
+    ];
     for (int i = 0; i < 5; ++i) {
       if (rating - i >= 1) { // full star
         ratings.add(
           Icon(
             Icons.star,
-            color: Colors.yellow,
+            color: Colors.orange,
           )
         );
       } else if (rating - i < 1 && i < rating) { // half star
         ratings.add(
           Icon(
             Icons.star_half,
-            color: Colors.yellow
+            color: Colors.orange
           )
         );
       } else { // no star
         ratings.add(
           Icon(
             Icons.star_border,
-            color: Colors.black,
+            color: Colors.orange,
           )
         );
       }

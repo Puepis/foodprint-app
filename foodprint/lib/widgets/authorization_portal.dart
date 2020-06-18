@@ -70,11 +70,11 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SpinKitDualRing(color: Colors.blue, size: 70.0,),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SpinKitDualRing(color: Colors.blue, size: 70.0,),
+                  const SizedBox(height: 20.0),
+                  const Text(
                     "Authorizing",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 40.0,
                       fontWeight: FontWeight.bold
                     ),

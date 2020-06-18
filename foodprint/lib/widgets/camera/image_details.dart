@@ -40,10 +40,10 @@ class _ImageDetailState extends State<ImageDetail> {
             centerTitle: true,
             automaticallyImplyLeading: false,
             flexibleSpace: Center(
-              child: Text(
+              child: const Text(
                 "Fill in the details!",
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 30,
@@ -53,16 +53,17 @@ class _ImageDetailState extends State<ImageDetail> {
           ),
         ),
         body: Container(
-          margin: EdgeInsets.fromLTRB(7.5, 10.0, 7.5, 0),
-          padding: EdgeInsets.symmetric(horizontal: 5.0),
+          margin: const EdgeInsets.fromLTRB(7.5, 10.0, 7.5, 0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           child: Form(
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   TextFormField(
+                    maxLength: 50,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.restaurant_menu),
+                      icon: const Icon(Icons.restaurant_menu),
                       hintText: 'What are you eating/drinking?',
                       labelText: 'Item Name',
                     ),
@@ -70,14 +71,16 @@ class _ImageDetailState extends State<ImageDetail> {
                       _itemName = value.trim();
                     },
                     validator: (String value) {
+                      // TODO: price validation
                       return value.isEmpty ? 'Please enter the name of the item' : null;
                     },
                   ),
-                  SizedBox(height: 10.0,),
+                  const SizedBox(height: 10.0,),
                   TextFormField(
+                    maxLength: 8,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.attach_money),
+                      icon: const Icon(Icons.attach_money),
                       labelText: 'Price',
                     ),
                     onSaved: (String value) {
@@ -87,13 +90,13 @@ class _ImageDetailState extends State<ImageDetail> {
                       return value.isEmpty ? 'Please enter the price' : null;
                     },
                   ),
-                  SizedBox(height: 10.0,),
+                  const SizedBox(height: 10.0,),
                   TextFormField(
                       keyboardType: TextInputType.multiline,
                       maxLines: 5,
                       maxLength: 200,
                       decoration: InputDecoration(
-                        icon: Icon(Icons.rate_review),
+                        icon: const Icon(Icons.rate_review),
                         labelText: 'Comments',
                       ),
                       onSaved: (String value) {
@@ -106,19 +109,19 @@ class _ImageDetailState extends State<ImageDetail> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: saving ? SpinKitThreeBounce(
                         color: Colors.blue,
                         size: 15.0
                         ) : FloatingActionButton.extended(
-                        label: Text(
+                        label: const Text(
                           'SAVE',
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16.0,
                               fontWeight: FontWeight.bold
                           ),
                         ),
-                        icon: Icon(Icons.save_alt),
+                        icon: const Icon(Icons.save_alt),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
                             _formKey.currentState.save(); // save fields

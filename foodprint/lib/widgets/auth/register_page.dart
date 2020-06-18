@@ -36,9 +36,9 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            header(),
+            header,
             registerForm(),
           ],
         ),
@@ -55,17 +55,15 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
   );
 
-  Container header() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Text("Register New Account"),
-    );
-  }
+  Container header = Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+    child: const Text("Register New Account"),
+  );
 
   Container registerForm() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      margin: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      margin: const EdgeInsets.only(top: 30.0),
       child: Form(
         key: _formKey,
         child: Column(
@@ -91,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 }
               }
             ),
-            SizedBox(height: 12.0),
+            const SizedBox(height: 12.0),
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Username"
@@ -111,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 }
               }
             ),
-            SizedBox(height: 12.0),
+            const SizedBox(height: 12.0),
             TextFormField(
               decoration: InputDecoration(
                   labelText: "Password"
@@ -144,8 +142,8 @@ class _RegisterPageState extends State<RegisterPage> {
       children: <Widget>[
         RaisedButton(
             elevation: 3.0,
-            child: Text('Back to Login Page'),
-            shape: BeveledRectangleBorder(
+            child: const Text('Back to Login Page'),
+            shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
@@ -154,8 +152,8 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         RaisedButton(
             elevation: 8.0,
-            child: Text('Sign Up!'),
-            shape: BeveledRectangleBorder(
+            child: const Text('Sign Up!'),
+            shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {

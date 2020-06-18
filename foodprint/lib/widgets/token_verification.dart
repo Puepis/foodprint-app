@@ -22,7 +22,7 @@ class TokenAuth extends StatelessWidget {
       future: jwtOrEmpty,
       builder: (context, snapshot) {
         // Loading
-        if(!snapshot.hasData) return CircularProgressIndicator();
+        if(!snapshot.hasData) return const CircularProgressIndicator();
 
         // JSON Web Token
         if (snapshot.data != "") {
@@ -41,7 +41,7 @@ class TokenAuth extends StatelessWidget {
               return AuthorizationPortal(
                 jwt: jwtStr,
                 payload: payload,
-              ); // not expired
+              );
             }
             else {
               // Delete expired token

@@ -21,13 +21,13 @@ class RestaurantCard extends StatelessWidget {
       child: Container(
         height: 250,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)
             ),
             color: Colors.white
         ),
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Hero(
           tag: 'title',
           child: Column(
@@ -35,7 +35,7 @@ class RestaurantCard extends StatelessWidget {
               children: [
                 Text(
                   restaurant.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontFamily: "Gotham",
                       fontWeight: FontWeight.bold,
@@ -45,16 +45,16 @@ class RestaurantCard extends StatelessWidget {
                 Row(
                     children: getRatings(restaurant.rating)
                 ),
-                SizedBox(height: 20.0),
-                Text(
+                const SizedBox(height: 20.0),
+                const Text(
                   "YOUR PHOTOS",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.grey,
                       fontFamily: "Gotham",
                       fontSize: 10
                   ),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 getPhotos(),
               ]
           ),
@@ -72,7 +72,7 @@ class RestaurantCard extends StatelessWidget {
           FoodprintPhoto photo = photos[index];
           return Container(
             width: 100,
-            margin: EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
+            margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: MemoryImage(photo.imgBytes),
@@ -89,7 +89,7 @@ class RestaurantCard extends StatelessWidget {
     List<Widget> ratings = [
       Text(
         rating.toString(),
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.grey,
             fontFamily: "Gotham",
             fontWeight: FontWeight.bold,
@@ -164,7 +164,7 @@ class RestaurantPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 10.0,
                   vertical: 40.0
                 ),
@@ -206,7 +206,7 @@ class RestaurantPage extends StatelessWidget {
                     children: [
                       Text(
                         restaurant.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontFamily: "Gotham",
                           fontWeight: FontWeight.w600,
@@ -224,7 +224,7 @@ class RestaurantPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 10.0,
                 bottom: 15.0
               ),
@@ -234,7 +234,7 @@ class RestaurantPage extends StatelessWidget {
                 return Stack(
                   children: [
                     Container(
-                      margin: EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
+                      margin: const EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
                       height: 170.0,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -242,7 +242,7 @@ class RestaurantPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20.0)
                       ),
                       child: Padding(
-                        padding: EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
+                        padding: const EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -253,7 +253,7 @@ class RestaurantPage extends StatelessWidget {
                                   width: 120.0,
                                   child: Text(
                                     photo.name,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -263,7 +263,7 @@ class RestaurantPage extends StatelessWidget {
                                 ),
                                 Text(
                                   formatter.format(photo.price),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.bold
                                   ),
@@ -274,7 +274,7 @@ class RestaurantPage extends StatelessWidget {
                             ),
                             Text(
                               photo.caption,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.grey
                               ),
                             ),

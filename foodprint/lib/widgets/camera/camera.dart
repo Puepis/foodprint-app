@@ -99,13 +99,10 @@ class _CameraState extends State<Camera> {
                   }
                 });
               },
-              child: Padding(
-                padding: EdgeInsets.all(0),
-                child: Icon(
-                  Icons.navigate_next,
-                  size: 50.0,
-                  color: Colors.white,
-                ),
+              child: Icon(
+                Icons.navigate_next,
+                size: 50.0,
+                color: Colors.white,
               ),
             ),
           )
@@ -124,7 +121,7 @@ class _CameraState extends State<Camera> {
         ),
         child: Container(
           height: 200,
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,13 +131,13 @@ class _CameraState extends State<Camera> {
                 child: Text(
                   "Are you sure you want to \n discard your photo?",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 14.0
                   ),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              const SizedBox(height: 20.0,),
               ButtonTheme(
                 minWidth: 200,
                 height: 50,
@@ -151,7 +148,7 @@ class _CameraState extends State<Camera> {
                   color: Colors.black87,
                   child: Text(
                     "Confirm",
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold
@@ -160,11 +157,11 @@ class _CameraState extends State<Camera> {
                   onPressed: () => Navigator.of(context).pop(true),
                 ),
               ),
-              SizedBox(height: 5.0,),
+              const SizedBox(height: 5.0,),
               FlatButton(
-                child: Text(
+                child: const Text(
                   "Cancel",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.black
                   ),
@@ -184,7 +181,7 @@ class _CameraState extends State<Camera> {
 
     if (_imageFile == null) {
       return Scaffold(
-      body: Center(
+      body: const Center(
         child: CircularProgressIndicator(),
       ),
     );

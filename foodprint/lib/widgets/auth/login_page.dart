@@ -36,9 +36,9 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
-            header(),
+            header,
             loginForm(),
           ],
         ),
@@ -87,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         RaisedButton(
             elevation: 2.0,
-            child: Text('Register Here'),
-            shape: BeveledRectangleBorder(
+            child: const Text('Register Here'),
+            shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() {
@@ -98,15 +98,15 @@ class _LoginPageState extends State<LoginPage> {
         loading ? SpinKitWave(color: Colors.orange, size: 30.0) : RaisedButton(
           color: Colors.orange,
             elevation: 8.0,
-            child: Text(
+            child: const Text(
               'Log In',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 14.0
               ),
             ),
-            shape: BeveledRectangleBorder(
+            shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
@@ -125,27 +125,25 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Container header() {
-    return Container(
+  Container header = Container(
       height: 125,
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
       child: Center(
-        child: Text(
+        child: const Text(
           "Foodprint",
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 50.0
           ),
         )
       ),
     );
-  }
 
   Container loginForm() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0),
-      margin: EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      margin: const EdgeInsets.only(top: 30.0),
       child: Form(
         key: _formKey,
         child: Column(
