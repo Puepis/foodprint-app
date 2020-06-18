@@ -10,13 +10,13 @@ class PlaceResponse {
 
   PlaceResponse fromJson(Map<String, dynamic> json) {
     return PlaceResponse(
-        htmlAttributions: List<String>.from(json['html_attributions']),
-        nextPageToken: json['next_page_token'],
-        results: parseResults(json['results']),
-        status: json['status']);
+        htmlAttributions: List<String>.from(json['html_attributions'] as List<dynamic>),
+        nextPageToken: json['next_page_token'] as String,
+        results: parseResults(json['results'] as List<dynamic>),
+        status: json['status'] as String);
   }
 
   static List<Result> parseResults(List<dynamic> list){
-    return list.map((i) => Result.fromJson(i)).toList();
+    return list.map((i) => Result.fromJson(i as Map<String, dynamic>)).toList();
   }
 }

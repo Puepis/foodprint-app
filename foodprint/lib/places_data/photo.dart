@@ -8,10 +8,10 @@ class Photo {
 
   factory Photo.fromJson(Map<String, dynamic> json){
     return Photo(
-        height: json['height'],
-        width: json['width'],
-        htmlAttributions: List<String>.from(json['html_attributions']),
-        photoReference: json['photo_reference']
+        height: json['height'] as int,
+        width: json['width'] as int,
+        htmlAttributions: List<String>.from(json['html_attributions'] as List<dynamic>),
+        photoReference: json['photo_reference'] as String
     );
   }
 }

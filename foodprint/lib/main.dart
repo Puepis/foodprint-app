@@ -13,14 +13,14 @@ void main() {
         theme: _foodprintTheme,
         initialRoute: '/',
         routes: {
-          TokenAuth.routeName: (context) => TokenAuth(),
+          TokenAuth.routeName: (context) => const TokenAuth(),
           LoginPage.routeName: (context) => LoginPage(),
           RegisterPage.routeName: (context) => RegisterPage(),
         },
         onGenerateRoute: (settings) {
           // Extract arguments and build route
           if (settings.name == HomePage.routeName) {
-            final HomePageArgs args = settings.arguments;
+            final HomePageArgs args = settings.arguments as HomePageArgs;
             return MaterialPageRoute(
               builder: (context) {
                 return HomePage(

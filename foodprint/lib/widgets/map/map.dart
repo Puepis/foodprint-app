@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class FoodMap extends StatefulWidget {
   final LatLng initialPos;
-  FoodMap({Key key, @required this.initialPos }) : super(key: key);
+  const FoodMap({Key key, @required this.initialPos }) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
@@ -19,18 +19,10 @@ class _FoodMapState extends State<FoodMap> {
   GoogleMapController mapController;
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
-
-  // Returns a void function
-  Function createMap(BuildContext context, Map foodprint) {
-    void _onMapCreated(GoogleMapController controller) {
-      mapController = controller;
-    }
-    return _onMapCreated;
-  }
-
+  
   @override
   Widget build(BuildContext context) {
-    UserModel user = Provider.of<UserModel>(context);
+    final UserModel user = Provider.of<UserModel>(context);
     _markers = generateMarkers(user.foodprint);
 
     // Add marker indicating current location
@@ -52,7 +44,7 @@ class _FoodMapState extends State<FoodMap> {
     return Stack(
       children: [
         GoogleMap(
-          onMapCreated: createMap(context, user.foodprint),
+          onMapCreated: (controller) => mapController = controller,
           initialCameraPosition: CameraPosition(
               target: _currentPos,
               zoom: 16.0
@@ -68,7 +60,7 @@ class _FoodMapState extends State<FoodMap> {
   }
 
   Map<String, Marker> generateMarkers(Map<Restaurant, List<FoodprintPhoto>> foodprint) {
-    Map<String, Marker> result = {};
+    final Map<String, Marker> result = {};
     foodprint.forEach((rest, photoList) {
       final marker = Marker(
           markerId: MarkerId(rest.id),

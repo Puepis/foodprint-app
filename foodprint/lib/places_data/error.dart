@@ -12,10 +12,10 @@ class Error {
 
   factory Error.fromJson(Map<String, dynamic> json) {
     return Error(
-      errorMessage: json['error_message'],
-      htmlAttributions: json['html_attributions'],
-      results: json['results'],
-      status: json['status'],
+      errorMessage: json['error_message'] as String,
+      htmlAttributions: json['html_attributions'] as List<dynamic>,
+      results: json['results'] as List<dynamic>,
+      status: json['status'] as String,
     );
   }
 }

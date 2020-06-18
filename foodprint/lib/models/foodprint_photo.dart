@@ -21,30 +21,27 @@ class FoodprintPhoto {
 
   factory FoodprintPhoto.fromPG(Map<String, dynamic> json) {
     return FoodprintPhoto(
-      storagePath: json['path'],
-      imgBytes: parseImgData(json['data']),
-      name: json['photo_name'],
-      price: double.parse(json['price']),
-      caption: json['caption'],
+      storagePath: json['path'].toString(),
+      imgBytes: parseImgData(json['data'].toString()),
+      name: json['photo_name'].toString(),
+      price: double.parse(json['price'].toString()),
+      caption: json['caption'].toString(),
       restaurant: Restaurant(
-        id: json['restaurant_id'],
-        name: json['restaurant_name'],
-        rating: double.parse(json['restaurant_rating']),
-        latitude: double.parse(json['restaurant_lat']),
-        longitude: double.parse(json['restaurant_lng'])
+        id: json['restaurant_id'].toString(),
+        name: json['restaurant_name'].toString(),
+        rating: double.parse(json['restaurant_rating'].toString()),
+        latitude: double.parse(json['restaurant_lat'].toString()),
+        longitude: double.parse(json['restaurant_lng'].toString())
       ),
-      timestamp: json['time_taken'], // TODO: Parse timestamp
+      timestamp: json['time_taken'].toString(), // TODO: Parse timestamp
     );
   }
 
-  // Manually cast String to Uint8List
   static Uint8List parseImgData(String json) {
-    List<int> bytes = [];
-    List<dynamic> decoded = jsonDecode(json);
-    for (final byte in decoded) {
-      bytes.add(byte);
+    final List<int> bytes = [];
+    for (final byte in jsonDecode(json)) {
+      bytes.add(int.parse(byte.toString()));
     }
-
     return Uint8List.fromList(bytes);
   }
 }

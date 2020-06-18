@@ -12,11 +12,11 @@ class PhotoResponse {
 
   factory PhotoResponse.fromJson(Map<String, dynamic> json) {
     return PhotoResponse(
-        photos: parsePhotos(json['photos'])
+        photos: parsePhotos(json['photos'] as List<dynamic>)
     );
   }
 
   static List<FoodprintPhoto> parsePhotos(List<dynamic> list){
-    return list.map((i) => FoodprintPhoto.fromPG(i)).toList();
+    return list.map((i) => FoodprintPhoto.fromPG(i as Map<String, dynamic>)).toList();
   }
 }

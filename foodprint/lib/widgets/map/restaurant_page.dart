@@ -48,7 +48,7 @@ class RestaurantCard extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 const Text(
                   "YOUR PHOTOS",
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.grey,
                       fontFamily: "Gotham",
                       fontSize: 10
@@ -69,7 +69,7 @@ class RestaurantCard extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: photos.length,
         itemBuilder: (BuildContext context, int index) {
-          FoodprintPhoto photo = photos[index];
+          final FoodprintPhoto photo = photos[index];
           return Container(
             width: 100,
             margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
@@ -85,8 +85,8 @@ class RestaurantCard extends StatelessWidget {
     );
   }
 
-  List<Widget> getRatings(rating) {
-    List<Widget> ratings = [
+  List<Widget> getRatings(double rating) {
+    final List<Widget> ratings = [
       Text(
         rating.toString(),
         style: const TextStyle(
@@ -103,14 +103,14 @@ class RestaurantCard extends StatelessWidget {
         ratings.add(
             Icon(
               Icons.star,
-              color: Colors.yellow,
+              color: Colors.orange,
             )
         );
-      } else if (rating - i < 1 && i < rating) { // half star
+      } else if (rating > i){ // half star
         ratings.add(
             Icon(
                 Icons.star_half,
-                color: Colors.yellow
+                color: Colors.orange
             )
         );
       } else { // no star
@@ -150,14 +150,14 @@ class RestaurantPage extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black26,
-                      offset: Offset(0.0, 2.0),
+                      offset: const Offset(0.0, 2.0),
                       blurRadius: 6.0
                     )
                   ]
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
-                  child: Image(
+                  child: const Image(
                     fit: BoxFit.cover,
                     image: AssetImage('assets/images/stock_restaurant.jpg'),
                   ),
@@ -230,7 +230,7 @@ class RestaurantPage extends StatelessWidget {
               ),
               itemCount: photos.length,
               itemBuilder: (context, index) {
-                FoodprintPhoto photo = photos[index];
+                final FoodprintPhoto photo = photos[index];
                 return Stack(
                   children: [
                     Container(
@@ -248,6 +248,8 @@ class RestaurantPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   width: 120.0,
@@ -269,8 +271,6 @@ class RestaurantPage extends StatelessWidget {
                                   ),
                                 )
                               ],
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                             ),
                             Text(
                               photo.caption,
@@ -278,7 +278,7 @@ class RestaurantPage extends StatelessWidget {
                                 color: Colors.grey
                               ),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Text(photo.timestamp)
                           ],
                         ),

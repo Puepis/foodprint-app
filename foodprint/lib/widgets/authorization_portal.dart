@@ -1,3 +1,4 @@
+import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
@@ -8,7 +9,6 @@ import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/home.dart';
-import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,13 +17,13 @@ class AuthorizationPortal extends StatefulWidget {
   final String jwt;
   final Map<String, dynamic> payload;
 
-  AuthorizationPortal({Key key, @required this.jwt, @required this.payload}) : super(key: key);
+  const AuthorizationPortal({Key key, @required this.jwt, @required this.payload}) : super(key: key);
 
   factory AuthorizationPortal.fromJWT(String jwt) {
-    String payloadStr = jwt.split(".")[1];
+    final String payloadStr = jwt.split(".")[1];
     return AuthorizationPortal(
       jwt: jwt,
-      payload: json.decode(ascii.decode(base64.decode(base64.normalize(payloadStr))))
+      payload: json.decode(ascii.decode(base64.decode(base64.normalize(payloadStr)))) as Map<String, dynamic>
     );
   }
 
@@ -33,10 +33,10 @@ class AuthorizationPortal extends StatefulWidget {
 
 class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
-  int _authStatus = PENDING;
-  static const int UNAUTHORIZED = 0;
-  static const int AUTHORIZED = 1;
-  static const int PENDING = 2;
+  int _authStatus = pending;
+  static const int unauthorized = 0;
+  static const int authorized = 1;
+  static const int pending = 2;
   LatLng _currentPos;
   PhotoResponse _photoResponse;
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint;
@@ -51,7 +51,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
   Widget build(BuildContext context) {
     Widget result;
     switch(_authStatus) {
-      case AUTHORIZED: {
+      case authorized: {
         result = HomePage(
           location: _currentPos,
           photos: _photoResponse.photos,
@@ -61,50 +61,48 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         );
       }
       break;
-      case PENDING: {
+      case pending: {
         result =  Scaffold(
           backgroundColor: Colors.white,
           body: Center(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SpinKitDualRing(color: Colors.blue, size: 70.0,),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    "Authorizing",
-                    style: const TextStyle(
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold
-                    ),
-                  )
-                ],
-              )
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SpinKitDualRing(color: Colors.blue, size: 70.0,),
+                const SizedBox(height: 20.0),
+                const Text(
+                  "Authorizing",
+                  style: TextStyle(
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+              ],
             ),
           ),
         );
       }
       break;
-      case UNAUTHORIZED: {result = LoginPage();}
+      case unauthorized: {result = LoginPage();}
       break;
     }
     return result;
   }
 
   // Authorize token, retrieve data, and set location
-  void _setUserFoodprintAndLocation() async {
-    LatLng location = await Geolocator.getLocation();
-    var res = await http.get(
+  Future<void> _setUserFoodprintAndLocation() async {
+    final LatLng location = await Geolocator.getLocation();
+    final res = await http.get(
         '$SERVER_IP/api/users/photos',
         headers: {"authorization": "Bearer ${widget.jwt}"}
     );
 
     switch(res.statusCode) {
       case 200: {
-        PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body));
+        final PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
         setState(() {
-          _authStatus = AUTHORIZED;
+          _authStatus = authorized;
           _currentPos = location;
           _photoResponse = response;
           _userFoodprint = UserFoodprint.fromResponse(response);
@@ -114,14 +112,14 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       case 403: { // unauthorized
         print(res.body);
         setState(() {
-          _authStatus = UNAUTHORIZED;
+          _authStatus = unauthorized;
         });
       }
       break;
       case 400: { // error getting photos
         print(res.body);
         setState(() {
-          _authStatus = AUTHORIZED;
+          _authStatus = authorized;
           _currentPos = location;
         });
       }
@@ -130,7 +128,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         print(res.statusCode);
         print(res.body);
         setState(() {
-          _authStatus = UNAUTHORIZED; // TODO: Handle unexpected error
+          _authStatus = unauthorized; // TODO: Handle unexpected error
         });
       }
     }

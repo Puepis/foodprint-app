@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
@@ -96,10 +95,10 @@ class _HomePageState extends State<HomePage> {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => Camera(user: user),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        const begin = Offset(0.0, 1.0);
+        final end = Offset.zero;
+        final curve = Curves.ease;
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         return SlideTransition(
           position: animation.drive(tween),
           child: child,
@@ -108,7 +107,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget appBar(BuildContext context) {
+  PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
@@ -121,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         IconButton(
           icon: const Icon(Icons.exit_to_app),
           onPressed: () async {
-            bool successful = await AuthenticationService.attemptLogout(widget.payload['username']);
+            final bool successful = await AuthenticationService.attemptLogout(widget.payload['username'].toString());
             if (successful) {
               Navigator.pushNamed(context, "/login"); // log out
             }
@@ -132,12 +131,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Display a snackbar if saved
-  void _takePicture(BuildContext context, UserModel userModel) async {
+  Future<void> _takePicture(BuildContext context, UserModel userModel) async {
     final bool saved = await Navigator.of(context).push(_cameraRoute(userModel));
     if (saved != null && saved) {
       Scaffold.of(context)..removeCurrentSnackBar()..showSnackBar(
         const SnackBar(
-          content: const Text("Image saved!"),
+          content: Text("Image saved!"),
           behavior: SnackBarBehavior.floating,
         )
       );

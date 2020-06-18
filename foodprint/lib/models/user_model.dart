@@ -19,8 +19,8 @@ class UserModel extends ChangeNotifier {
       List<FoodprintPhoto> photos, Map<Restaurant, List<FoodprintPhoto>> foodprint) {
     _jwt = jwt;
     _payload = payload;
-    _username = payload['username'];
-    _id = payload['sub'];
+    _username = payload['username'] as String;
+    _id = payload['sub'] as int;
     _photos = photos;
     _foodprint = foodprint;
   }
@@ -41,7 +41,7 @@ class UserModel extends ChangeNotifier {
   }
 
   Future<void> deletePhoto(FoodprintPhoto photo) async {
-    var res = await http.delete(
+    final res = await http.delete(
       "$SERVER_IP/api/photos/",
       headers: {
         "photo_path": photo.storagePath

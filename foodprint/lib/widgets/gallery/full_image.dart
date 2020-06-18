@@ -18,31 +18,29 @@ class FullImage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(
-        child: GestureDetector(
-          onVerticalDragEnd: (details) {
-            double dy = details.velocity.pixelsPerSecond.dy;
-            if (dy > 0) { // swipe down
-              Navigator.pop(context);
-            }
-            else if (dy < 0) { // swipe up
-              // show photo details
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) => _photoDetails(formatter)
-              );
-            }
-          },
-         child: Center(
-            child: Image.memory(image.imgBytes),
-          ),
+      body: GestureDetector(
+        onVerticalDragEnd: (details) {
+          double dy = details.velocity.pixelsPerSecond.dy;
+          if (dy > 0) { // swipe down
+            Navigator.pop(context);
+          }
+          else if (dy < 0) { // swipe up
+            // show photo details
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (context) => _photoDetails(formatter)
+            );
+          }
+        },
+       child: Center(
+          child: Image.memory(image.imgBytes),
         ),
       )
     );
   }
 
-  Widget _photoDetails(formatter) => Container(
+  Widget _photoDetails(NumberFormat formatter) => Container(
     decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.0),
@@ -65,7 +63,7 @@ class FullImage extends StatelessWidget {
               formatter.format(image.price),
               style: subtitleTextStyle
             ),
-            Divider(
+            const Divider(
               color: Colors.grey,
               height: 30,
               thickness: 1,
@@ -124,7 +122,7 @@ class FullImage extends StatelessWidget {
   );
 
   List<Widget> getRatings(double rating) {
-    List<Widget> ratings = [
+    final List<Widget> ratings = [
       Text(
         rating.toString(),
         style: const TextStyle(
@@ -132,7 +130,7 @@ class FullImage extends StatelessWidget {
             color: Colors.white
         ),
       ),
-      SizedBox(width: 5.0,)
+      const SizedBox(width: 5.0,)
     ];
     for (int i = 0; i < 5; ++i) {
       if (rating - i >= 1) { // full star
@@ -142,7 +140,7 @@ class FullImage extends StatelessWidget {
             color: Colors.orange,
           )
         );
-      } else if (rating - i < 1 && i < rating) { // half star
+      } else if (rating > i) { // half star
         ratings.add(
           Icon(
             Icons.star_half,

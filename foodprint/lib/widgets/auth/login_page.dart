@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final List<Permission> _permissions = [Permission.location, Permission.camera];
 
   Future<void> _requestPermissions() async {
-    for (Permission permission in _permissions) {
+    for (final Permission permission in _permissions) {
       await permission.request();
     }
   }
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
 
     switch (res.statusCode) {
       case 200: { // success
-        String token = res.body;
+        final String token = res.body;
         storage.write(
           key: "jwt", value: token); // TODO: don't store token locally
         Navigator.push(
@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void displayDialog(context, title, text) => showDialog(
+  void displayDialog(BuildContext context, String title, String text) => showDialog(
     context: context,
     builder: (context) =>
         AlertDialog(
@@ -87,25 +87,17 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         RaisedButton(
             elevation: 2.0,
-            child: const Text('Register Here'),
             shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() {
               Navigator.pushNamed(context, "/register");
-            }
+            },
+            child: const Text('Register Here'),
         ),
-        loading ? SpinKitWave(color: Colors.orange, size: 30.0) : RaisedButton(
+        if (loading) SpinKitWave(color: Colors.orange, size: 30.0) else RaisedButton(
           color: Colors.orange,
             elevation: 8.0,
-            child: const Text(
-              'Log In',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0
-              ),
-            ),
             shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
@@ -119,7 +111,15 @@ class _LoginPageState extends State<LoginPage> {
                 http.Response res = await AuthenticationService.attemptLogin(_username, _password);
                 handleLoginResponse(context, res);
               }
-            }
+            },
+            child: const Text(
+              'Log In',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.0
+              ),
+            ),
         )
       ],
     );
@@ -128,11 +128,11 @@ class _LoginPageState extends State<LoginPage> {
   Container header = Container(
       height: 125,
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Center(
-        child: const Text(
+      child: const Center(
+        child: Text(
           "Foodprint",
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 50.0
           ),
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             TextFormField(
               maxLength: 20,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Username"
               ),
               onSaved: (String value) {
@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextFormField(
               maxLength: 20,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Password"
               ),
               onSaved: (String value) {

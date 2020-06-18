@@ -1,13 +1,14 @@
+
+import 'dart:convert';
 import 'package:foodprint/places_data/place_response.dart';
 import 'package:foodprint/places_data/result.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Geolocator {
   // Google Maps Search
-  static const String _API_KEY = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
+  static const String _apiKey = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
   static const LatLng toronto = LatLng(43.651070, -79.347015);
 
@@ -40,10 +41,7 @@ class Geolocator {
   }
 
   static Future<List<Result>> getRestaurants(LatLng location) async {
-
-    print("Searching for nearby restaurants");
-    String url = '$baseUrl?key=$_API_KEY&location=${location.latitude},${location.longitude}&rankby=distance&type=restaurant';
-    print(url);
+    final String url = '$baseUrl?key=$_apiKey&location=${location.latitude},${location.longitude}&rankby=distance&type=restaurant';
     try {
       final response = await http.get(url);
       final data = json.decode(response.body);
@@ -61,7 +59,7 @@ class Geolocator {
     if (data['status'] == "REQUEST_DENIED") {
       throw Exception('Request denied');
     } else if (data['status'] == "OK") {
-      final restaurants = PlaceResponse.parseResults(data['results']).sublist(0, 5); // 5 closest restaurants
+      final restaurants = PlaceResponse.parseResults(data['results'] as List<dynamic>).sublist(0, 5); // 5 closest restaurants
       return restaurants;
     } else {
       print(data);

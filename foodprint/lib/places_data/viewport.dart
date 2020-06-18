@@ -7,8 +7,8 @@ class ViewPort {
 
   factory ViewPort.fromJson(Map<String, dynamic> json){
     return ViewPort(
-        northEast: Location.fromJson(json['northeast']),
-        southWest: Location.fromJson(json['southwest'])
+        northEast: Location.fromJson(json['northeast'] as Map<String, dynamic>),
+        southWest: Location.fromJson(json['southwest'] as Map<String, dynamic>)
     );
   }
 }

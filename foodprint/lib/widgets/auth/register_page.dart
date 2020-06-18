@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void displayDialog(context, title, text) => showDialog(
+  void displayDialog(BuildContext context, String title, String text) => showDialog(
     context: context,
     builder: (context) =>
         AlertDialog(
@@ -70,14 +70,14 @@ class _RegisterPageState extends State<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Email"
               ),
               onSaved: (String value) {
                 _email = value.trim();
               },
               validator: (String value) {
-                RegExp re = new RegExp(r"\S+@\S+\.\S+"); // matches anystring@anystring.anystring
+                final RegExp re = RegExp(r"\S+@\S+\.\S+"); // matches anystring@anystring.anystring
                 if (value.isEmpty) {
                   return 'Please enter an email';
                 }
@@ -91,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 12.0),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Username"
               ),
               onSaved: (String value) {
@@ -111,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 12.0),
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Password"
               ),
               onSaved: (String value) {
@@ -142,17 +142,17 @@ class _RegisterPageState extends State<RegisterPage> {
       children: <Widget>[
         RaisedButton(
             elevation: 3.0,
-            child: const Text('Back to Login Page'),
             shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() async {
               Navigator.pop(context);
-            }
+            },
+            child: const Text('Back to Login Page'),
         ),
+
         RaisedButton(
             elevation: 8.0,
-            child: const Text('Sign Up!'),
             shape: const BeveledRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
@@ -160,10 +160,11 @@ class _RegisterPageState extends State<RegisterPage> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _formKey.currentState.reset();
-                http.Response res = await AuthenticationService.attemptSignUp(_email, _username, _password);
+                final http.Response res = await AuthenticationService.attemptSignUp(_email, _username, _password);
                 handleRegisterResponse(context, res);
               }
-            }
+            },
+            child: const Text('Register'),
         )
       ],
     );

@@ -8,8 +8,8 @@ class Geometry {
 
   factory Geometry.fromJson(Map<String, dynamic> json){
     return Geometry(
-        location: Location.fromJson(json['location']),
-        viewPort: ViewPort.fromJson(json['viewport'])
+        location: Location.fromJson(json['location'] as Map<String, dynamic>),
+        viewPort: ViewPort.fromJson(json['viewport'] as Map<String, dynamic>)
     );
   }
 }

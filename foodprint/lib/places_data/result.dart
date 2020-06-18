@@ -21,18 +21,19 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json){
     return Result(
-      geometry: Geometry.fromJson(json['geometry']),
-      icon: json['icon'],
-      id: json['id'],
-      name: json['name'],
-      photos: json['photos'] != null ? json['photos'].map<Photo>((i) => Photo.fromJson(i)).toList(): [],
-      placeId: json['place_id'],
-      rating: json['rating'] != null ? json['rating'].toDouble(): -1.0,
-      reference: json['reference'],
-      scope: json['scope'],
-      types: List<String>.from(json['types']),
-      userRatingsTotal: json['user_ratings_total'],
-      vicinity: json['vicinity'],
+      geometry: Geometry.fromJson(json['geometry'] as Map<String, dynamic>),
+      icon: json['icon'].toString(),
+      id: json['id'].toString(),
+      name: json['name'].toString(),
+      photos: json['photos'] != null ? (json['photos'] as List<dynamic>).map<Photo>((i) =>
+          Photo.fromJson(i as Map<String, dynamic>)).toList(): [],
+      placeId: json['place_id'] as String,
+      rating: json['rating'] != null ? double.parse(json['rating'].toString()) : -1.0,
+      reference: json['reference'].toString(),
+      scope: json['scope'].toString(),
+      types: List<String>.from(json['types'] as List<dynamic>),
+      userRatingsTotal: json['user_ratings_total'] as int,
+      vicinity: json['vicinity'].toString(),
     );
   }
 }
