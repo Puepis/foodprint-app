@@ -1,20 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:foodprint/models/places_data/restaurant_result.dart';
 import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/widgets/camera/image_details.dart';
 
 class RestaurantListing extends StatelessWidget {
   final UserModel user;
   final File imageFile;
-  final List<Result> restaurants;
-  RestaurantListing({Key key, @required this.imageFile, @required this.restaurants, @required this.user}) : super(key: key);
+  final List<RestaurantResult> restaurants;
+  const RestaurantListing({Key key, @required this.imageFile, @required this.restaurants, @required this.user}) : super(key: key);
 
   Widget _listRestaurants() {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(20),
-          scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: restaurants.length,
           itemBuilder: (context, index) => Container(
@@ -33,7 +32,7 @@ class RestaurantListing extends StatelessWidget {
                       restaurant: restaurants[index],
                     )
                 )).then((result) {
-                  bool saved = result as bool;
+                  final bool saved = result as bool;
                   if (saved != null) {
                     Navigator.of(context).pop(result); // pop back to camera
                   }
@@ -75,11 +74,11 @@ class RestaurantListing extends StatelessWidget {
         child: AppBar(
           centerTitle: true,
           automaticallyImplyLeading: false,
-          flexibleSpace: Center(
-            child: const Text(
+          flexibleSpace: const Center(
+            child: Text(
               "Select your location!",
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
@@ -89,9 +88,7 @@ class RestaurantListing extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: restaurants.length > 0 ? Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: restaurants.isNotEmpty ? Column(
           children: <Widget>[
            _listRestaurants()
           ],

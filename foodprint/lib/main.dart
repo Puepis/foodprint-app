@@ -25,7 +25,6 @@ void main() {
               builder: (context) {
                 return HomePage(
                   location: args.location,
-                  photos: args.photos,
                   userFoodprint: args.userFoodprint,
                   jwt: args.jwt,
                   payload: args.payload,

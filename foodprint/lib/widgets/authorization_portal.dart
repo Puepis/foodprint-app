@@ -2,9 +2,8 @@ import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/photo_response.dart';
+import 'package:foodprint/models/foodprint_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
-import 'package:foodprint/service/foodprint_methods.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
@@ -37,7 +36,6 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
   Status _authStatus = Status.pending;
   LatLng _currentPos;
-  PhotoResponse _photoResponse;
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint;
 
   @override
@@ -53,7 +51,6 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       case Status.authorized: {
         result = HomePage(
           location: _currentPos,
-          photos: _photoResponse.photos,
           userFoodprint: _userFoodprint,
           jwt: widget.jwt,
           payload: widget.payload,
@@ -91,19 +88,19 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
   // Authorize token, retrieve data, and set location
   Future<void> _setUserFoodprintAndLocation() async {
     final LatLng location = await Geolocator.getLocation();
+
     final res = await http.get(
-        '$SERVER_IP/api/users/photos',
+        '$SERVER_IP/api/users/foodprint',
         headers: {"authorization": "Bearer ${widget.jwt}"}
     );
 
     switch(res.statusCode) {
       case 200: {
-        final PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
+        final FoodprintResponse response = FoodprintResponse.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
         setState(() {
           _authStatus = Status.authorized;
           _currentPos = location;
-          _photoResponse = response;
-          _userFoodprint = UserFoodprint.fromResponse(response);
+          _userFoodprint = response.foodprint;
         });
       }
       break;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
+import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 
 class FullImage extends StatelessWidget {
+  final Restaurant restaurant;
   final FoodprintPhoto image;
-  FullImage({Key key, @required this.image}) : super(key: key);
+  const FullImage({Key key, @required this.restaurant, @required this.image}) : super(key: key);
 
   
   @override
@@ -20,7 +22,7 @@ class FullImage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: GestureDetector(
         onVerticalDragEnd: (details) {
-          double dy = details.velocity.pixelsPerSecond.dy;
+          final double dy = details.velocity.pixelsPerSecond.dy;
           if (dy > 0) { // swipe down
             Navigator.pop(context);
           }
@@ -52,7 +54,6 @@ class FullImage extends StatelessWidget {
     child: Stack(
       children: [
         Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -94,16 +95,16 @@ class FullImage extends StatelessWidget {
             ),
             const SizedBox(height: 5.0),
             Text(
-              image.restaurant.name,
+              restaurant.name,
               style: subtitleTextStyle
             ),
             const SizedBox(height: 5.0,),
             Row(
-              children: getRatings(image.restaurant.rating),
+              children: getRatings(restaurant.rating),
             ),
             const SizedBox(height: 10.0),
             Text(
-              "${image.restaurant.latitude}, ${image.restaurant.longitude}",
+              "${restaurant.latitude}, ${restaurant.longitude}",
               style: coordsTextStyle
             )
           ],
@@ -135,21 +136,21 @@ class FullImage extends StatelessWidget {
     for (int i = 0; i < 5; ++i) {
       if (rating - i >= 1) { // full star
         ratings.add(
-          Icon(
+          const Icon(
             Icons.star,
             color: Colors.orange,
           )
         );
       } else if (rating > i) { // half star
         ratings.add(
-          Icon(
+          const Icon(
             Icons.star_half,
             color: Colors.orange
           )
         );
       } else { // no star
         ratings.add(
-          Icon(
+          const Icon(
             Icons.star_border,
             color: Colors.orange,
           )

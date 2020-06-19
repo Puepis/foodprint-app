@@ -1,9 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
+import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/widgets/gallery/full_image.dart';
 import 'package:provider/provider.dart';
+import 'package:foodprint/service/foodprint_extension.dart';
 
 class Gallery extends StatelessWidget {
 
@@ -20,23 +22,24 @@ class Gallery extends StatelessWidget {
 
   List<Widget> _buildPhotos(BuildContext context) {
     final user = context.watch<UserModel>();
-    final List<FoodprintPhoto> photos = user.photos;
+    final List<FoodprintPhoto> photos = user.foodprint.photos;
 
     // No photos yet
     if (photos == null || photos.isEmpty){
       return const <Card>[];
     }
 
-    // Sort directories from newest to oldest
+    // TODO: Sort photos by timestamp
     //photos.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
 
     // Render photos
     return photos.map((photo) {
+      final Restaurant restaurant = user.foodprint.getVisitedRestaurantFromId(photo.restaurantId);
       return Stack(
           children: [
             GestureDetector(
               onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => FullImage(image: photo)
+                  builder: (context) => FullImage(image: photo, restaurant: restaurant,)
               )),
               child: Card(
                 elevation: 0.0,

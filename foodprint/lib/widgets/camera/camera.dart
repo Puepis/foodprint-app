@@ -1,14 +1,14 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:foodprint/models/places_data/restaurant_result.dart';
 import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/places_data/result.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/camera/restaurant_listing.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'dart:async';
 
 class Camera extends StatefulWidget {
   final UserModel user;
@@ -21,17 +21,17 @@ class _CameraState extends State<Camera> {
   File _imageFile;
   FileImage loadedImage;
   LatLng _location;
-  List<Result> _restaurants;
+  List<RestaurantResult> _restaurants;
 
   Future<void> _takePhoto(ImageSource source, BuildContext context) async {
     final _picker = ImagePicker();
-    PickedFile image = await _picker.getImage(source: source, imageQuality: 70);
+    final PickedFile image = await _picker.getImage(source: source, imageQuality: 70);
     if (image == null) { // Back button pressed
       Navigator.pop(context);
       return;
     }
 
-    File imageFile = File(image.path);
+    final File imageFile = File(image.path);
     loadedImage = FileImage(imageFile);
     await precacheImage(loadedImage, context); // precache the image
 
@@ -46,18 +46,20 @@ class _CameraState extends State<Camera> {
 
   // Cropper plugin
   Future<void> _cropImage() async {
-    File cropped = await ImageCropper.cropImage(
+    final File cropped = await ImageCropper.cropImage(
       sourcePath: _imageFile.path,
-      androidUiSettings: AndroidUiSettings(
+      androidUiSettings: const AndroidUiSettings(
           toolbarTitle: 'Cropper',
           toolbarColor: Colors.deepOrange,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.original,
           lockAspectRatio: false),
     );
-    if (mounted) setState(() {
+    if (mounted) {
+      setState(() {
         _imageFile = cropped;
       });
+    }
   }
 
   // Remove image
@@ -79,7 +81,7 @@ class _CameraState extends State<Camera> {
       child: Material(
           type: MaterialType.transparency,
           child: Ink(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.blue,
               shape: BoxShape.circle,
             ),
@@ -93,13 +95,13 @@ class _CameraState extends State<Camera> {
                     restaurants: _restaurants
                   )
                 )).then((result) {
-                  bool saved = result as bool;
+                  final bool saved = result as bool;
                   if (saved != null) {
                     Navigator.of(context).pop(result); // pop back to home
                   }
                 });
               },
-              child: Icon(
+              child: const Icon(
                 Icons.navigate_next,
                 size: 50.0,
                 color: Colors.white,
@@ -110,7 +112,7 @@ class _CameraState extends State<Camera> {
     );
   }
 
-  // Show confirmation dialogj
+  // Show confirmation dialog
   Future<bool> _onWillPop() async {
     return (await showDialog(
       context: context,
@@ -124,14 +126,13 @@ class _CameraState extends State<Camera> {
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 5.0),
                 child: Text(
                   "Are you sure you want to \n discard your photo?",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.0
                   ),
@@ -146,27 +147,27 @@ class _CameraState extends State<Camera> {
                     borderRadius: BorderRadius.circular(30.0)
                   ),
                   color: Colors.black87,
-                  child: Text(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text(
                     "Confirm",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold
                     ),
                   ),
-                  onPressed: () => Navigator.of(context).pop(true),
                 ),
               ),
               const SizedBox(height: 5.0,),
               FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
                 child: const Text(
                   "Cancel",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.black
                   ),
                 ),
-                onPressed: () => Navigator.of(context).pop(false),
               )
             ],
           ),
@@ -180,8 +181,8 @@ class _CameraState extends State<Camera> {
     if (_imageFile == null) _takePhoto(ImageSource.camera, context);
 
     if (_imageFile == null) {
-      return Scaffold(
-      body: const Center(
+      return const Scaffold(
+      body: Center(
         child: CircularProgressIndicator(),
       ),
     );
@@ -202,7 +203,7 @@ class _CameraState extends State<Camera> {
                 top: 30,
                 left: 10,
                 child: IconButton(
-                  icon: Icon(Icons.cancel, color: Colors.red, size: 50.0,),
+                  icon: const Icon(Icons.cancel, color: Colors.red, size: 50.0,),
                   onPressed: () => Navigator.pop(context),
                 )
               ),
@@ -210,14 +211,14 @@ class _CameraState extends State<Camera> {
                 left: 10,
                 bottom: 20,
                 child: IconButton(
-                  icon: Icon(Icons.refresh, color: Colors.white, size: 40.0,),
+                  icon: const Icon(Icons.refresh, color: Colors.white, size: 40.0,),
                   onPressed: _clear,
                 ),
               ),
               Positioned(
                 bottom: 20,
                 right: 30,
-                child: _restaurants != null ? customButton(context) : SpinKitRing(
+                child: _restaurants != null ? customButton(context) : const SpinKitRing(
                   color: Colors.blue,
                   size: 40.0,
                 )

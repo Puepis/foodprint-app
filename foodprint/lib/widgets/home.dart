@@ -13,13 +13,12 @@ import 'package:provider/provider.dart';
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
   final LatLng location;
-  final List<FoodprintPhoto> photos;
   final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
   final String jwt;
   final Map<String, dynamic> payload;
 
-  const HomePage({Key key, @required this.location, @required this.photos,
-    @required this.userFoodprint, @required this.jwt, @required this.payload}) : super(key: key);
+  const HomePage({Key key, @required this.location, @required this.userFoodprint,
+    @required this.jwt, @required this.payload}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -30,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => UserModel(widget.jwt, widget.payload, widget.photos, widget.userFoodprint),
+      create: (context) => UserModel(widget.location, widget.jwt, widget.payload, widget.userFoodprint),
       child: Scaffold(
         appBar: appBar(context),
         body: _selectedIndex == 0 ? FoodMap(initialPos: widget.location) : Gallery(),
