@@ -14,7 +14,7 @@ description: A neat way to measure your foodprint
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -28,7 +28,7 @@ dependencies:
   image_cropper: ^1.2.1
   path: ^1.6.4
   fluttertoast: ^4.0.1
-  provider: ^4.0.0
+  provider: ^4.1.0
   intl: ^0.16.1
   geolocator: ^5.3.1
   permission_handler: ^5.0.0

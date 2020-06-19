@@ -31,12 +31,11 @@ class AuthorizationPortal extends StatefulWidget {
   _AuthorizationPortalState createState() => _AuthorizationPortalState();
 }
 
+enum Status { unauthorized, authorized, pending }
+
 class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
-  int _authStatus = pending;
-  static const int unauthorized = 0;
-  static const int authorized = 1;
-  static const int pending = 2;
+  Status _authStatus = Status.pending;
   LatLng _currentPos;
   PhotoResponse _photoResponse;
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint;
@@ -51,7 +50,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
   Widget build(BuildContext context) {
     Widget result;
     switch(_authStatus) {
-      case authorized: {
+      case Status.authorized: {
         result = HomePage(
           location: _currentPos,
           photos: _photoResponse.photos,
@@ -61,17 +60,16 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         );
       }
       break;
-      case pending: {
+      case Status.pending: {
         result =  Scaffold(
           backgroundColor: Colors.white,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+              children: const [
                 SpinKitDualRing(color: Colors.blue, size: 70.0,),
-                const SizedBox(height: 20.0),
-                const Text(
+                SizedBox(height: 20.0),
+                Text(
                   "Authorizing",
                   style: TextStyle(
                     fontSize: 40.0,
@@ -84,7 +82,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         );
       }
       break;
-      case unauthorized: {result = LoginPage();}
+      case Status.unauthorized: {result = LoginPage();}
       break;
     }
     return result;
@@ -102,7 +100,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       case 200: {
         final PhotoResponse response = PhotoResponse.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
         setState(() {
-          _authStatus = authorized;
+          _authStatus = Status.authorized;
           _currentPos = location;
           _photoResponse = response;
           _userFoodprint = UserFoodprint.fromResponse(response);
@@ -112,14 +110,14 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       case 403: { // unauthorized
         print(res.body);
         setState(() {
-          _authStatus = unauthorized;
+          _authStatus = Status.unauthorized;
         });
       }
       break;
       case 400: { // error getting photos
         print(res.body);
         setState(() {
-          _authStatus = authorized;
+          _authStatus = Status.authorized;
           _currentPos = location;
         });
       }
@@ -128,7 +126,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
         print(res.statusCode);
         print(res.body);
         setState(() {
-          _authStatus = unauthorized; // TODO: Handle unexpected error
+          _authStatus = Status.unauthorized; // TODO: Handle unexpected error
         });
       }
     }

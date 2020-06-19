@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             height: 60,
             child: Row(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
