@@ -17,10 +17,10 @@ class Gallery extends StatelessWidget {
       children: _buildPhotos(context),
     );
   }
-  
+
   List<Widget> _buildPhotos(BuildContext context) {
-    var user = Provider.of<UserModel>(context); // grab notifier
-    List<FoodprintPhoto> photos = user.photos;
+    final user = context.watch<UserModel>();
+    final List<FoodprintPhoto> photos = user.photos;
 
     // No photos yet
     if (photos == null || photos.isEmpty){
@@ -32,50 +32,48 @@ class Gallery extends StatelessWidget {
 
     // Render photos
     return photos.map((photo) {
-      return Container(
-        child: Stack(
+      return Stack(
           children: [
             GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(
-              builder: (context) => FullImage(image: photo)
-            )),
-            child: Card(
-              elevation: 0.0,
-              clipBehavior: Clip.antiAlias,
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: MemoryImage(photo.imgBytes),
-                    fit: BoxFit.cover
-                  )
+              onTap: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => FullImage(image: photo)
+              )),
+              child: Card(
+                elevation: 0.0,
+                clipBehavior: Clip.antiAlias,
+                child: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: MemoryImage(photo.imgBytes),
+                          fit: BoxFit.cover
+                      )
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            top: 2.5,
-            right: 2.5,
-            child: IconButton(
-              icon: const Icon(Icons.delete),
-              iconSize: 25.0,
-              color: Colors.white,
-              onPressed: () {
-                showModalBottomSheet(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(5.0),
-                      topLeft: Radius.circular(5.0)
-                    )
-                  ),
-                  backgroundColor: Colors.black87,
-                  context: context,
-                  builder: (context) => _confirmationDialog(context, user, photo)
-                );
-              },
+            Positioned(
+              top: 2.5,
+              right: 2.5,
+              child: IconButton(
+                icon: const Icon(Icons.delete),
+                iconSize: 25.0,
+                color: Colors.white,
+                onPressed: () {
+                  showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(5.0),
+                              topLeft: Radius.circular(5.0)
+                          )
+                      ),
+                      backgroundColor: Colors.black87,
+                      context: context,
+                      builder: (context) => _confirmationDialog(context, user, photo)
+                  );
+                },
+              ),
             ),
-          ),
-        ]
-        ),
+          ]
       );
     }).toList();
   }
@@ -85,21 +83,21 @@ class Gallery extends StatelessWidget {
     child: Wrap(
       children: [
         Container(
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 5.0),
           child: const Text(
             "Are you sure you want to delete this photo?",
             textAlign: TextAlign.left,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.white70
             ),
           ),
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 5.0),
         ),
         ListTile(
           leading: const Icon(Icons.delete_outline, color: Colors.white70,),
           title: const Text(
             "Delete photo",
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white
             ),
           ),

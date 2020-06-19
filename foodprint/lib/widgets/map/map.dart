@@ -22,8 +22,8 @@ class _FoodMapState extends State<FoodMap> {
   
   @override
   Widget build(BuildContext context) {
-    final UserModel user = Provider.of<UserModel>(context);
-    _markers = generateMarkers(user.foodprint);
+    final foodprint = context.select((UserModel user) => user.foodprint);
+    _markers = generateMarkers(foodprint);
 
     // Add marker indicating current location
     if (widget.initialPos != null) {
