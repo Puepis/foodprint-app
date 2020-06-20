@@ -71,7 +71,7 @@ class Gallery extends StatelessWidget {
                       ),
                       backgroundColor: Colors.black87,
                       context: context,
-                      builder: (context) => _confirmationDialog(context, user, photo)
+                      builder: (cxt) => _confirmationDialog(cxt, user, photo)
                   );
                 },
               ),

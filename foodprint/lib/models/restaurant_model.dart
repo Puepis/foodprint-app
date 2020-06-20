@@ -13,8 +13,8 @@ class Restaurant {
       id: json['restaurant_id'].toString(),
       name: json['restaurant_name'].toString(),
       rating: double.parse(json['restaurant_rating'].toString()),
-      latitude: json['latitude'] as double,
-      longitude: json['longitude'] as double
+      latitude: double.parse(json['restaurant_lat'].toString()),
+      longitude: double.parse(json['restaurant_lng'].toString())
     );
   }
 }
