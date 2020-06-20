@@ -29,8 +29,8 @@ class Gallery extends StatelessWidget {
       return const <Card>[];
     }
 
-    // TODO: Sort photos by timestamp
-    //photos.sort((a, b) => getTimeTaken(b).compareTo(getTimeTaken(a)));
+    // Sort from newest to oldest
+    photos.sort((a, b) => b.timestamp.compareTo(a.timestamp));
 
     // Render photos
     return photos.map((photo) {

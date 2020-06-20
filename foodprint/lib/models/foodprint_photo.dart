@@ -28,7 +28,7 @@ class FoodprintPhoto {
       price: double.parse(json['price'].toString()),
       caption: json['caption'].toString(),
       restaurantId: json['restaurant_id'].toString(),
-      timestamp: parseTimestamp(json['time_taken'].toString()), // TODO: Parse timestamp
+      timestamp: parseTimestamp(json['time_taken'].toString()),
     );
   }
 
