@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:intl/intl.dart';
+import 'package:foodprint/service/ratings.dart';
 
 class RestaurantCard extends StatelessWidget {
   final Restaurant restaurant;
@@ -10,18 +11,19 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ratingsWidget = restaurant.rating.ratingsWidget;
     return GestureDetector(
       onDoubleTap: () => Navigator.push(context, MaterialPageRoute(
           builder: (context) => RestaurantPage(
             restaurant: restaurant,
             photos: photos,
-            ratings: getRatings(restaurant.rating)
+            ratings: ratingsWidget
           )
       )),
-      child: Container(
+      child: Container( // TODO: display restaurant address
         height: 250,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)
             ),
@@ -42,9 +44,7 @@ class RestaurantCard extends StatelessWidget {
                       fontSize: 24
                   ),
                 ),
-                Row(
-                    children: getRatings(restaurant.rating)
-                ),
+                ratingsWidget,
                 const SizedBox(height: 20.0),
                 const Text(
                   "YOUR PHOTOS",
@@ -84,52 +84,12 @@ class RestaurantCard extends StatelessWidget {
       ),
     );
   }
-
-  List<Widget> getRatings(double rating) {
-    final List<Widget> ratings = [
-      Text(
-        rating.toString(),
-        style: const TextStyle(
-            color: Colors.grey,
-            fontFamily: "Gotham",
-            fontWeight: FontWeight.bold,
-            fontSize: 14
-        ),
-      ),
-    ];
-
-    for (int i = 0; i < 5; ++i) {
-      if (rating - i >= 1) { // full star
-        ratings.add(
-            Icon(
-              Icons.star,
-              color: Colors.orange,
-            )
-        );
-      } else if (rating > i){ // half star
-        ratings.add(
-            Icon(
-                Icons.star_half,
-                color: Colors.orange
-            )
-        );
-      } else { // no star
-        ratings.add(
-            Icon(
-              Icons.star_border,
-              color: Colors.black,
-            )
-        );
-      }
-    }
-    return ratings;
-  }
 }
 
 class RestaurantPage extends StatelessWidget {
   final Restaurant restaurant;
   final List<FoodprintPhoto> photos;
-  final List<Widget> ratings;
+  final Row ratings;
   const RestaurantPage({Key key, this.restaurant, this.photos, this.ratings}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -147,10 +107,10 @@ class RestaurantPage extends StatelessWidget {
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
-                      offset: const Offset(0.0, 2.0),
+                      offset: Offset(0.0, 2.0),
                       blurRadius: 6.0
                     )
                   ]
@@ -172,7 +132,7 @@ class RestaurantPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       iconSize: 30.0,
                       color: Colors.black,
                       onPressed: () => Navigator.pop(context),
@@ -180,13 +140,13 @@ class RestaurantPage extends StatelessWidget {
                     Row(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.search),
+                          icon: const Icon(Icons.search),
                           iconSize: 30.0,
                           color: Colors.black,
                           onPressed: () => Navigator.pop(context),
                         ),
                         IconButton(
-                          icon: Icon(Icons.menu),
+                          icon: const Icon(Icons.menu),
                           iconSize: 30.0,
                           color: Colors.black,
                           onPressed: () => Navigator.pop(context),
@@ -213,9 +173,7 @@ class RestaurantPage extends StatelessWidget {
                           fontSize: 25,
                         ),
                       ),
-                      Row(
-                          children: ratings
-                      ),
+                      ratings
                     ]
                   ),
                 ),

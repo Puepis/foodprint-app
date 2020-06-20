@@ -30,60 +30,63 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => UserModel(widget.location, widget.jwt, widget.payload, widget.userFoodprint),
-      child: Scaffold(
-        appBar: appBar(context),
-        body: _selectedIndex == 0 ? FoodMap(initialPos: widget.location) : Gallery(),
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconButton(
-                  iconSize: 30.0,
-                  icon: const Icon(Icons.location_on),
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
-                  },
-                ),
-                IconButton(
-                  iconSize: 30.0,
-                  icon: const Icon(Icons.collections),
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
-                  },
-                )
-              ],
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: appBar(context),
+          body: _selectedIndex == 0 ? FoodMap(initialPos: widget.location) : Gallery(),
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            child: Container(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    iconSize: 30.0,
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 0;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    iconSize: 30.0,
+                    icon: const Icon(Icons.collections),
+                    onPressed: () {
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-        floatingActionButton: Consumer<UserModel>(
-          builder: (context, userModel, child) {
-            return Container(
-              height: 75,
-              width: 75,
-              child: FittedBox(
-                child: FloatingActionButton(
-                  elevation: 20.0,
-                  onPressed: () {
-                    _takePicture(context, userModel);
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 35.0,
+          floatingActionButton: Consumer<UserModel>(
+            builder: (context, userModel, child) {
+              return Container(
+                height: 75,
+                width: 75,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    elevation: 20.0,
+                    onPressed: () {
+                      _takePicture(context, userModel);
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 35.0,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       )
     );
   }

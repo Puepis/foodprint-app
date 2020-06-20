@@ -68,31 +68,34 @@ class RestaurantListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0),
-        child: AppBar(
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          flexibleSpace: const Center(
-            child: Text(
-              "Select your location!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(120.0),
+          child: AppBar(
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            flexibleSpace: const Center(
+              child: Text(
+                "Select your location!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Container(
-        child: restaurants.isNotEmpty ? Column(
-          children: <Widget>[
-           _listRestaurants()
-          ],
-        ) : const Text("No restaurants found")
+        body: Container(
+          child: restaurants.isNotEmpty ? Column(
+            children: <Widget>[
+             _listRestaurants()
+            ],
+          ) : const Text("No restaurants found")
+        ),
       ),
     );
   }

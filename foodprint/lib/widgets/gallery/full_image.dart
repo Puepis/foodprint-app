@@ -3,6 +3,7 @@ import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/styles/text_styles.dart';
 import 'package:intl/intl.dart';
+import 'package:foodprint/service/ratings.dart';
 
 class FullImage extends StatelessWidget {
   final Restaurant restaurant;
@@ -99,9 +100,7 @@ class FullImage extends StatelessWidget {
               style: subtitleTextStyle
             ),
             const SizedBox(height: 5.0,),
-            Row(
-              children: getRatings(restaurant.rating),
-            ),
+            restaurant.rating.ratingsWidget,
             const SizedBox(height: 10.0),
             Text(
               "${restaurant.latitude}, ${restaurant.longitude}",
@@ -121,42 +120,4 @@ class FullImage extends StatelessWidget {
       ],
     ),
   );
-
-  List<Widget> getRatings(double rating) {
-    final List<Widget> ratings = [
-      Text(
-        rating.toString(),
-        style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white
-        ),
-      ),
-      const SizedBox(width: 5.0,)
-    ];
-    for (int i = 0; i < 5; ++i) {
-      if (rating - i >= 1) { // full star
-        ratings.add(
-          const Icon(
-            Icons.star,
-            color: Colors.orange,
-          )
-        );
-      } else if (rating > i) { // half star
-        ratings.add(
-          const Icon(
-            Icons.star_half,
-            color: Colors.orange
-          )
-        );
-      } else { // no star
-        ratings.add(
-          const Icon(
-            Icons.star_border,
-            color: Colors.orange,
-          )
-        );
-      }
-    }
-    return ratings;
-  }
 }
