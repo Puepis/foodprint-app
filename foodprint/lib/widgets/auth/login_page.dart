@@ -34,14 +34,66 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          children: <Widget>[
-            header,
-            loginForm(),
-          ],
-        ),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 75,
+                width: 75,
+              ),
+              const Text(
+                "Welcome back!",
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w600
+                ),
+              ),
+              const SizedBox(height: 2.5,),
+              const Text(
+                "Sign in to continue",
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.grey
+                ),
+              ),
+              const SizedBox(height: 60.0,),
+              loginForm(),
+              const SizedBox(height: 30.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don't have an account?",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 4.0,),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/register");
+                    },
+                    child: const Text(
+                      "Register",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                        fontSize: 14.0
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        )
       ),
     );
   }
@@ -62,120 +114,97 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
       break;
-      case 401: {
-          displayDialog(context, "Error", res.body);
-      }
-      break;
+      case 401:
       default: {
           print(res.body);
-          displayDialog(context, "Unexpected error", res.body);
       }
     }
   }
 
-  void displayDialog(BuildContext context, String title, String text) => showDialog(
-    context: context,
-    builder: (context) =>
-        AlertDialog(
-            title: Text(title),
-            content: Text(text)
-        ),
-  );
-
-  ButtonBar buttons() {
-    return ButtonBar(
-      children: <Widget>[
-        RaisedButton(
-            elevation: 2.0,
-            shape: const RoundedRectangleBorder(
-              borderRadius:BorderRadius.all(Radius.circular(7.0)),
-            ),
-            onPressed:() {
-              Navigator.pushNamed(context, "/register");
-            },
-            child: const Text('Register Here'),
-        ),
-        if (loading) const SpinKitWave(color: Colors.orange, size: 30.0) else RaisedButton(
-          color: Colors.orange,
-            elevation: 8.0,
-            shape: const RoundedRectangleBorder(
-              borderRadius:BorderRadius.all(Radius.circular(30.0)),
-            ),
-            onPressed:() async {
-              if (_formKey.currentState.validate()) {
-                setState(() {
-                  loading = true;
-                });
-                _formKey.currentState.save();
-                _formKey.currentState.reset();
-                final http.Response res = await AuthenticationService.attemptLogin(_username, _password);
-                handleLoginResponse(context, res);
-              }
-            },
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14.0
+  Form loginForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Username",
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(7.0)
               ),
             ),
-        )
-      ],
-    );
-  }
-
-  Container header = Container(
-      height: 125,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: const Center(
-        child: Text(
-          "Foodprint",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 50.0
+            onSaved: (String value) {
+              _username = value.trim();
+            },
+            validator: (String value) {
+              return value.isEmpty ? 'Please enter a username' : null;
+            },
           ),
-        )
-      ),
-    );
-
-  Container loginForm() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      margin: const EdgeInsets.only(top: 30.0),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              maxLength: 20,
-              decoration: const InputDecoration(
-                  labelText: "Username"
-              ),
-              onSaved: (String value) {
-                _username = value.trim();
-              },
-              validator: (String value) {
-                return value.isEmpty ? 'Please enter a username' : null;
-              },
+          const SizedBox(height: 20,),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Password",
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(7.0)
+              )
             ),
-            TextFormField(
-              maxLength: 20,
-              decoration: const InputDecoration(
-                  labelText: "Password"
+            onSaved: (String value) {
+              _password = value.trim();
+            },
+            validator: (String value) {
+              return value.isEmpty ? 'Please enter a password' : null;
+            },
+            obscureText: true,
+          ),
+          const SizedBox(height: 15,),
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+              },
+              child: const Text(
+                "Forgot Password?",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500
+                ),
               ),
-              onSaved: (String value) {
-                _password = value.trim();
-              },
-              validator: (String value) {
-                return value.isEmpty ? 'Please enter a password' : null;
-              },
-              obscureText: true,
             ),
-            buttons()
-          ],
-        ),
+          ),
+          const SizedBox(height: 30.0,),
+          if (loading) const SpinKitWave(color: Colors.orange, size: 40.0)
+          else ButtonTheme(
+            minWidth: 200,
+            height: 50,
+            child: RaisedButton(
+              color: Colors.orange,
+              shape: const RoundedRectangleBorder(
+                borderRadius:BorderRadius.all(Radius.circular(7)),
+              ),
+              onPressed:() async {
+                if (_formKey.currentState.validate()) {
+                  setState(() {
+                    loading = true;
+                  });
+                  _formKey.currentState.save();
+                  _formKey.currentState.reset();
+                  final http.Response res = await AuthenticationService.attemptLogin(_username, _password);
+                  handleLoginResponse(context, res);
+                }
+              },
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25.0
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
