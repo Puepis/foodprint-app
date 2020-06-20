@@ -33,67 +33,70 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 75,
-                  width: 75,
-                ),
-                const Text(
-                  "Create an account",
-                  style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w600
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: SafeArea(
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: 75,
+                    width: 75,
                   ),
-                ),
-                const SizedBox(height: 2.5,),
-                const Text(
-                  "to begin tracking your foodprint",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.grey
-                  ),
-                ),
-                const SizedBox(height: 60.0,),
-                registerForm(),
-                const SizedBox(height: 30.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Already have an account?",
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                      ),
+                  const Text(
+                    "Create an account",
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.w600
                     ),
-                    const SizedBox(width: 4.0,),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "Login",
+                  ),
+                  const SizedBox(height: 2.5,),
+                  const Text(
+                    "to begin tracking your foodprint",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.grey
+                    ),
+                  ),
+                  const SizedBox(height: 60.0,),
+                  registerForm(),
+                  const SizedBox(height: 30.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Already have an account?",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.orange,
-                            fontSize: 14.0
+                          fontSize: 14.0,
+                          color: Colors.black,
                         ),
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
+                      const SizedBox(width: 4.0,),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orange,
+                              fontSize: 14.0
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+        ),
       ),
     );
   }

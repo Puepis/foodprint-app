@@ -22,7 +22,14 @@ class TokenAuth extends StatelessWidget {
       future: jwtOrEmpty,
       builder: (context, snapshot) {
         // Loading
-        if(!snapshot.hasData) return const CircularProgressIndicator();
+        if(!snapshot.hasData) {
+          return const Scaffold(
+            backgroundColor: Colors.white,
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
 
         // JSON Web Token
         if (snapshot.data != "") {
