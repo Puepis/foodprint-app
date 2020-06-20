@@ -97,7 +97,7 @@ class _CameraState extends State<Camera> {
                 )).then((result) {
                   final bool saved = result as bool;
                   if (saved != null) {
-                    Navigator.of(context).pop(result); // pop back to home
+                    Navigator.of(context).pop(result); // pop back to dashboard
                   }
                 });
               },

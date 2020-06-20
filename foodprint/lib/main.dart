@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/home_page_args.dart';
+import 'package:foodprint/models/dashboard_args.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/register_page.dart';
-import 'package:foodprint/widgets/home.dart';
+import 'package:foodprint/widgets/dashboard.dart';
 import 'package:foodprint/widgets/token_verification.dart';
 
 void main() {
@@ -19,11 +19,11 @@ void main() {
         },
         onGenerateRoute: (settings) {
           // Extract arguments and build route
-          if (settings.name == HomePage.routeName) {
-            final HomePageArgs args = settings.arguments as HomePageArgs;
+          if (settings.name == Dashboard.routeName) {
+            final DashboardArgs args = settings.arguments as DashboardArgs;
             return MaterialPageRoute(
               builder: (context) {
-                return HomePage(
+                return Dashboard(
                   location: args.location,
                   userFoodprint: args.userFoodprint,
                   jwt: args.jwt,

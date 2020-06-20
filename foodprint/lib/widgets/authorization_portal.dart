@@ -7,7 +7,7 @@ import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
-import 'package:foodprint/widgets/home.dart';
+import 'package:foodprint/widgets/dashboard.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -49,7 +49,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
     Widget result;
     switch(_authStatus) {
       case Status.authorized: {
-        result = HomePage(
+        result = Dashboard(
           location: _currentPos,
           userFoodprint: _userFoodprint,
           jwt: widget.jwt,

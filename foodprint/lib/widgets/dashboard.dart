@@ -10,20 +10,20 @@ import 'package:foodprint/widgets/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  static const routeName = "/home";
+class Dashboard extends StatefulWidget {
+  static const routeName = "/dashboard";
   final LatLng location;
   final Map<Restaurant, List<FoodprintPhoto>> userFoodprint;
   final String jwt;
   final Map<String, dynamic> payload;
 
-  const HomePage({Key key, @required this.location, @required this.userFoodprint,
+  const Dashboard({Key key, @required this.location, @required this.userFoodprint,
     @required this.jwt, @required this.payload}) : super(key: key);
   @override
-  _HomePageState createState() => _HomePageState();
+  _DashboardState createState() => _DashboardState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   @override
