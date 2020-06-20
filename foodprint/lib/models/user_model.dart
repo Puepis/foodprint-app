@@ -138,10 +138,32 @@ class UserModel extends ChangeNotifier {
     if (res.statusCode == 200) {
       _foodprint = _foodprint.removePhoto(photo);
       notifyListeners();
-      return true;
     }
-    else {
-      return false;
+  }
+
+  Future<void> editPhoto(FoodprintPhoto oldPhoto, String name, String price, String comments) async {
+    final res = await http.put(
+      "$serverIP/api/photos",
+      body: {
+        "path": oldPhoto.storagePath,
+        "photo_name": name,
+        "price": price.toString(),
+        "caption": comments
+      }
+    );
+
+    if (res.statusCode == 200) {
+      final FoodprintPhoto newPhoto = FoodprintPhoto(
+          storagePath: oldPhoto.storagePath,
+          name: name,
+          price: double.parse(price),
+          caption: comments,
+          restaurantId: oldPhoto.restaurantId,
+          timestamp: oldPhoto.timestamp,
+          imgBytes: oldPhoto.imgBytes
+      );
+      _foodprint = _foodprint.editPhoto(newPhoto);
+      notifyListeners();
     }
   }
 }

@@ -39,7 +39,7 @@ class Gallery extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => FullImage(image: photo, restaurant: restaurant,)
+                  builder: (context) => FullImage(user: user, image: photo, restaurant: restaurant,)
               )),
               child: Card(
                 elevation: 0.0,

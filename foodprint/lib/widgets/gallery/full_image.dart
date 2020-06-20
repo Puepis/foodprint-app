@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/styles/text_styles.dart';
+import 'package:foodprint/widgets/gallery/edit_image.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/service/ratings.dart';
 
 class FullImage extends StatelessWidget {
+  final UserModel user;
   final Restaurant restaurant;
   final FoodprintPhoto image;
-  const FullImage({Key key, @required this.restaurant, @required this.image}) : super(key: key);
+  const FullImage({Key key, @required this.user, @required this.restaurant, @required this.image}) : super(key: key);
 
   
   @override
@@ -32,7 +35,7 @@ class FullImage extends StatelessWidget {
             showModalBottomSheet(
               backgroundColor: Colors.transparent,
               context: context,
-              builder: (context) => _photoDetails(formatter)
+              builder: (cxt) => _photoDetails(cxt, formatter)
             );
           }
         },
@@ -43,7 +46,7 @@ class FullImage extends StatelessWidget {
     );
   }
 
-  Widget _photoDetails(NumberFormat formatter) => Container(
+  Widget _photoDetails(BuildContext context, NumberFormat formatter) => Container(
     decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.0),
@@ -114,7 +117,14 @@ class FullImage extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.edit),
             color: Colors.blue,
-            onPressed: () {},
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (_) => EditImageScreen(
+                  user: user,
+                  photo: image,
+                )
+              ));
+            },
           ),
         )
       ],

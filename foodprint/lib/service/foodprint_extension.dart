@@ -33,26 +33,20 @@ extension FoodprintExtension on Map<Restaurant, List<FoodprintPhoto>> {
     return foodprint;
   }
 
-  /*Map<Restaurant, List<FoodprintPhoto>> fromResponse(PhotoResponse response) {
-    final Map<Restaurant, List<FoodprintPhoto>> result = {};
-    for (final photo in response.photos) {
-      final rv = result._existingRestaurant(photo.restaurant.id);
-      if (rv == null) { // generate new key
-        final Restaurant place = Restaurant(
-            id: photo.restaurant.id,
-            name: photo.restaurant.name,
-            rating: photo.restaurant.rating,
-            latitude: photo.restaurant.latitude,
-            longitude: photo.restaurant.longitude
-        );
-        result[place] = [photo];
+  Map<Restaurant, List<FoodprintPhoto>> editPhoto(FoodprintPhoto newPhoto) {
+    final foodprint = this;
+    foodprint.forEach((key, photos) {
+      if (key.id.compareTo(newPhoto.restaurantId) == 0) {
+        for (final p in photos) {
+          if (p.storagePath.compareTo(newPhoto.storagePath) == 0) {
+            final index = photos.indexOf(p);
+            photos[index] = newPhoto;
+          }
+        }
       }
-      else {
-        result[rv].insert(0, photo);
-      }
-    }
-    return result;
-  }*/
+    });
+    return foodprint;
+  }
 
   Restaurant getVisitedRestaurantFromId(String id) {
     final foodprint = this;
