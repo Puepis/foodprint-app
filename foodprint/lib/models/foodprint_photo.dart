@@ -5,8 +5,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:path/path.dart';
-
 class FoodprintPhoto {
   final String storagePath; // unique identifier
   Uint8List imgBytes;
@@ -36,7 +34,6 @@ class FoodprintPhoto {
     final String date = timestamp.substring(0, 10);
     final String time = timestamp.substring(11, timestamp.length - 5);
     final result = [date, time].join(" ");
-    print(result);
     return result;
   }
 

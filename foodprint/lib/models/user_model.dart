@@ -84,7 +84,7 @@ class UserModel extends ChangeNotifier {
 
       // Save remotely
       final res = await http.post(
-          "$SERVER_IP/api/photos/",
+          "$serverIP/api/photos/",
           headers: {
             "Content-Type": 'application/json'
           },
@@ -130,7 +130,7 @@ class UserModel extends ChangeNotifier {
 
   Future<void> deletePhoto(FoodprintPhoto photo) async {
     final res = await http.delete(
-      "$SERVER_IP/api/photos/",
+      "$serverIP/api/photos/",
       headers: {
         "photo_path": photo.storagePath
       }

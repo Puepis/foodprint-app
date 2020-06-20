@@ -90,7 +90,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
     final LatLng location = await Geolocator.getLocation();
 
     final res = await http.get(
-        '$SERVER_IP/api/users/foodprint',
+        '$serverIP/api/users/foodprint',
         headers: {"authorization": "Bearer ${widget.jwt}"}
     );
 
