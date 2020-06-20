@@ -124,7 +124,8 @@ class _ImageDetailState extends State<ImageDetail> {
                               final bool saved = await widget.user.savePhoto(widget.imageFile, _itemName, _price,
                                 _comments, widget.restaurant); // save contents
                               if (saved) {
-                                Navigator.pop(context, saved);
+                                int count = 0;
+                                Navigator.popUntil(context, (route) => count++ == 3); // pop back to dashboard
                               }
                             }
                           },

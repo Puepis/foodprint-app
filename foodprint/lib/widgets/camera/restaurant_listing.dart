@@ -23,7 +23,7 @@ class RestaurantListing extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0)
               ),
-              color: Colors.blue,
+              color: Colors.deepOrange,
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context) => ImageDetail(
@@ -31,12 +31,7 @@ class RestaurantListing extends StatelessWidget {
                       imageFile: imageFile,
                       restaurant: restaurants[index],
                     )
-                )).then((result) {
-                  final bool saved = result as bool;
-                  if (saved != null) {
-                    Navigator.of(context).pop(result); // pop back to camera
-                  }
-                });
+                ));
               },
               child: Row(
                 children: <Widget>[

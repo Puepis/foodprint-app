@@ -94,12 +94,7 @@ class _CameraState extends State<Camera> {
                     imageFile: _imageFile,
                     restaurants: _restaurants
                   )
-                )).then((result) {
-                  final bool saved = result as bool;
-                  if (saved != null) {
-                    Navigator.of(context).pop(result); // pop back to dashboard
-                  }
-                });
+                ));
               },
               child: const Icon(
                 Icons.navigate_next,
@@ -183,7 +178,9 @@ class _CameraState extends State<Camera> {
     if (_imageFile == null) {
       return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.orange,
+        ),
       ),
     );
     } else {

@@ -4,12 +4,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/foodprint_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/service/locator.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/dashboard.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 // Think of this as middleware
 class AuthorizationPortal extends StatefulWidget {
@@ -49,11 +51,9 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
     Widget result;
     switch(_authStatus) {
       case Status.authorized: {
-        result = Dashboard(
-          location: _currentPos,
-          userFoodprint: _userFoodprint,
-          jwt: widget.jwt,
-          payload: widget.payload,
+        result = ChangeNotifierProvider(
+          create: (context) => UserModel(_currentPos, widget.jwt, widget.payload, _userFoodprint),
+          child: Dashboard(),
         );
       }
       break;
@@ -64,7 +64,7 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                SpinKitDualRing(color: Colors.blue, size: 70.0,),
+                SpinKitDualRing(color: Colors.orange, size: 70.0,),
                 SizedBox(height: 20.0),
                 Text(
                   "Authorizing",

@@ -124,7 +124,8 @@ class _EditImageScreenState extends State<EditImageScreen> {
                                 saving = true;
                               });
                               await widget.user.editPhoto(widget.photo, _itemName, _price, _comments);
-                              Navigator.pop(context);
+                              int count = 0;
+                              Navigator.popUntil(context, (route) => count++ == 3); // pop back to gallery
                             }
                           },
                         ),
