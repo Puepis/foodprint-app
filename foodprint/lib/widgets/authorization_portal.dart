@@ -59,16 +59,17 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       break;
       case Status.pending: {
         result =  Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.deepOrange,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-                SpinKitDualRing(color: Colors.orange, size: 70.0,),
+                SpinKitDualRing(color: Colors.white, size: 70.0,),
                 SizedBox(height: 20.0),
                 Text(
                   "Authorizing",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 40.0,
                     fontWeight: FontWeight.bold
                   ),
