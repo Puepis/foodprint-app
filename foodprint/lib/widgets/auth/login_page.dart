@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
       children: <Widget>[
         RaisedButton(
             elevation: 2.0,
-            shape: const BeveledRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius:BorderRadius.all(Radius.circular(7.0)),
             ),
             onPressed:() {
@@ -95,11 +95,11 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: const Text('Register Here'),
         ),
-        if (loading) SpinKitWave(color: Colors.orange, size: 30.0) else RaisedButton(
+        if (loading) const SpinKitWave(color: Colors.orange, size: 30.0) else RaisedButton(
           color: Colors.orange,
             elevation: 8.0,
-            shape: const BeveledRectangleBorder(
-              borderRadius:BorderRadius.all(Radius.circular(7.0)),
+            shape: const RoundedRectangleBorder(
+              borderRadius:BorderRadius.all(Radius.circular(30.0)),
             ),
             onPressed:() async {
               if (_formKey.currentState.validate()) {
@@ -108,12 +108,12 @@ class _LoginPageState extends State<LoginPage> {
                 });
                 _formKey.currentState.save();
                 _formKey.currentState.reset();
-                http.Response res = await AuthenticationService.attemptLogin(_username, _password);
+                final http.Response res = await AuthenticationService.attemptLogin(_username, _password);
                 handleLoginResponse(context, res);
               }
             },
             child: const Text(
-              'Log In',
+              'Login',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
