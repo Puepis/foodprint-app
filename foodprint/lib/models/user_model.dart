@@ -99,7 +99,7 @@ class UserModel extends ChangeNotifier {
           price: double.parse(price),
           caption: comments,
           restaurantId: restaurant.placeId,
-          timestamp: timestamp,
+          timestamp: timestamp.substring(0, timestamp.length-3),
         );
 
         final Restaurant newRes = Restaurant(

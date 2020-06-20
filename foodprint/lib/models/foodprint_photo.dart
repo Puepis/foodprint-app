@@ -5,6 +5,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:path/path.dart';
+
 class FoodprintPhoto {
   final String storagePath; // unique identifier
   Uint8List imgBytes;
@@ -26,8 +28,16 @@ class FoodprintPhoto {
       price: double.parse(json['price'].toString()),
       caption: json['caption'].toString(),
       restaurantId: json['restaurant_id'].toString(),
-      timestamp: json['time_taken'].toString(), // TODO: Parse timestamp
+      timestamp: parseTimestamp(json['time_taken'].toString()), // TODO: Parse timestamp
     );
+  }
+
+  static String parseTimestamp(String timestamp) {
+    final String date = timestamp.substring(0, 10);
+    final String time = timestamp.substring(11, timestamp.length - 5);
+    final result = [date, time].join(" ");
+    print(result);
+    return result;
   }
 
   // Convert String to Uint8List

@@ -42,11 +42,6 @@ void main() {
 }
 
 // Overall theme
-final ThemeData _foodprintTheme = _buildFoodprintTheme();
-
-// Set overall theme of the app
-ThemeData _buildFoodprintTheme() {
-  return ThemeData(
-    primarySwatch: Colors.blue,
+final ThemeData _foodprintTheme = ThemeData(
+    primarySwatch: Colors.deepOrange,
   );
-}
