@@ -1,6 +1,7 @@
 
 import 'dart:convert' show json, ascii, base64;
 import 'package:flutter/material.dart';
+import 'package:foodprint/home.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/authorization_portal.dart';
@@ -29,7 +30,7 @@ class TokenAuth extends StatelessWidget {
           final List jwtParts = jwtStr.split(".");
 
           if (jwtParts.length != 3) {
-            return LoginPage(); // invalid token
+            return HomePage(); // invalid token
           } else {
             // Decode the payload
             final payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwtParts[1].toString()))));
@@ -49,7 +50,7 @@ class TokenAuth extends StatelessWidget {
             }
           }
         } else {
-          return LoginPage(); // No existing token
+          return HomePage(); // No existing token
         }
       },
     );

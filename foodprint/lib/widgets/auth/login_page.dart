@@ -176,7 +176,6 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 30.0,),
           if (loading) const SpinKitWave(color: Colors.orange, size: 40.0)
           else ButtonTheme(
-            minWidth: 200,
             height: 50,
             child: RaisedButton(
               color: Colors.orange,

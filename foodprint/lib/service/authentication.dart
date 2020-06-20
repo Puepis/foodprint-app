@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class AuthenticationService {
   static Future<http.Response> attemptSignUp(String email, String username, String password) async {
-    var res = await http.post(
+    final res = await http.post(
         '$SERVER_IP/api/users/register',
         body: {
           "email": email,
@@ -16,7 +16,7 @@ class AuthenticationService {
   }
 
   static Future<http.Response> attemptLogin(String username, String password) async {
-    var res = await http.post(
+    final res = await http.post(
         "$SERVER_IP/api/users/login",
         body: {
           "username": username,
@@ -27,7 +27,7 @@ class AuthenticationService {
   }
 
   static Future<bool> attemptLogout(String username) async {
-    var res = await http.post(
+    final res = await http.post(
         "$SERVER_IP/api/users/logout",
         body: {
           "username": username

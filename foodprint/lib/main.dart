@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:foodprint/home.dart';
 import 'package:foodprint/models/dashboard_args.dart';
 import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/register_page.dart';
@@ -13,6 +14,7 @@ void main() {
         theme: _foodprintTheme,
         initialRoute: '/',
         routes: {
+          "/home": (context) => HomePage(),
           TokenAuth.routeName: (context) => const TokenAuth(),
           LoginPage.routeName: (context) => LoginPage(),
           RegisterPage.routeName: (context) => RegisterPage(),
