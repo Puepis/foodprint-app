@@ -6,7 +6,6 @@ import 'package:foodprint/models/foodprint_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:foodprint/service/locator.dart';
-import 'package:foodprint/widgets/auth/login_page.dart';
 import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/dashboard.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

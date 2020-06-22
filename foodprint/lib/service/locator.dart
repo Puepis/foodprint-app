@@ -48,7 +48,6 @@ class Geolocator {
       return _parseRestaurants(data);
     }
     catch (e) {
-      print(e);
       return [];
     }
   }

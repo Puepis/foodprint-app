@@ -1,29 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/home.dart';
-import 'package:foodprint/widgets/auth/login_page.dart';
-import 'package:foodprint/widgets/auth/register_page.dart';
-import 'package:foodprint/widgets/dashboard.dart';
-import 'package:foodprint/widgets/token_verification.dart';
+import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/app_widget.dart';
+import 'package:injectable/injectable.dart';
 
 void main() {
-  runApp(
-      MaterialApp(
-        title: 'Foodprint',
-        theme: _foodprintTheme,
-        initialRoute: '/',
-        routes: {
-          "/home": (context) => HomePage(),
-          TokenAuth.routeName: (context) => const TokenAuth(),
-          LoginPage.routeName: (context) => LoginPage(),
-          RegisterPage.routeName: (context) => RegisterPage(),
-          Dashboard.routeName: (context) => Dashboard(),
-        },
-      )
-  );
+  configureInjection(Environment.prod);
+  runApp(FoodprintApp());
 }
 
-// Overall theme
-final ThemeData _foodprintTheme = ThemeData(
-    primarySwatch: Colors.deepOrange,
-  );

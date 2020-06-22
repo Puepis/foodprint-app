@@ -1,5 +1,5 @@
 name: foodprint
-description: A neat way to measure your foodprint
+description: The app for foodies
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,23 +19,45 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+4
-  flutter_secure_storage: ^3.3.2
+  # Locale for currency formatting
+  intl: ^0.16.1
+  # Location and google maps
   google_maps_flutter: ^0.5.25+3
+  location: ^3.0.0
+  geolocator: ^5.3.1
+  # Provider for exposing values (used to manage state)
+  provider: ^4.1.0
+  flutter_bloc: ^3.2.0
+  # Camera
   camera: ^0.5.7+4
-  path_provider: ^1.6.5
   image_picker: ^0.6.7
   image_cropper: ^1.2.1
+  # Files
   path: ^1.6.4
+  path_provider: ^1.6.5
+  # Toasts
   fluttertoast: ^4.0.1
-  provider: ^4.1.0
-  intl: ^0.16.1
-  geolocator: ^5.3.1
+  # Remote API
+  http: ^0.12.0+4
+  # Local storage
+  flutter_secure_storage: ^3.3.2
+  shared_preferences: ^0.5.7+3
   permission_handler: ^5.0.0
-  location: ^3.0.0
+  # Image compression
   flutter_image_compress: ^0.6.8
+  # Custom spinners
   flutter_spinkit: ^4.1.2
+  # Value/class equality
   equatable: ^1.2.0
+  # Functional programming
+  dartz: ^0.9.1
+  # Service locator
+  get_it: ^4.0.2
+  # Contains annotations for freezed
+  freezed_annotation: ^0.7.1
+  # Dependency injection
+  injectable: ^0.4.0+1
+  flushbar: ^1.10.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,22 +66,28 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # Replace default launcher icon
   flutter_launcher_icons: "^0.7.3"
+  # Linter
   lint: ^1.2.0
+  # Create mocks
+  mockito: ^4.1.0
+  # Tool that runs code generators
+  build_runner:
+  # Code generator
+  freezed: ^0.9.2
+  injectable_generator: ^0.4.1
 
 flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/icons/inverted_logo.png"
 
-
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -72,13 +100,10 @@ flutter:
   assets:
     - assets/images/stock_restaurant.jpg
     - assets/images/logo.png
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

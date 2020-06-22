@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/places_data/restaurant_result.dart';
 import 'package:foodprint/models/user_model.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

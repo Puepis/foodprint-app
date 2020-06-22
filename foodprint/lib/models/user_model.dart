@@ -166,4 +166,37 @@ class UserModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+   onChanged: (value) => context.bloc<LoginFormBloc>().add(
+                      LoginFormEvent.usernameChanged(value)), // fire an event
+                  validator: (_) => context
+                      .bloc<LoginFormBloc>()
+                      .state
+                      .emailAddress
+                      .value
+                      .fold(
+                      (f) => f.maybeMap(
+                          invalidEmail: (_) => 'Invalid Email',
+                          orElse: () => null),
+                      (r) => null
+                  )
 }
+
+void handleRegisterResponse(BuildContext context, http.Response res) {
+    switch(res.statusCode) {
+      case 200: {
+        Navigator.pop(context); // login page
+        displayDialog(context, "Success", "Registration successful! You can log in now.");
+      }
+      break;
+      case 409: {
+        displayDialog(context, "Email already registered",
+          "Please sign up using a different email or log in if you already have an account");
+      }
+      break;
+      default: {
+        print(res.body);
+        displayDialog(context, "Error", "An unexpected error occurred");
+      }
+    }
+  }
