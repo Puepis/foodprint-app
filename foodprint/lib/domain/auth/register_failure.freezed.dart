@@ -7,7 +7,6 @@ part of 'register_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
-T _$identity<T>(T value) => value;
 
 class _$RegisterFailureTearOff {
   const _$RegisterFailureTearOff();

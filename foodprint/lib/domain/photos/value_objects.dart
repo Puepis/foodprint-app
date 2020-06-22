@@ -3,7 +3,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
-import 'package:kt_dart/kt.dart';
 
 class StoragePath extends ValueObject<String> {
   @override

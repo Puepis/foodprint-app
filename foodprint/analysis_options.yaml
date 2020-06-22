@@ -11,3 +11,5 @@ analyzer:
     parameter_assignments: error
     missing_return: error
     sort_unnamed_constructors_first: ignore
+    non_constant_identifier_names: ignore
+    avoid_single_cascade_in_expression_statements: ignore

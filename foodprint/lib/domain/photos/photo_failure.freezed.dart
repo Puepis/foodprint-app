@@ -7,7 +7,6 @@ part of 'photo_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
-T _$identity<T>(T value) => value;
 
 class _$PhotoFailureTearOff {
   const _$PhotoFailureTearOff();
