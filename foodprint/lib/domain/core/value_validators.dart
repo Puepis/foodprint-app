@@ -12,10 +12,11 @@ Either<ValueFailure<String>, String> validateEmailAddress(String input) {
 }
 
 Either<ValueFailure<String>, String> validateUsername(String input) {
-  if (input.length < 20) {
+  const int maxLength = 20;
+  if (input.length < maxLength) {
     return right(input);
   } else {
-    return left(ValueFailure.usernameLengthExceeded(failedValue: input)); // make illegal states unrepresentable
+    return left(ValueFailure.exceedingLength(failedValue: input, max: maxLength)); // make illegal states unrepresentable
   }
 }
 

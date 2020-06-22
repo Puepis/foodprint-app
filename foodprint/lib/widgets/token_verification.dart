@@ -53,7 +53,7 @@ class TokenAuth extends StatelessWidget {
             else {
               // Delete expired token
               storage.delete(key: "jwt");
-              return LoginPage();
+              return const LoginPage();
             }
           }
         } else {

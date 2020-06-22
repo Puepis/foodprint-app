@@ -46,7 +46,7 @@ class LoginForm extends StatelessWidget {
                       .value
                       .fold(
                           (f) => f.maybeMap(
-                              usernameLengthExceeded: (_) =>
+                              exceedingLength: (_) =>
                                   'Username must not be more than 20 characters',
                               orElse: () => null),
                           (r) => null)),
@@ -111,7 +111,11 @@ class LoginForm extends StatelessWidget {
                         fontSize: 25.0),
                   ),
                 ),
-              )
+              ),
+              if (state.isSubmitting) ...[
+                const SizedBox(height: 8),
+                const LinearProgressIndicator()
+              ]
             ],
           ),
         );
