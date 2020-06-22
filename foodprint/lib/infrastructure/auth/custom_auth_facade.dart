@@ -6,7 +6,9 @@ import 'package:foodprint/domain/auth/i_auth_facade.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:injectable/injectable.dart';
+import 'package:http/http.dart' as http;
 
 // Implements the interface authentication methods (communicates with the outside world)
 @lazySingleton
@@ -22,13 +24,21 @@ class CustomAuthFacade implements IAuthFacade {
     final emailAddressStr = emailAddress.getOrCrash();
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash(); 
-    try {
-      // Call api to authenticate  
+    final res = await http.post(
+      "$serverIP/api/users/register",
+      body: {
+        "email": emailAddressStr,
+        "username": usernameStr,
+        "password": passwordStr
+      }
+    );
+    if (res.statusCode == 200) {
       return right(unit);
-    } catch (e) {
+    } else if (res.statusCode == 401) {
+      return left(const RegisterFailure.invalidRegisterCombination());
+    } else {
       return left(const RegisterFailure.serverError());
     }
-
   }
 
   @override
@@ -38,10 +48,18 @@ class CustomAuthFacade implements IAuthFacade {
   }) async {
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash(); 
-    try {
-      // Call api to authenticate  
+    final res = await http.post(
+      "$serverIP/api/users/login",
+      body: {
+        "username": usernameStr,
+        "password": passwordStr
+      }
+    );
+    if (res.statusCode == 200) {
       return right(unit);
-    } catch (e) {
+    } else if (res.statusCode == 401) {
+      return left(const LoginFailure.invalidLoginCombination());
+    } else {
       return left(const LoginFailure.serverError());
     }
   }
