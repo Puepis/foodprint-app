@@ -1,5 +1,6 @@
 part of 'login_form_bloc.dart';
 
+// This class represents the state of the login page
 @freezed 
 abstract class LoginFormState with _$LoginFormState {
   const factory LoginFormState({
