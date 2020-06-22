@@ -1,9 +1,9 @@
 
 import 'dart:convert' show json, ascii, base64;
 import 'package:flutter/material.dart';
-import 'package:foodprint/home.dart';
-import 'package:foodprint/widgets/auth/login_page.dart';
-import 'package:foodprint/widgets/auth/tokens.dart';
+import 'package:foodprint/infrastructure/core/tokens.dart';
+import 'package:foodprint/presentation/pages/home_page.dart';
+import 'package:foodprint/presentation/pages/login_page.dart';
 import 'package:foodprint/widgets/authorization_portal.dart';
 
 class TokenAuth extends StatelessWidget {

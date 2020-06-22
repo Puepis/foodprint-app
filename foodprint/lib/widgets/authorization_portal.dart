@@ -1,12 +1,13 @@
 import 'dart:convert' show ascii, base64, json, jsonDecode;
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/foodprint_response.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/models/user_model.dart';
+import 'package:foodprint/presentation/pages/login_page.dart';
 import 'package:foodprint/service/locator.dart';
-import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:foodprint/widgets/dashboard.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;

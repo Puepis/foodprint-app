@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/errors.dart';
 import 'package:foodprint/domain/core/failures.dart';
+import 'package:uuid/uuid.dart';
 
 // Generic value class 
 @immutable
@@ -28,4 +29,27 @@ abstract class ValueObject<T> {
 
   @override
   String toString() => 'Value($value)';
+}
+
+// Can be used for anything, not just user
+class UniqueId extends ValueObject<String> {
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  // Generate new id
+  factory UniqueId() {
+    return UniqueId._(
+      right(Uuid().v1()),
+    );
+  }
+
+  // If id is already provided
+  factory UniqueId.fromUniqueString(String uniqueId) {
+    assert(uniqueId != null);
+    return UniqueId._(
+      right(uniqueId),
+    );
+  }
+
+  const UniqueId._(this.value);
 }

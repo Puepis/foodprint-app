@@ -5,14 +5,14 @@ import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/auth/i_auth_facade.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
+import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
 // Implements the interface authentication methods (communicates with the outside world)
-@lazySingleton
-@Injectable(as: IAuthFacade)
+@LazySingleton(as: IAuthFacade)
 class CustomAuthFacade implements IAuthFacade {
 
   @override
@@ -49,7 +49,7 @@ class CustomAuthFacade implements IAuthFacade {
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash(); 
     final res = await http.post(
-      "$serverIP/api/users/login",
+      "$serverIP/api/users/login", // TODO: Cache the token
       body: {
         "username": usernameStr,
         "password": passwordStr
@@ -62,5 +62,17 @@ class CustomAuthFacade implements IAuthFacade {
     } else {
       return left(const LoginFailure.serverError());
     }
+  }
+
+  @override
+  Future<Option<User>> getSignedInUser() {
+    // TODO: implement getSignedInUser
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> logout() {
+    // TODO: implement logout
+    throw UnimplementedError();
   }
 }
