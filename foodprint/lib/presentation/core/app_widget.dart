@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/home.dart';
+import 'package:foodprint/presentation/pages/home_page.dart';
 import 'package:foodprint/presentation/pages/login_page.dart';
 import 'package:foodprint/presentation/pages/register_page.dart';
 import 'package:foodprint/widgets/dashboard.dart';

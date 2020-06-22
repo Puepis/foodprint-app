@@ -4,11 +4,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:foodprint/models/foodprint_photo.dart';
 import 'package:foodprint/models/places_data/restaurant_result.dart';
 import 'package:foodprint/models/restaurant_model.dart';
 import 'package:foodprint/service/foodprint_extension.dart';
-import 'package:foodprint/widgets/auth/tokens.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -166,37 +166,5 @@ class UserModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-   onChanged: (value) => context.bloc<LoginFormBloc>().add(
-                      LoginFormEvent.usernameChanged(value)), // fire an event
-                  validator: (_) => context
-                      .bloc<LoginFormBloc>()
-                      .state
-                      .emailAddress
-                      .value
-                      .fold(
-                      (f) => f.maybeMap(
-                          invalidEmail: (_) => 'Invalid Email',
-                          orElse: () => null),
-                      (r) => null
-                  )
 }
 
-void handleRegisterResponse(BuildContext context, http.Response res) {
-    switch(res.statusCode) {
-      case 200: {
-        Navigator.pop(context); // login page
-        displayDialog(context, "Success", "Registration successful! You can log in now.");
-      }
-      break;
-      case 409: {
-        displayDialog(context, "Email already registered",
-          "Please sign up using a different email or log in if you already have an account");
-      }
-      break;
-      default: {
-        print(res.body);
-        displayDialog(context, "Error", "An unexpected error occurred");
-      }
-    }
-  }
