@@ -6,7 +6,7 @@ import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 
-// Interface combines different auth methods into a Facade
+// Basically a repository - defines the methods that need to be implemented
 abstract class IAuthFacade {
   
   // option = non-nullable type

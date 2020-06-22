@@ -7,33 +7,7 @@ part of 'login_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$LoginFailure {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result serverError(),
-    @required Result invalidLoginCombination(),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result serverError(),
-    Result invalidLoginCombination(),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result serverError(ServerError value),
-    @required Result invalidLoginCombination(InvalidLoginCombination value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result serverError(ServerError value),
-    Result invalidLoginCombination(InvalidLoginCombination value),
-    @required Result orElse(),
-  });
-}
+T _$identity<T>(T value) => value;
 
 class _$LoginFailureTearOff {
   const _$LoginFailureTearOff();
@@ -47,7 +21,63 @@ class _$LoginFailureTearOff {
   }
 }
 
+// ignore: unused_element
 const $LoginFailure = _$LoginFailureTearOff();
+
+mixin _$LoginFailure {
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result serverError(),
+    @required Result invalidLoginCombination(),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result serverError(),
+    Result invalidLoginCombination(),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result serverError(ServerError value),
+    @required Result invalidLoginCombination(InvalidLoginCombination value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result serverError(ServerError value),
+    Result invalidLoginCombination(InvalidLoginCombination value),
+    @required Result orElse(),
+  });
+}
+
+abstract class $LoginFailureCopyWith<$Res> {
+  factory $LoginFailureCopyWith(
+          LoginFailure value, $Res Function(LoginFailure) then) =
+      _$LoginFailureCopyWithImpl<$Res>;
+}
+
+class _$LoginFailureCopyWithImpl<$Res> implements $LoginFailureCopyWith<$Res> {
+  _$LoginFailureCopyWithImpl(this._value, this._then);
+
+  final LoginFailure _value;
+  // ignore: unused_field
+  final $Res Function(LoginFailure) _then;
+}
+
+abstract class $ServerErrorCopyWith<$Res> {
+  factory $ServerErrorCopyWith(
+          ServerError value, $Res Function(ServerError) then) =
+      _$ServerErrorCopyWithImpl<$Res>;
+}
+
+class _$ServerErrorCopyWithImpl<$Res> extends _$LoginFailureCopyWithImpl<$Res>
+    implements $ServerErrorCopyWith<$Res> {
+  _$ServerErrorCopyWithImpl(
+      ServerError _value, $Res Function(ServerError) _then)
+      : super(_value, (v) => _then(v as ServerError));
+
+  @override
+  ServerError get _value => super._value as ServerError;
+}
 
 class _$ServerError implements ServerError {
   const _$ServerError();
@@ -118,6 +148,23 @@ class _$ServerError implements ServerError {
 
 abstract class ServerError implements LoginFailure {
   const factory ServerError() = _$ServerError;
+}
+
+abstract class $InvalidLoginCombinationCopyWith<$Res> {
+  factory $InvalidLoginCombinationCopyWith(InvalidLoginCombination value,
+          $Res Function(InvalidLoginCombination) then) =
+      _$InvalidLoginCombinationCopyWithImpl<$Res>;
+}
+
+class _$InvalidLoginCombinationCopyWithImpl<$Res>
+    extends _$LoginFailureCopyWithImpl<$Res>
+    implements $InvalidLoginCombinationCopyWith<$Res> {
+  _$InvalidLoginCombinationCopyWithImpl(InvalidLoginCombination _value,
+      $Res Function(InvalidLoginCombination) _then)
+      : super(_value, (v) => _then(v as InvalidLoginCombination));
+
+  @override
+  InvalidLoginCombination get _value => super._value as InvalidLoginCombination;
 }
 
 class _$InvalidLoginCombination implements InvalidLoginCombination {

@@ -25,13 +25,14 @@ class EmailAddress extends ValueObject<String> {
 
 @immutable
 class Username extends ValueObject<String> {
+  static const maxLength = 20;
   @override
   final Either<ValueFailure<String>, String> value;
 
   factory Username(String input) {
     assert(input != null);
     return Username._(
-      validateUsername(input),
+      validateMaxStringLength(input, maxLength),
     );
   }
 

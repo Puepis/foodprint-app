@@ -7,11 +7,7 @@ part of 'user.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$User {
-  UniqueId get id;
-
-  User copyWith({UniqueId id});
-}
+T _$identity<T>(T value) => value;
 
 class _$UserTearOff {
   const _$UserTearOff();
@@ -23,7 +19,62 @@ class _$UserTearOff {
   }
 }
 
+// ignore: unused_element
 const $User = _$UserTearOff();
+
+mixin _$User {
+  UniqueId get id;
+
+  $UserCopyWith<User> get copyWith;
+}
+
+abstract class $UserCopyWith<$Res> {
+  factory $UserCopyWith(User value, $Res Function(User) then) =
+      _$UserCopyWithImpl<$Res>;
+  $Res call({UniqueId id});
+}
+
+class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
+  _$UserCopyWithImpl(this._value, this._then);
+
+  final User _value;
+  // ignore: unused_field
+  final $Res Function(User) _then;
+
+  @override
+  $Res call({
+    Object id = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as UniqueId,
+    ));
+  }
+}
+
+abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$UserCopyWith(_User value, $Res Function(_User) then) =
+      __$UserCopyWithImpl<$Res>;
+  @override
+  $Res call({UniqueId id});
+}
+
+class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
+    implements _$UserCopyWith<$Res> {
+  __$UserCopyWithImpl(_User _value, $Res Function(_User) _then)
+      : super(_value, (v) => _then(v as _User));
+
+  @override
+  _User get _value => super._value as _User;
+
+  @override
+  $Res call({
+    Object id = freezed,
+  }) {
+    return _then(_User(
+      id: id == freezed ? _value.id : id as UniqueId,
+    ));
+  }
+}
 
 class _$_User implements _User {
   const _$_User({@required this.id}) : assert(id != null);
@@ -49,13 +100,8 @@ class _$_User implements _User {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(id);
 
   @override
-  _$_User copyWith({
-    Object id = freezed,
-  }) {
-    return _$_User(
-      id: id == freezed ? this.id : id as UniqueId,
-    );
-  }
+  _$UserCopyWith<_User> get copyWith =>
+      __$UserCopyWithImpl<_User>(this, _$identity);
 }
 
 abstract class _User implements User {
@@ -63,7 +109,6 @@ abstract class _User implements User {
 
   @override
   UniqueId get id;
-
   @override
-  _User copyWith({UniqueId id});
+  _$UserCopyWith<_User> get copyWith;
 }

@@ -7,46 +7,7 @@ part of 'failures.dart';
 // FreezedGenerator
 // **************************************************************************
 
-mixin _$ValueFailure<T> {
-  T get failedValue;
-
-  ValueFailure<T> copyWith({T failedValue});
-
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required
-        Result exceedingLength(@required T failedValue, @required int max),
-    @required Result empty(@required T failedValue),
-    @required Result invalidEmail(@required T failedValue),
-    @required Result shortPassword(@required T failedValue),
-  });
-
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result exceedingLength(@required T failedValue, @required int max),
-    Result empty(@required T failedValue),
-    Result invalidEmail(@required T failedValue),
-    Result shortPassword(@required T failedValue),
-    @required Result orElse(),
-  });
-
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result exceedingLength(ExceedingLength<T> value),
-    @required Result empty(Empty<T> value),
-    @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
-  });
-
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result exceedingLength(ExceedingLength<T> value),
-    Result empty(Empty<T> value),
-    Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
-    @required Result orElse(),
-  });
-}
+T _$identity<T>(T value) => value;
 
 class _$ValueFailureTearOff {
   const _$ValueFailureTearOff();
@@ -78,7 +39,103 @@ class _$ValueFailureTearOff {
   }
 }
 
+// ignore: unused_element
 const $ValueFailure = _$ValueFailureTearOff();
+
+mixin _$ValueFailure<T> {
+  T get failedValue;
+
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
+  });
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
+    @required Result orElse(),
+  });
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result exceedingLength(ExceedingLength<T> value),
+    @required Result empty(Empty<T> value),
+    @required Result invalidEmail(InvalidEmail<T> value),
+    @required Result shortPassword(ShortPassword<T> value),
+  });
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result exceedingLength(ExceedingLength<T> value),
+    Result empty(Empty<T> value),
+    Result invalidEmail(InvalidEmail<T> value),
+    Result shortPassword(ShortPassword<T> value),
+    @required Result orElse(),
+  });
+
+  $ValueFailureCopyWith<T, ValueFailure<T>> get copyWith;
+}
+
+abstract class $ValueFailureCopyWith<T, $Res> {
+  factory $ValueFailureCopyWith(
+          ValueFailure<T> value, $Res Function(ValueFailure<T>) then) =
+      _$ValueFailureCopyWithImpl<T, $Res>;
+  $Res call({T failedValue});
+}
+
+class _$ValueFailureCopyWithImpl<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  _$ValueFailureCopyWithImpl(this._value, this._then);
+
+  final ValueFailure<T> _value;
+  // ignore: unused_field
+  final $Res Function(ValueFailure<T>) _then;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(_value.copyWith(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
+}
+
+abstract class $ExceedingLengthCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $ExceedingLengthCopyWith(
+          ExceedingLength<T> value, $Res Function(ExceedingLength<T>) then) =
+      _$ExceedingLengthCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue, int max});
+}
+
+class _$ExceedingLengthCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $ExceedingLengthCopyWith<T, $Res> {
+  _$ExceedingLengthCopyWithImpl(
+      ExceedingLength<T> _value, $Res Function(ExceedingLength<T>) _then)
+      : super(_value, (v) => _then(v as ExceedingLength<T>));
+
+  @override
+  ExceedingLength<T> get _value => super._value as ExceedingLength<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+    Object max = freezed,
+  }) {
+    return _then(ExceedingLength<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+      max: max == freezed ? _value.max : max as int,
+    ));
+  }
+}
 
 class _$ExceedingLength<T>
     with DiagnosticableTreeMixin
@@ -124,24 +181,16 @@ class _$ExceedingLength<T>
       const DeepCollectionEquality().hash(max);
 
   @override
-  _$ExceedingLength<T> copyWith({
-    Object failedValue = freezed,
-    Object max = freezed,
-  }) {
-    return _$ExceedingLength<T>(
-      failedValue: failedValue == freezed ? this.failedValue : failedValue as T,
-      max: max == freezed ? this.max : max as int,
-    );
-  }
+  $ExceedingLengthCopyWith<T, ExceedingLength<T>> get copyWith =>
+      _$ExceedingLengthCopyWithImpl<T, ExceedingLength<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required
-        Result exceedingLength(@required T failedValue, @required int max),
-    @required Result empty(@required T failedValue),
-    @required Result invalidEmail(@required T failedValue),
-    @required Result shortPassword(@required T failedValue),
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
@@ -153,10 +202,10 @@ class _$ExceedingLength<T>
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result exceedingLength(@required T failedValue, @required int max),
-    Result empty(@required T failedValue),
-    Result invalidEmail(@required T failedValue),
-    Result shortPassword(@required T failedValue),
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -205,9 +254,35 @@ abstract class ExceedingLength<T> implements ValueFailure<T> {
   @override
   T get failedValue;
   int get max;
+  @override
+  $ExceedingLengthCopyWith<T, ExceedingLength<T>> get copyWith;
+}
+
+abstract class $EmptyCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $EmptyCopyWith(Empty<T> value, $Res Function(Empty<T>) then) =
+      _$EmptyCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue});
+}
+
+class _$EmptyCopyWithImpl<T, $Res> extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $EmptyCopyWith<T, $Res> {
+  _$EmptyCopyWithImpl(Empty<T> _value, $Res Function(Empty<T>) _then)
+      : super(_value, (v) => _then(v as Empty<T>));
 
   @override
-  ExceedingLength<T> copyWith({T failedValue, int max});
+  Empty<T> get _value => super._value as Empty<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(Empty<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
 }
 
 class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
@@ -243,22 +318,16 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
 
   @override
-  _$Empty<T> copyWith({
-    Object failedValue = freezed,
-  }) {
-    return _$Empty<T>(
-      failedValue: failedValue == freezed ? this.failedValue : failedValue as T,
-    );
-  }
+  $EmptyCopyWith<T, Empty<T>> get copyWith =>
+      _$EmptyCopyWithImpl<T, Empty<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required
-        Result exceedingLength(@required T failedValue, @required int max),
-    @required Result empty(@required T failedValue),
-    @required Result invalidEmail(@required T failedValue),
-    @required Result shortPassword(@required T failedValue),
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
@@ -270,10 +339,10 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result exceedingLength(@required T failedValue, @required int max),
-    Result empty(@required T failedValue),
-    Result invalidEmail(@required T failedValue),
-    Result shortPassword(@required T failedValue),
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -320,9 +389,38 @@ abstract class Empty<T> implements ValueFailure<T> {
 
   @override
   T get failedValue;
+  @override
+  $EmptyCopyWith<T, Empty<T>> get copyWith;
+}
+
+abstract class $InvalidEmailCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $InvalidEmailCopyWith(
+          InvalidEmail<T> value, $Res Function(InvalidEmail<T>) then) =
+      _$InvalidEmailCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue});
+}
+
+class _$InvalidEmailCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $InvalidEmailCopyWith<T, $Res> {
+  _$InvalidEmailCopyWithImpl(
+      InvalidEmail<T> _value, $Res Function(InvalidEmail<T>) _then)
+      : super(_value, (v) => _then(v as InvalidEmail<T>));
 
   @override
-  Empty<T> copyWith({T failedValue});
+  InvalidEmail<T> get _value => super._value as InvalidEmail<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(InvalidEmail<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
 }
 
 class _$InvalidEmail<T>
@@ -361,22 +459,16 @@ class _$InvalidEmail<T>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
 
   @override
-  _$InvalidEmail<T> copyWith({
-    Object failedValue = freezed,
-  }) {
-    return _$InvalidEmail<T>(
-      failedValue: failedValue == freezed ? this.failedValue : failedValue as T,
-    );
-  }
+  $InvalidEmailCopyWith<T, InvalidEmail<T>> get copyWith =>
+      _$InvalidEmailCopyWithImpl<T, InvalidEmail<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required
-        Result exceedingLength(@required T failedValue, @required int max),
-    @required Result empty(@required T failedValue),
-    @required Result invalidEmail(@required T failedValue),
-    @required Result shortPassword(@required T failedValue),
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
@@ -388,10 +480,10 @@ class _$InvalidEmail<T>
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result exceedingLength(@required T failedValue, @required int max),
-    Result empty(@required T failedValue),
-    Result invalidEmail(@required T failedValue),
-    Result shortPassword(@required T failedValue),
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -438,9 +530,38 @@ abstract class InvalidEmail<T> implements ValueFailure<T> {
 
   @override
   T get failedValue;
+  @override
+  $InvalidEmailCopyWith<T, InvalidEmail<T>> get copyWith;
+}
+
+abstract class $ShortPasswordCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $ShortPasswordCopyWith(
+          ShortPassword<T> value, $Res Function(ShortPassword<T>) then) =
+      _$ShortPasswordCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue});
+}
+
+class _$ShortPasswordCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $ShortPasswordCopyWith<T, $Res> {
+  _$ShortPasswordCopyWithImpl(
+      ShortPassword<T> _value, $Res Function(ShortPassword<T>) _then)
+      : super(_value, (v) => _then(v as ShortPassword<T>));
 
   @override
-  InvalidEmail<T> copyWith({T failedValue});
+  ShortPassword<T> get _value => super._value as ShortPassword<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(ShortPassword<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
 }
 
 class _$ShortPassword<T>
@@ -479,22 +600,16 @@ class _$ShortPassword<T>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
 
   @override
-  _$ShortPassword<T> copyWith({
-    Object failedValue = freezed,
-  }) {
-    return _$ShortPassword<T>(
-      failedValue: failedValue == freezed ? this.failedValue : failedValue as T,
-    );
-  }
+  $ShortPasswordCopyWith<T, ShortPassword<T>> get copyWith =>
+      _$ShortPasswordCopyWithImpl<T, ShortPassword<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required
-        Result exceedingLength(@required T failedValue, @required int max),
-    @required Result empty(@required T failedValue),
-    @required Result invalidEmail(@required T failedValue),
-    @required Result shortPassword(@required T failedValue),
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
@@ -506,10 +621,10 @@ class _$ShortPassword<T>
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result exceedingLength(@required T failedValue, @required int max),
-    Result empty(@required T failedValue),
-    Result invalidEmail(@required T failedValue),
-    Result shortPassword(@required T failedValue),
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -556,7 +671,6 @@ abstract class ShortPassword<T> implements ValueFailure<T> {
 
   @override
   T get failedValue;
-
   @override
-  ShortPassword<T> copyWith({T failedValue});
+  $ShortPasswordCopyWith<T, ShortPassword<T>> get copyWith;
 }

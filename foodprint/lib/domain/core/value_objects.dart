@@ -16,6 +16,10 @@ abstract class ValueObject<T> {
     return value.fold((f) => throw UnexpectedValueError(f), id);
   }
 
+  Either<ValueFailure<dynamic>, Unit> get failureOrNone { // discard the correct value
+    return value.fold((l) => left(l), (r) => right(unit));
+  }
+
   bool isValid() => value.isRight();
 
   @override
@@ -53,3 +57,17 @@ class UniqueId extends ValueObject<String> {
 
   const UniqueId._(this.value);
 }
+
+class Timestamp extends ValueObject<String> {
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  factory Timestamp(String input) {
+    return Timestamp._(
+      right(input), // TODO: Validate timestamp
+    );
+  }
+
+  const Timestamp._(this.value);
+}
+
