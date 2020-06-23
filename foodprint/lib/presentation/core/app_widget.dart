@@ -5,6 +5,7 @@ import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/routes/router.gr.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 
+
 class FoodprintApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

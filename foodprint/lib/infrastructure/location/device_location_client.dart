@@ -1,13 +1,21 @@
 
+import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
+import 'package:foodprint/domain/location/i_locator.dart';
+import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 
-class Geolocator {
-  // Google Maps Search
-  
-  static Future<dynamic> getLocation() async {
+@injectable
+class DeviceLocationClient implements UserLocator {
+  final Location location;
 
-    final Location location = Location();
+  DeviceLocationClient({@required this.location});
+  
+  @override
+  Future<Either<LocationFailure, LatLng>> getLocation() async {
+
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
     LocationData pos;
@@ -17,7 +25,7 @@ class Geolocator {
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        return;  // default location
+        return left(const LocationFailure.locationServiceDisabled());
       }
     }
 
@@ -26,10 +34,11 @@ class Geolocator {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        return;
+        return left(const LocationFailure.permissionDenied());
       }
     }
+
     pos = await location.getLocation(); // get location
-    return LatLng(pos.latitude, pos.longitude);
+    return right(LatLng(pos.latitude, pos.longitude));
   }
 }

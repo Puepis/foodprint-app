@@ -7,10 +7,12 @@ import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/restaurants/i_restaurant_search_respository.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_failure.dart';
+import 'package:injectable/injectable.dart';
 
 part 'restaurant_search_event.dart';
 part 'restaurant_search_state.dart';
 
+@injectable
 class RestaurantSearchBloc
     extends Bloc<RestaurantSearchEvent, RestaurantSearchState> {
   final IRestaurantSearchRepository _client;
