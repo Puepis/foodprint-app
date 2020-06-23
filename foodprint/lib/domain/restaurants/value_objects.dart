@@ -3,6 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
+import 'package:foodprint/domain/core/value_validators.dart';
 
 class RestaurantID extends ValueObject<String> {
   @override
@@ -10,7 +11,9 @@ class RestaurantID extends ValueObject<String> {
 
   factory RestaurantID(String id) {
     assert(id != null);
-    return RestaurantID._(right(id)); 
+    return RestaurantID._(
+      validateStringNotEmpty(id),
+    ); 
   }
 
   const RestaurantID._(this.value);
@@ -22,7 +25,9 @@ class RestaurantAddress extends ValueObject<String> {
 
   factory RestaurantAddress(String address) {
     assert(address != null);
-    return RestaurantAddress._(right(address));
+    return RestaurantAddress._(
+      validateStringNotEmpty(address),
+    );
   }
 
   const RestaurantAddress._(this.value);
@@ -32,9 +37,11 @@ class RestaurantName extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory RestaurantName(String name) {
-    assert(name != null);
-    return RestaurantName._(right(name)); 
+  factory RestaurantName(String restaurantName) {
+    assert(restaurantName != null);
+    return RestaurantName._(
+      validateStringNotEmpty(restaurantName)
+    ); 
   }
 
   const RestaurantName._(this.value);
@@ -47,9 +54,10 @@ class RestaurantRating extends ValueObject<double> {
   final Either<ValueFailure<double>, double> value;
 
   factory RestaurantRating(double rating) {
-
     assert(rating != null);
-    return RestaurantRating._(right(rating)); // TODO: validate 
+    return RestaurantRating._(
+      validateDoubleInRange(rating, min, max),
+    ); 
   }
 
   const RestaurantRating._(this.value);
@@ -63,7 +71,9 @@ class RestaurantPriceLevel extends ValueObject<int> {
 
   factory RestaurantPriceLevel(int priceLevel) {
     assert(priceLevel != null);
-    return RestaurantPriceLevel._(right(priceLevel)); // TODO: validate price level 
+    return RestaurantPriceLevel._(
+      validateIntInRange(priceLevel, minLevel, maxLevel),
+    ); 
   }
 
   const RestaurantPriceLevel._(this.value);

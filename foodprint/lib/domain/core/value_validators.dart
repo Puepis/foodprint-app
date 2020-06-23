@@ -35,3 +35,18 @@ Either<ValueFailure<String>, String> validateStringNotEmpty(String input) {
   }
 }
 
+Either<ValueFailure<double>, double> validateDoubleInRange(double value, double min, double max) {
+  if (value >= min && value <= max) {
+    return right(value);
+  } else {
+    return left(ValueFailure.outofBounds(failedValue: value));
+  }
+}
+
+Either<ValueFailure<int>, int> validateIntInRange(int value, int min, int max) {
+  if (value >= min && value <= max) {
+    return right(value);
+  } else {
+    return left(ValueFailure.outofBounds(failedValue: value));
+  }
+}

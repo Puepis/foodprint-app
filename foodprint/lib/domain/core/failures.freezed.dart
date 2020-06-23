@@ -37,6 +37,12 @@ class _$ValueFailureTearOff {
       failedValue: failedValue,
     );
   }
+
+  OutOfBounds<T> outofBounds<T>({@required T failedValue}) {
+    return OutOfBounds<T>(
+      failedValue: failedValue,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -51,6 +57,7 @@ mixin _$ValueFailure<T> {
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
     @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -58,6 +65,7 @@ mixin _$ValueFailure<T> {
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
     Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -66,6 +74,7 @@ mixin _$ValueFailure<T> {
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
     @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -73,6 +82,7 @@ mixin _$ValueFailure<T> {
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
     Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
     @required Result orElse(),
   });
 
@@ -191,11 +201,13 @@ class _$ExceedingLength<T>
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
     @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return exceedingLength(failedValue, max);
   }
 
@@ -206,6 +218,7 @@ class _$ExceedingLength<T>
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
     Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -222,11 +235,13 @@ class _$ExceedingLength<T>
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
     @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return exceedingLength(this);
   }
 
@@ -237,6 +252,7 @@ class _$ExceedingLength<T>
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
     Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -328,11 +344,13 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
     @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return empty(failedValue);
   }
 
@@ -343,6 +361,7 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
     Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -359,11 +378,13 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
     @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return empty(this);
   }
 
@@ -374,6 +395,7 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
     Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -469,11 +491,13 @@ class _$InvalidEmail<T>
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
     @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return invalidEmail(failedValue);
   }
 
@@ -484,6 +508,7 @@ class _$InvalidEmail<T>
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
     Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -500,11 +525,13 @@ class _$InvalidEmail<T>
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
     @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return invalidEmail(this);
   }
 
@@ -515,6 +542,7 @@ class _$InvalidEmail<T>
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
     Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -610,11 +638,13 @@ class _$ShortPassword<T>
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
     @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return shortPassword(failedValue);
   }
 
@@ -625,6 +655,7 @@ class _$ShortPassword<T>
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
     Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -641,11 +672,13 @@ class _$ShortPassword<T>
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
     @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
     assert(shortPassword != null);
+    assert(outofBounds != null);
     return shortPassword(this);
   }
 
@@ -656,6 +689,7 @@ class _$ShortPassword<T>
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
     Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -673,4 +707,149 @@ abstract class ShortPassword<T> implements ValueFailure<T> {
   T get failedValue;
   @override
   $ShortPasswordCopyWith<T, ShortPassword<T>> get copyWith;
+}
+
+abstract class $OutOfBoundsCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $OutOfBoundsCopyWith(
+          OutOfBounds<T> value, $Res Function(OutOfBounds<T>) then) =
+      _$OutOfBoundsCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue});
+}
+
+class _$OutOfBoundsCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $OutOfBoundsCopyWith<T, $Res> {
+  _$OutOfBoundsCopyWithImpl(
+      OutOfBounds<T> _value, $Res Function(OutOfBounds<T>) _then)
+      : super(_value, (v) => _then(v as OutOfBounds<T>));
+
+  @override
+  OutOfBounds<T> get _value => super._value as OutOfBounds<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(OutOfBounds<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
+}
+
+class _$OutOfBounds<T> with DiagnosticableTreeMixin implements OutOfBounds<T> {
+  const _$OutOfBounds({@required this.failedValue})
+      : assert(failedValue != null);
+
+  @override
+  final T failedValue;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ValueFailure<$T>.outofBounds(failedValue: $failedValue)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ValueFailure<$T>.outofBounds'))
+      ..add(DiagnosticsProperty('failedValue', failedValue));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is OutOfBounds<T> &&
+            (identical(other.failedValue, failedValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.failedValue, failedValue)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
+
+  @override
+  $OutOfBoundsCopyWith<T, OutOfBounds<T>> get copyWith =>
+      _$OutOfBoundsCopyWithImpl<T, OutOfBounds<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result shortPassword(T failedValue),
+    @required Result outofBounds(T failedValue),
+  }) {
+    assert(exceedingLength != null);
+    assert(empty != null);
+    assert(invalidEmail != null);
+    assert(shortPassword != null);
+    assert(outofBounds != null);
+    return outofBounds(failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result shortPassword(T failedValue),
+    Result outofBounds(T failedValue),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (outofBounds != null) {
+      return outofBounds(failedValue);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result exceedingLength(ExceedingLength<T> value),
+    @required Result empty(Empty<T> value),
+    @required Result invalidEmail(InvalidEmail<T> value),
+    @required Result shortPassword(ShortPassword<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
+  }) {
+    assert(exceedingLength != null);
+    assert(empty != null);
+    assert(invalidEmail != null);
+    assert(shortPassword != null);
+    assert(outofBounds != null);
+    return outofBounds(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result exceedingLength(ExceedingLength<T> value),
+    Result empty(Empty<T> value),
+    Result invalidEmail(InvalidEmail<T> value),
+    Result shortPassword(ShortPassword<T> value),
+    Result outofBounds(OutOfBounds<T> value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (outofBounds != null) {
+      return outofBounds(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutOfBounds<T> implements ValueFailure<T> {
+  const factory OutOfBounds({@required T failedValue}) = _$OutOfBounds<T>;
+
+  @override
+  T get failedValue;
+  @override
+  $OutOfBoundsCopyWith<T, OutOfBounds<T>> get copyWith;
 }

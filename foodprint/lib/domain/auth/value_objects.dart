@@ -12,10 +12,10 @@ class EmailAddress extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory EmailAddress(String input) {
-    assert(input != null);
+  factory EmailAddress(String email) {
+    assert(email != null);
     return EmailAddress._(
-      validateEmailAddress(input),
+      validateEmailAddress(email),
     );
   }
 
@@ -29,10 +29,10 @@ class Username extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory Username(String input) {
-    assert(input != null);
+  factory Username(String username) {
+    assert(username != null);
     return Username._(
-      validateMaxStringLength(input, maxLength),
+      validateMaxStringLength(username, maxLength),
     );
   }
 
@@ -45,10 +45,10 @@ class Password extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory Password(String input) {
-    assert(input != null);
+  factory Password(String password) {
+    assert(password != null);
     return Password._(
-      validatePassword(input),
+      validatePassword(password),
     );
   }
 

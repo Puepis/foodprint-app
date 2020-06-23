@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/errors.dart';
 import 'package:foodprint/domain/core/failures.dart';
+import 'package:foodprint/domain/core/value_validators.dart';
 import 'package:uuid/uuid.dart';
 
 // Generic value class 
@@ -62,9 +63,10 @@ class Timestamp extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory Timestamp(String input) {
+  factory Timestamp(String timestamp) {
+    assert(timestamp != null);
     return Timestamp._(
-      right(input), // TODO: Validate timestamp
+      validateStringNotEmpty(timestamp),
     );
   }
 
@@ -72,14 +74,15 @@ class Timestamp extends ValueObject<String> {
 }
 
 class Latitude extends ValueObject<double> {
-  static const double minValue = -90.0;
-  static const double maxValue = 90.0;
+  static const double min = -90.0;
+  static const double max = 90.0;
   @override
   final Either<ValueFailure<double>, double> value;
 
-  factory Latitude(double input) {
+  factory Latitude(double lat) {
+    assert(lat != null);
     return Latitude._(
-      right(input), // TODO: Validate latitude 
+      validateDoubleInRange(lat, min, max), 
     );
   }
 
@@ -87,14 +90,15 @@ class Latitude extends ValueObject<double> {
 }
 
 class Longitude extends ValueObject<double> {
-  static const double minValue = -180.0;
-  static const double maxValue = 180.0;
+  static const double min = -180.0;
+  static const double max = 180.0;
   @override
   final Either<ValueFailure<double>, double> value;
 
-  factory Longitude(double input) {
+  factory Longitude(double lng) {
+    assert(lng != null);
     return Longitude._(
-      right(input), // TODO: Validate 
+      validateDoubleInRange(lng, min, max), 
     );
   }
 
