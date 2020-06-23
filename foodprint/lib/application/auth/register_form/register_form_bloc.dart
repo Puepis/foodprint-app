@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:foodprint/domain/auth/i_auth_facade.dart';
+import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -14,9 +14,9 @@ part 'register_form_state.dart';
 part 'register_form_bloc.freezed.dart';
 
 class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
-  final IAuthFacade _authFacade;
+  final IAuthRepository _authClient;
 
-  RegisterFormBloc(this._authFacade);
+  RegisterFormBloc(this._authClient);
 
   @override
   RegisterFormState get initialState => RegisterFormState.initial();
@@ -56,7 +56,7 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
               isSubmitting: true, authFailureOrSuccessOption: none());
 
           // Attempt to register 
-          failureOrSuccess = await _authFacade.register(
+          failureOrSuccess = await _authClient.register(
               emailAddress: state.emailAddress,
               password: state.password,
               username: state.username);

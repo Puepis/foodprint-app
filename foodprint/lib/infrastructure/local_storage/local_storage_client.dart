@@ -4,11 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/exceptions.dart';
-import 'package:foodprint/domain/local_storage/i_jwt_local_data_source.dart';
+import 'package:foodprint/domain/local_storage/i_jwt_local_repository.dart';
 
 
-
-class JWTStorageClient implements JWTLocalDataSource {
+class JWTStorageClient implements JWTLocalRepository {
   final FlutterSecureStorage storage;
 
   JWTStorageClient({@required this.storage});

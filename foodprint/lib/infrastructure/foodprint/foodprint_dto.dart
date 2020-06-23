@@ -1,6 +1,6 @@
 
 import 'package:flutter/foundation.dart';
-import 'package:foodprint/domain/photos/foodprint_entity.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/infrastructure/photos/photo_dtos.dart';
 import 'package:foodprint/infrastructure/restaurants/restaurant_dtos.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

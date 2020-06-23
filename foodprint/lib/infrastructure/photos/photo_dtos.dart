@@ -1,9 +1,10 @@
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
-import 'package:foodprint/domain/photos/foodprint_photo_entity.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -23,7 +24,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
   }) = _PhotoDTO;
 
   // Convert entity to DTO
-  factory PhotoDTO.fromEntity(FoodprintPhotoEntity photo) {
+  factory PhotoDTO.fromEntity(PhotoEntity photo) {
     return PhotoDTO(
       storagePath: photo.storagePath.getOrCrash(), // unexpected errors
       bytes: photo.imageData.getOrCrash(),
@@ -33,8 +34,8 @@ abstract class PhotoDTO implements _$PhotoDTO {
   }
 
   // Convert DTO to entity
-  FoodprintPhotoEntity toEntity() {
-    return FoodprintPhotoEntity(
+  PhotoEntity toEntity() {
+    return PhotoEntity(
       storagePath: StoragePath(storagePath), 
       imageData: PhotoData(bytes),
       photoDetail: photoDetail.toEntity(),

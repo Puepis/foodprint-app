@@ -12,12 +12,12 @@ T _$identity<T>(T value) => value;
 class _$PhotoFailureTearOff {
   const _$PhotoFailureTearOff();
 
-  _Unexpected unexpected() {
-    return const _Unexpected();
-  }
-
   _ServerError serverError() {
     return const _ServerError();
+  }
+
+  _InvalidPhoto invalidPhoto() {
+    return const _InvalidPhoto();
   }
 }
 
@@ -27,24 +27,24 @@ const $PhotoFailure = _$PhotoFailureTearOff();
 mixin _$PhotoFailure {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result unexpected(),
     @required Result serverError(),
+    @required Result invalidPhoto(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result unexpected(),
     Result serverError(),
+    Result invalidPhoto(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result unexpected(_Unexpected value),
     @required Result serverError(_ServerError value),
+    @required Result invalidPhoto(_InvalidPhoto value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result unexpected(_Unexpected value),
     Result serverError(_ServerError value),
+    Result invalidPhoto(_InvalidPhoto value),
     @required Result orElse(),
   });
 }
@@ -61,93 +61,6 @@ class _$PhotoFailureCopyWithImpl<$Res> implements $PhotoFailureCopyWith<$Res> {
   final PhotoFailure _value;
   // ignore: unused_field
   final $Res Function(PhotoFailure) _then;
-}
-
-abstract class _$UnexpectedCopyWith<$Res> {
-  factory _$UnexpectedCopyWith(
-          _Unexpected value, $Res Function(_Unexpected) then) =
-      __$UnexpectedCopyWithImpl<$Res>;
-}
-
-class __$UnexpectedCopyWithImpl<$Res> extends _$PhotoFailureCopyWithImpl<$Res>
-    implements _$UnexpectedCopyWith<$Res> {
-  __$UnexpectedCopyWithImpl(
-      _Unexpected _value, $Res Function(_Unexpected) _then)
-      : super(_value, (v) => _then(v as _Unexpected));
-
-  @override
-  _Unexpected get _value => super._value as _Unexpected;
-}
-
-class _$_Unexpected implements _Unexpected {
-  const _$_Unexpected();
-
-  @override
-  String toString() {
-    return 'PhotoFailure.unexpected()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is _Unexpected);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result unexpected(),
-    @required Result serverError(),
-  }) {
-    assert(unexpected != null);
-    assert(serverError != null);
-    return unexpected();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result unexpected(),
-    Result serverError(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unexpected != null) {
-      return unexpected();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result unexpected(_Unexpected value),
-    @required Result serverError(_ServerError value),
-  }) {
-    assert(unexpected != null);
-    assert(serverError != null);
-    return unexpected(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result unexpected(_Unexpected value),
-    Result serverError(_ServerError value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (unexpected != null) {
-      return unexpected(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Unexpected implements PhotoFailure {
-  const factory _Unexpected() = _$_Unexpected;
 }
 
 abstract class _$ServerErrorCopyWith<$Res> {
@@ -185,19 +98,19 @@ class _$_ServerError implements _ServerError {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result unexpected(),
     @required Result serverError(),
+    @required Result invalidPhoto(),
   }) {
-    assert(unexpected != null);
     assert(serverError != null);
+    assert(invalidPhoto != null);
     return serverError();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result unexpected(),
     Result serverError(),
+    Result invalidPhoto(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -210,19 +123,19 @@ class _$_ServerError implements _ServerError {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result unexpected(_Unexpected value),
     @required Result serverError(_ServerError value),
+    @required Result invalidPhoto(_InvalidPhoto value),
   }) {
-    assert(unexpected != null);
     assert(serverError != null);
+    assert(invalidPhoto != null);
     return serverError(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result unexpected(_Unexpected value),
     Result serverError(_ServerError value),
+    Result invalidPhoto(_InvalidPhoto value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -235,4 +148,91 @@ class _$_ServerError implements _ServerError {
 
 abstract class _ServerError implements PhotoFailure {
   const factory _ServerError() = _$_ServerError;
+}
+
+abstract class _$InvalidPhotoCopyWith<$Res> {
+  factory _$InvalidPhotoCopyWith(
+          _InvalidPhoto value, $Res Function(_InvalidPhoto) then) =
+      __$InvalidPhotoCopyWithImpl<$Res>;
+}
+
+class __$InvalidPhotoCopyWithImpl<$Res> extends _$PhotoFailureCopyWithImpl<$Res>
+    implements _$InvalidPhotoCopyWith<$Res> {
+  __$InvalidPhotoCopyWithImpl(
+      _InvalidPhoto _value, $Res Function(_InvalidPhoto) _then)
+      : super(_value, (v) => _then(v as _InvalidPhoto));
+
+  @override
+  _InvalidPhoto get _value => super._value as _InvalidPhoto;
+}
+
+class _$_InvalidPhoto implements _InvalidPhoto {
+  const _$_InvalidPhoto();
+
+  @override
+  String toString() {
+    return 'PhotoFailure.invalidPhoto()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _InvalidPhoto);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result serverError(),
+    @required Result invalidPhoto(),
+  }) {
+    assert(serverError != null);
+    assert(invalidPhoto != null);
+    return invalidPhoto();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result serverError(),
+    Result invalidPhoto(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidPhoto != null) {
+      return invalidPhoto();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result serverError(_ServerError value),
+    @required Result invalidPhoto(_InvalidPhoto value),
+  }) {
+    assert(serverError != null);
+    assert(invalidPhoto != null);
+    return invalidPhoto(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result serverError(_ServerError value),
+    Result invalidPhoto(_InvalidPhoto value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidPhoto != null) {
+      return invalidPhoto(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _InvalidPhoto implements PhotoFailure {
+  const factory _InvalidPhoto() = _$_InvalidPhoto;
 }

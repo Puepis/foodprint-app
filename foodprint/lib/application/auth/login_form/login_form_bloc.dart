@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
-import 'package:foodprint/domain/auth/i_auth_facade.dart';
+import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
@@ -23,9 +23,9 @@ part 'login_form_bloc.freezed.dart';
 // login data to the authFacade
 @injectable
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
-  final IAuthFacade _authFacade;
+  final IAuthRepository _authClient;
 
-  LoginFormBloc(this._authFacade);
+  LoginFormBloc(this._authClient);
 
   @override
   LoginFormState get initialState => LoginFormState.initial();
@@ -57,7 +57,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
               isSubmitting: true, authFailureOrSuccessOption: none());
 
           // Attempt to login
-          failureOrSuccess = await _authFacade.login(
+          failureOrSuccess = await _authClient.login(
               password: state.password, username: state.username);
         }
         // Nonvalid input

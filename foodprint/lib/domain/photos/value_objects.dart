@@ -33,6 +33,7 @@ class PhotoData extends ValueObject<List<int>> {
   const PhotoData._(this.value);
 }
 
+
 class PhotoName extends ValueObject<String> {
   static const int maxLength = 50;
   @override

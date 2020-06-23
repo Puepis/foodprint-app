@@ -13,8 +13,7 @@ class _$FoodprintEntityTearOff {
   const _$FoodprintEntityTearOff();
 
   _FoodprintEntity call(
-      {@required
-          Map<RestaurantEntity, List<FoodprintPhotoEntity>> restaurantPhotos}) {
+      {@required Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos}) {
     return _FoodprintEntity(
       restaurantPhotos: restaurantPhotos,
     );
@@ -25,7 +24,7 @@ class _$FoodprintEntityTearOff {
 const $FoodprintEntity = _$FoodprintEntityTearOff();
 
 mixin _$FoodprintEntity {
-  Map<RestaurantEntity, List<FoodprintPhotoEntity>> get restaurantPhotos;
+  Map<RestaurantEntity, List<PhotoEntity>> get restaurantPhotos;
 
   $FoodprintEntityCopyWith<FoodprintEntity> get copyWith;
 }
@@ -34,8 +33,7 @@ abstract class $FoodprintEntityCopyWith<$Res> {
   factory $FoodprintEntityCopyWith(
           FoodprintEntity value, $Res Function(FoodprintEntity) then) =
       _$FoodprintEntityCopyWithImpl<$Res>;
-  $Res call(
-      {Map<RestaurantEntity, List<FoodprintPhotoEntity>> restaurantPhotos});
+  $Res call({Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos});
 }
 
 class _$FoodprintEntityCopyWithImpl<$Res>
@@ -53,8 +51,7 @@ class _$FoodprintEntityCopyWithImpl<$Res>
     return _then(_value.copyWith(
       restaurantPhotos: restaurantPhotos == freezed
           ? _value.restaurantPhotos
-          : restaurantPhotos
-              as Map<RestaurantEntity, List<FoodprintPhotoEntity>>,
+          : restaurantPhotos as Map<RestaurantEntity, List<PhotoEntity>>,
     ));
   }
 }
@@ -65,8 +62,7 @@ abstract class _$FoodprintEntityCopyWith<$Res>
           _FoodprintEntity value, $Res Function(_FoodprintEntity) then) =
       __$FoodprintEntityCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {Map<RestaurantEntity, List<FoodprintPhotoEntity>> restaurantPhotos});
+  $Res call({Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos});
 }
 
 class __$FoodprintEntityCopyWithImpl<$Res>
@@ -86,8 +82,7 @@ class __$FoodprintEntityCopyWithImpl<$Res>
     return _then(_FoodprintEntity(
       restaurantPhotos: restaurantPhotos == freezed
           ? _value.restaurantPhotos
-          : restaurantPhotos
-              as Map<RestaurantEntity, List<FoodprintPhotoEntity>>,
+          : restaurantPhotos as Map<RestaurantEntity, List<PhotoEntity>>,
     ));
   }
 }
@@ -98,7 +93,7 @@ class _$_FoodprintEntity extends _FoodprintEntity {
         super._();
 
   @override
-  final Map<RestaurantEntity, List<FoodprintPhotoEntity>> restaurantPhotos;
+  final Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos;
 
   @override
   String toString() {
@@ -127,12 +122,12 @@ class _$_FoodprintEntity extends _FoodprintEntity {
 abstract class _FoodprintEntity extends FoodprintEntity {
   const _FoodprintEntity._() : super._();
   const factory _FoodprintEntity(
-      {@required
-          Map<RestaurantEntity, List<FoodprintPhotoEntity>>
-              restaurantPhotos}) = _$_FoodprintEntity;
+          {@required
+              Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos}) =
+      _$_FoodprintEntity;
 
   @override
-  Map<RestaurantEntity, List<FoodprintPhotoEntity>> get restaurantPhotos;
+  Map<RestaurantEntity, List<PhotoEntity>> get restaurantPhotos;
   @override
   _$FoodprintEntityCopyWith<_FoodprintEntity> get copyWith;
 }

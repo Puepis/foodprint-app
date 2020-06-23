@@ -7,8 +7,7 @@ import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 
-// Basically a repository - defines the methods that need to be implemented
-abstract class IAuthFacade {
+abstract class IAuthRepository {
   
   // Get the user's JWT
   Future<Option<JWT>> getUserToken();
