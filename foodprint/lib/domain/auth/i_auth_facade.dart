@@ -23,5 +23,6 @@ abstract class IAuthFacade {
     @required Username username,
     @required Password password,
   });
+
   Future<void> logout();
 }

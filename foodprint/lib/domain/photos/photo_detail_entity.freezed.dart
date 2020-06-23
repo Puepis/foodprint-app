@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
 
-part of 'photo_detail.dart';
+part of 'photo_detail_entity.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -9,14 +9,14 @@ part of 'photo_detail.dart';
 
 T _$identity<T>(T value) => value;
 
-class _$PhotoDetailTearOff {
-  const _$PhotoDetailTearOff();
+class _$PhotoDetailEntityTearOff {
+  const _$PhotoDetailEntityTearOff();
 
-  _PhotoDetail call(
+  _PhotoDetailEntity call(
       {@required PhotoName name,
       @required PhotoPrice price,
       @required PhotoComments comments}) {
-    return _PhotoDetail(
+    return _PhotoDetailEntity(
       name: name,
       price: price,
       comments: comments,
@@ -25,29 +25,30 @@ class _$PhotoDetailTearOff {
 }
 
 // ignore: unused_element
-const $PhotoDetail = _$PhotoDetailTearOff();
+const $PhotoDetailEntity = _$PhotoDetailEntityTearOff();
 
-mixin _$PhotoDetail {
+mixin _$PhotoDetailEntity {
   PhotoName get name;
   PhotoPrice get price;
   PhotoComments get comments;
 
-  $PhotoDetailCopyWith<PhotoDetail> get copyWith;
+  $PhotoDetailEntityCopyWith<PhotoDetailEntity> get copyWith;
 }
 
-abstract class $PhotoDetailCopyWith<$Res> {
-  factory $PhotoDetailCopyWith(
-          PhotoDetail value, $Res Function(PhotoDetail) then) =
-      _$PhotoDetailCopyWithImpl<$Res>;
+abstract class $PhotoDetailEntityCopyWith<$Res> {
+  factory $PhotoDetailEntityCopyWith(
+          PhotoDetailEntity value, $Res Function(PhotoDetailEntity) then) =
+      _$PhotoDetailEntityCopyWithImpl<$Res>;
   $Res call({PhotoName name, PhotoPrice price, PhotoComments comments});
 }
 
-class _$PhotoDetailCopyWithImpl<$Res> implements $PhotoDetailCopyWith<$Res> {
-  _$PhotoDetailCopyWithImpl(this._value, this._then);
+class _$PhotoDetailEntityCopyWithImpl<$Res>
+    implements $PhotoDetailEntityCopyWith<$Res> {
+  _$PhotoDetailEntityCopyWithImpl(this._value, this._then);
 
-  final PhotoDetail _value;
+  final PhotoDetailEntity _value;
   // ignore: unused_field
-  final $Res Function(PhotoDetail) _then;
+  final $Res Function(PhotoDetailEntity) _then;
 
   @override
   $Res call({
@@ -64,23 +65,24 @@ class _$PhotoDetailCopyWithImpl<$Res> implements $PhotoDetailCopyWith<$Res> {
   }
 }
 
-abstract class _$PhotoDetailCopyWith<$Res>
-    implements $PhotoDetailCopyWith<$Res> {
-  factory _$PhotoDetailCopyWith(
-          _PhotoDetail value, $Res Function(_PhotoDetail) then) =
-      __$PhotoDetailCopyWithImpl<$Res>;
+abstract class _$PhotoDetailEntityCopyWith<$Res>
+    implements $PhotoDetailEntityCopyWith<$Res> {
+  factory _$PhotoDetailEntityCopyWith(
+          _PhotoDetailEntity value, $Res Function(_PhotoDetailEntity) then) =
+      __$PhotoDetailEntityCopyWithImpl<$Res>;
   @override
   $Res call({PhotoName name, PhotoPrice price, PhotoComments comments});
 }
 
-class __$PhotoDetailCopyWithImpl<$Res> extends _$PhotoDetailCopyWithImpl<$Res>
-    implements _$PhotoDetailCopyWith<$Res> {
-  __$PhotoDetailCopyWithImpl(
-      _PhotoDetail _value, $Res Function(_PhotoDetail) _then)
-      : super(_value, (v) => _then(v as _PhotoDetail));
+class __$PhotoDetailEntityCopyWithImpl<$Res>
+    extends _$PhotoDetailEntityCopyWithImpl<$Res>
+    implements _$PhotoDetailEntityCopyWith<$Res> {
+  __$PhotoDetailEntityCopyWithImpl(
+      _PhotoDetailEntity _value, $Res Function(_PhotoDetailEntity) _then)
+      : super(_value, (v) => _then(v as _PhotoDetailEntity));
 
   @override
-  _PhotoDetail get _value => super._value as _PhotoDetail;
+  _PhotoDetailEntity get _value => super._value as _PhotoDetailEntity;
 
   @override
   $Res call({
@@ -88,7 +90,7 @@ class __$PhotoDetailCopyWithImpl<$Res> extends _$PhotoDetailCopyWithImpl<$Res>
     Object price = freezed,
     Object comments = freezed,
   }) {
-    return _then(_PhotoDetail(
+    return _then(_PhotoDetailEntity(
       name: name == freezed ? _value.name : name as PhotoName,
       price: price == freezed ? _value.price : price as PhotoPrice,
       comments:
@@ -97,8 +99,8 @@ class __$PhotoDetailCopyWithImpl<$Res> extends _$PhotoDetailCopyWithImpl<$Res>
   }
 }
 
-class _$_PhotoDetail extends _PhotoDetail {
-  const _$_PhotoDetail(
+class _$_PhotoDetailEntity extends _PhotoDetailEntity {
+  const _$_PhotoDetailEntity(
       {@required this.name, @required this.price, @required this.comments})
       : assert(name != null),
         assert(price != null),
@@ -114,13 +116,13 @@ class _$_PhotoDetail extends _PhotoDetail {
 
   @override
   String toString() {
-    return 'PhotoDetail(name: $name, price: $price, comments: $comments)';
+    return 'PhotoDetailEntity(name: $name, price: $price, comments: $comments)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _PhotoDetail &&
+        (other is _PhotoDetailEntity &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.price, price) ||
@@ -138,16 +140,16 @@ class _$_PhotoDetail extends _PhotoDetail {
       const DeepCollectionEquality().hash(comments);
 
   @override
-  _$PhotoDetailCopyWith<_PhotoDetail> get copyWith =>
-      __$PhotoDetailCopyWithImpl<_PhotoDetail>(this, _$identity);
+  _$PhotoDetailEntityCopyWith<_PhotoDetailEntity> get copyWith =>
+      __$PhotoDetailEntityCopyWithImpl<_PhotoDetailEntity>(this, _$identity);
 }
 
-abstract class _PhotoDetail extends PhotoDetail {
-  const _PhotoDetail._() : super._();
-  const factory _PhotoDetail(
+abstract class _PhotoDetailEntity extends PhotoDetailEntity {
+  const _PhotoDetailEntity._() : super._();
+  const factory _PhotoDetailEntity(
       {@required PhotoName name,
       @required PhotoPrice price,
-      @required PhotoComments comments}) = _$_PhotoDetail;
+      @required PhotoComments comments}) = _$_PhotoDetailEntity;
 
   @override
   PhotoName get name;
@@ -156,5 +158,5 @@ abstract class _PhotoDetail extends PhotoDetail {
   @override
   PhotoComments get comments;
   @override
-  _$PhotoDetailCopyWith<_PhotoDetail> get copyWith;
+  _$PhotoDetailEntityCopyWith<_PhotoDetailEntity> get copyWith;
 }

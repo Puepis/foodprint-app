@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'restaurant_result.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/infrastructure/restaurants/restaurant_dtos.dart';
 
 class GooglePlaceResponse {
   final List<String> attributions;
-  final List<RestaurantResult> results;
+  final List<RestaurantEntity> results;
   GooglePlaceResponse({@required this.attributions, @required this.results});
 
   factory GooglePlaceResponse.fromJson(Map<String, dynamic> json) {
@@ -13,7 +14,7 @@ class GooglePlaceResponse {
     );
   }
 
-  static List<RestaurantResult> parseResults(List results) {
-    return results.map((i) => RestaurantResult.fromJson(i as Map<String, dynamic>)).toList();
+  static List<RestaurantEntity> parseResults(List results) {
+    return results.map((i) => RestaurantDTO.fromJson(i as Map<String, dynamic>).toEntity()).toList();
   }
 }

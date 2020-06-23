@@ -9,18 +9,18 @@ part of 'photo_dtos.dart';
 
 T _$identity<T>(T value) => value;
 PhotoDTO _$PhotoDTOFromJson(Map<String, dynamic> json) {
-  return _NoteDto.fromJson(json);
+  return _PhotoDTO.fromJson(json);
 }
 
 class _$PhotoDTOTearOff {
   const _$PhotoDTOTearOff();
 
-  _NoteDto call(
+  _PhotoDTO call(
       {@required String storagePath,
       @required List<int> bytes,
       @required PhotoDetailDTO photoDetail,
       @required String timestamp}) {
-    return _NoteDto(
+    return _PhotoDTO(
       storagePath: storagePath,
       bytes: bytes,
       photoDetail: photoDetail,
@@ -90,9 +90,9 @@ class _$PhotoDTOCopyWithImpl<$Res> implements $PhotoDTOCopyWith<$Res> {
   }
 }
 
-abstract class _$NoteDtoCopyWith<$Res> implements $PhotoDTOCopyWith<$Res> {
-  factory _$NoteDtoCopyWith(_NoteDto value, $Res Function(_NoteDto) then) =
-      __$NoteDtoCopyWithImpl<$Res>;
+abstract class _$PhotoDTOCopyWith<$Res> implements $PhotoDTOCopyWith<$Res> {
+  factory _$PhotoDTOCopyWith(_PhotoDTO value, $Res Function(_PhotoDTO) then) =
+      __$PhotoDTOCopyWithImpl<$Res>;
   @override
   $Res call(
       {String storagePath,
@@ -104,13 +104,13 @@ abstract class _$NoteDtoCopyWith<$Res> implements $PhotoDTOCopyWith<$Res> {
   $PhotoDetailDTOCopyWith<$Res> get photoDetail;
 }
 
-class __$NoteDtoCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
-    implements _$NoteDtoCopyWith<$Res> {
-  __$NoteDtoCopyWithImpl(_NoteDto _value, $Res Function(_NoteDto) _then)
-      : super(_value, (v) => _then(v as _NoteDto));
+class __$PhotoDTOCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
+    implements _$PhotoDTOCopyWith<$Res> {
+  __$PhotoDTOCopyWithImpl(_PhotoDTO _value, $Res Function(_PhotoDTO) _then)
+      : super(_value, (v) => _then(v as _PhotoDTO));
 
   @override
-  _NoteDto get _value => super._value as _NoteDto;
+  _PhotoDTO get _value => super._value as _PhotoDTO;
 
   @override
   $Res call({
@@ -119,7 +119,7 @@ class __$NoteDtoCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
     Object photoDetail = freezed,
     Object timestamp = freezed,
   }) {
-    return _then(_NoteDto(
+    return _then(_PhotoDTO(
       storagePath:
           storagePath == freezed ? _value.storagePath : storagePath as String,
       bytes: bytes == freezed ? _value.bytes : bytes as List<int>,
@@ -132,8 +132,8 @@ class __$NoteDtoCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$_NoteDto extends _NoteDto with DiagnosticableTreeMixin {
-  const _$_NoteDto(
+class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
+  const _$_PhotoDTO(
       {@required this.storagePath,
       @required this.bytes,
       @required this.photoDetail,
@@ -144,8 +144,8 @@ class _$_NoteDto extends _NoteDto with DiagnosticableTreeMixin {
         assert(timestamp != null),
         super._();
 
-  factory _$_NoteDto.fromJson(Map<String, dynamic> json) =>
-      _$_$_NoteDtoFromJson(json);
+  factory _$_PhotoDTO.fromJson(Map<String, dynamic> json) =>
+      _$_$_PhotoDTOFromJson(json);
 
   @override
   final String storagePath;
@@ -175,7 +175,7 @@ class _$_NoteDto extends _NoteDto with DiagnosticableTreeMixin {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _NoteDto &&
+        (other is _PhotoDTO &&
             (identical(other.storagePath, storagePath) ||
                 const DeepCollectionEquality()
                     .equals(other.storagePath, storagePath)) &&
@@ -198,24 +198,24 @@ class _$_NoteDto extends _NoteDto with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(timestamp);
 
   @override
-  _$NoteDtoCopyWith<_NoteDto> get copyWith =>
-      __$NoteDtoCopyWithImpl<_NoteDto>(this, _$identity);
+  _$PhotoDTOCopyWith<_PhotoDTO> get copyWith =>
+      __$PhotoDTOCopyWithImpl<_PhotoDTO>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_NoteDtoToJson(this);
+    return _$_$_PhotoDTOToJson(this);
   }
 }
 
-abstract class _NoteDto extends PhotoDTO {
-  const _NoteDto._() : super._();
-  const factory _NoteDto(
+abstract class _PhotoDTO extends PhotoDTO {
+  const _PhotoDTO._() : super._();
+  const factory _PhotoDTO(
       {@required String storagePath,
       @required List<int> bytes,
       @required PhotoDetailDTO photoDetail,
-      @required String timestamp}) = _$_NoteDto;
+      @required String timestamp}) = _$_PhotoDTO;
 
-  factory _NoteDto.fromJson(Map<String, dynamic> json) = _$_NoteDto.fromJson;
+  factory _PhotoDTO.fromJson(Map<String, dynamic> json) = _$_PhotoDTO.fromJson;
 
   @override
   String get storagePath;
@@ -226,7 +226,7 @@ abstract class _NoteDto extends PhotoDTO {
   @override
   String get timestamp;
   @override
-  _$NoteDtoCopyWith<_NoteDto> get copyWith;
+  _$PhotoDTOCopyWith<_PhotoDTO> get copyWith;
 }
 
 PhotoDetailDTO _$PhotoDetailDTOFromJson(Map<String, dynamic> json) {

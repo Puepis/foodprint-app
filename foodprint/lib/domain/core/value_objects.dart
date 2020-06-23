@@ -71,3 +71,32 @@ class Timestamp extends ValueObject<String> {
   const Timestamp._(this.value);
 }
 
+class Latitude extends ValueObject<double> {
+  static const double minValue = -90.0;
+  static const double maxValue = 90.0;
+  @override
+  final Either<ValueFailure<double>, double> value;
+
+  factory Latitude(double input) {
+    return Latitude._(
+      right(input), // TODO: Validate latitude 
+    );
+  }
+
+  const Latitude._(this.value);
+}
+
+class Longitude extends ValueObject<double> {
+  static const double minValue = -180.0;
+  static const double maxValue = 180.0;
+  @override
+  final Either<ValueFailure<double>, double> value;
+
+  factory Longitude(double input) {
+    return Longitude._(
+      right(input), // TODO: Validate 
+    );
+  }
+
+  const Longitude._(this.value);
+}

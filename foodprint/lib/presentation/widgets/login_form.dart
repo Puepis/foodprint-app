@@ -11,14 +11,18 @@ class LoginForm extends StatelessWidget {
     return BlocConsumer<LoginFormBloc, LoginFormState>(
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
-          () {},
+          () {
+            // Nothing happened yet
+          },
           (either) => either.fold((failure) {
             FlushbarHelper.createError(
               message: failure.map(
                 serverError: (_) => 'Server error',
                 invalidLoginCombination: (_) => 'Invalid login combination', 
               ),).show(context);
-            }, (_) {
+            }, 
+            (_) {
+              // Successful
               // TODO: Navigate
             }
           )

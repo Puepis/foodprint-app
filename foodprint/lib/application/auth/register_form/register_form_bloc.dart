@@ -46,6 +46,7 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
       registerPressed: (e) async* {
         Either<RegisterFailure, Unit> failureOrSuccess;
 
+        // Check if the fields are valid
         final isEmailValid = state.emailAddress.isValid();
         final isPasswordValid = state.password.isValid();
         final isUsernameValid = state.username.isValid();
@@ -54,13 +55,13 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
           yield state.copyWith(
               isSubmitting: true, authFailureOrSuccessOption: none());
 
-          // Attempt to login
+          // Attempt to register 
           failureOrSuccess = await _authFacade.register(
               emailAddress: state.emailAddress,
               password: state.password,
               username: state.username);
         }
-        // Nonvalid input
+        // Invalid input
         yield state.copyWith(
           isSubmitting: false,
           authFailureOrSuccessOption: optionOf(

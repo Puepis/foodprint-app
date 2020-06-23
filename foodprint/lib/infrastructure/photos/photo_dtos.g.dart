@@ -6,8 +6,8 @@ part of 'photo_dtos.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_NoteDto _$_$_NoteDtoFromJson(Map<String, dynamic> json) {
-  return _$_NoteDto(
+_$_PhotoDTO _$_$_PhotoDTOFromJson(Map<String, dynamic> json) {
+  return _$_PhotoDTO(
     storagePath: json['storagePath'] as String,
     bytes: (json['bytes'] as List)?.map((e) => e as int)?.toList(),
     photoDetail: json['photoDetail'] == null
@@ -17,7 +17,7 @@ _$_NoteDto _$_$_NoteDtoFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$_$_NoteDtoToJson(_$_NoteDto instance) =>
+Map<String, dynamic> _$_$_PhotoDTOToJson(_$_PhotoDTO instance) =>
     <String, dynamic>{
       'storagePath': instance.storagePath,
       'bytes': instance.bytes,

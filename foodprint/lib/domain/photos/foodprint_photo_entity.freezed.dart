@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
 
-part of 'foodprint_photo.dart';
+part of 'foodprint_photo_entity.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -9,13 +9,13 @@ part of 'foodprint_photo.dart';
 
 T _$identity<T>(T value) => value;
 
-class _$FoodprintPhotoTearOff {
-  const _$FoodprintPhotoTearOff();
+class _$FoodprintPhotoEntityTearOff {
+  const _$FoodprintPhotoEntityTearOff();
 
   _FoodprintPhoto call(
       {@required StoragePath storagePath,
       @required PhotoData imageData,
-      @required PhotoDetail photoDetail,
+      @required PhotoDetailEntity photoDetail,
       @required Timestamp timestamp}) {
     return _FoodprintPhoto(
       storagePath: storagePath,
@@ -27,37 +27,37 @@ class _$FoodprintPhotoTearOff {
 }
 
 // ignore: unused_element
-const $FoodprintPhoto = _$FoodprintPhotoTearOff();
+const $FoodprintPhotoEntity = _$FoodprintPhotoEntityTearOff();
 
-mixin _$FoodprintPhoto {
+mixin _$FoodprintPhotoEntity {
   StoragePath get storagePath;
   PhotoData get imageData;
-  PhotoDetail get photoDetail;
+  PhotoDetailEntity get photoDetail;
   Timestamp get timestamp;
 
-  $FoodprintPhotoCopyWith<FoodprintPhoto> get copyWith;
+  $FoodprintPhotoEntityCopyWith<FoodprintPhotoEntity> get copyWith;
 }
 
-abstract class $FoodprintPhotoCopyWith<$Res> {
-  factory $FoodprintPhotoCopyWith(
-          FoodprintPhoto value, $Res Function(FoodprintPhoto) then) =
-      _$FoodprintPhotoCopyWithImpl<$Res>;
+abstract class $FoodprintPhotoEntityCopyWith<$Res> {
+  factory $FoodprintPhotoEntityCopyWith(FoodprintPhotoEntity value,
+          $Res Function(FoodprintPhotoEntity) then) =
+      _$FoodprintPhotoEntityCopyWithImpl<$Res>;
   $Res call(
       {StoragePath storagePath,
       PhotoData imageData,
-      PhotoDetail photoDetail,
+      PhotoDetailEntity photoDetail,
       Timestamp timestamp});
 
-  $PhotoDetailCopyWith<$Res> get photoDetail;
+  $PhotoDetailEntityCopyWith<$Res> get photoDetail;
 }
 
-class _$FoodprintPhotoCopyWithImpl<$Res>
-    implements $FoodprintPhotoCopyWith<$Res> {
-  _$FoodprintPhotoCopyWithImpl(this._value, this._then);
+class _$FoodprintPhotoEntityCopyWithImpl<$Res>
+    implements $FoodprintPhotoEntityCopyWith<$Res> {
+  _$FoodprintPhotoEntityCopyWithImpl(this._value, this._then);
 
-  final FoodprintPhoto _value;
+  final FoodprintPhotoEntity _value;
   // ignore: unused_field
-  final $Res Function(FoodprintPhoto) _then;
+  final $Res Function(FoodprintPhotoEntity) _then;
 
   @override
   $Res call({
@@ -74,25 +74,25 @@ class _$FoodprintPhotoCopyWithImpl<$Res>
           imageData == freezed ? _value.imageData : imageData as PhotoData,
       photoDetail: photoDetail == freezed
           ? _value.photoDetail
-          : photoDetail as PhotoDetail,
+          : photoDetail as PhotoDetailEntity,
       timestamp:
           timestamp == freezed ? _value.timestamp : timestamp as Timestamp,
     ));
   }
 
   @override
-  $PhotoDetailCopyWith<$Res> get photoDetail {
+  $PhotoDetailEntityCopyWith<$Res> get photoDetail {
     if (_value.photoDetail == null) {
       return null;
     }
-    return $PhotoDetailCopyWith<$Res>(_value.photoDetail, (value) {
+    return $PhotoDetailEntityCopyWith<$Res>(_value.photoDetail, (value) {
       return _then(_value.copyWith(photoDetail: value));
     });
   }
 }
 
 abstract class _$FoodprintPhotoCopyWith<$Res>
-    implements $FoodprintPhotoCopyWith<$Res> {
+    implements $FoodprintPhotoEntityCopyWith<$Res> {
   factory _$FoodprintPhotoCopyWith(
           _FoodprintPhoto value, $Res Function(_FoodprintPhoto) then) =
       __$FoodprintPhotoCopyWithImpl<$Res>;
@@ -100,15 +100,15 @@ abstract class _$FoodprintPhotoCopyWith<$Res>
   $Res call(
       {StoragePath storagePath,
       PhotoData imageData,
-      PhotoDetail photoDetail,
+      PhotoDetailEntity photoDetail,
       Timestamp timestamp});
 
   @override
-  $PhotoDetailCopyWith<$Res> get photoDetail;
+  $PhotoDetailEntityCopyWith<$Res> get photoDetail;
 }
 
 class __$FoodprintPhotoCopyWithImpl<$Res>
-    extends _$FoodprintPhotoCopyWithImpl<$Res>
+    extends _$FoodprintPhotoEntityCopyWithImpl<$Res>
     implements _$FoodprintPhotoCopyWith<$Res> {
   __$FoodprintPhotoCopyWithImpl(
       _FoodprintPhoto _value, $Res Function(_FoodprintPhoto) _then)
@@ -132,7 +132,7 @@ class __$FoodprintPhotoCopyWithImpl<$Res>
           imageData == freezed ? _value.imageData : imageData as PhotoData,
       photoDetail: photoDetail == freezed
           ? _value.photoDetail
-          : photoDetail as PhotoDetail,
+          : photoDetail as PhotoDetailEntity,
       timestamp:
           timestamp == freezed ? _value.timestamp : timestamp as Timestamp,
     ));
@@ -156,13 +156,13 @@ class _$_FoodprintPhoto extends _FoodprintPhoto {
   @override
   final PhotoData imageData;
   @override
-  final PhotoDetail photoDetail;
+  final PhotoDetailEntity photoDetail;
   @override
   final Timestamp timestamp;
 
   @override
   String toString() {
-    return 'FoodprintPhoto(storagePath: $storagePath, imageData: $imageData, photoDetail: $photoDetail, timestamp: $timestamp)';
+    return 'FoodprintPhotoEntity(storagePath: $storagePath, imageData: $imageData, photoDetail: $photoDetail, timestamp: $timestamp)';
   }
 
   @override
@@ -196,12 +196,12 @@ class _$_FoodprintPhoto extends _FoodprintPhoto {
       __$FoodprintPhotoCopyWithImpl<_FoodprintPhoto>(this, _$identity);
 }
 
-abstract class _FoodprintPhoto extends FoodprintPhoto {
+abstract class _FoodprintPhoto extends FoodprintPhotoEntity {
   const _FoodprintPhoto._() : super._();
   const factory _FoodprintPhoto(
       {@required StoragePath storagePath,
       @required PhotoData imageData,
-      @required PhotoDetail photoDetail,
+      @required PhotoDetailEntity photoDetail,
       @required Timestamp timestamp}) = _$_FoodprintPhoto;
 
   @override
@@ -209,7 +209,7 @@ abstract class _FoodprintPhoto extends FoodprintPhoto {
   @override
   PhotoData get imageData;
   @override
-  PhotoDetail get photoDetail;
+  PhotoDetailEntity get photoDetail;
   @override
   Timestamp get timestamp;
   @override
