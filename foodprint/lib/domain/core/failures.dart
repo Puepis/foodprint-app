@@ -24,4 +24,7 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
   const factory ValueFailure.outofBounds({
     @required T failedValue,
   }) = OutOfBounds<T>;
+  const factory ValueFailure.invalidToken({
+    @required T failedValue,
+  }) = InvalidToken<T>;
 }

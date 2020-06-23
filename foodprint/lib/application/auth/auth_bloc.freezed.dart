@@ -16,8 +16,10 @@ class _$AuthEventTearOff {
     return const AuthCheckRequested();
   }
 
-  LoggedOut loggedOut() {
-    return const LoggedOut();
+  LoggedOut loggedOut(User user) {
+    return LoggedOut(
+      user,
+    );
   }
 }
 
@@ -28,12 +30,12 @@ mixin _$AuthEvent {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result authCheckRequested(),
-    @required Result loggedOut(),
+    @required Result loggedOut(User user),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result authCheckRequested(),
-    Result loggedOut(),
+    Result loggedOut(User user),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -99,7 +101,7 @@ class _$AuthCheckRequested implements AuthCheckRequested {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result authCheckRequested(),
-    @required Result loggedOut(),
+    @required Result loggedOut(User user),
   }) {
     assert(authCheckRequested != null);
     assert(loggedOut != null);
@@ -110,7 +112,7 @@ class _$AuthCheckRequested implements AuthCheckRequested {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result authCheckRequested(),
-    Result loggedOut(),
+    Result loggedOut(User user),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -153,6 +155,9 @@ abstract class AuthCheckRequested implements AuthEvent {
 abstract class $LoggedOutCopyWith<$Res> {
   factory $LoggedOutCopyWith(LoggedOut value, $Res Function(LoggedOut) then) =
       _$LoggedOutCopyWithImpl<$Res>;
+  $Res call({User user});
+
+  $UserCopyWith<$Res> get user;
 }
 
 class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
@@ -162,45 +167,75 @@ class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
   @override
   LoggedOut get _value => super._value as LoggedOut;
+
+  @override
+  $Res call({
+    Object user = freezed,
+  }) {
+    return _then(LoggedOut(
+      user == freezed ? _value.user : user as User,
+    ));
+  }
+
+  @override
+  $UserCopyWith<$Res> get user {
+    if (_value.user == null) {
+      return null;
+    }
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 class _$LoggedOut implements LoggedOut {
-  const _$LoggedOut();
+  const _$LoggedOut(this.user) : assert(user != null);
+
+  @override
+  final User user;
 
   @override
   String toString() {
-    return 'AuthEvent.loggedOut()';
+    return 'AuthEvent.loggedOut(user: $user)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is LoggedOut);
+    return identical(this, other) ||
+        (other is LoggedOut &&
+            (identical(other.user, user) ||
+                const DeepCollectionEquality().equals(other.user, user)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(user);
+
+  @override
+  $LoggedOutCopyWith<LoggedOut> get copyWith =>
+      _$LoggedOutCopyWithImpl<LoggedOut>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result authCheckRequested(),
-    @required Result loggedOut(),
+    @required Result loggedOut(User user),
   }) {
     assert(authCheckRequested != null);
     assert(loggedOut != null);
-    return loggedOut();
+    return loggedOut(user);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result authCheckRequested(),
-    Result loggedOut(),
+    Result loggedOut(User user),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (loggedOut != null) {
-      return loggedOut();
+      return loggedOut(user);
     }
     return orElse();
   }
@@ -232,7 +267,10 @@ class _$LoggedOut implements LoggedOut {
 }
 
 abstract class LoggedOut implements AuthEvent {
-  const factory LoggedOut() = _$LoggedOut;
+  const factory LoggedOut(User user) = _$LoggedOut;
+
+  User get user;
+  $LoggedOutCopyWith<LoggedOut> get copyWith;
 }
 
 class _$AuthStateTearOff {

@@ -50,3 +50,11 @@ Either<ValueFailure<int>, int> validateIntInRange(int value, int min, int max) {
     return left(ValueFailure.outofBounds(failedValue: value));
   }
 }
+
+Either<ValueFailure<String>, String> validateJWT(String token) {
+  if (token.isNotEmpty && token.split('.').length == 3) {
+    return right(token);
+  } else {
+    return left(ValueFailure.invalidToken(failedValue: token));
+  }
+}

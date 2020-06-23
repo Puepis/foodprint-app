@@ -36,7 +36,7 @@ abstract class ValueObject<T> {
   String toString() => 'Value($value)';
 }
 
-// Can be used for anything, not just user
+// Unique string ID
 class UniqueId extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;

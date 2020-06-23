@@ -1,7 +1,6 @@
 
 import 'dart:convert' show json, ascii, base64;
 import 'package:flutter/material.dart';
-import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:foodprint/presentation/pages/home_page.dart';
 import 'package:foodprint/presentation/pages/login_page.dart';
 import 'package:foodprint/widgets/authorization_portal.dart';
@@ -19,6 +18,7 @@ class TokenAuth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+
       future: jwtOrEmpty,
       builder: (context, snapshot) {
         // Loading
@@ -49,11 +49,6 @@ class TokenAuth extends StatelessWidget {
                 jwt: jwtStr,
                 payload: payload as Map<String, dynamic>,
               );
-            }
-            else {
-              // Delete expired token
-              storage.delete(key: "jwt");
-              return const LoginPage();
             }
           }
         } else {

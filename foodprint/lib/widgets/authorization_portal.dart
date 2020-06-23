@@ -32,11 +32,9 @@ class AuthorizationPortal extends StatefulWidget {
   _AuthorizationPortalState createState() => _AuthorizationPortalState();
 }
 
-enum Status { unauthorized, authorized, pending }
 
 class _AuthorizationPortalState extends State<AuthorizationPortal> {
 
-  Status _authStatus = Status.pending;
   LatLng _currentPos;
   Map<Restaurant, List<FoodprintPhoto>> _userFoodprint;
 
@@ -99,33 +97,18 @@ class _AuthorizationPortalState extends State<AuthorizationPortal> {
       case 200: {
         final FoodprintResponse response = FoodprintResponse.fromJson(jsonDecode(res.body) as Map<String, dynamic>);
         setState(() {
-          _authStatus = Status.authorized;
           _currentPos = location;
           _userFoodprint = response.foodprint;
         });
       }
       break;
       case 403: { // unauthorized
-        print(res.body);
-        setState(() {
-          _authStatus = Status.unauthorized;
-        });
       }
       break;
       case 400: { // error getting photos
-        print(res.body);
-        setState(() {
-          _authStatus = Status.authorized;
-          _currentPos = location;
-        });
       }
       break;
       default: { // unexpected error
-        print(res.statusCode);
-        print(res.body);
-        setState(() {
-          _authStatus = Status.unauthorized; // TODO: Handle unexpected error
-        });
       }
     }
   }

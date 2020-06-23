@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodprint/domain/auth/i_auth_facade.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -46,7 +47,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
             authFailureOrSuccessOption: none());
       },
       loginPressed: (e) async* {
-        Either<LoginFailure, Unit> failureOrSuccess;
+        Either<LoginFailure, JWT> failureOrSuccess;
 
         final isPasswordValid = state.password.isValid();
         final isUsernameValid = state.username.isValid();

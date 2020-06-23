@@ -1,6 +1,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/user.dart';
@@ -9,8 +10,8 @@ import 'package:foodprint/domain/auth/value_objects.dart';
 // Basically a repository - defines the methods that need to be implemented
 abstract class IAuthFacade {
   
-  // option = non-nullable type
-  Future<Option<User>> getSignedInUser();
+  // Get the user's JWT
+  Future<Option<JWT>> getUserToken();
 
   // unit = void
   Future<Either<RegisterFailure, Unit>> register({
@@ -19,10 +20,13 @@ abstract class IAuthFacade {
     @required Password password,
   });
 
-  Future<Either<LoginFailure, Unit>> login({
+  // Either a failure or a JWT token
+  Future<Either<LoginFailure, JWT>> login({
     @required Username username,
     @required Password password,
   });
 
-  Future<void> logout();
+  Future<void> logout({
+    @required User user 
+  });
 }

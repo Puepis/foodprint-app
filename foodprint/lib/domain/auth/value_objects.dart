@@ -1,6 +1,7 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/core/value_validators.dart';
@@ -56,7 +57,20 @@ class Password extends ValueObject<String> {
   const Password._(this.value) : assert(value != null);
 }
 
+@immutable
+class UserID extends ValueObject<int> {
+  @override
+  final Either<ValueFailure<int>, int> value;
 
+  factory UserID(int id) {
+    assert(id != null);
+    return UserID._( 
+      right(id),
+    );
+  }
+
+  const UserID._(this.value) : assert(value != null);
+} 
 
 
 

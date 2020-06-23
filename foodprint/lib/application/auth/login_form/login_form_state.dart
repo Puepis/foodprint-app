@@ -8,7 +8,7 @@ abstract class LoginFormState with _$LoginFormState {
     @required Password password,
     @required bool showErrorMessages,
     @required bool isSubmitting,
-    @required Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption, // nothing happened yet
+    @required Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption, // nothing happened yet
   }) = _LoginFormState;
 
   factory LoginFormState.initial() => LoginFormState(

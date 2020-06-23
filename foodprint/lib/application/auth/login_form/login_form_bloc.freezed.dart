@@ -445,16 +445,11 @@ class _$LoginFormStateTearOff {
   const _$LoginFormStateTearOff();
 
   _LoginFormState call(
-      {@required
-          Username username,
-      @required
-          Password password,
-      @required
-          bool showErrorMessages,
-      @required
-          bool isSubmitting,
-      @required
-          Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption}) {
+      {@required Username username,
+      @required Password password,
+      @required bool showErrorMessages,
+      @required bool isSubmitting,
+      @required Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption}) {
     return _LoginFormState(
       username: username,
       password: password,
@@ -473,7 +468,7 @@ mixin _$LoginFormState {
   Password get password;
   bool get showErrorMessages;
   bool get isSubmitting;
-  Option<Either<LoginFailure, Unit>> get authFailureOrSuccessOption;
+  Option<Either<LoginFailure, JWT>> get authFailureOrSuccessOption;
 
   $LoginFormStateCopyWith<LoginFormState> get copyWith;
 }
@@ -487,7 +482,7 @@ abstract class $LoginFormStateCopyWith<$Res> {
       Password password,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption});
+      Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption});
 }
 
 class _$LoginFormStateCopyWithImpl<$Res>
@@ -516,7 +511,7 @@ class _$LoginFormStateCopyWithImpl<$Res>
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
       authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
           ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<LoginFailure, Unit>>,
+          : authFailureOrSuccessOption as Option<Either<LoginFailure, JWT>>,
     ));
   }
 }
@@ -532,7 +527,7 @@ abstract class _$LoginFormStateCopyWith<$Res>
       Password password,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption});
+      Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption});
 }
 
 class __$LoginFormStateCopyWithImpl<$Res>
@@ -563,7 +558,7 @@ class __$LoginFormStateCopyWithImpl<$Res>
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
       authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
           ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<LoginFailure, Unit>>,
+          : authFailureOrSuccessOption as Option<Either<LoginFailure, JWT>>,
     ));
   }
 }
@@ -592,7 +587,7 @@ class _$_LoginFormState
   @override
   final bool isSubmitting;
   @override
-  final Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption;
+  final Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -660,7 +655,7 @@ abstract class _LoginFormState implements LoginFormState {
           @required
               bool isSubmitting,
           @required
-              Option<Either<LoginFailure, Unit>> authFailureOrSuccessOption}) =
+              Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption}) =
       _$_LoginFormState;
 
   @override
@@ -672,7 +667,7 @@ abstract class _LoginFormState implements LoginFormState {
   @override
   bool get isSubmitting;
   @override
-  Option<Either<LoginFailure, Unit>> get authFailureOrSuccessOption;
+  Option<Either<LoginFailure, JWT>> get authFailureOrSuccessOption;
   @override
   _$LoginFormStateCopyWith<_LoginFormState> get copyWith;
 }
