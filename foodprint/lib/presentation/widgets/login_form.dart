@@ -21,9 +21,8 @@ class LoginForm extends StatelessWidget {
                 invalidLoginCombination: (_) => 'Invalid login combination', 
               ),).show(context);
             }, 
-            (_) {
-              // Successful
-              // TODO: Navigate
+            (jwt) {
+              // TODO: Navigate to dashboard
             }
           )
         );

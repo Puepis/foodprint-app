@@ -8,9 +8,6 @@ part of 'restaurant_dtos.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
-RestaurantDTO _$RestaurantDTOFromJson(Map<String, dynamic> json) {
-  return _RestaurantDTO.fromJson(json);
-}
 
 class _$RestaurantDTOTearOff {
   const _$RestaurantDTOTearOff();
@@ -47,7 +44,6 @@ mixin _$RestaurantDTO {
   double get latitude;
   double get longitude;
 
-  Map<String, dynamic> toJson();
   $RestaurantDTOCopyWith<RestaurantDTO> get copyWith;
 }
 
@@ -147,7 +143,6 @@ class __$RestaurantDTOCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
 class _$_RestaurantDTO extends _RestaurantDTO {
   const _$_RestaurantDTO(
       {@required this.placeId,
@@ -165,9 +160,6 @@ class _$_RestaurantDTO extends _RestaurantDTO {
         assert(latitude != null),
         assert(longitude != null),
         super._();
-
-  factory _$_RestaurantDTO.fromJson(Map<String, dynamic> json) =>
-      _$_$_RestaurantDTOFromJson(json);
 
   @override
   final String placeId;
@@ -229,11 +221,6 @@ class _$_RestaurantDTO extends _RestaurantDTO {
   @override
   _$RestaurantDTOCopyWith<_RestaurantDTO> get copyWith =>
       __$RestaurantDTOCopyWithImpl<_RestaurantDTO>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_RestaurantDTOToJson(this);
-  }
 }
 
 abstract class _RestaurantDTO extends RestaurantDTO {
@@ -246,9 +233,6 @@ abstract class _RestaurantDTO extends RestaurantDTO {
       @required int priceLevel,
       @required double latitude,
       @required double longitude}) = _$_RestaurantDTO;
-
-  factory _RestaurantDTO.fromJson(Map<String, dynamic> json) =
-      _$_RestaurantDTO.fromJson;
 
   @override
   String get placeId;

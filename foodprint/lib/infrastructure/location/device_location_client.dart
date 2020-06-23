@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 
-@injectable
+@LazySingleton(as: UserLocator)
 class DeviceLocationClient implements UserLocator {
   final Location location;
 

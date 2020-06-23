@@ -20,8 +20,9 @@ class RegisterForm extends StatelessWidget {
                 usernameAlreadyInUse: (_) => 'Username already in use',
                 invalidRegisterCombination: (_) => 'Invalid register combination' ,
               ),).show(context);
-            }, (_) {
-              // TODO: Navigate
+            }, 
+            (_) {
+              // TODO: Navigate to login page
             }
           )
         );

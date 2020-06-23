@@ -9,8 +9,11 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_failure.dart';
 import 'package:foodprint/infrastructure/restaurants/place_response_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
+
 
 // This class is responsible for searching for nearby restaurants and converting the response data into entities
+@LazySingleton(as: IRestaurantSearchRepository)
 class GooglePlaceSearchClient implements IRestaurantSearchRepository {
   // TODO: secure API key
   static const String _apiKey = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";

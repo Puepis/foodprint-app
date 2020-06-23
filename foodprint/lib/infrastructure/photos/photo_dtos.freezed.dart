@@ -8,9 +8,6 @@ part of 'photo_dtos.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
-PhotoDTO _$PhotoDTOFromJson(Map<String, dynamic> json) {
-  return _PhotoDTO.fromJson(json);
-}
 
 class _$PhotoDTOTearOff {
   const _$PhotoDTOTearOff();
@@ -38,7 +35,6 @@ mixin _$PhotoDTO {
   PhotoDetailDTO get photoDetail;
   String get timestamp;
 
-  Map<String, dynamic> toJson();
   $PhotoDTOCopyWith<PhotoDTO> get copyWith;
 }
 
@@ -131,7 +127,6 @@ class __$PhotoDTOCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
 class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
   const _$_PhotoDTO(
       {@required this.storagePath,
@@ -143,9 +138,6 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
         assert(photoDetail != null),
         assert(timestamp != null),
         super._();
-
-  factory _$_PhotoDTO.fromJson(Map<String, dynamic> json) =>
-      _$_$_PhotoDTOFromJson(json);
 
   @override
   final String storagePath;
@@ -200,11 +192,6 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
   @override
   _$PhotoDTOCopyWith<_PhotoDTO> get copyWith =>
       __$PhotoDTOCopyWithImpl<_PhotoDTO>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_PhotoDTOToJson(this);
-  }
 }
 
 abstract class _PhotoDTO extends PhotoDTO {
@@ -214,8 +201,6 @@ abstract class _PhotoDTO extends PhotoDTO {
       @required List<int> bytes,
       @required PhotoDetailDTO photoDetail,
       @required String timestamp}) = _$_PhotoDTO;
-
-  factory _PhotoDTO.fromJson(Map<String, dynamic> json) = _$_PhotoDTO.fromJson;
 
   @override
   String get storagePath;
@@ -227,10 +212,6 @@ abstract class _PhotoDTO extends PhotoDTO {
   String get timestamp;
   @override
   _$PhotoDTOCopyWith<_PhotoDTO> get copyWith;
-}
-
-PhotoDetailDTO _$PhotoDetailDTOFromJson(Map<String, dynamic> json) {
-  return _PhotoDetailDTO.fromJson(json);
 }
 
 class _$PhotoDetailDTOTearOff {
@@ -256,7 +237,6 @@ mixin _$PhotoDetailDTO {
   double get price;
   String get comments;
 
-  Map<String, dynamic> toJson();
   $PhotoDetailDTOCopyWith<PhotoDetailDTO> get copyWith;
 }
 
@@ -322,7 +302,6 @@ class __$PhotoDetailDTOCopyWithImpl<$Res>
   }
 }
 
-@JsonSerializable()
 class _$_PhotoDetailDTO extends _PhotoDetailDTO with DiagnosticableTreeMixin {
   const _$_PhotoDetailDTO(
       {@required this.name, @required this.price, @required this.comments})
@@ -330,9 +309,6 @@ class _$_PhotoDetailDTO extends _PhotoDetailDTO with DiagnosticableTreeMixin {
         assert(price != null),
         assert(comments != null),
         super._();
-
-  factory _$_PhotoDetailDTO.fromJson(Map<String, dynamic> json) =>
-      _$_$_PhotoDetailDTOFromJson(json);
 
   @override
   final String name;
@@ -379,11 +355,6 @@ class _$_PhotoDetailDTO extends _PhotoDetailDTO with DiagnosticableTreeMixin {
   @override
   _$PhotoDetailDTOCopyWith<_PhotoDetailDTO> get copyWith =>
       __$PhotoDetailDTOCopyWithImpl<_PhotoDetailDTO>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$_$_PhotoDetailDTOToJson(this);
-  }
 }
 
 abstract class _PhotoDetailDTO extends PhotoDetailDTO {
@@ -392,9 +363,6 @@ abstract class _PhotoDetailDTO extends PhotoDetailDTO {
       {@required String name,
       @required double price,
       @required String comments}) = _$_PhotoDetailDTO;
-
-  factory _PhotoDetailDTO.fromJson(Map<String, dynamic> json) =
-      _$_PhotoDetailDTO.fromJson;
 
   @override
   String get name;

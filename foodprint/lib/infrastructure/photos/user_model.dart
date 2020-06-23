@@ -5,10 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodprint/infrastructure/core/tokens.dart';
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/places_data/restaurant_result.dart';
-import 'package:foodprint/models/restaurant_model.dart';
-import 'package:foodprint/service/foodprint_extension.dart';
+import 'package:foodprint/infrastructure/photos/photo_dtos.dart';
+import 'package:foodprint/infrastructure/restaurants/restaurant_dtos.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
@@ -19,9 +17,9 @@ class UserModel extends ChangeNotifier {
   int _id;
   Map<String, dynamic> _payload;
   String _jwt;
-  Map<Restaurant, List<FoodprintPhoto>> _foodprint;
+  Map<RestaurantDTO, List<PhotoDTO>> _foodprint;
 
-  UserModel(LatLng location, String jwt, Map<String, dynamic> payload, Map<Restaurant, List<FoodprintPhoto>> foodprint) {
+  UserModel(LatLng location, String jwt, Map<String, dynamic> payload, Map foodprint) {
     _location = location;
     _jwt = jwt;
     _payload = payload;

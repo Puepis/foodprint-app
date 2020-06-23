@@ -4,7 +4,7 @@ import 'package:foodprint/domain/photos/photo_failure.dart';
 
 // Interface
 abstract class IPhotoRepository {
-  Future<Either<PhotoFailure, Unit>> create(FoodprintPhotoEntity photo);
-  Future<Either<PhotoFailure, Unit>> update(FoodprintPhotoEntity photo);
-  Future<Either<PhotoFailure, Unit>> delete(FoodprintPhotoEntity photo);
+  Future<Either<PhotoFailure, Unit>> saveNewPhoto(FoodprintPhotoEntity photo);
+  Future<Either<PhotoFailure, Unit>> editPhoto(FoodprintPhotoEntity photo);
+  Future<Either<PhotoFailure, Unit>> deletePhoto(FoodprintPhotoEntity photo);
 }

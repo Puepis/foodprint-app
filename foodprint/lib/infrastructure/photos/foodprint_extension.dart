@@ -1,6 +1,4 @@
 
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/restaurant_model.dart';
 
 extension FoodprintExtension on Map<Restaurant, List<FoodprintPhoto>> {
 
