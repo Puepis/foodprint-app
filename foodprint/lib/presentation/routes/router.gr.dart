@@ -9,17 +9,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
-import 'package:foodprint/presentation/home/home_screen.dart';
+import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/presentation/home/home_screen.dart';
+import 'package:foodprint/presentation/home/loading_page.dart';
 
 abstract class Routes {
   static const splashPage = '/';
   static const loginPage = '/login-page';
-  static const dashboard = '/dashboard';
+  static const homePage = '/home-page';
+  static const homeScreen = '/home-screen';
+  static const loadingFoodprintPage = '/loading-foodprint-page';
   static const all = {
     splashPage,
     loginPage,
-    dashboard,
+    homePage,
+    homeScreen,
+    loadingFoodprintPage,
   };
 }
 
@@ -49,14 +56,31 @@ class Router extends RouterBase {
           builder: (context) => LoginPage(key: typedArgs.key),
           settings: settings,
         );
-      case Routes.dashboard:
-        if (hasInvalidArgs<HomePageArguments>(args)) {
+      case Routes.homePage:
+        if (hasInvalidArgs<HomePageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<HomePageArguments>(args);
         }
-        final typedArgs = args as HomePageArguments ?? HomePageArguments();
+        final typedArgs = args as HomePageArguments;
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => HomePage(
+              key: typedArgs.key,
+              token: typedArgs.token,
+              foodprint: typedArgs.foodprint),
+          settings: settings,
+        );
+      case Routes.homeScreen:
+        if (hasInvalidArgs<HomeScreenArguments>(args, isRequired: true)) {
+          return misTypedArgsRoute<HomeScreenArguments>(args);
+        }
+        final typedArgs = args as HomeScreenArguments;
         return MaterialPageRoute<dynamic>(
           builder: (context) =>
-              HomePage(key: typedArgs.key, token: typedArgs.token),
+              HomeScreen(key: typedArgs.key, token: typedArgs.token),
+          settings: settings,
+        );
+      case Routes.loadingFoodprintPage:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => LoadingPage(),
           settings: settings,
         );
       default:
@@ -79,7 +103,15 @@ class LoginPageArguments {
 class HomePageArguments {
   final Key key;
   final JWT token;
-  HomePageArguments({this.key, this.token});
+  final FoodprintEntity foodprint;
+  HomePageArguments({this.key, @required this.token, @required this.foodprint});
+}
+
+//HomeScreen arguments holder class
+class HomeScreenArguments {
+  final Key key;
+  final JWT token;
+  HomeScreenArguments({this.key, @required this.token});
 }
 
 // *************************************************************************
@@ -97,12 +129,25 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
         arguments: LoginPageArguments(key: key),
       );
 
-  Future pushDashboard({
+  Future pushHomePage({
     Key key,
-    JWT token,
+    @required JWT token,
+    @required FoodprintEntity foodprint,
   }) =>
       pushNamed(
-        Routes.dashboard,
-        arguments: HomePageArguments(key: key, token: token),
+        Routes.homePage,
+        arguments:
+            HomePageArguments(key: key, token: token, foodprint: foodprint),
       );
+
+  Future pushHomeScreen({
+    Key key,
+    @required JWT token,
+  }) =>
+      pushNamed(
+        Routes.homeScreen,
+        arguments: HomeScreenArguments(key: key, token: token),
+      );
+
+  Future pushLoadingFoodprintPage() => pushNamed(Routes.loadingFoodprintPage);
 }

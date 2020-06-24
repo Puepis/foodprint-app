@@ -41,7 +41,7 @@ class _$PhotoActionsEventTearOff {
   }
 
   Saved saved(
-      {@required User user,
+      {@required UserID userID,
       @required File imageFile,
       @required String itemName,
       @required String price,
@@ -49,7 +49,7 @@ class _$PhotoActionsEventTearOff {
       @required RestaurantEntity restaurant,
       @required FoodprintEntity foodprint}) {
     return Saved(
-      user: user,
+      userID: userID,
       imageFile: imageFile,
       itemName: itemName,
       price: price,
@@ -82,7 +82,7 @@ mixin _$PhotoActionsEvent {
             FoodprintEntity foodprint),
     @required
         Result saved(
-            User user,
+            UserID userID,
             File imageFile,
             String itemName,
             String price,
@@ -102,7 +102,7 @@ mixin _$PhotoActionsEvent {
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
-        User user,
+        UserID userID,
         File imageFile,
         String itemName,
         String price,
@@ -297,7 +297,7 @@ class _$Deleted implements Deleted {
             FoodprintEntity foodprint),
     @required
         Result saved(
-            User user,
+            UserID userID,
             File imageFile,
             String itemName,
             String price,
@@ -324,7 +324,7 @@ class _$Deleted implements Deleted {
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
-        User user,
+        UserID userID,
         File imageFile,
         String itemName,
         String price,
@@ -534,7 +534,7 @@ class _$Edited implements Edited {
             FoodprintEntity foodprint),
     @required
         Result saved(
-            User user,
+            UserID userID,
             File imageFile,
             String itemName,
             String price,
@@ -562,7 +562,7 @@ class _$Edited implements Edited {
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
-        User user,
+        UserID userID,
         File imageFile,
         String itemName,
         String price,
@@ -635,7 +635,7 @@ abstract class $SavedCopyWith<$Res>
       _$SavedCopyWithImpl<$Res>;
   @override
   $Res call(
-      {User user,
+      {UserID userID,
       File imageFile,
       String itemName,
       String price,
@@ -643,7 +643,6 @@ abstract class $SavedCopyWith<$Res>
       RestaurantEntity restaurant,
       FoodprintEntity foodprint});
 
-  $UserCopyWith<$Res> get user;
   @override
   $RestaurantEntityCopyWith<$Res> get restaurant;
   @override
@@ -660,7 +659,7 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object user = freezed,
+    Object userID = freezed,
     Object imageFile = freezed,
     Object itemName = freezed,
     Object price = freezed,
@@ -669,7 +668,7 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
     Object foodprint = freezed,
   }) {
     return _then(Saved(
-      user: user == freezed ? _value.user : user as User,
+      userID: userID == freezed ? _value.userID : userID as UserID,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
       itemName: itemName == freezed ? _value.itemName : itemName as String,
       price: price == freezed ? _value.price : price as String,
@@ -682,28 +681,18 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
           : foodprint as FoodprintEntity,
     ));
   }
-
-  @override
-  $UserCopyWith<$Res> get user {
-    if (_value.user == null) {
-      return null;
-    }
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value));
-    });
-  }
 }
 
 class _$Saved implements Saved {
   const _$Saved(
-      {@required this.user,
+      {@required this.userID,
       @required this.imageFile,
       @required this.itemName,
       @required this.price,
       @required this.comments,
       @required this.restaurant,
       @required this.foodprint})
-      : assert(user != null),
+      : assert(userID != null),
         assert(imageFile != null),
         assert(itemName != null),
         assert(price != null),
@@ -712,7 +701,7 @@ class _$Saved implements Saved {
         assert(foodprint != null);
 
   @override
-  final User user;
+  final UserID userID;
   @override
   final File imageFile;
   @override
@@ -728,15 +717,15 @@ class _$Saved implements Saved {
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.saved(user: $user, imageFile: $imageFile, itemName: $itemName, price: $price, comments: $comments, restaurant: $restaurant, foodprint: $foodprint)';
+    return 'PhotoActionsEvent.saved(userID: $userID, imageFile: $imageFile, itemName: $itemName, price: $price, comments: $comments, restaurant: $restaurant, foodprint: $foodprint)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Saved &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)) &&
+            (identical(other.userID, userID) ||
+                const DeepCollectionEquality().equals(other.userID, userID)) &&
             (identical(other.imageFile, imageFile) ||
                 const DeepCollectionEquality()
                     .equals(other.imageFile, imageFile)) &&
@@ -759,7 +748,7 @@ class _$Saved implements Saved {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(user) ^
+      const DeepCollectionEquality().hash(userID) ^
       const DeepCollectionEquality().hash(imageFile) ^
       const DeepCollectionEquality().hash(itemName) ^
       const DeepCollectionEquality().hash(price) ^
@@ -787,7 +776,7 @@ class _$Saved implements Saved {
             FoodprintEntity foodprint),
     @required
         Result saved(
-            User user,
+            UserID userID,
             File imageFile,
             String itemName,
             String price,
@@ -799,7 +788,7 @@ class _$Saved implements Saved {
     assert(edited != null);
     assert(saved != null);
     return saved(
-        user, imageFile, itemName, price, comments, restaurant, foodprint);
+        userID, imageFile, itemName, price, comments, restaurant, foodprint);
   }
 
   @override
@@ -815,7 +804,7 @@ class _$Saved implements Saved {
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
-        User user,
+        UserID userID,
         File imageFile,
         String itemName,
         String price,
@@ -827,7 +816,7 @@ class _$Saved implements Saved {
     assert(orElse != null);
     if (saved != null) {
       return saved(
-          user, imageFile, itemName, price, comments, restaurant, foodprint);
+          userID, imageFile, itemName, price, comments, restaurant, foodprint);
     }
     return orElse();
   }
@@ -863,7 +852,7 @@ class _$Saved implements Saved {
 
 abstract class Saved implements PhotoActionsEvent {
   const factory Saved(
-      {@required User user,
+      {@required UserID userID,
       @required File imageFile,
       @required String itemName,
       @required String price,
@@ -871,7 +860,7 @@ abstract class Saved implements PhotoActionsEvent {
       @required RestaurantEntity restaurant,
       @required FoodprintEntity foodprint}) = _$Saved;
 
-  User get user;
+  UserID get userID;
   File get imageFile;
   String get itemName;
   String get price;
@@ -901,9 +890,9 @@ class _$PhotoActionsStateTearOff {
     );
   }
 
-  DeleteSuccess deleteSuccess(FoodprintEntity foodprint) {
+  DeleteSuccess deleteSuccess(FoodprintEntity newFoodprint) {
     return DeleteSuccess(
-      foodprint,
+      newFoodprint,
     );
   }
 
@@ -913,9 +902,9 @@ class _$PhotoActionsStateTearOff {
     );
   }
 
-  EditSuccess editSuccess(FoodprintEntity foodprint) {
+  EditSuccess editSuccess(FoodprintEntity newFoodprint) {
     return EditSuccess(
-      foodprint,
+      newFoodprint,
     );
   }
 
@@ -925,9 +914,9 @@ class _$PhotoActionsStateTearOff {
     );
   }
 
-  SaveSuccess saveSuccess(FoodprintEntity foodprint) {
+  SaveSuccess saveSuccess(FoodprintEntity newFoodprint) {
     return SaveSuccess(
-      foodprint,
+      newFoodprint,
     );
   }
 }
@@ -941,22 +930,22 @@ mixin _$PhotoActionsState {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -1035,11 +1024,11 @@ class _$Initial implements Initial {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1058,11 +1047,11 @@ class _$Initial implements Initial {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1159,11 +1148,11 @@ class _$ActionInProgress implements ActionInProgress {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1182,11 +1171,11 @@ class _$ActionInProgress implements ActionInProgress {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1316,11 +1305,11 @@ class _$DeleteFailure implements DeleteFailure {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1339,11 +1328,11 @@ class _$DeleteFailure implements DeleteFailure {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1408,9 +1397,9 @@ abstract class $DeleteSuccessCopyWith<$Res> {
   factory $DeleteSuccessCopyWith(
           DeleteSuccess value, $Res Function(DeleteSuccess) then) =
       _$DeleteSuccessCopyWithImpl<$Res>;
-  $Res call({FoodprintEntity foodprint});
+  $Res call({FoodprintEntity newFoodprint});
 
-  $FoodprintEntityCopyWith<$Res> get foodprint;
+  $FoodprintEntityCopyWith<$Res> get newFoodprint;
 }
 
 class _$DeleteSuccessCopyWithImpl<$Res>
@@ -1425,47 +1414,49 @@ class _$DeleteSuccessCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object foodprint = freezed,
+    Object newFoodprint = freezed,
   }) {
     return _then(DeleteSuccess(
-      foodprint == freezed ? _value.foodprint : foodprint as FoodprintEntity,
+      newFoodprint == freezed
+          ? _value.newFoodprint
+          : newFoodprint as FoodprintEntity,
     ));
   }
 
   @override
-  $FoodprintEntityCopyWith<$Res> get foodprint {
-    if (_value.foodprint == null) {
+  $FoodprintEntityCopyWith<$Res> get newFoodprint {
+    if (_value.newFoodprint == null) {
       return null;
     }
-    return $FoodprintEntityCopyWith<$Res>(_value.foodprint, (value) {
-      return _then(_value.copyWith(foodprint: value));
+    return $FoodprintEntityCopyWith<$Res>(_value.newFoodprint, (value) {
+      return _then(_value.copyWith(newFoodprint: value));
     });
   }
 }
 
 class _$DeleteSuccess implements DeleteSuccess {
-  const _$DeleteSuccess(this.foodprint) : assert(foodprint != null);
+  const _$DeleteSuccess(this.newFoodprint) : assert(newFoodprint != null);
 
   @override
-  final FoodprintEntity foodprint;
+  final FoodprintEntity newFoodprint;
 
   @override
   String toString() {
-    return 'PhotoActionsState.deleteSuccess(foodprint: $foodprint)';
+    return 'PhotoActionsState.deleteSuccess(newFoodprint: $newFoodprint)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is DeleteSuccess &&
-            (identical(other.foodprint, foodprint) ||
+            (identical(other.newFoodprint, newFoodprint) ||
                 const DeepCollectionEquality()
-                    .equals(other.foodprint, foodprint)));
+                    .equals(other.newFoodprint, newFoodprint)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(foodprint);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newFoodprint);
 
   @override
   $DeleteSuccessCopyWith<DeleteSuccess> get copyWith =>
@@ -1477,11 +1468,11 @@ class _$DeleteSuccess implements DeleteSuccess {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1491,7 +1482,7 @@ class _$DeleteSuccess implements DeleteSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return deleteSuccess(foodprint);
+    return deleteSuccess(newFoodprint);
   }
 
   @override
@@ -1500,16 +1491,16 @@ class _$DeleteSuccess implements DeleteSuccess {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (deleteSuccess != null) {
-      return deleteSuccess(foodprint);
+      return deleteSuccess(newFoodprint);
     }
     return orElse();
   }
@@ -1559,9 +1550,9 @@ class _$DeleteSuccess implements DeleteSuccess {
 }
 
 abstract class DeleteSuccess implements PhotoActionsState {
-  const factory DeleteSuccess(FoodprintEntity foodprint) = _$DeleteSuccess;
+  const factory DeleteSuccess(FoodprintEntity newFoodprint) = _$DeleteSuccess;
 
-  FoodprintEntity get foodprint;
+  FoodprintEntity get newFoodprint;
   $DeleteSuccessCopyWith<DeleteSuccess> get copyWith;
 }
 
@@ -1637,11 +1628,11 @@ class _$EditFailure implements EditFailure {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1660,11 +1651,11 @@ class _$EditFailure implements EditFailure {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1729,9 +1720,9 @@ abstract class $EditSuccessCopyWith<$Res> {
   factory $EditSuccessCopyWith(
           EditSuccess value, $Res Function(EditSuccess) then) =
       _$EditSuccessCopyWithImpl<$Res>;
-  $Res call({FoodprintEntity foodprint});
+  $Res call({FoodprintEntity newFoodprint});
 
-  $FoodprintEntityCopyWith<$Res> get foodprint;
+  $FoodprintEntityCopyWith<$Res> get newFoodprint;
 }
 
 class _$EditSuccessCopyWithImpl<$Res>
@@ -1746,47 +1737,49 @@ class _$EditSuccessCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object foodprint = freezed,
+    Object newFoodprint = freezed,
   }) {
     return _then(EditSuccess(
-      foodprint == freezed ? _value.foodprint : foodprint as FoodprintEntity,
+      newFoodprint == freezed
+          ? _value.newFoodprint
+          : newFoodprint as FoodprintEntity,
     ));
   }
 
   @override
-  $FoodprintEntityCopyWith<$Res> get foodprint {
-    if (_value.foodprint == null) {
+  $FoodprintEntityCopyWith<$Res> get newFoodprint {
+    if (_value.newFoodprint == null) {
       return null;
     }
-    return $FoodprintEntityCopyWith<$Res>(_value.foodprint, (value) {
-      return _then(_value.copyWith(foodprint: value));
+    return $FoodprintEntityCopyWith<$Res>(_value.newFoodprint, (value) {
+      return _then(_value.copyWith(newFoodprint: value));
     });
   }
 }
 
 class _$EditSuccess implements EditSuccess {
-  const _$EditSuccess(this.foodprint) : assert(foodprint != null);
+  const _$EditSuccess(this.newFoodprint) : assert(newFoodprint != null);
 
   @override
-  final FoodprintEntity foodprint;
+  final FoodprintEntity newFoodprint;
 
   @override
   String toString() {
-    return 'PhotoActionsState.editSuccess(foodprint: $foodprint)';
+    return 'PhotoActionsState.editSuccess(newFoodprint: $newFoodprint)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is EditSuccess &&
-            (identical(other.foodprint, foodprint) ||
+            (identical(other.newFoodprint, newFoodprint) ||
                 const DeepCollectionEquality()
-                    .equals(other.foodprint, foodprint)));
+                    .equals(other.newFoodprint, newFoodprint)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(foodprint);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newFoodprint);
 
   @override
   $EditSuccessCopyWith<EditSuccess> get copyWith =>
@@ -1798,11 +1791,11 @@ class _$EditSuccess implements EditSuccess {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1812,7 +1805,7 @@ class _$EditSuccess implements EditSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return editSuccess(foodprint);
+    return editSuccess(newFoodprint);
   }
 
   @override
@@ -1821,16 +1814,16 @@ class _$EditSuccess implements EditSuccess {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (editSuccess != null) {
-      return editSuccess(foodprint);
+      return editSuccess(newFoodprint);
     }
     return orElse();
   }
@@ -1880,9 +1873,9 @@ class _$EditSuccess implements EditSuccess {
 }
 
 abstract class EditSuccess implements PhotoActionsState {
-  const factory EditSuccess(FoodprintEntity foodprint) = _$EditSuccess;
+  const factory EditSuccess(FoodprintEntity newFoodprint) = _$EditSuccess;
 
-  FoodprintEntity get foodprint;
+  FoodprintEntity get newFoodprint;
   $EditSuccessCopyWith<EditSuccess> get copyWith;
 }
 
@@ -1958,11 +1951,11 @@ class _$SaveFailure implements SaveFailure {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -1981,11 +1974,11 @@ class _$SaveFailure implements SaveFailure {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -2050,9 +2043,9 @@ abstract class $SaveSuccessCopyWith<$Res> {
   factory $SaveSuccessCopyWith(
           SaveSuccess value, $Res Function(SaveSuccess) then) =
       _$SaveSuccessCopyWithImpl<$Res>;
-  $Res call({FoodprintEntity foodprint});
+  $Res call({FoodprintEntity newFoodprint});
 
-  $FoodprintEntityCopyWith<$Res> get foodprint;
+  $FoodprintEntityCopyWith<$Res> get newFoodprint;
 }
 
 class _$SaveSuccessCopyWithImpl<$Res>
@@ -2067,47 +2060,49 @@ class _$SaveSuccessCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object foodprint = freezed,
+    Object newFoodprint = freezed,
   }) {
     return _then(SaveSuccess(
-      foodprint == freezed ? _value.foodprint : foodprint as FoodprintEntity,
+      newFoodprint == freezed
+          ? _value.newFoodprint
+          : newFoodprint as FoodprintEntity,
     ));
   }
 
   @override
-  $FoodprintEntityCopyWith<$Res> get foodprint {
-    if (_value.foodprint == null) {
+  $FoodprintEntityCopyWith<$Res> get newFoodprint {
+    if (_value.newFoodprint == null) {
       return null;
     }
-    return $FoodprintEntityCopyWith<$Res>(_value.foodprint, (value) {
-      return _then(_value.copyWith(foodprint: value));
+    return $FoodprintEntityCopyWith<$Res>(_value.newFoodprint, (value) {
+      return _then(_value.copyWith(newFoodprint: value));
     });
   }
 }
 
 class _$SaveSuccess implements SaveSuccess {
-  const _$SaveSuccess(this.foodprint) : assert(foodprint != null);
+  const _$SaveSuccess(this.newFoodprint) : assert(newFoodprint != null);
 
   @override
-  final FoodprintEntity foodprint;
+  final FoodprintEntity newFoodprint;
 
   @override
   String toString() {
-    return 'PhotoActionsState.saveSuccess(foodprint: $foodprint)';
+    return 'PhotoActionsState.saveSuccess(newFoodprint: $newFoodprint)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is SaveSuccess &&
-            (identical(other.foodprint, foodprint) ||
+            (identical(other.newFoodprint, newFoodprint) ||
                 const DeepCollectionEquality()
-                    .equals(other.foodprint, foodprint)));
+                    .equals(other.newFoodprint, newFoodprint)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(foodprint);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newFoodprint);
 
   @override
   $SaveSuccessCopyWith<SaveSuccess> get copyWith =>
@@ -2119,11 +2114,11 @@ class _$SaveSuccess implements SaveSuccess {
     @required Result intial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
-    @required Result deleteSuccess(FoodprintEntity foodprint),
+    @required Result deleteSuccess(FoodprintEntity newFoodprint),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(FoodprintEntity foodprint),
+    @required Result editSuccess(FoodprintEntity newFoodprint),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(FoodprintEntity foodprint),
+    @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
     assert(intial != null);
     assert(actionInProgress != null);
@@ -2133,7 +2128,7 @@ class _$SaveSuccess implements SaveSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return saveSuccess(foodprint);
+    return saveSuccess(newFoodprint);
   }
 
   @override
@@ -2142,16 +2137,16 @@ class _$SaveSuccess implements SaveSuccess {
     Result intial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
-    Result deleteSuccess(FoodprintEntity foodprint),
+    Result deleteSuccess(FoodprintEntity newFoodprint),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(FoodprintEntity foodprint),
+    Result editSuccess(FoodprintEntity newFoodprint),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(FoodprintEntity foodprint),
+    Result saveSuccess(FoodprintEntity newFoodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (saveSuccess != null) {
-      return saveSuccess(foodprint);
+      return saveSuccess(newFoodprint);
     }
     return orElse();
   }
@@ -2201,8 +2196,8 @@ class _$SaveSuccess implements SaveSuccess {
 }
 
 abstract class SaveSuccess implements PhotoActionsState {
-  const factory SaveSuccess(FoodprintEntity foodprint) = _$SaveSuccess;
+  const factory SaveSuccess(FoodprintEntity newFoodprint) = _$SaveSuccess;
 
-  FoodprintEntity get foodprint;
+  FoodprintEntity get newFoodprint;
   $SaveSuccessCopyWith<SaveSuccess> get copyWith;
 }

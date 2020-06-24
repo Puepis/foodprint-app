@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:foodprint/domain/auth/user.dart';
+import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
@@ -93,9 +94,9 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
       );
     }, saved: (e) async* {
       final newPhoto = generateNewPhoto(
-          e.user.id.getOrCrash(), e.imageFile, e.itemName, e.price, e.comments);
+          e.userID.getOrCrash(), e.imageFile, e.itemName, e.price, e.comments);
       final result = await _client.saveNewPhoto(
-          user: e.user,
+          userID: e.userID,
           photo: newPhoto,
           restaurant: e.restaurant,
           oldFoodprint: e.foodprint);

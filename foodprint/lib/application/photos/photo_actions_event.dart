@@ -18,7 +18,7 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
   }) = Edited;
   
   const factory PhotoActionsEvent.saved({
-    @required User user,
+    @required UserID userID,
     @required File imageFile,
     @required String itemName,
     @required String price,

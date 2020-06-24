@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/auth/user.dart';
+import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
@@ -24,9 +25,9 @@ class RemotePhotosClient implements IPhotoRepository {
 
   // Construct the JSON body for saving a photo
   static String createSaveRequestBody(
-      User user, PhotoEntity photo, RestaurantEntity restaurant) {
+      UserID id, PhotoEntity photo, RestaurantEntity restaurant) {
     return jsonEncode({
-      "userId": user.id.getOrCrash().toString(),
+      "userId": id.getOrCrash().toString(),
       "image": {
         "path": photo.storagePath.getOrCrash(),
         "data": Uint8List.fromList(photo.imageData.getOrCrash()).toString(),
@@ -50,11 +51,11 @@ class RemotePhotosClient implements IPhotoRepository {
   // Save a new photo
   @override
   Future<Either<PhotoFailure, FoodprintEntity>> saveNewPhoto(
-      {@required User user,
+      {@required UserID userID,
       @required PhotoEntity photo,
       @required RestaurantEntity restaurant,
       @required FoodprintEntity oldFoodprint}) async {
-    final String requestBody = createSaveRequestBody(user, photo, restaurant);
+    final String requestBody = createSaveRequestBody(userID, photo, restaurant);
 
     final res = await http.post("$serverIP/api/photos/",
         headers: {"Content-Type": 'application/json'}, body: requestBody);
