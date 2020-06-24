@@ -1,16 +1,23 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
 
+import 'edit_image.dart';
+
 class FullImage extends StatelessWidget {
+  final FoodprintEntity foodprint;
   final RestaurantEntity restaurant;
   final PhotoEntity photo;
-  const FullImage({Key key, @required this.restaurant, @required this.photo}) : super(key: key);
+  const FullImage({Key key, @required this.restaurant, @required this.photo, @required this.foodprint}) : super(key: key);
 
   
   @override
@@ -118,11 +125,18 @@ class FullImage extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.edit),
             color: Colors.blue,
-            onPressed: () async {
+            onPressed: () {
               Navigator.push(context, MaterialPageRoute(
-                builder: (_) => EditImageScreen(
-                  user: user,
-                  photo: photo,
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                    BlocProvider.value(value: context.bloc<FoodprintBloc>(),)
+                  ],
+                                  child: EditImageScreen(
+                    restaurant: restaurant,
+                    foodprint: foodprint,
+                    photo: photo,
+                  ),
                 )
               ));
             },

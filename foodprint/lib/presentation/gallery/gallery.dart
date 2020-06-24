@@ -58,6 +58,7 @@ class Gallery extends StatelessWidget {
                             )
                           ],
                           child: FullImage(
+                            foodprint: foodprint,
                             photo: photo,
                             restaurant: restaurant,
                           )))),
