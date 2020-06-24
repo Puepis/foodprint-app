@@ -2,17 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/models/places_data/restaurant_result.dart';
-import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/service/locator.dart';
-import 'package:foodprint/widgets/camera/restaurant_listing.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Camera extends StatefulWidget {
-  final UserModel user;
-  const Camera({Key key, @required this.user}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -21,7 +15,6 @@ class _CameraState extends State<Camera> {
   File _imageFile;
   FileImage loadedImage;
   LatLng _location;
-  List<RestaurantResult> _restaurants;
 
   Future<void> _takePhoto(ImageSource source, BuildContext context) async {
     final _picker = ImagePicker();
@@ -69,7 +62,6 @@ class _CameraState extends State<Camera> {
 
   // Search for nearby restaurants
   Future<void> _findRestaurants() async {
-    _location = await Geolocator.getLocation();
     _restaurants = await Geolocator.getRestaurants(_location);
     if (mounted) setState(() {});
   }

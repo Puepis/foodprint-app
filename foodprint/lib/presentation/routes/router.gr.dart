@@ -4,5 +4,105 @@
 // AutoRouteGenerator
 // **************************************************************************
 
-// Error:
-//        [dynamic] is not a class
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:foodprint/presentation/splash/splash_page.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/home/home_screen.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
+
+abstract class Routes {
+  static const splashPage = '/';
+  static const loginPage = '/login-page';
+  static const dashboard = '/dashboard';
+  static const all = {
+    splashPage,
+    loginPage,
+    dashboard,
+  };
+}
+
+class Router extends RouterBase {
+  @override
+  Set<String> get allRoutes => Routes.all;
+
+  @Deprecated('call ExtendedNavigator.ofRouter<Router>() directly')
+  static ExtendedNavigatorState get navigator =>
+      ExtendedNavigator.ofRouter<Router>();
+
+  @override
+  Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    final args = settings.arguments;
+    switch (settings.name) {
+      case Routes.splashPage:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SplashPage(),
+          settings: settings,
+        );
+      case Routes.loginPage:
+        if (hasInvalidArgs<LoginPageArguments>(args)) {
+          return misTypedArgsRoute<LoginPageArguments>(args);
+        }
+        final typedArgs = args as LoginPageArguments ?? LoginPageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => LoginPage(key: typedArgs.key),
+          settings: settings,
+        );
+      case Routes.dashboard:
+        if (hasInvalidArgs<HomePageArguments>(args)) {
+          return misTypedArgsRoute<HomePageArguments>(args);
+        }
+        final typedArgs = args as HomePageArguments ?? HomePageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) =>
+              HomePage(key: typedArgs.key, token: typedArgs.token),
+          settings: settings,
+        );
+      default:
+        return unknownRoutePage(settings.name);
+    }
+  }
+}
+
+// *************************************************************************
+// Arguments holder classes
+// **************************************************************************
+
+//LoginPage arguments holder class
+class LoginPageArguments {
+  final Key key;
+  LoginPageArguments({this.key});
+}
+
+//HomePage arguments holder class
+class HomePageArguments {
+  final Key key;
+  final JWT token;
+  HomePageArguments({this.key, this.token});
+}
+
+// *************************************************************************
+// Navigation helper methods extension
+// **************************************************************************
+
+extension RouterNavigationHelperMethods on ExtendedNavigatorState {
+  Future pushSplashPage() => pushNamed(Routes.splashPage);
+
+  Future pushLoginPage({
+    Key key,
+  }) =>
+      pushNamed(
+        Routes.loginPage,
+        arguments: LoginPageArguments(key: key),
+      );
+
+  Future pushDashboard({
+    Key key,
+    JWT token,
+  }) =>
+      pushNamed(
+        Routes.dashboard,
+        arguments: HomePageArguments(key: key, token: token),
+      );
+}

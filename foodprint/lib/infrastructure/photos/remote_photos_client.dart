@@ -18,6 +18,10 @@ import 'package:injectable/injectable.dart';
 // This class is responsible for making requests to the API regarding photo features
 @LazySingleton(as: IPhotoRepository)
 class RemotePhotosClient implements IPhotoRepository {
+  final LocalFoodprintClient _localFoodprintClient;
+
+  RemotePhotosClient(this._localFoodprintClient);
+
   // Construct the JSON body for saving a photo
   static String createSaveRequestBody(
       User user, PhotoEntity photo, RestaurantEntity restaurant) {
@@ -57,8 +61,7 @@ class RemotePhotosClient implements IPhotoRepository {
     if (res.statusCode == 200) {
 
       // Update local foodprint
-      final client = LocalFoodprintClient();
-      final FoodprintEntity newFoodprint = client.addPhotoToFoodprint(
+      final FoodprintEntity newFoodprint = _localFoodprintClient.addPhotoToFoodprint(
           newPhoto: photo, restaurant: restaurant, oldFoodprint: oldFoodprint);
       return right(newFoodprint);
     } else if (res.statusCode == 401) {
@@ -91,8 +94,7 @@ class RemotePhotosClient implements IPhotoRepository {
         timestamp: oldPhoto.timestamp,
       );
 
-      final client = LocalFoodprintClient();
-      final FoodprintEntity newFoodprint = client.editPhotoInFoodprint(
+      final FoodprintEntity newFoodprint = _localFoodprintClient.editPhotoInFoodprint(
           photo: newPhoto, restaurant: restaurant, oldFoodprint: oldFoodprint);
       return right(newFoodprint);
     } else if (res.statusCode == 401) {
@@ -113,8 +115,7 @@ class RemotePhotosClient implements IPhotoRepository {
         headers: {"photo_path": photo.storagePath.getOrCrash()});
 
     if (res.statusCode == 200) {
-      final client = LocalFoodprintClient();
-      final FoodprintEntity newFoodprint = client.removePhotoFromFoodprint(
+      final FoodprintEntity newFoodprint = _localFoodprintClient.removePhotoFromFoodprint(
           photo: photo, restaurant: restaurant, oldFoodprint: oldFoodprint);
       return right(newFoodprint);
     } else if (res.statusCode == 401) {

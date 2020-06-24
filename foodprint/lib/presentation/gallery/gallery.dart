@@ -1,11 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/restaurant_model.dart';
-import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/widgets/gallery/full_image.dart';
-import 'package:provider/provider.dart';
-import 'package:foodprint/service/foodprint_extension.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
 
 class Gallery extends StatelessWidget {
 
@@ -21,8 +16,7 @@ class Gallery extends StatelessWidget {
   }
 
   List<Widget> _buildPhotos(BuildContext context) {
-    final user = context.watch<UserModel>();
-    final List<FoodprintPhoto> photos = user.foodprint.photos;
+    final List<PhotoEntity> photos = user.foodprint.photos;
 
     // No photos yet
     if (photos == null || photos.isEmpty){

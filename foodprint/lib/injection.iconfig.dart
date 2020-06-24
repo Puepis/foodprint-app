@@ -6,6 +6,7 @@
 
 import 'package:foodprint/infrastructure/photos/remote_photos_client.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
+import 'package:foodprint/infrastructure/foodprint/local_foodprint_client.dart';
 import 'package:foodprint/infrastructure/foodprint/remote_foodprint_client.dart';
 import 'package:foodprint/domain/foodprint/i_remote_foodprint_repository.dart';
 import 'package:foodprint/infrastructure/restaurants/google_place_search_client.dart';
@@ -26,7 +27,8 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
-  g.registerLazySingleton<IPhotoRepository>(() => RemotePhotosClient());
+  g.registerLazySingleton<IPhotoRepository>(
+      () => RemotePhotosClient(g<LocalFoodprintClient>()));
   g.registerLazySingleton<IRemoteFoodprintRepository>(
       () => RemoteFoodprintClient());
   g.registerLazySingleton<IRestaurantSearchRepository>(

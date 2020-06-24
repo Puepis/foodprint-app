@@ -4,12 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/camera/camera.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/map/map.dart';
-import 'package:foodprint/presentation/routes/router.gr.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:foodprint/presentation/routes/router.gr.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
   final JWT token;
@@ -26,19 +29,28 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-          providers: [
-            BlocProvider<FoodprintBloc>(create: (context) => getIt<FoodprintBloc>()..add(
-              FoodprintEvent.foodprintRequested(token: widget.token)
-            ),),
-            BlocProvider<PhotoActionsBloc>(create: (context) => getIt<PhotoActionsBloc>(),)
-          ],
-          child: WillPopScope(
+      providers: [
+        BlocProvider<FoodprintBloc>(
+          create: (context) => getIt<FoodprintBloc>()
+            ..add(FoodprintEvent.foodprintRequested(token: widget.token)),
+        ),
+        BlocProvider<PhotoActionsBloc>(
+          create: (context) => getIt<PhotoActionsBloc>(),
+        )
+      ],
+      child: WillPopScope(
         onWillPop: () async => false,
         child: BlocBuilder<LocationBloc, LocationState>(
           builder: (context, state) {
-            return  Scaffold(
+            Widget mapScreen = const FoodMap(initialPos: null);
+
+            if (state is GetLocationSuccess) {
+              mapScreen = FoodMap(initialPos: state.latlng);
+            }
+
+            return Scaffold(
               appBar: appBar(context),
-              body: _selectedIndex == 0 ? FoodMap(initialPos: null) : Gallery(),
+              body: _selectedIndex == 0 ? mapScreen : Gallery(),
               bottomNavigationBar: BottomAppBar(
                 shape: const CircularNotchedRectangle(),
                 child: Container(
@@ -47,22 +59,22 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-            iconSize: 30.0,
-            icon: const Icon(Icons.location_on),
-            onPressed: () {
-              setState(() {
-                _selectedIndex = 0;
-              });
-            },
+                        iconSize: 30.0,
+                        icon: const Icon(Icons.location_on),
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex = 0;
+                          });
+                        },
                       ),
                       IconButton(
-            iconSize: 30.0,
-            icon: const Icon(Icons.collections),
-            onPressed: () {
-              setState(() {
-                _selectedIndex = 1;
-              });
-            },
+                        iconSize: 30.0,
+                        icon: const Icon(Icons.collections),
+                        onPressed: () {
+                          setState(() {
+                            _selectedIndex = 1;
+                          });
+                        },
                       )
                     ],
                   ),
@@ -74,9 +86,10 @@ class _HomePageState extends State<HomePage> {
                 child: FittedBox(
                   child: FloatingActionButton(
                     elevation: 20.0,
-                    onPressed: () {
-                      Navigator.of(context).push(_cameraRoute(user)); // take picture
-                    },
+                    onPressed: () => (state is GetLocationSuccess)
+                        ? Navigator.of(context)
+                            .push(_cameraRoute(state.latlng)) // take picture
+                        : null,
                     child: const Icon(
                       Icons.add,
                       color: Colors.white,
@@ -85,8 +98,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          );
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+            );
           },
         ),
       ),
@@ -94,20 +108,28 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Animate transition to camera
-  Route<bool> _cameraRoute() {
+  Route<bool> _cameraRoute(LatLng location) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => Camera(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        final end = Offset.zero;
-        final curve = Curves.ease;
-        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      }
-    );
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            MultiBlocProvider(providers: [
+              BlocProvider(
+                create: (context) => getIt<RestaurantSearchBloc>()
+                  ..add(RestaurantSearched(
+                      latitude: location.latitude,
+                      longitude: location.longitude)),
+              ),
+            ], child: Camera()),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          final end = Offset.zero;
+          final curve = Curves.ease;
+          final tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        });
   }
 
   PreferredSizeWidget appBar(BuildContext context) {
@@ -124,7 +146,8 @@ class _HomePageState extends State<HomePage> {
           icon: const Icon(Icons.exit_to_app),
           onPressed: () {
             context.bloc<AuthBloc>().add(AuthEvent.loggedOut(widget.token));
-            ExtendedNavigator.of(context).pushReplacementNamed(Routes.loginPage);
+            ExtendedNavigator.of(context)
+                .pushReplacementNamed(Routes.loginPage);
           },
         )
       ],
