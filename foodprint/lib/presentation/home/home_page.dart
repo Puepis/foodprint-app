@@ -35,10 +35,10 @@ class _HomePageState extends State<HomePage> {
         onWillPop: () async => false,
         child: BlocBuilder<LocationBloc, LocationState>(
           builder: (context, state) {
-            Widget mapScreen = const FoodMap(initialPos: null);
+            Widget mapScreen = FoodMap(initialPos: null, foodprint: widget.foodprint,); // TODO: don't show map
 
             if (state is GetLocationSuccess) {
-              mapScreen = FoodMap(initialPos: state.latlng);
+              mapScreen = FoodMap(initialPos: state.latlng, foodprint: widget.foodprint,);
             }
 
             return Scaffold(

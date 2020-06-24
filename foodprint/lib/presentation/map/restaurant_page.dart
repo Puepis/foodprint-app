@@ -1,94 +1,14 @@
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/restaurant_model.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:intl/intl.dart';
-import 'package:foodprint/service/ratings.dart';
-
-class RestaurantCard extends StatelessWidget {
-  final Restaurant restaurant;
-  final List<FoodprintPhoto> photos;
-  const RestaurantCard({Key key, this.restaurant, this.photos}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ratingsWidget = restaurant.rating.ratingsWidget;
-    return GestureDetector(
-      onDoubleTap: () => Navigator.push(context, MaterialPageRoute(
-          builder: (context) => RestaurantPage(
-            restaurant: restaurant,
-            photos: photos,
-            ratings: ratingsWidget
-          )
-      )),
-      child: Container( // TODO: display restaurant address
-        height: 250,
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)
-            ),
-            color: Colors.white
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Hero(
-          tag: 'title',
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  restaurant.name,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Gotham",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24
-                  ),
-                ),
-                ratingsWidget,
-                const SizedBox(height: 20.0),
-                const Text(
-                  "YOUR PHOTOS",
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontFamily: "Gotham",
-                      fontSize: 10
-                  ),
-                ),
-                const SizedBox(height: 5.0),
-                getPhotos(),
-              ]
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget getPhotos() {
-    return Expanded(
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: photos.length,
-        itemBuilder: (BuildContext context, int index) {
-          final FoodprintPhoto photo = photos[index];
-          return Container(
-            width: 100,
-            margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: MemoryImage(photo.imgBytes),
-                    fit: BoxFit.cover
-                )
-            ),
-          );
-        },
-      ),
-    );
-  }
-}
 
 class RestaurantPage extends StatelessWidget {
-  final Restaurant restaurant;
-  final List<FoodprintPhoto> photos;
+  final RestaurantEntity restaurant;
+  final List<PhotoEntity> photos;
   final Row ratings;
   const RestaurantPage({Key key, this.restaurant, this.photos, this.ratings}) : super(key: key);
   @override
@@ -159,23 +79,20 @@ class RestaurantPage extends StatelessWidget {
               Positioned(
                 left: 20.0,
                 bottom: 20.0,
-                child: Hero(
-                  tag: 'title',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        restaurant.name,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Gotham",
-                          fontWeight: FontWeight.w600,
-                          fontSize: 25,
-                        ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      restaurant.restaurantName.getOrCrash(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Gotham",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 25,
                       ),
-                      ratings
-                    ]
-                  ),
+                    ),
+                    ratings
+                  ]
                 ),
               )
             ],
@@ -188,7 +105,8 @@ class RestaurantPage extends StatelessWidget {
               ),
               itemCount: photos.length,
               itemBuilder: (context, index) {
-                final FoodprintPhoto photo = photos[index];
+                final PhotoEntity photo = photos[index];
+                final Uint8List bytes = Uint8List.fromList(photo.imageData.getOrCrash());
                 return Stack(
                   children: [
                     Container(
@@ -212,7 +130,7 @@ class RestaurantPage extends StatelessWidget {
                                 Container(
                                   width: 120.0,
                                   child: Text(
-                                    photo.name,
+                                    photo.photoDetail.name.getOrCrash(),
                                     style: const TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
@@ -222,7 +140,7 @@ class RestaurantPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  formatter.format(photo.price),
+                                  formatter.format(photo.photoDetail.price.getOrCrash()),
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.bold
@@ -231,13 +149,13 @@ class RestaurantPage extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              photo.caption,
+                              photo.photoDetail.comments.getOrCrash(),
                               style: const TextStyle(
                                 color: Colors.grey
                               ),
                             ),
                             const SizedBox(height: 10.0),
-                            Text(photo.timestamp)
+                            Text(photo.timestamp.getOrCrash())
                           ],
                         ),
                       ),
@@ -249,7 +167,7 @@ class RestaurantPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image.memory(
-                          photo.imgBytes,
+                          bytes,
                           width: 110.0,
                           fit: BoxFit.cover,
                         ),

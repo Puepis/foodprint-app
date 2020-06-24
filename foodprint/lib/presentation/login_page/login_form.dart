@@ -24,7 +24,7 @@ class LoginForm extends StatelessWidget {
             }, 
             (jwt) {
               context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: jwt)); // authenticated
-              ExtendedNavigator.of(context).pushReplacementNamed(Routes.dashboard);
+              ExtendedNavigator.of(context).pushReplacementNamed(Routes.homeScreen);
             }
           )
         );

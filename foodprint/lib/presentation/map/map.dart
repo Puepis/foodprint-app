@@ -1,44 +1,49 @@
 
 import 'package:flutter/material.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/map/restaurant_card.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 class FoodMap extends StatefulWidget {
+  final FoodprintEntity foodprint;
   final LatLng initialPos;
-  const FoodMap({Key key, @required this.initialPos }) : super(key: key);
+  const FoodMap({Key key, @required this.initialPos, @required this.foodprint }) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
 
 class _FoodMapState extends State<FoodMap> {
-  GoogleMapController mapController;
+  final LatLng _toronto = const LatLng(43.6529, 43.6529); // TODO: REMOVE constant 
+  GoogleMapController _mapController;
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
   
   @override
   Widget build(BuildContext context) {
-    _markers = generateMarkers(foodprint);
+    _markers = generateMarkers(widget.foodprint); 
 
     // Add marker indicating current location
     if (widget.initialPos != null) {
       _currentPos = widget.initialPos;
 
       // Move widgets.camera to current location
-      if (mapController != null) {
-        mapController.moveCamera(
+      if (_mapController != null) {
+        _mapController.moveCamera(
             CameraUpdate.newLatLng(
                 LatLng(_currentPos.latitude, _currentPos.longitude)
             )
         );
       }
     } else {
-      _currentPos = Geolocator.toronto; // default location
+      _currentPos = _toronto; // default location
     }
 
     return Stack(
       children: [
         GoogleMap(
-          onMapCreated: (controller) => mapController = controller,
+          onMapCreated: (controller) => _mapController = controller,
           initialCameraPosition: CameraPosition(
               target: _currentPos,
               zoom: 16.0
@@ -48,21 +53,20 @@ class _FoodMapState extends State<FoodMap> {
           },
           markers: Set<Marker>.of(_markers.values),
         ),
-        // TODO: Search bar
       ]
     );
   }
 
-  Map<String, Marker> generateMarkers(Map<Restaurant, List<FoodprintPhoto>> foodprint) {
+  Map<String, Marker> generateMarkers(FoodprintEntity foodprint) {
     final Map<String, Marker> result = {};
-    foodprint.forEach((rest, photoList) {
+    foodprint.restaurantPhotos.forEach((RestaurantEntity restaurant, List<PhotoEntity> photos) {
       final marker = Marker(
-          markerId: MarkerId(rest.id),
-          position: LatLng(rest.latitude, rest.longitude),
+          markerId: MarkerId(restaurant.restaurantID.getOrCrash()),
+          position: LatLng(restaurant.latitude.getOrCrash(), restaurant.longitude.getOrCrash()),
           infoWindow: InfoWindow(
-              title: rest.name,
-              snippet: photoList.length == 1 ? "You've taken one photo here!"
-                  : "You've taken ${photoList.length} photos here!"
+              title: restaurant.restaurantName.getOrCrash(),
+              snippet: photos.length == 1 ? "You've taken one photo here!"
+                  : "You've taken ${photos.length} photos here!"
           ),
           onTap: () {
             // Show restaurant info
@@ -70,13 +74,13 @@ class _FoodMapState extends State<FoodMap> {
                 backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) => RestaurantCard(
-                  restaurant: rest,
-                  photos: photoList,
+                  restaurant: restaurant,
+                  photos: photos,
                 )
             );
           }
       );
-      result[rest.name] = marker;
+      result[restaurant.restaurantID.getOrCrash()] = marker;
     });
     return result;
   }
