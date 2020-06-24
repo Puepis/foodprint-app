@@ -1,6 +1,14 @@
 part of 'location_bloc.dart';
 
-@freezed
-abstract class LocationEvent with _$LocationEvent {
-  const factory LocationEvent.locationRequested() = LocationRequested; 
+
+abstract class LocationEvent extends Equatable {
+  const LocationEvent();
+}
+
+class LocationRequested extends LocationEvent {
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => 'Location requested';
 }

@@ -13,7 +13,6 @@ import 'package:foodprint/domain/foodprint/i_remote_foodprint_repository.dart';
 import 'package:foodprint/infrastructure/restaurants/google_place_search_client.dart';
 import 'package:foodprint/domain/restaurants/i_restaurant_search_respository.dart';
 import 'package:foodprint/infrastructure/foodprint/local_foodprint_client.dart';
-import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -31,7 +30,6 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerLazySingleton<IRestaurantSearchRepository>(
       () => GooglePlaceSearchClient());
   g.registerFactory<LocalFoodprintClient>(() => LocalFoodprintClient());
-  g.registerFactory<LocationBloc>(() => LocationBloc(g<ILocationRepository>()));
   g.registerFactory<LoginFormBloc>(() => LoginFormBloc(g<IAuthRepository>()));
   g.registerFactory<RestaurantSearchBloc>(
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));

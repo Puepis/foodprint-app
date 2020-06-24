@@ -315,7 +315,7 @@ abstract class LocalFoodprintUpdated implements FoodprintEvent {
 class _$FoodprintStateTearOff {
   const _$FoodprintStateTearOff();
 
-  Initial intial() {
+  Initial initial() {
     return const Initial();
   }
 
@@ -349,7 +349,7 @@ const $FoodprintState = _$FoodprintStateTearOff();
 mixin _$FoodprintState {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -357,7 +357,7 @@ mixin _$FoodprintState {
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -366,7 +366,7 @@ mixin _$FoodprintState {
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -374,7 +374,7 @@ mixin _$FoodprintState {
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -417,7 +417,7 @@ class _$Initial implements Initial {
 
   @override
   String toString() {
-    return 'FoodprintState.intial()';
+    return 'FoodprintState.initial()';
   }
 
   @override
@@ -431,24 +431,24 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
     @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
     assert(foodprintUpdated != null);
-    return intial();
+    return initial();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -456,8 +456,8 @@ class _$Initial implements Initial {
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (intial != null) {
-      return intial();
+    if (initial != null) {
+      return initial();
     }
     return orElse();
   }
@@ -465,24 +465,24 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
     @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
     assert(foodprintUpdated != null);
-    return intial(this);
+    return initial(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -490,8 +490,8 @@ class _$Initial implements Initial {
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (intial != null) {
-      return intial(this);
+    if (initial != null) {
+      return initial(this);
     }
     return orElse();
   }
@@ -535,13 +535,13 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
     @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -552,7 +552,7 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -569,13 +569,13 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
     @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -586,7 +586,7 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -679,13 +679,13 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
     @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -696,7 +696,7 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -713,13 +713,13 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
     @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -730,7 +730,7 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -823,13 +823,13 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
     @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -840,7 +840,7 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -857,13 +857,13 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
     @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -874,7 +874,7 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -970,13 +970,13 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
     @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -987,7 +987,7 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
@@ -1004,13 +1004,13 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
     @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
@@ -1021,7 +1021,7 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),

@@ -17,7 +17,7 @@ class FoodprintApp extends StatelessWidget {
                   .authCheckStarted())), // check if user is signed in
         BlocProvider(
           create: (context) => getIt<LocationBloc>()
-            ..add(const LocationEvent.locationRequested()),
+            ..add(LocationRequested()),
         )
       ],
       child: MaterialApp(

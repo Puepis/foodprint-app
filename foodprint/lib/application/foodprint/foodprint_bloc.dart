@@ -22,7 +22,7 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
   FoodprintBloc(this._remoteClient);
 
   @override
-  FoodprintState get initialState => const FoodprintState.intial();
+  FoodprintState get initialState => const FoodprintState.initial();
 
   @override
   Stream<FoodprintState> mapEventToState(
