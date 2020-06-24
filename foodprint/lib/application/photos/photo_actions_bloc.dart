@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';

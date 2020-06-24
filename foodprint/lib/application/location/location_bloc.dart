@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/rendering.dart';
-import 'package:foodprint/domain/location/i_locator_repository.dart';
+import 'package:foodprint/domain/location/i_location_repository.dart';
 import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,7 +15,7 @@ part 'location_bloc.freezed.dart';
 
 @injectable
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
-  final UserLocator _locationClient;
+  final ILocationRepository _locationClient;
 
   LocationBloc(this._locationClient);
   @override

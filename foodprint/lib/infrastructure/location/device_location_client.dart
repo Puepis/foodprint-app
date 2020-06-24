@@ -1,17 +1,15 @@
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
-import 'package:foodprint/domain/location/i_locator_repository.dart';
+import 'package:foodprint/domain/location/i_location_repository.dart';
 import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 
-@LazySingleton(as: UserLocator)
-class DeviceLocationClient implements UserLocator {
-  final Location location;
-
-  DeviceLocationClient({@required this.location});
+@LazySingleton(as: ILocationRepository)
+class DeviceLocationClient implements ILocationRepository {
+  final Location location = Location();
   
   @override
   Future<Either<LocationFailure, LatLng>> getLocation() async {

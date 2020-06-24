@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
-import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 
 abstract class IAuthRepository {

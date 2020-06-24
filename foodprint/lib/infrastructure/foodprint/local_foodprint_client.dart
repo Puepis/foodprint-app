@@ -5,8 +5,9 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/foodprint/i_local_foodprint_repository.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:injectable/injectable.dart';
 
-
+@injectable
 class LocalFoodprintClient implements ILocalFoodprintRepository {
 
   @override

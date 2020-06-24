@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
-import 'package:foodprint/domain/auth/user.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/exceptions.dart';
 import 'package:foodprint/infrastructure/core/tokens.dart';
@@ -15,9 +15,7 @@ import 'package:http/http.dart' as http;
 // Implements the interface authentication methods (communicates with the outside world)
 @LazySingleton(as: IAuthRepository)
 class AuthClient implements IAuthRepository {
-  final JWTStorageClient _storageClient;
-
-  AuthClient(this._storageClient);
+  final JWTStorageClient _storageClient = JWTStorageClient(storage: const FlutterSecureStorage());
 
   @override
   Future<Either<RegisterFailure, Unit>> register(
