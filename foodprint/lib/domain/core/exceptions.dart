@@ -1,2 +1,2 @@
 
-class TokenException implements Exception {}
+class TokenNotFoundException implements Exception {}

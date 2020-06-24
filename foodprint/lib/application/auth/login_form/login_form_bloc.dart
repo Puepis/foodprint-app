@@ -47,24 +47,25 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
             authFailureOrSuccessOption: none());
       },
       loginPressed: (e) async* {
-        Either<LoginFailure, JWT> failureOrSuccess;
+        Either<LoginFailure, JWT> result;
 
         final isPasswordValid = state.password.isValid();
         final isUsernameValid = state.username.isValid();
 
         if (isPasswordValid && isUsernameValid) {
+
+          // In progress
           yield state.copyWith(
               isSubmitting: true, authFailureOrSuccessOption: none());
 
           // Attempt to login
-          failureOrSuccess = await _authClient.login(
+          result = await _authClient.login(
               password: state.password, username: state.username);
         }
         // Nonvalid input
         yield state.copyWith(
           isSubmitting: false,
-          authFailureOrSuccessOption: optionOf(
-              failureOrSuccess), // if null, return none() otherwise some(failureOrSuccess)
+          authFailureOrSuccessOption: optionOf(result), 
           showErrorMessages: true,
         );
       },

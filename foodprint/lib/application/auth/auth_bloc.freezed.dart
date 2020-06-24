@@ -12,13 +12,19 @@ T _$identity<T>(T value) => value;
 class _$AuthEventTearOff {
   const _$AuthEventTearOff();
 
-  AuthCheckRequested authCheckRequested() {
-    return const AuthCheckRequested();
+  AuthCheckStarted authCheckStarted() {
+    return const AuthCheckStarted();
   }
 
-  LoggedOut loggedOut(User user) {
+  LoggedIn loggedIn({@required JWT token}) {
+    return LoggedIn(
+      token: token,
+    );
+  }
+
+  LoggedOut loggedOut(JWT token) {
     return LoggedOut(
-      user,
+      token,
     );
   }
 }
@@ -29,23 +35,27 @@ const $AuthEvent = _$AuthEventTearOff();
 mixin _$AuthEvent {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result authCheckRequested(),
-    @required Result loggedOut(User user),
+    @required Result authCheckStarted(),
+    @required Result loggedIn(JWT token),
+    @required Result loggedOut(JWT token),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result authCheckRequested(),
-    Result loggedOut(User user),
+    Result authCheckStarted(),
+    Result loggedIn(JWT token),
+    Result loggedOut(JWT token),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result authCheckRequested(AuthCheckRequested value),
+    @required Result authCheckStarted(AuthCheckStarted value),
+    @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result authCheckRequested(AuthCheckRequested value),
+    Result authCheckStarted(AuthCheckStarted value),
+    Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
     @required Result orElse(),
   });
@@ -64,34 +74,33 @@ class _$AuthEventCopyWithImpl<$Res> implements $AuthEventCopyWith<$Res> {
   final $Res Function(AuthEvent) _then;
 }
 
-abstract class $AuthCheckRequestedCopyWith<$Res> {
-  factory $AuthCheckRequestedCopyWith(
-          AuthCheckRequested value, $Res Function(AuthCheckRequested) then) =
-      _$AuthCheckRequestedCopyWithImpl<$Res>;
+abstract class $AuthCheckStartedCopyWith<$Res> {
+  factory $AuthCheckStartedCopyWith(
+          AuthCheckStarted value, $Res Function(AuthCheckStarted) then) =
+      _$AuthCheckStartedCopyWithImpl<$Res>;
 }
 
-class _$AuthCheckRequestedCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res>
-    implements $AuthCheckRequestedCopyWith<$Res> {
-  _$AuthCheckRequestedCopyWithImpl(
-      AuthCheckRequested _value, $Res Function(AuthCheckRequested) _then)
-      : super(_value, (v) => _then(v as AuthCheckRequested));
+class _$AuthCheckStartedCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $AuthCheckStartedCopyWith<$Res> {
+  _$AuthCheckStartedCopyWithImpl(
+      AuthCheckStarted _value, $Res Function(AuthCheckStarted) _then)
+      : super(_value, (v) => _then(v as AuthCheckStarted));
 
   @override
-  AuthCheckRequested get _value => super._value as AuthCheckRequested;
+  AuthCheckStarted get _value => super._value as AuthCheckStarted;
 }
 
-class _$AuthCheckRequested implements AuthCheckRequested {
-  const _$AuthCheckRequested();
+class _$AuthCheckStarted implements AuthCheckStarted {
+  const _$AuthCheckStarted();
 
   @override
   String toString() {
-    return 'AuthEvent.authCheckRequested()';
+    return 'AuthEvent.authCheckStarted()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is AuthCheckRequested);
+    return identical(this, other) || (other is AuthCheckStarted);
   }
 
   @override
@@ -100,24 +109,27 @@ class _$AuthCheckRequested implements AuthCheckRequested {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result authCheckRequested(),
-    @required Result loggedOut(User user),
+    @required Result authCheckStarted(),
+    @required Result loggedIn(JWT token),
+    @required Result loggedOut(JWT token),
   }) {
-    assert(authCheckRequested != null);
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
     assert(loggedOut != null);
-    return authCheckRequested();
+    return authCheckStarted();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result authCheckRequested(),
-    Result loggedOut(User user),
+    Result authCheckStarted(),
+    Result loggedIn(JWT token),
+    Result loggedOut(JWT token),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (authCheckRequested != null) {
-      return authCheckRequested();
+    if (authCheckStarted != null) {
+      return authCheckStarted();
     }
     return orElse();
   }
@@ -125,39 +137,155 @@ class _$AuthCheckRequested implements AuthCheckRequested {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result authCheckRequested(AuthCheckRequested value),
+    @required Result authCheckStarted(AuthCheckStarted value),
+    @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
   }) {
-    assert(authCheckRequested != null);
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
     assert(loggedOut != null);
-    return authCheckRequested(this);
+    return authCheckStarted(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result authCheckRequested(AuthCheckRequested value),
+    Result authCheckStarted(AuthCheckStarted value),
+    Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (authCheckRequested != null) {
-      return authCheckRequested(this);
+    if (authCheckStarted != null) {
+      return authCheckStarted(this);
     }
     return orElse();
   }
 }
 
-abstract class AuthCheckRequested implements AuthEvent {
-  const factory AuthCheckRequested() = _$AuthCheckRequested;
+abstract class AuthCheckStarted implements AuthEvent {
+  const factory AuthCheckStarted() = _$AuthCheckStarted;
+}
+
+abstract class $LoggedInCopyWith<$Res> {
+  factory $LoggedInCopyWith(LoggedIn value, $Res Function(LoggedIn) then) =
+      _$LoggedInCopyWithImpl<$Res>;
+  $Res call({JWT token});
+}
+
+class _$LoggedInCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $LoggedInCopyWith<$Res> {
+  _$LoggedInCopyWithImpl(LoggedIn _value, $Res Function(LoggedIn) _then)
+      : super(_value, (v) => _then(v as LoggedIn));
+
+  @override
+  LoggedIn get _value => super._value as LoggedIn;
+
+  @override
+  $Res call({
+    Object token = freezed,
+  }) {
+    return _then(LoggedIn(
+      token: token == freezed ? _value.token : token as JWT,
+    ));
+  }
+}
+
+class _$LoggedIn implements LoggedIn {
+  const _$LoggedIn({@required this.token}) : assert(token != null);
+
+  @override
+  final JWT token;
+
+  @override
+  String toString() {
+    return 'AuthEvent.loggedIn(token: $token)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is LoggedIn &&
+            (identical(other.token, token) ||
+                const DeepCollectionEquality().equals(other.token, token)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
+
+  @override
+  $LoggedInCopyWith<LoggedIn> get copyWith =>
+      _$LoggedInCopyWithImpl<LoggedIn>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result authCheckStarted(),
+    @required Result loggedIn(JWT token),
+    @required Result loggedOut(JWT token),
+  }) {
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
+    assert(loggedOut != null);
+    return loggedIn(token);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result authCheckStarted(),
+    Result loggedIn(JWT token),
+    Result loggedOut(JWT token),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (loggedIn != null) {
+      return loggedIn(token);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result authCheckStarted(AuthCheckStarted value),
+    @required Result loggedIn(LoggedIn value),
+    @required Result loggedOut(LoggedOut value),
+  }) {
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
+    assert(loggedOut != null);
+    return loggedIn(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result authCheckStarted(AuthCheckStarted value),
+    Result loggedIn(LoggedIn value),
+    Result loggedOut(LoggedOut value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (loggedIn != null) {
+      return loggedIn(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoggedIn implements AuthEvent {
+  const factory LoggedIn({@required JWT token}) = _$LoggedIn;
+
+  JWT get token;
+  $LoggedInCopyWith<LoggedIn> get copyWith;
 }
 
 abstract class $LoggedOutCopyWith<$Res> {
   factory $LoggedOutCopyWith(LoggedOut value, $Res Function(LoggedOut) then) =
       _$LoggedOutCopyWithImpl<$Res>;
-  $Res call({User user});
-
-  $UserCopyWith<$Res> get user;
+  $Res call({JWT token});
 }
 
 class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
@@ -170,46 +298,36 @@ class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object user = freezed,
+    Object token = freezed,
   }) {
     return _then(LoggedOut(
-      user == freezed ? _value.user : user as User,
+      token == freezed ? _value.token : token as JWT,
     ));
-  }
-
-  @override
-  $UserCopyWith<$Res> get user {
-    if (_value.user == null) {
-      return null;
-    }
-    return $UserCopyWith<$Res>(_value.user, (value) {
-      return _then(_value.copyWith(user: value));
-    });
   }
 }
 
 class _$LoggedOut implements LoggedOut {
-  const _$LoggedOut(this.user) : assert(user != null);
+  const _$LoggedOut(this.token) : assert(token != null);
 
   @override
-  final User user;
+  final JWT token;
 
   @override
   String toString() {
-    return 'AuthEvent.loggedOut(user: $user)';
+    return 'AuthEvent.loggedOut(token: $token)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is LoggedOut &&
-            (identical(other.user, user) ||
-                const DeepCollectionEquality().equals(other.user, user)));
+            (identical(other.token, token) ||
+                const DeepCollectionEquality().equals(other.token, token)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(user);
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
 
   @override
   $LoggedOutCopyWith<LoggedOut> get copyWith =>
@@ -218,24 +336,27 @@ class _$LoggedOut implements LoggedOut {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result authCheckRequested(),
-    @required Result loggedOut(User user),
+    @required Result authCheckStarted(),
+    @required Result loggedIn(JWT token),
+    @required Result loggedOut(JWT token),
   }) {
-    assert(authCheckRequested != null);
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
     assert(loggedOut != null);
-    return loggedOut(user);
+    return loggedOut(token);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result authCheckRequested(),
-    Result loggedOut(User user),
+    Result authCheckStarted(),
+    Result loggedIn(JWT token),
+    Result loggedOut(JWT token),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (loggedOut != null) {
-      return loggedOut(user);
+      return loggedOut(token);
     }
     return orElse();
   }
@@ -243,10 +364,12 @@ class _$LoggedOut implements LoggedOut {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result authCheckRequested(AuthCheckRequested value),
+    @required Result authCheckStarted(AuthCheckStarted value),
+    @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
   }) {
-    assert(authCheckRequested != null);
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
     assert(loggedOut != null);
     return loggedOut(this);
   }
@@ -254,7 +377,8 @@ class _$LoggedOut implements LoggedOut {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result authCheckRequested(AuthCheckRequested value),
+    Result authCheckStarted(AuthCheckStarted value),
+    Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
     @required Result orElse(),
   }) {
@@ -267,9 +391,9 @@ class _$LoggedOut implements LoggedOut {
 }
 
 abstract class LoggedOut implements AuthEvent {
-  const factory LoggedOut(User user) = _$LoggedOut;
+  const factory LoggedOut(JWT token) = _$LoggedOut;
 
-  User get user;
+  JWT get token;
   $LoggedOutCopyWith<LoggedOut> get copyWith;
 }
 
@@ -280,8 +404,10 @@ class _$AuthStateTearOff {
     return const Initial();
   }
 
-  Authenticated authenticated() {
-    return const Authenticated();
+  Authenticated authenticated({@required JWT token}) {
+    return Authenticated(
+      token: token,
+    );
   }
 
   Unauthenticated unauthenticated() {
@@ -296,13 +422,13 @@ mixin _$AuthState {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(),
+    @required Result authenticated(JWT token),
     @required Result unauthenticated(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(),
+    Result authenticated(JWT token),
     Result unauthenticated(),
     @required Result orElse(),
   });
@@ -368,7 +494,7 @@ class _$Initial implements Initial {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(),
+    @required Result authenticated(JWT token),
     @required Result unauthenticated(),
   }) {
     assert(initial != null);
@@ -381,7 +507,7 @@ class _$Initial implements Initial {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(),
+    Result authenticated(JWT token),
     Result unauthenticated(),
     @required Result orElse(),
   }) {
@@ -429,6 +555,7 @@ abstract class $AuthenticatedCopyWith<$Res> {
   factory $AuthenticatedCopyWith(
           Authenticated value, $Res Function(Authenticated) then) =
       _$AuthenticatedCopyWithImpl<$Res>;
+  $Res call({JWT token});
 }
 
 class _$AuthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
@@ -439,48 +566,68 @@ class _$AuthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
 
   @override
   Authenticated get _value => super._value as Authenticated;
+
+  @override
+  $Res call({
+    Object token = freezed,
+  }) {
+    return _then(Authenticated(
+      token: token == freezed ? _value.token : token as JWT,
+    ));
+  }
 }
 
 class _$Authenticated implements Authenticated {
-  const _$Authenticated();
+  const _$Authenticated({@required this.token}) : assert(token != null);
+
+  @override
+  final JWT token;
 
   @override
   String toString() {
-    return 'AuthState.authenticated()';
+    return 'AuthState.authenticated(token: $token)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Authenticated);
+    return identical(this, other) ||
+        (other is Authenticated &&
+            (identical(other.token, token) ||
+                const DeepCollectionEquality().equals(other.token, token)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
+
+  @override
+  $AuthenticatedCopyWith<Authenticated> get copyWith =>
+      _$AuthenticatedCopyWithImpl<Authenticated>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(),
+    @required Result authenticated(JWT token),
     @required Result unauthenticated(),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
-    return authenticated();
+    return authenticated(token);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(),
+    Result authenticated(JWT token),
     Result unauthenticated(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (authenticated != null) {
-      return authenticated();
+      return authenticated(token);
     }
     return orElse();
   }
@@ -515,7 +662,10 @@ class _$Authenticated implements Authenticated {
 }
 
 abstract class Authenticated implements AuthState {
-  const factory Authenticated() = _$Authenticated;
+  const factory Authenticated({@required JWT token}) = _$Authenticated;
+
+  JWT get token;
+  $AuthenticatedCopyWith<Authenticated> get copyWith;
 }
 
 abstract class $UnauthenticatedCopyWith<$Res> {
@@ -554,7 +704,7 @@ class _$Unauthenticated implements Unauthenticated {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(),
+    @required Result authenticated(JWT token),
     @required Result unauthenticated(),
   }) {
     assert(initial != null);
@@ -567,7 +717,7 @@ class _$Unauthenticated implements Unauthenticated {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(),
+    Result authenticated(JWT token),
     Result unauthenticated(),
     @required Result orElse(),
   }) {

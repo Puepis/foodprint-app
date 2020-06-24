@@ -1,7 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
+import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:foodprint/presentation/routes/router.gr.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -11,9 +14,7 @@ class LoginForm extends StatelessWidget {
     return BlocConsumer<LoginFormBloc, LoginFormState>(
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
-          () {
-            // Nothing happened yet
-          },
+          () {}, // loading 
           (either) => either.fold((failure) {
             FlushbarHelper.createError(
               message: failure.map(
@@ -22,7 +23,8 @@ class LoginForm extends StatelessWidget {
               ),).show(context);
             }, 
             (jwt) {
-              // TODO: Navigate to dashboard
+              context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: jwt)); // authenticated
+              ExtendedNavigator.of(context).pushReplacementNamed(Routes.dashboard);
             }
           )
         );

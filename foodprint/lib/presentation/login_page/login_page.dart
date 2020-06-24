@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/injection.dart';
-import 'package:foodprint/presentation/widgets/login_form.dart';
+import 'package:foodprint/presentation/login_page/login_form.dart';
 
 class LoginPage extends StatelessWidget {
-  static const routeName = '/login';
   const LoginPage({Key key}) : super(key: key);
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/injection.dart';
-import 'package:foodprint/presentation/widgets/register_form.dart';
+import 'package:foodprint/presentation/register_page/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
   static const routeName = "/register";

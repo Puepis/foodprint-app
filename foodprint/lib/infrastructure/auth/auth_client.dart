@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:dartz/dartz.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/login_failure.dart';
@@ -16,6 +15,10 @@ import 'package:http/http.dart' as http;
 // Implements the interface authentication methods (communicates with the outside world)
 @LazySingleton(as: IAuthRepository)
 class AuthClient implements IAuthRepository {
+  final JWTStorageClient _storageClient;
+
+  AuthClient(this._storageClient);
+
   @override
   Future<Either<RegisterFailure, Unit>> register(
       {@required EmailAddress emailAddress,
@@ -56,9 +59,7 @@ class AuthClient implements IAuthRepository {
       if (jwt.isValid()) {
 
         // Store token
-        final localDataClient =
-            JWTStorageClient(storage: const FlutterSecureStorage());
-        await localDataClient.storeUserToken(jwt);
+        await _storageClient.storeUserToken(jwt);
         return right(jwt);
 
       } 
@@ -77,16 +78,14 @@ class AuthClient implements IAuthRepository {
 
   @override
   Future<Option<JWT>> getUserToken() async {
-    final localDataClient =
-        JWTStorageClient(storage: const FlutterSecureStorage());
 
     try {
       final JWT jwt =
-          await localDataClient.getUserToken(); // try to fetch token
+          await _storageClient.getUserToken(); // try to fetch token
 
       // Check if token expired
       final String token = jwt.getOrCrash();
-      Map<String, dynamic> payload = JWT.getDecodedPayload(token);
+      final Map<String, dynamic> payload = JWT.getDecodedPayload(token);
 
       final DateTime expiry =
           DateTime.fromMillisecondsSinceEpoch((payload["exp"] as int) * 1000);
@@ -96,21 +95,19 @@ class AuthClient implements IAuthRepository {
       }
 
       // If token expired, delete and return none()
-      await localDataClient.deleteUserToken();
+      await _storageClient.deleteUserToken();
       return none();
-    } on TokenException {
+    } on TokenNotFoundException {
       return none();
     }
   }
 
   // Log out the user
   @override
-  Future<void> logout({@required User user}) async {
-    final localDataClient =
-        JWTStorageClient(storage: const FlutterSecureStorage());
-    final username = user.username.getOrCrash();
+  Future<void> logout({@required JWT token}) async {
+    final String username = JWT.getDecodedPayload(token.getOrCrash())['username'].toString();
 
     await http.post("$serverIP/api/users/logout", body: {"username": username});
-    await localDataClient.deleteUserToken();
+    await _storageClient.deleteUserToken();
   }
 }

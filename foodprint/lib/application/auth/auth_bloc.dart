@@ -5,6 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/user.dart';
+import 'package:foodprint/domain/core/exceptions.dart';
+import 'package:foodprint/infrastructure/local_storage/local_storage_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -26,17 +28,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
    yield* event.map(
-      authCheckRequested: (e) async* {
-        final Option<JWT> userOption = await _authClient.getUserToken();
-        yield userOption.fold(
-          () => const AuthState.unauthenticated(), // not logged in 
-          (_) {
-            return const AuthState.authenticated();
-          }, // token exists, check expiry 
+      authCheckStarted: (e) async* {
+        final Option<JWT> result = await _authClient.getUserToken();
+        yield result.fold(
+          () => const AuthState.unauthenticated(), 
+          (token) => AuthState.authenticated(token: token) 
         );
       },
+      loggedIn: (e) async* {
+        yield AuthState.authenticated(token: e.token);
+      },
       loggedOut: (e) async* {
-        await _authClient.logout(user: e.user);
+        await _authClient.logout(token: e.token);
         yield const AuthState.unauthenticated(); // user logged out
       },
     ); 

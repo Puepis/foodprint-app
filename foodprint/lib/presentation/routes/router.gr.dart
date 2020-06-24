@@ -8,14 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
-import 'package:foodprint/presentation/pages/login_page.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/home/dashboard.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 
 abstract class Routes {
   static const splashPage = '/';
   static const loginPage = '/login-page';
+  static const dashboard = '/dashboard';
   static const all = {
     splashPage,
     loginPage,
+    dashboard,
   };
 }
 
@@ -45,6 +49,16 @@ class Router extends RouterBase {
           builder: (context) => LoginPage(key: typedArgs.key),
           settings: settings,
         );
+      case Routes.dashboard:
+        if (hasInvalidArgs<DashboardArguments>(args)) {
+          return misTypedArgsRoute<DashboardArguments>(args);
+        }
+        final typedArgs = args as DashboardArguments ?? DashboardArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) =>
+              Dashboard(key: typedArgs.key, token: typedArgs.token),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -61,6 +75,13 @@ class LoginPageArguments {
   LoginPageArguments({this.key});
 }
 
+//Dashboard arguments holder class
+class DashboardArguments {
+  final Key key;
+  final JWT token;
+  DashboardArguments({this.key, this.token});
+}
+
 // *************************************************************************
 // Navigation helper methods extension
 // **************************************************************************
@@ -74,5 +95,14 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
       pushNamed(
         Routes.loginPage,
         arguments: LoginPageArguments(key: key),
+      );
+
+  Future pushDashboard({
+    Key key,
+    JWT token,
+  }) =>
+      pushNamed(
+        Routes.dashboard,
+        arguments: DashboardArguments(key: key, token: token),
       );
 }

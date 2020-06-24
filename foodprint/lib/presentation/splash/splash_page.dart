@@ -7,17 +7,19 @@ import 'package:foodprint/presentation/routes/router.gr.dart';
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) { // only triggers once
-        state.map(
-          initial: (_) {},
-          authenticated: (_) {
-            // TODO: Fetch user foodprint and navigate to dashboard
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            state.map(
+              initial: (_) {},
+              authenticated: (result) => ExtendedNavigator.of(context).pushReplacementNamed(Routes.dashboard),
+              unauthenticated: (_) => ExtendedNavigator.of(context)
+                  .pushReplacementNamed(Routes.loginPage),
+            );
           },
-          unauthenticated: (_) => ExtendedNavigator.of(context)
-              .pushReplacementNamed(Routes.loginPage),
-        );
-      },
+        ),
+      ],
       child: const Scaffold(
         body: Center(
           child: CircularProgressIndicator(), // TODO: Create custom splash
