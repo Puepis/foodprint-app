@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

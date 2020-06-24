@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/value_objects.dart';

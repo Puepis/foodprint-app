@@ -1,6 +1,4 @@
 
-
-import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

@@ -1,6 +1,4 @@
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';

@@ -1,6 +1,5 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/location/i_location_repository.dart';
 import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
