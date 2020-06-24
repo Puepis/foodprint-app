@@ -68,13 +68,12 @@ class RestaurantCard extends StatelessWidget {
         itemCount: photos.length,
         itemBuilder: (BuildContext context, int index) {
           final PhotoEntity photo = photos[index];
-          final Uint8List bytes = Uint8List.fromList(photo.imageData.getOrCrash());
           return Container(
             width: 100,
             margin: const EdgeInsets.fromLTRB(0.0, 0.0, 10.0, 5.0),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: MemoryImage(bytes),
+                    image: MemoryImage(photo.bytes),
                     fit: BoxFit.cover
                 )
             ),

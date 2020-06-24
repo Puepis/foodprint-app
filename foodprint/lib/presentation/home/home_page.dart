@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
             return Scaffold(
               appBar: appBar(context),
-              body: _selectedIndex == 0 ? mapScreen : Gallery(),
+              body: _selectedIndex == 0 ? mapScreen : Gallery(foodprint: widget.foodprint,),
               bottomNavigationBar: BottomAppBar(
                 shape: const CircularNotchedRectangle(),
                 child: Container(
@@ -107,8 +108,11 @@ class _HomePageState extends State<HomePage> {
 
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            BlocProvider.value(
-                value: context.bloc<PhotoActionsBloc>(),
+            MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                  BlocProvider.value(value: context.bloc<FoodprintBloc>())
+                ],
                 child: Camera(
                   location: location,
                   userID: id,

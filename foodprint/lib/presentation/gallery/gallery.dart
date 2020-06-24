@@ -1,8 +1,18 @@
-
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/core/value_transformers.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/gallery/full_image.dart';
 
 class Gallery extends StatelessWidget {
+  final FoodprintEntity foodprint;
+
+  const Gallery({Key key, @required this.foodprint}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,94 +26,124 @@ class Gallery extends StatelessWidget {
   }
 
   List<Widget> _buildPhotos(BuildContext context) {
-    final List<PhotoEntity> photos = user.foodprint.photos;
+    final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
+        getPhotosFromFoodprint(foodprint);
 
     // No photos yet
-    if (photos == null || photos.isEmpty){
+    if (photos == null || photos.isEmpty) {
       return const <Card>[];
     }
 
     // Sort from newest to oldest
-    photos.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+    photos.sort((a, b) => b.value1.timestamp
+        .getOrCrash()
+        .compareTo(a.value1.timestamp.getOrCrash()));
 
     // Render photos
-    return photos.map((photo) {
-      final Restaurant restaurant = user.foodprint.getVisitedRestaurantFromId(photo.restaurantId);
-      return Stack(
-          children: [
-            GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => FullImage(user: user, image: photo, restaurant: restaurant,)
-              )),
-              child: Card(
-                elevation: 0.0,
-                clipBehavior: Clip.antiAlias,
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: MemoryImage(photo.imgBytes),
-                          fit: BoxFit.cover
-                      )
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 2.5,
-              right: 2.5,
-              child: IconButton(
-                icon: const Icon(Icons.delete),
-                iconSize: 25.0,
-                color: Colors.white,
-                onPressed: () {
-                  showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(5.0),
-                              topLeft: Radius.circular(5.0)
-                          )
-                      ),
-                      backgroundColor: Colors.black87,
-                      context: context,
-                      builder: (cxt) => _confirmationDialog(cxt, user, photo)
-                  );
-                },
-              ),
-            ),
-          ]
-      );
-    }).toList();
-  }
+    return photos.map((pair) {
+      final PhotoEntity photo = pair.value1;
+      final RestaurantEntity restaurant = pair.value2;
 
-  Widget _confirmationDialog(BuildContext context, UserModel user, FoodprintPhoto photo) => Container(
-    padding: const EdgeInsets.only(bottom: 5.0),
-    child: Wrap(
-      children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 5.0),
-          child: const Text(
-            "Are you sure you want to delete this photo?",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.white70
+      return Stack(children: [
+        GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider( // expose values
+                          providers: [
+                            BlocProvider.value(
+                                value: context.bloc<PhotoActionsBloc>()),
+                            BlocProvider.value(
+                              value: context.bloc<FoodprintBloc>(),
+                            )
+                          ],
+                          child: FullImage(
+                            photo: photo,
+                            restaurant: restaurant,
+                          )))),
+          child: Card(
+            elevation: 0.0,
+            clipBehavior: Clip.antiAlias,
+            child: Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: MemoryImage(photo.bytes), fit: BoxFit.cover)),
             ),
           ),
         ),
-        ListTile(
-          leading: const Icon(Icons.delete_outline, color: Colors.white70,),
-          title: const Text(
-            "Delete photo",
-            style: TextStyle(
-                color: Colors.white
-            ),
+        Positioned(
+          top: 2.5,
+          right: 2.5,
+          child: IconButton(
+            icon: const Icon(Icons.delete),
+            iconSize: 25.0,
+            color: Colors.white,
+            onPressed: () {
+              showModalBottomSheet(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(5.0),
+                          topLeft: Radius.circular(5.0))),
+                  backgroundColor: Colors.black87,
+                  context: context,
+                  builder: (cxt) =>
+                      _confirmationDialog(cxt, photo, restaurant));
+            },
           ),
-          onTap: () async {
-            await user.deletePhoto(photo);
-            Navigator.pop(context);
-          },
-        )
-      ],
-    ),
-  );
+        ),
+      ]);
+    }).toList();
+  }
+
+  Widget _confirmationDialog(
+      BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
+    
+    final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
+    final FoodprintBloc foodprintBloc = context.bloc<FoodprintBloc>();
+
+    return BlocListener<PhotoActionsBloc, PhotoActionsState>(
+      listener: (context, state) {
+
+        // When deleted, rebuild widgets and return to gallery
+        if (state is DeleteSuccess) {
+          foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
+              newFoodprint: state.newFoodprint));
+          Navigator.pop(context);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.only(bottom: 5.0),
+        child: Wrap(
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0.0, 5.0),
+              child: const Text(
+                "Are you sure you want to delete this photo?",
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 14.0, color: Colors.white70),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.delete_outline,
+                color: Colors.white70,
+              ),
+              title: const Text(
+                "Delete photo",
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+
+                // Delete photo
+                photoBloc.add(PhotoActionsEvent.deleted(
+                    photo: photo,
+                    restaurant: restaurant,
+                    foodprint: foodprint));
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

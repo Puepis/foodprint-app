@@ -1,17 +1,16 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/restaurant_model.dart';
-import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/styles/text_styles.dart';
-import 'package:foodprint/widgets/gallery/edit_image.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:intl/intl.dart';
-import 'package:foodprint/service/ratings.dart';
+import 'package:foodprint/presentation/common/ratings.dart';
 
 class FullImage extends StatelessWidget {
-  final UserModel user;
-  final Restaurant restaurant;
-  final FoodprintPhoto image;
-  const FullImage({Key key, @required this.user, @required this.restaurant, @required this.image}) : super(key: key);
+  final RestaurantEntity restaurant;
+  final PhotoEntity photo;
+  const FullImage({Key key, @required this.restaurant, @required this.photo}) : super(key: key);
 
   
   @override
@@ -21,6 +20,8 @@ class FullImage extends StatelessWidget {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString()
     );
+
+    final Uint8List bytes = Uint8List.fromList(photo.imageData.getOrCrash());
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -40,7 +41,7 @@ class FullImage extends StatelessWidget {
           }
         },
        child: Center(
-          child: Image.memory(image.imgBytes),
+          child: Image.memory(bytes),
         ),
       )
     );
@@ -61,11 +62,11 @@ class FullImage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              image.name,
+              photo.photoDetail.name.getOrCrash(),
               style: itemNameTextStyle
             ),
             Text(
-              formatter.format(image.price),
+              formatter.format(photo.photoDetail.price.getOrCrash()),
               style: subtitleTextStyle
             ),
             const Divider(
@@ -79,7 +80,7 @@ class FullImage extends StatelessWidget {
             ),
             const SizedBox(height: 5.0),
             Text(
-              image.timestamp,
+              photo.timestamp.getOrCrash(),
               style: largeTextStyle
             ),
             const SizedBox(height: 20),
@@ -89,7 +90,7 @@ class FullImage extends StatelessWidget {
             ),
             const SizedBox(height: 5.0,),
             Text(
-              image.caption,
+              photo.photoDetail.comments.getOrCrash(),
               style: largeTextStyle
             ),
             const SizedBox(height: 20.0),
@@ -99,11 +100,11 @@ class FullImage extends StatelessWidget {
             ),
             const SizedBox(height: 5.0),
             Text(
-              restaurant.name,
+              restaurant.restaurantName.getOrCrash(),
               style: subtitleTextStyle
             ),
             const SizedBox(height: 5.0,),
-            restaurant.rating.ratingsWidget,
+            restaurant.restaurantRating.getOrCrash().ratingsWidget,
             const SizedBox(height: 10.0),
             Text(
               "${restaurant.latitude}, ${restaurant.longitude}",
@@ -121,7 +122,7 @@ class FullImage extends StatelessWidget {
               Navigator.push(context, MaterialPageRoute(
                 builder: (_) => EditImageScreen(
                   user: user,
-                  photo: image,
+                  photo: photo,
                 )
               ));
             },

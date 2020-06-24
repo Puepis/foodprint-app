@@ -1,5 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -35,11 +38,20 @@ class RestaurantListing extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ImageDetail(
-                                  oldFoodprint: oldFoodprint,
-                                  userID: userID,
-                                  imageFile: imageFile,
-                                  restaurant: restaurants[index],
+                            builder: (context) => MultiBlocProvider(
+                                  providers: [
+                                    BlocProvider.value(
+                                        value:
+                                            context.bloc<PhotoActionsBloc>()),
+                                    BlocProvider.value(
+                                        value: context.bloc<FoodprintBloc>())
+                                  ],
+                                  child: ImageDetail(
+                                    oldFoodprint: oldFoodprint,
+                                    userID: userID,
+                                    imageFile: imageFile,
+                                    restaurant: restaurants[index],
+                                  ),
                                 )));
                   },
                   child: Row(

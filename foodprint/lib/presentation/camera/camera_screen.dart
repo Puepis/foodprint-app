@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -18,7 +20,11 @@ class Camera extends StatefulWidget {
   final UserID userID;
   final LatLng location;
 
-  const Camera({Key key, @required this.userID, @required this.location, @required this.oldFoodprint})
+  const Camera(
+      {Key key,
+      @required this.userID,
+      @required this.location,
+      @required this.oldFoodprint})
       : super(key: key);
   @override
   _CameraState createState() => _CameraState();
@@ -161,11 +167,19 @@ class _CameraState extends State<Camera> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RestaurantListing(
-                            oldFoodprint: widget.oldFoodprint,
-                            userID: widget.userID,
-                            imageFile: _imageFile,
-                            restaurants: restaurants)));
+                        builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                    value: context.bloc<PhotoActionsBloc>()),
+                                BlocProvider.value(
+                                    value: context.bloc<FoodprintBloc>())
+                              ],
+                              child: RestaurantListing(
+                                  oldFoodprint: widget.oldFoodprint,
+                                  userID: widget.userID,
+                                  imageFile: _imageFile,
+                                  restaurants: restaurants),
+                            )));
               },
               child: const Icon(
                 Icons.navigate_next,

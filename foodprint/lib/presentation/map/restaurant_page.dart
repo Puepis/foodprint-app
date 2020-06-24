@@ -106,7 +106,6 @@ class RestaurantPage extends StatelessWidget {
               itemCount: photos.length,
               itemBuilder: (context, index) {
                 final PhotoEntity photo = photos[index];
-                final Uint8List bytes = Uint8List.fromList(photo.imageData.getOrCrash());
                 return Stack(
                   children: [
                     Container(
@@ -167,7 +166,7 @@ class RestaurantPage extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20.0),
                         child: Image.memory(
-                          bytes,
+                          photo.bytes,
                           width: 110.0,
                           fit: BoxFit.cover,
                         ),

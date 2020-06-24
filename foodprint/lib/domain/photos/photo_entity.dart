@@ -1,5 +1,7 @@
 
 
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
@@ -26,5 +28,9 @@ abstract class PhotoEntity implements _$PhotoEntity {
         .andThen(timestamp.failureOrNone)
         .andThen(photoDetail.failureOption.fold(() => right(unit), (f) => left(f)))
         .fold((f) => some(f), (_) => none());
+  }
+
+  Uint8List get bytes {
+    return Uint8List.fromList(imageData.getOrCrash());
   }
 }

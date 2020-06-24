@@ -68,16 +68,6 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
     });
     return FoodprintEntity(restaurantPhotos: restaurantPhotos);
   }
-
-
-  List<PhotoEntity> getPhotosFromFoodprint(FoodprintEntity foodprint) {
-    final restaurantPhotos = foodprint.restaurantPhotos;
-    final List<PhotoEntity> result = [];
-    for (final photos in restaurantPhotos.values) {
-      result.addAll(photos);
-    }
-    return result;
-  }
 }
 
 
