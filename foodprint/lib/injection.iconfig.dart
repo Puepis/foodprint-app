@@ -18,7 +18,6 @@ import 'package:foodprint/infrastructure/location/device_location_client.dart';
 import 'package:foodprint/domain/location/i_locator_repository.dart';
 import 'package:location/location.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:foodprint/domain/foodprint/i_local_foodprint_repository.dart';
 import 'package:foodprint/infrastructure/auth/auth_client.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
@@ -40,8 +39,8 @@ void $initGetIt(GetIt g, {String environment}) {
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
   g.registerLazySingleton<UserLocator>(
       () => DeviceLocationClient(location: g<Location>()));
-  g.registerFactory<FoodprintBloc>(() => FoodprintBloc(
-      g<IRemoteFoodprintRepository>(), g<ILocalFoodprintRepository>()));
+  g.registerFactory<FoodprintBloc>(
+      () => FoodprintBloc(g<IRemoteFoodprintRepository>()));
   g.registerLazySingleton<IAuthRepository>(
       () => AuthClient(g<JWTStorageClient>()));
   g.registerFactory<LocationBloc>(() => LocationBloc(g<UserLocator>()));

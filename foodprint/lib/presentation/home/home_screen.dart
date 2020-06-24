@@ -2,22 +2,24 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:foodprint/presentation/routes/router.gr.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 
-class Dashboard extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final JWT token;
 
-  const Dashboard({Key key, this.token}) : super(key: key);
+  const HomePage({Key key, this.token}) : super(key: key);
   @override
-  _DashboardState createState() => _DashboardState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _HomePageState extends State<HomePage> {
   String username;
   int _selectedIndex = 0;
 
@@ -32,56 +34,60 @@ class _DashboardState extends State<Dashboard> {
           ],
           child: WillPopScope(
         onWillPop: () async => false,
-        child: Scaffold(
-            appBar: appBar(context),
-            body: _selectedIndex == 0 ? FoodMap(initialPos: user.location) : Gallery(),
-            bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
-              child: Container(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-          iconSize: 30.0,
-          icon: const Icon(Icons.location_on),
-          onPressed: () {
-            setState(() {
-              _selectedIndex = 0;
-            });
-          },
-                    ),
-                    IconButton(
-          iconSize: 30.0,
-          icon: const Icon(Icons.collections),
-          onPressed: () {
-            setState(() {
-              _selectedIndex = 1;
-            });
-          },
-                    )
-                  ],
-                ),
-              ),
-            ),
-            floatingActionButton: Container(
-              height: 75,
-              width: 75,
-              child: FittedBox(
-                child: FloatingActionButton(
-                  elevation: 20.0,
-                  onPressed: () async {
-                    await Navigator.of(context).push(_cameraRoute(user)); // take picture
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 35.0,
+        child: BlocBuilder<LocationBloc, LocationState>(
+          builder: (context, state) {
+            return  Scaffold(
+              appBar: appBar(context),
+              body: _selectedIndex == 0 ? FoodMap(initialPos: null) : Gallery(),
+              bottomNavigationBar: BottomAppBar(
+                shape: const CircularNotchedRectangle(),
+                child: Container(
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+            iconSize: 30.0,
+            icon: const Icon(Icons.location_on),
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 0;
+              });
+            },
+                      ),
+                      IconButton(
+            iconSize: 30.0,
+            icon: const Icon(Icons.collections),
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 1;
+              });
+            },
+                      )
+                    ],
                   ),
                 ),
               ),
-            ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: Container(
+                height: 75,
+                width: 75,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    elevation: 20.0,
+                    onPressed: () {
+                      Navigator.of(context).push(_cameraRoute(user)); // take picture
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 35.0,
+                    ),
+                  ),
+                ),
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          );
+          },
         ),
       ),
     );
@@ -117,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
         IconButton(
           icon: const Icon(Icons.exit_to_app),
           onPressed: () {
-            BlocProvider.of<AuthBloc>(context).add(AuthEvent.loggedOut(widget.token));
+            context.bloc<AuthBloc>().add(AuthEvent.loggedOut(widget.token));
             ExtendedNavigator.of(context).pushReplacementNamed(Routes.loginPage);
           },
         )

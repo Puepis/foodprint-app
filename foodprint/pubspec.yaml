@@ -27,7 +27,6 @@ dependencies:
   geolocator: ^5.3.1
   # Provider for exposing values (used to manage state)
   provider: ^4.1.0
-  flutter_bloc: ^3.2.0
   # Camera
   camera: ^0.5.7+4
   image_picker: ^0.6.7
@@ -63,6 +62,7 @@ dependencies:
   # Generate code for routing
   auto_route: ^0.5.0
   kt_dart: ^0.7.0+1
+  flutter_bloc: ^4.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

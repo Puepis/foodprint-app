@@ -55,6 +55,7 @@ class RemotePhotosClient implements IPhotoRepository {
     final res = await http.post("$serverIP/api/photos/",
         headers: {"Content-Type": 'application/json'}, body: requestBody);
     if (res.statusCode == 200) {
+
       // Update local foodprint
       final client = LocalFoodprintClient();
       final FoodprintEntity newFoodprint = client.addPhotoToFoodprint(

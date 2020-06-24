@@ -1,10 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/models/foodprint_photo.dart';
-import 'package:foodprint/models/restaurant_model.dart';
-import 'package:foodprint/models/user_model.dart';
-import 'package:foodprint/service/locator.dart';
-import 'package:foodprint/widgets/map/restaurant_page.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +17,6 @@ class _FoodMapState extends State<FoodMap> {
   
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<UserModel>();
-    final foodprint = user.foodprint;
     _markers = generateMarkers(foodprint);
 
     // Add marker indicating current location

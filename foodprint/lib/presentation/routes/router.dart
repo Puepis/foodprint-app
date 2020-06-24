@@ -8,5 +8,5 @@ class $Router {
   @initial
   SplashPage splashPage;
   LoginPage loginPage;
-  Dashboard dashboard;
+  HomePage dashboard;
 }

@@ -10,6 +10,21 @@ class RegisterForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterFormBloc, RegisterFormState>(
         listener: (context, state) {
+          if (state.isSubmitting) {
+            Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Registering...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            );
+          }
           state.authFailureOrSuccessOption.fold(
           () {},
           (either) => either.fold((failure) {
@@ -21,8 +36,8 @@ class RegisterForm extends StatelessWidget {
                 invalidRegisterCombination: (_) => 'Invalid register combination' ,
               ),).show(context);
             }, 
-            (_) {
-              // TODO: Navigate to login page
+            (success) {
+              Navigator.pop(context); // go back to login page
             }
           )
         );
