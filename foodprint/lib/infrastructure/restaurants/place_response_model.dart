@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/infrastructure/restaurants/restaurant_dtos.dart';
+import 'package:foodprint/infrastructure/restaurants/restaurant_dto.dart';
 
 class GooglePlaceResponse {
   final List<String> attributions;

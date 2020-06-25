@@ -5,7 +5,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'restaurant_dtos.freezed.dart';
+part 'restaurant_dto.freezed.dart';
 
 // Data transfer object = model
 @freezed

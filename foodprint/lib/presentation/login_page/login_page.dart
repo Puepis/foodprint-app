@@ -62,8 +62,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      ExtendedNavigator.of(context).pushReplacementNamed(Routes.registerPage);
-                      Navigator.pushNamed(context, "/register");
+                      ExtendedNavigator.of(context).pushNamed(Routes.registerPage);
                     },
                     child: const Text(
                       "Register",

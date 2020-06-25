@@ -14,6 +14,7 @@ import 'package:foodprint/infrastructure/restaurants/google_place_search_client.
 import 'package:foodprint/domain/restaurants/i_restaurant_search_respository.dart';
 import 'package:foodprint/infrastructure/foodprint/local_foodprint_client.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
+import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
@@ -31,6 +32,8 @@ void $initGetIt(GetIt g, {String environment}) {
       () => GooglePlaceSearchClient());
   g.registerFactory<LocalFoodprintClient>(() => LocalFoodprintClient());
   g.registerFactory<LoginFormBloc>(() => LoginFormBloc(g<IAuthRepository>()));
+  g.registerFactory<RegisterFormBloc>(
+      () => RegisterFormBloc(g<IAuthRepository>()));
   g.registerFactory<RestaurantSearchBloc>(
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));

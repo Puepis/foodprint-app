@@ -6,6 +6,7 @@ import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 part 'register_form_event.dart';
@@ -13,6 +14,7 @@ part 'register_form_state.dart';
 
 part 'register_form_bloc.freezed.dart';
 
+@injectable
 class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   final IAuthRepository _authClient;
 
