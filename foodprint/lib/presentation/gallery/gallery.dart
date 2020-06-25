@@ -87,8 +87,12 @@ class Gallery extends StatelessWidget {
                           topLeft: Radius.circular(5.0))),
                   backgroundColor: Colors.black87,
                   context: context,
-                  builder: (cxt) =>
-                      _confirmationDialog(cxt, photo, restaurant));
+                  builder: (_) => MultiBlocProvider(providers: [
+                        BlocProvider.value(
+                            value: context.bloc<PhotoActionsBloc>()),
+                        BlocProvider.value(
+                            value: context.bloc<FoodprintBloc>()),
+                      ], child: _confirmationDialog(context, photo, restaurant)));
             },
           ),
         ),
@@ -103,7 +107,6 @@ class Gallery extends StatelessWidget {
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
-
         // TODO: Display snackbar
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {

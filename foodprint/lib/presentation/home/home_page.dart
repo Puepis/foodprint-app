@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
@@ -27,22 +28,42 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async => false,
       child: BlocBuilder<LocationBloc, LocationState>(
         builder: (context, state) {
-          Widget mapScreen = const Center(
-            child: CircularProgressIndicator(),
-          ); 
+          Widget mapScreen = Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              SpinKitDualRing(
+                color: Colors.orange,
+              ),
+              SizedBox(height: 20.0),
+              Text(
+                "Retrieving location",
+                style: TextStyle(
+                    color: Colors.orange,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ));
 
           if (state is GetLocationSuccess) {
-            mapScreen = FoodMap(initialPos: state.latlng, foodprint: widget.foodprint,);
+            mapScreen = FoodMap(
+              initialPos: state.latlng,
+              foodprint: widget.foodprint,
+            );
           }
 
           return Scaffold(
             appBar: appBar(context),
-            body: _selectedIndex == 0 ? mapScreen : Gallery(foodprint: widget.foodprint,),
+            body: _selectedIndex == 0
+                ? mapScreen
+                : Gallery(
+                    foodprint: widget.foodprint,
+                  ),
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: Container(
@@ -79,8 +100,8 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
-                      ? Navigator.of(context)
-                          .push(_cameraRoute(context, state.latlng)) // take picture
+                      ? Navigator.of(context).push(
+                          _cameraRoute(context, state.latlng)) // take picture
                       : null,
                   child: const Icon(
                     Icons.add,

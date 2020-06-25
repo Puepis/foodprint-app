@@ -47,7 +47,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
       restaurantName: json['name'] as String,
-      rating: json['rating'] == null ? double.parse(json['rating'].toString()) : -1,
+      rating: json['rating'] == null ? -1.0 : double.parse(json['rating'].toString()),
       latitude: double.parse(json['geometry']['location']['lat'].toString()),
       longitude: double.parse(json['geometry']['location']['lng'].toString()),
     );

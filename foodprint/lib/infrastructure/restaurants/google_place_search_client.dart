@@ -40,11 +40,11 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
         return left(const RestaurantFailure.requestDenied());
 
       } else {
-
         return left(const RestaurantFailure.unexpectedSearchFailure());
       }
     }
     catch (e) {
+      print(e);
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }

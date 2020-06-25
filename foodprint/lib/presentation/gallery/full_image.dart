@@ -22,7 +22,7 @@ class FullImage extends StatelessWidget {
       {Key key,
       @required this.restaurant,
       @required this.photo,
-      @required this.foodprint})
+      @required this.foodprint,})
       : super(key: key);
 
   @override
@@ -105,7 +105,7 @@ class FullImage extends StatelessWidget {
                 ),
                 restaurant.restaurantRating.getOrCrash().ratingsWidget,
                 const SizedBox(height: 10.0),
-                Text("${restaurant.latitude}, ${restaurant.longitude}",
+                Text("${restaurant.latitude.getOrCrash()}, ${restaurant.longitude.getOrCrash()}",
                     style: coordsTextStyle)
               ],
             ),

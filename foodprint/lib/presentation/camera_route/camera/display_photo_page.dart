@@ -36,6 +36,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RestaurantSearchBloc>(
+
+      // Begin searching for restaurants
       create: (context) => getIt<RestaurantSearchBloc>()
         ..add(RestaurantSearched(
             latitude: widget.latitude, longitude: widget.longitude)),
@@ -47,6 +49,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   fit: BoxFit.fitHeight, image: widget.loadedImage)),
           child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
               listener: (context, state) {
+
             // Error searching for restaurants
             if (state is SearchStateError) {
               Scaffold.of(context)..hideCurrentSnackBar();
@@ -57,15 +60,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 ),
               ).show(context);
             }
-
-            // Finding restaurants
-            if (state is SearchStateLoading) {
-              Scaffold.of(context)..hideCurrentSnackBar();
-              FlushbarHelper.createInformation(
-                      message: "Searching for restaurants...")
-                  .show(context);
-            }
-          }, builder: (_, state) {
+         }, builder: (_, state) {
             return Stack(children: [
               Positioned(
                   top: 30,
