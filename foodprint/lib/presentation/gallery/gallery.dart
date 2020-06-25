@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,22 +47,21 @@ class Gallery extends StatelessWidget {
 
       return Stack(children: [
         GestureDetector(
-          onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => MultiBlocProvider( // expose values
-                          providers: [
-                            BlocProvider.value(
-                                value: context.bloc<PhotoActionsBloc>()),
-                            BlocProvider.value(
-                              value: context.bloc<FoodprintBloc>(),
-                            )
-                          ],
-                          child: FullImage(
-                            foodprint: foodprint,
-                            photo: photo,
-                            restaurant: restaurant,
-                          )))),
+          onTap: () => ExtendedNavigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                      // expose values
+                      providers: [
+                        BlocProvider.value(
+                            value: context.bloc<PhotoActionsBloc>()),
+                        BlocProvider.value(
+                          value: context.bloc<FoodprintBloc>(),
+                        )
+                      ],
+                      child: FullImage(
+                        foodprint: foodprint,
+                        photo: photo,
+                        restaurant: restaurant,
+                      )))),
           child: Card(
             elevation: 0.0,
             clipBehavior: Clip.antiAlias,
@@ -98,13 +98,11 @@ class Gallery extends StatelessWidget {
 
   Widget _confirmationDialog(
       BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
-    
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
     final FoodprintBloc foodprintBloc = context.bloc<FoodprintBloc>();
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
-
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
@@ -134,7 +132,6 @@ class Gallery extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
-
                 // Delete photo
                 photoBloc.add(PhotoActionsEvent.deleted(
                     photo: photo,

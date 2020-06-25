@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -13,7 +14,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final ratingsWidget = restaurant.restaurantRating.getOrCrash().ratingsWidget;
     return GestureDetector(
-      onDoubleTap: () => Navigator.push(context, MaterialPageRoute(
+      onDoubleTap: () => ExtendedNavigator.of(context).push(MaterialPageRoute(
           builder: (context) => RestaurantPage(
             restaurant: restaurant,
             photos: photos,

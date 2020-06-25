@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
@@ -35,8 +36,7 @@ class RestaurantListing extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0)),
                   color: Colors.deepOrange,
                   onPressed: () {
-                    Navigator.push(
-                        context,
+                    ExtendedNavigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) => MultiBlocProvider(
                                   providers: [

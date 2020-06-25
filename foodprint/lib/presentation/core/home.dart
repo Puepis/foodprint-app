@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login');
+                  ExtendedNavigator.of(context).pushNamed(Routes.loginPage);
                 },
                 child: const Text(
                   "Login",
