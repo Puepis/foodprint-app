@@ -33,7 +33,7 @@ class RemotePhotosClient implements IPhotoRepository {
         "details": {
           "name": photo.photoDetail.name.getOrCrash(),
           "price": photo.photoDetail.price.getOrCrash().toString(),
-          "caption": photo.photoDetail.comments.getOrCrash(),
+          "comments": photo.photoDetail.comments.getOrCrash(),
           "timestamp": photo.timestamp.getOrCrash(),
         },
         "location": {
@@ -85,7 +85,7 @@ class RemotePhotosClient implements IPhotoRepository {
       "path": oldPhoto.storagePath.getOrCrash(),
       "photo_name": photoDetail.name.getOrCrash(),
       "price": photoDetail.price.getOrCrash(),
-      "caption": photoDetail.comments.getOrCrash()
+      "comments": photoDetail.comments.getOrCrash()
     });
 
     if (res.statusCode == 200) {

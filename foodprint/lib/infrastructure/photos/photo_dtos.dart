@@ -100,7 +100,7 @@ abstract class PhotoDetailDTO implements _$PhotoDetailDTO {
     return PhotoDetailDTO(
       name: json['photo_name'].toString(),
       price: double.parse(json['price'].toString()),
-      comments: json['caption'].toString(),
+      comments: json['comments'].toString(),
     );
   } 
 }
