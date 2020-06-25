@@ -8,7 +8,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
-import 'package:foodprint/presentation/gallery/gallery.dart';
+import 'package:foodprint/presentation/gallery/gallery_page.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

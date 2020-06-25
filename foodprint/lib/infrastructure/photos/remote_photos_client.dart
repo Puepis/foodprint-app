@@ -82,7 +82,7 @@ class RemotePhotosClient implements IPhotoRepository {
     final res = await http.put("$serverIP/api/photos", body: {
       "path": oldPhoto.storagePath.getOrCrash(),
       "photo_name": photoDetail.name.getOrCrash(),
-      "price": photoDetail.price.getOrCrash(),
+      "price": photoDetail.price.getOrCrash().toString(),
       "comments": photoDetail.comments.getOrCrash()
     });
 
