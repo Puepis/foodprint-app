@@ -11,10 +11,8 @@ abstract class RestaurantEntity implements _$RestaurantEntity {
 
   const factory RestaurantEntity({
     @required RestaurantID restaurantID,
-    @required RestaurantAddress restaurantAddress,
     @required RestaurantName restaurantName,
     @required RestaurantRating restaurantRating,
-    @required RestaurantPriceLevel restaurantPriceLevel,
     @required Latitude latitude,
     @required Longitude longitude
 

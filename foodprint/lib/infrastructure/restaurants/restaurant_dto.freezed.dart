@@ -14,18 +14,14 @@ class _$RestaurantDTOTearOff {
 
   _RestaurantDTO call(
       {@required String placeId,
-      @required String address,
       @required String restaurantName,
       @required double rating,
-      @required int priceLevel,
       @required double latitude,
       @required double longitude}) {
     return _RestaurantDTO(
       placeId: placeId,
-      address: address,
       restaurantName: restaurantName,
       rating: rating,
-      priceLevel: priceLevel,
       latitude: latitude,
       longitude: longitude,
     );
@@ -37,10 +33,8 @@ const $RestaurantDTO = _$RestaurantDTOTearOff();
 
 mixin _$RestaurantDTO {
   String get placeId;
-  String get address;
   String get restaurantName;
   double get rating;
-  int get priceLevel;
   double get latitude;
   double get longitude;
 
@@ -53,10 +47,8 @@ abstract class $RestaurantDTOCopyWith<$Res> {
       _$RestaurantDTOCopyWithImpl<$Res>;
   $Res call(
       {String placeId,
-      String address,
       String restaurantName,
       double rating,
-      int priceLevel,
       double latitude,
       double longitude});
 }
@@ -72,21 +64,17 @@ class _$RestaurantDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object placeId = freezed,
-    Object address = freezed,
     Object restaurantName = freezed,
     Object rating = freezed,
-    Object priceLevel = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
   }) {
     return _then(_value.copyWith(
       placeId: placeId == freezed ? _value.placeId : placeId as String,
-      address: address == freezed ? _value.address : address as String,
       restaurantName: restaurantName == freezed
           ? _value.restaurantName
           : restaurantName as String,
       rating: rating == freezed ? _value.rating : rating as double,
-      priceLevel: priceLevel == freezed ? _value.priceLevel : priceLevel as int,
       latitude: latitude == freezed ? _value.latitude : latitude as double,
       longitude: longitude == freezed ? _value.longitude : longitude as double,
     ));
@@ -101,10 +89,8 @@ abstract class _$RestaurantDTOCopyWith<$Res>
   @override
   $Res call(
       {String placeId,
-      String address,
       String restaurantName,
       double rating,
-      int priceLevel,
       double latitude,
       double longitude});
 }
@@ -122,21 +108,17 @@ class __$RestaurantDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object placeId = freezed,
-    Object address = freezed,
     Object restaurantName = freezed,
     Object rating = freezed,
-    Object priceLevel = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
   }) {
     return _then(_RestaurantDTO(
       placeId: placeId == freezed ? _value.placeId : placeId as String,
-      address: address == freezed ? _value.address : address as String,
       restaurantName: restaurantName == freezed
           ? _value.restaurantName
           : restaurantName as String,
       rating: rating == freezed ? _value.rating : rating as double,
-      priceLevel: priceLevel == freezed ? _value.priceLevel : priceLevel as int,
       latitude: latitude == freezed ? _value.latitude : latitude as double,
       longitude: longitude == freezed ? _value.longitude : longitude as double,
     ));
@@ -146,17 +128,13 @@ class __$RestaurantDTOCopyWithImpl<$Res>
 class _$_RestaurantDTO extends _RestaurantDTO {
   const _$_RestaurantDTO(
       {@required this.placeId,
-      @required this.address,
       @required this.restaurantName,
       @required this.rating,
-      @required this.priceLevel,
       @required this.latitude,
       @required this.longitude})
       : assert(placeId != null),
-        assert(address != null),
         assert(restaurantName != null),
         assert(rating != null),
-        assert(priceLevel != null),
         assert(latitude != null),
         assert(longitude != null),
         super._();
@@ -164,13 +142,9 @@ class _$_RestaurantDTO extends _RestaurantDTO {
   @override
   final String placeId;
   @override
-  final String address;
-  @override
   final String restaurantName;
   @override
   final double rating;
-  @override
-  final int priceLevel;
   @override
   final double latitude;
   @override
@@ -178,7 +152,7 @@ class _$_RestaurantDTO extends _RestaurantDTO {
 
   @override
   String toString() {
-    return 'RestaurantDTO(placeId: $placeId, address: $address, restaurantName: $restaurantName, rating: $rating, priceLevel: $priceLevel, latitude: $latitude, longitude: $longitude)';
+    return 'RestaurantDTO(placeId: $placeId, restaurantName: $restaurantName, rating: $rating, latitude: $latitude, longitude: $longitude)';
   }
 
   @override
@@ -188,17 +162,11 @@ class _$_RestaurantDTO extends _RestaurantDTO {
             (identical(other.placeId, placeId) ||
                 const DeepCollectionEquality()
                     .equals(other.placeId, placeId)) &&
-            (identical(other.address, address) ||
-                const DeepCollectionEquality()
-                    .equals(other.address, address)) &&
             (identical(other.restaurantName, restaurantName) ||
                 const DeepCollectionEquality()
                     .equals(other.restaurantName, restaurantName)) &&
             (identical(other.rating, rating) ||
                 const DeepCollectionEquality().equals(other.rating, rating)) &&
-            (identical(other.priceLevel, priceLevel) ||
-                const DeepCollectionEquality()
-                    .equals(other.priceLevel, priceLevel)) &&
             (identical(other.latitude, latitude) ||
                 const DeepCollectionEquality()
                     .equals(other.latitude, latitude)) &&
@@ -211,10 +179,8 @@ class _$_RestaurantDTO extends _RestaurantDTO {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(placeId) ^
-      const DeepCollectionEquality().hash(address) ^
       const DeepCollectionEquality().hash(restaurantName) ^
       const DeepCollectionEquality().hash(rating) ^
-      const DeepCollectionEquality().hash(priceLevel) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude);
 
@@ -227,23 +193,17 @@ abstract class _RestaurantDTO extends RestaurantDTO {
   const _RestaurantDTO._() : super._();
   const factory _RestaurantDTO(
       {@required String placeId,
-      @required String address,
       @required String restaurantName,
       @required double rating,
-      @required int priceLevel,
       @required double latitude,
       @required double longitude}) = _$_RestaurantDTO;
 
   @override
   String get placeId;
   @override
-  String get address;
-  @override
   String get restaurantName;
   @override
   double get rating;
-  @override
-  int get priceLevel;
   @override
   double get latitude;
   @override

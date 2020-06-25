@@ -19,20 +19,6 @@ class RestaurantID extends ValueObject<String> {
   const RestaurantID._(this.value);
 }
 
-class RestaurantAddress extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
-
-  factory RestaurantAddress(String address) {
-    assert(address != null);
-    return RestaurantAddress._(
-      validateStringNotEmpty(address),
-    );
-  }
-
-  const RestaurantAddress._(this.value);
-}
-
 class RestaurantName extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
@@ -61,20 +47,4 @@ class RestaurantRating extends ValueObject<double> {
   }
 
   const RestaurantRating._(this.value);
-}
-
-class RestaurantPriceLevel extends ValueObject<int> {
-  static const int minLevel = 0;
-  static const int maxLevel = 4;
-  @override
-  final Either<ValueFailure<int>, int> value;
-
-  factory RestaurantPriceLevel(int priceLevel) {
-    assert(priceLevel != null);
-    return RestaurantPriceLevel._(
-      validateIntInRange(priceLevel, minLevel, maxLevel),
-    ); 
-  }
-
-  const RestaurantPriceLevel._(this.value);
 }

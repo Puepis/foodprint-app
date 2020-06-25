@@ -34,7 +34,7 @@ class RestaurantListing extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0)),
-                  color: Colors.deepOrange,
+                  color: Colors.orange,
                   onPressed: () {
                     ExtendedNavigator.of(context).push(
                         MaterialPageRoute(

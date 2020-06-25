@@ -15,6 +15,7 @@ import 'package:injectable/injectable.dart';
 // This class is responsible for searching for nearby restaurants and converting the response data into entities
 @LazySingleton(as: IRestaurantSearchRepository)
 class GooglePlaceSearchClient implements IRestaurantSearchRepository {
+
   // TODO: secure API key
   static const String _apiKey = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
@@ -47,6 +48,4 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }
-
-
 }

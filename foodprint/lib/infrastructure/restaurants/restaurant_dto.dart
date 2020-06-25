@@ -14,10 +14,8 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
 
   const factory RestaurantDTO({
     @required String placeId,
-    @required String address,
     @required String restaurantName,
     @required double rating,
-    @required int priceLevel,
     @required double latitude,
     @required double longitude,
   }) = _RestaurantDTO;
@@ -26,10 +24,8 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromEntity(RestaurantEntity restaurant) {
     return RestaurantDTO(
       placeId: restaurant.restaurantID.getOrCrash(), 
-      address: restaurant.restaurantAddress.getOrCrash(), 
       restaurantName: restaurant.restaurantName.getOrCrash(),
       rating: restaurant.restaurantRating.getOrCrash(),
-      priceLevel: restaurant.restaurantPriceLevel.getOrCrash(),
       latitude: restaurant.latitude.getOrCrash(),
       longitude: restaurant.longitude.getOrCrash() 
     );
@@ -38,11 +34,9 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   // Convert DTO to entity
   RestaurantEntity toEntity() {
     return RestaurantEntity(
-      restaurantAddress: RestaurantAddress(address),
       restaurantID: RestaurantID(placeId),
       restaurantName: RestaurantName(restaurantName),
       restaurantRating: RestaurantRating(rating),
-      restaurantPriceLevel: RestaurantPriceLevel(priceLevel),
       latitude: Latitude(latitude),
       longitude: Longitude(longitude),
     );
@@ -52,10 +46,8 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromPlaceSearch(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
-      address: json['formatted_address'].toString(),
       restaurantName: json['name'].toString(),
-      rating: (json['rating'] as num)?.toDouble(),
-      priceLevel: json['price_level'] as int,
+      rating: (json['rating'] as num)?.toDouble() ?? -1,
       latitude: (json['geometry']['location']['lat'] as num)?.toDouble(),
       longitude: (json['geometry']['location']['lng'] as num)?.toDouble() 
     );
@@ -64,10 +56,8 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromFoodprintAPI(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['restaurant_id'] as String,
-      address: json['restaurant_address'] as String,
       restaurantName: json['restaurant_name'] as String,
       rating: (json['restaurant_rating'] as num)?.toDouble(),
-      priceLevel: json['price_level'] as int,
       latitude: (json['restaurant_lat'] as num)?.toDouble(),
       longitude: (json['restaurant_lng'] as num)?.toDouble()
     );

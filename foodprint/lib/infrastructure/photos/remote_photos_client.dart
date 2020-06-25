@@ -38,10 +38,8 @@ class RemotePhotosClient implements IPhotoRepository {
         },
         "location": {
           "id": restaurant.restaurantID.getOrCrash(),
-          "address": restaurant.restaurantAddress.getOrCrash(),
           "name": restaurant.restaurantName.getOrCrash(),
           "rating": restaurant.restaurantRating.getOrCrash().toString(),
-          "price_level": restaurant.restaurantPriceLevel.getOrCrash().toString(),
           "lat": restaurant.latitude.getOrCrash().toString(),
           "lng": restaurant.longitude.getOrCrash().toString()
         }

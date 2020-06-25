@@ -13,7 +13,6 @@ class JWTStorageClient implements JWTLocalRepository {
 
   @override
   Future<JWT> getUserToken() async {
-    print("Getting token");
     final tokenString = await storage.read(key: "jwt");
     if (tokenString != null) {
       return JWT(token: tokenString);
@@ -24,13 +23,11 @@ class JWTStorageClient implements JWTLocalRepository {
 
   @override
   Future<void> storeUserToken(JWT token) async {
-    print("Storing token");
     await storage.write(key: "jwt", value: token.getOrCrash());
   }
 
   @override
   Future<void> deleteUserToken() async {
-    print("Deleting token");
     await storage.delete(key: "jwt");
   }
 }

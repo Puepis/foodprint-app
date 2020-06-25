@@ -136,7 +136,7 @@ class _ImageDetailState extends State<ImageDetail> {
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: saving
                               ? const SpinKitThreeBounce(
-                                  color: Colors.deepOrange, size: 15.0)
+                                  color: Colors.orange, size: 15.0)
                               : FloatingActionButton.extended(
                                   label: const Text(
                                     'SAVE',
