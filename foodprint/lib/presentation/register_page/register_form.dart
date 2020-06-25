@@ -28,7 +28,8 @@ class RegisterForm extends StatelessWidget {
       state.authFailureOrSuccessOption.fold(
           () {},
           (either) => either.fold((failure) {
-                FlushbarHelper.createError(
+                Scaffold.of(context)..hideCurrentSnackBar();
+                FlushbarHelper.createErrorf(
                   message: failure.map(
                     serverError: (_) => 'Server error',
                     emailAlreadyInUse: (_) => 'Email already in use',
