@@ -28,12 +28,11 @@ class DeleteConfirmationTab extends StatelessWidget {
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
-        // TODO: Display snackbar
+        
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
-          // TODO: display snackbar
           Navigator.pop(context);
         }
       },

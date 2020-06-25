@@ -7,7 +7,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/camera_route/photo_details/photo_details_page.dart';
+import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 
 class SelectRestaurantPage extends StatelessWidget {
   final FoodprintEntity oldFoodprint;
