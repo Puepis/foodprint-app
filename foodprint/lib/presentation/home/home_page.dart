@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             context.bloc<AuthBloc>().add(AuthEvent.loggedOut(widget.token));
             ExtendedNavigator.of(context)
-                .pushReplacementNamed(Routes.loginPage);
+                .pushNamed(Routes.loginPage);
           },
         )
       ],

@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
+import 'package:foodprint/presentation/routes/router.gr.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -60,6 +62,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
+                      ExtendedNavigator.of(context).pushReplacementNamed(Routes.registerPage);
                       Navigator.pushNamed(context, "/register");
                     },
                     child: const Text(

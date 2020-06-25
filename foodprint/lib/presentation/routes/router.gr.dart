@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -18,12 +19,14 @@ import 'package:foodprint/presentation/home/loading_page.dart';
 abstract class Routes {
   static const splashPage = '/';
   static const loginPage = '/login-page';
+  static const registerPage = '/register-page';
   static const homePage = '/home-page';
   static const homeScreen = '/home-screen';
   static const loadingFoodprintPage = '/loading-foodprint-page';
   static const all = {
     splashPage,
     loginPage,
+    registerPage,
     homePage,
     homeScreen,
     loadingFoodprintPage,
@@ -54,6 +57,16 @@ class Router extends RouterBase {
         final typedArgs = args as LoginPageArguments ?? LoginPageArguments();
         return MaterialPageRoute<dynamic>(
           builder: (context) => LoginPage(key: typedArgs.key),
+          settings: settings,
+        );
+      case Routes.registerPage:
+        if (hasInvalidArgs<RegisterPageArguments>(args)) {
+          return misTypedArgsRoute<RegisterPageArguments>(args);
+        }
+        final typedArgs =
+            args as RegisterPageArguments ?? RegisterPageArguments();
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => RegisterPage(key: typedArgs.key),
           settings: settings,
         );
       case Routes.homePage:
@@ -99,6 +112,12 @@ class LoginPageArguments {
   LoginPageArguments({this.key});
 }
 
+//RegisterPage arguments holder class
+class RegisterPageArguments {
+  final Key key;
+  RegisterPageArguments({this.key});
+}
+
 //HomePage arguments holder class
 class HomePageArguments {
   final Key key;
@@ -127,6 +146,14 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
       pushNamed(
         Routes.loginPage,
         arguments: LoginPageArguments(key: key),
+      );
+
+  Future pushRegisterPage({
+    Key key,
+  }) =>
+      pushNamed(
+        Routes.registerPage,
+        arguments: RegisterPageArguments(key: key),
       );
 
   Future pushHomePage({

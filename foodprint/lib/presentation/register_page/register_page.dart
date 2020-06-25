@@ -5,7 +5,6 @@ import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/register_page/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
-  static const routeName = "/register";
   const RegisterPage({Key key}) : super(key: key);
 
   @override

@@ -14,20 +14,22 @@ class LoginForm extends StatelessWidget {
     return BlocConsumer<LoginFormBloc, LoginFormState>(
       listener: (context, state) {
         state.authFailureOrSuccessOption.fold(
-          () {}, // loading 
-          (either) => either.fold((failure) {
-            FlushbarHelper.createError(
-              message: failure.map(
-                serverError: (_) => 'Server error',
-                invalidLoginCombination: (_) => 'Invalid login combination', 
-              ),).show(context);
-            }, 
-            (jwt) {
-              context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: jwt)); // authenticated
-              ExtendedNavigator.of(context).pushReplacementNamed(Routes.homeScreen);
-            }
-          )
-        );
+            () {}, // loading
+            (either) => either.fold((failure) {
+                  FlushbarHelper.createError(
+                    message: failure.map(
+                      serverError: (_) => 'Server error',
+                      invalidLoginCombination: (_) =>
+                          'Invalid login combination',
+                    ),
+                  ).show(context);
+                }, (jwt) {
+                  context
+                      .bloc<AuthBloc>()
+                      .add(AuthEvent.loggedIn(token: jwt)); // authenticated
+                  ExtendedNavigator.of(context).pushNamed(Routes.homeScreen,
+                      arguments: HomeScreenArguments(token: jwt));
+                }));
       },
       builder: (context, state) {
         return Form(
