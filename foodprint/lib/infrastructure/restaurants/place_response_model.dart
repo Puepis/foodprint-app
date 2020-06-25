@@ -15,6 +15,6 @@ class GooglePlaceResponse {
   }
 
   static List<RestaurantEntity> parseResults(List results) {
-    return results.map((i) => RestaurantDTO.fromJSON(i as Map<String, dynamic>).toEntity()).toList();
+    return results.map((i) => RestaurantDTO.fromPlaceSearch(i as Map<String, dynamic>).toEntity()).toList();
   }
 }

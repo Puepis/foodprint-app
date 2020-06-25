@@ -42,7 +42,7 @@ abstract class FoodprintDTO implements _$FoodprintDTO {
   static Map<RestaurantDTO, List<PhotoDTO>> parseFoodprint(List restaurants){
     final Map<RestaurantDTO, List<PhotoDTO>> result = {};
     for (final restaurant in restaurants) {
-      final key = RestaurantDTO.fromJSON(restaurant as Map<String, dynamic>);
+      final key = RestaurantDTO.fromFoodprintAPI(restaurant as Map<String, dynamic>);
       final List<PhotoDTO> photos = parsePhotos(restaurant['photos'] as List);
       result[key] = photos;
     }
