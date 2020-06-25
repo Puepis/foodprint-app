@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/presentation/camera/display_photo_page.dart';
+import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -35,14 +38,19 @@ class _CameraState extends State<Camera> {
     return Scaffold(
         body: (_imageFile == null)
             ? LoadingIndicator()
-            : DisplayPhoto(
-                latitude: widget.location.latitude,
-                longitude: widget.location.longitude,
-                loadedImage: loadedImage,
-                imageFile: _imageFile,
-                oldFoodprint: widget.oldFoodprint,
-                userID: widget.userID,
-              ));
+            : MultiBlocProvider(
+                providers: [
+                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                    BlocProvider.value(value: context.bloc<FoodprintBloc>())
+                  ],
+                child: DisplayPhoto(
+                  latitude: widget.location.latitude,
+                  longitude: widget.location.longitude,
+                  loadedImage: loadedImage,
+                  imageFile: _imageFile,
+                  oldFoodprint: widget.oldFoodprint,
+                  userID: widget.userID,
+                )));
   }
 
   Future<void> _takePhoto(ImageSource source, BuildContext context) async {
@@ -75,7 +83,6 @@ class LoadingIndicator extends StatelessWidget {
       child: CircularProgressIndicator(
         backgroundColor: Colors.orange,
       ),
-      
     );
   }
 }

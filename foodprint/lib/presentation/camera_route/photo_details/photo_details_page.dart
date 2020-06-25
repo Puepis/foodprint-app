@@ -8,12 +8,12 @@ import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 
-class ImageDetail extends StatefulWidget {
+class PhotoDetailsPage extends StatefulWidget {
   final UserID userID;
   final RestaurantEntity restaurant;
   final File imageFile;
   final FoodprintEntity oldFoodprint;
-  const ImageDetail(
+  const PhotoDetailsPage(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
@@ -21,10 +21,10 @@ class ImageDetail extends StatefulWidget {
       @required this.oldFoodprint})
       : super(key: key);
   @override
-  _ImageDetailState createState() => _ImageDetailState();
+  _PhotoDetailsPageState createState() => _PhotoDetailsPageState();
 }
 
-class _ImageDetailState extends State<ImageDetail> {
+class _PhotoDetailsPageState extends State<PhotoDetailsPage> {
   final _formKey = GlobalKey<FormState>();
 
   bool saving = false;

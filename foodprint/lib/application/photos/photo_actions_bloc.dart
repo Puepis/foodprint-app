@@ -100,7 +100,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
           restaurant: e.restaurant,
           oldFoodprint: e.foodprint);
       yield result.fold((l) => PhotoActionsState.saveFailure(l),
-          (r) => PhotoActionsState.editSuccess(r));
+          (r) => PhotoActionsState.saveSuccess(r));
     });
   }
 }

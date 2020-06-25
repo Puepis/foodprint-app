@@ -6,7 +6,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/presentation/camera/camera_screen.dart';
+import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Animate transition to camera
-  Route<bool> _cameraRoute(BuildContext ct, LatLng location) {
+  Route<bool> _cameraRoute(BuildContext cxt, LatLng location) {
     final UserID id =
         UserID(JWT.getDecodedPayload(widget.token.getOrCrash())['sub'] as int);
 
@@ -107,8 +107,8 @@ class _HomePageState extends State<HomePage> {
         pageBuilder: (context, animation, secondaryAnimation) =>
             MultiBlocProvider(
                 providers: [
-                  BlocProvider.value(value: ct.bloc<PhotoActionsBloc>()),
-                  BlocProvider.value(value: ct.bloc<FoodprintBloc>())
+                  BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
+                  BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
                 ],
                 child: Camera(
                   location: location,

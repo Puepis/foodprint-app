@@ -8,7 +8,7 @@ import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/injection.dart';
-import 'package:foodprint/presentation/camera/next_page_button.dart';
+import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 
 class DisplayPhoto extends StatefulWidget {
   const DisplayPhoto({
@@ -35,7 +35,7 @@ class DisplayPhoto extends StatefulWidget {
 class _DisplayPhotoState extends State<DisplayPhoto> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<RestaurantSearchBloc>(
       create: (context) => getIt<RestaurantSearchBloc>()
         ..add(RestaurantSearched(
             latitude: widget.latitude, longitude: widget.longitude)),
@@ -47,7 +47,6 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   fit: BoxFit.fitHeight, image: widget.loadedImage)),
           child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
               listener: (context, state) {
-
             // Error searching for restaurants
             if (state is SearchStateError) {
               Scaffold.of(context)..hideCurrentSnackBar();
@@ -66,7 +65,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                       message: "Searching for restaurants...")
                   .show(context);
             }
-          }, builder: (context, state) {
+          }, builder: (_, state) {
             return Stack(children: [
               Positioned(
                   top: 30,
