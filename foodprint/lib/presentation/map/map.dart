@@ -15,7 +15,7 @@ class FoodMap extends StatefulWidget {
 }
 
 class _FoodMapState extends State<FoodMap> {
-  final LatLng _toronto = const LatLng(43.6529, 43.6529); // TODO: REMOVE constant 
+  final LatLng _toronto = const LatLng(43.6529, -79.3849); // TODO: REMOVE constant 
   GoogleMapController _mapController;
   LatLng _currentPos;
   Map<String, Marker> _markers = {};

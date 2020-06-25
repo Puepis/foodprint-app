@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
@@ -13,9 +14,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<FoodprintBloc>()
-        ..add(FoodprintEvent.foodprintRequested(token: token)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FoodprintBloc>(
+            create: (context) => getIt<FoodprintBloc>()
+              ..add(FoodprintEvent.foodprintRequested(token: token))),
+        BlocProvider<PhotoActionsBloc>(
+          create: (context) => getIt<PhotoActionsBloc>(),
+        ),
+      ],
       child: BlocBuilder<FoodprintBloc, FoodprintState>(
         builder: (context, state) {
           if (state is FetchFoodprintFailure) {
@@ -30,9 +37,9 @@ class HomeScreen extends StatelessWidget {
           }
           if (state is FetchFoodprintSuccess) {
             return HomePage(
-              foodprint: state.foodprint,
-              token: token,
-            );
+                  foodprint: state.foodprint,
+                  token: token,
+                );
           }
           return LoadingPage();
         },

@@ -32,5 +32,5 @@ class FoodprintApp extends StatelessWidget {
 
 // Overall theme
 final ThemeData _foodprintTheme = ThemeData(
-  primarySwatch: Colors.deepOrange,
+  primarySwatch: Colors.orange,
 );
