@@ -16,12 +16,8 @@ class _$RegisterFailureTearOff {
     return const ServerError();
   }
 
-  EmailAlreadyInUse emailAlreadyInUse() {
-    return const EmailAlreadyInUse();
-  }
-
-  UsernameAlreadyInUse usernameAlreadyInUse() {
-    return const UsernameAlreadyInUse();
+  UserAlreadyExists userAlreadyExists() {
+    return const UserAlreadyExists();
   }
 
   InvalidRegisterCombination invalidRegisterCombination() {
@@ -36,31 +32,27 @@ mixin _$RegisterFailure {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result usernameAlreadyInUse(),
+    @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
-    Result emailAlreadyInUse(),
-    Result usernameAlreadyInUse(),
+    Result userAlreadyExists(),
     Result invalidRegisterCombination(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
     @required Result orElse(),
   });
@@ -118,13 +110,11 @@ class _$ServerError implements ServerError {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result usernameAlreadyInUse(),
+    @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
     return serverError();
   }
@@ -133,8 +123,7 @@ class _$ServerError implements ServerError {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
-    Result emailAlreadyInUse(),
-    Result usernameAlreadyInUse(),
+    Result userAlreadyExists(),
     Result invalidRegisterCombination(),
     @required Result orElse(),
   }) {
@@ -149,14 +138,12 @@ class _$ServerError implements ServerError {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
     return serverError(this);
   }
@@ -165,8 +152,7 @@ class _$ServerError implements ServerError {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
     @required Result orElse(),
   }) {
@@ -182,34 +168,34 @@ abstract class ServerError implements RegisterFailure {
   const factory ServerError() = _$ServerError;
 }
 
-abstract class $EmailAlreadyInUseCopyWith<$Res> {
-  factory $EmailAlreadyInUseCopyWith(
-          EmailAlreadyInUse value, $Res Function(EmailAlreadyInUse) then) =
-      _$EmailAlreadyInUseCopyWithImpl<$Res>;
+abstract class $UserAlreadyExistsCopyWith<$Res> {
+  factory $UserAlreadyExistsCopyWith(
+          UserAlreadyExists value, $Res Function(UserAlreadyExists) then) =
+      _$UserAlreadyExistsCopyWithImpl<$Res>;
 }
 
-class _$EmailAlreadyInUseCopyWithImpl<$Res>
+class _$UserAlreadyExistsCopyWithImpl<$Res>
     extends _$RegisterFailureCopyWithImpl<$Res>
-    implements $EmailAlreadyInUseCopyWith<$Res> {
-  _$EmailAlreadyInUseCopyWithImpl(
-      EmailAlreadyInUse _value, $Res Function(EmailAlreadyInUse) _then)
-      : super(_value, (v) => _then(v as EmailAlreadyInUse));
+    implements $UserAlreadyExistsCopyWith<$Res> {
+  _$UserAlreadyExistsCopyWithImpl(
+      UserAlreadyExists _value, $Res Function(UserAlreadyExists) _then)
+      : super(_value, (v) => _then(v as UserAlreadyExists));
 
   @override
-  EmailAlreadyInUse get _value => super._value as EmailAlreadyInUse;
+  UserAlreadyExists get _value => super._value as UserAlreadyExists;
 }
 
-class _$EmailAlreadyInUse implements EmailAlreadyInUse {
-  const _$EmailAlreadyInUse();
+class _$UserAlreadyExists implements UserAlreadyExists {
+  const _$UserAlreadyExists();
 
   @override
   String toString() {
-    return 'RegisterFailure.emailAlreadyInUse()';
+    return 'RegisterFailure.userAlreadyExists()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is EmailAlreadyInUse);
+    return identical(this, other) || (other is UserAlreadyExists);
   }
 
   @override
@@ -219,29 +205,26 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result usernameAlreadyInUse(),
+    @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
-    return emailAlreadyInUse();
+    return userAlreadyExists();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
-    Result emailAlreadyInUse(),
-    Result usernameAlreadyInUse(),
+    Result userAlreadyExists(),
     Result invalidRegisterCombination(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (emailAlreadyInUse != null) {
-      return emailAlreadyInUse();
+    if (userAlreadyExists != null) {
+      return userAlreadyExists();
     }
     return orElse();
   }
@@ -250,138 +233,34 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
-    return emailAlreadyInUse(this);
+    return userAlreadyExists(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (emailAlreadyInUse != null) {
-      return emailAlreadyInUse(this);
+    if (userAlreadyExists != null) {
+      return userAlreadyExists(this);
     }
     return orElse();
   }
 }
 
-abstract class EmailAlreadyInUse implements RegisterFailure {
-  const factory EmailAlreadyInUse() = _$EmailAlreadyInUse;
-}
-
-abstract class $UsernameAlreadyInUseCopyWith<$Res> {
-  factory $UsernameAlreadyInUseCopyWith(UsernameAlreadyInUse value,
-          $Res Function(UsernameAlreadyInUse) then) =
-      _$UsernameAlreadyInUseCopyWithImpl<$Res>;
-}
-
-class _$UsernameAlreadyInUseCopyWithImpl<$Res>
-    extends _$RegisterFailureCopyWithImpl<$Res>
-    implements $UsernameAlreadyInUseCopyWith<$Res> {
-  _$UsernameAlreadyInUseCopyWithImpl(
-      UsernameAlreadyInUse _value, $Res Function(UsernameAlreadyInUse) _then)
-      : super(_value, (v) => _then(v as UsernameAlreadyInUse));
-
-  @override
-  UsernameAlreadyInUse get _value => super._value as UsernameAlreadyInUse;
-}
-
-class _$UsernameAlreadyInUse implements UsernameAlreadyInUse {
-  const _$UsernameAlreadyInUse();
-
-  @override
-  String toString() {
-    return 'RegisterFailure.usernameAlreadyInUse()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) || (other is UsernameAlreadyInUse);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result usernameAlreadyInUse(),
-    @required Result invalidRegisterCombination(),
-  }) {
-    assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
-    assert(invalidRegisterCombination != null);
-    return usernameAlreadyInUse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result serverError(),
-    Result emailAlreadyInUse(),
-    Result usernameAlreadyInUse(),
-    Result invalidRegisterCombination(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (usernameAlreadyInUse != null) {
-      return usernameAlreadyInUse();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result usernameAlreadyInUse(UsernameAlreadyInUse value),
-    @required
-        Result invalidRegisterCombination(InvalidRegisterCombination value),
-  }) {
-    assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
-    assert(invalidRegisterCombination != null);
-    return usernameAlreadyInUse(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result usernameAlreadyInUse(UsernameAlreadyInUse value),
-    Result invalidRegisterCombination(InvalidRegisterCombination value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (usernameAlreadyInUse != null) {
-      return usernameAlreadyInUse(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UsernameAlreadyInUse implements RegisterFailure {
-  const factory UsernameAlreadyInUse() = _$UsernameAlreadyInUse;
+abstract class UserAlreadyExists implements RegisterFailure {
+  const factory UserAlreadyExists() = _$UserAlreadyExists;
 }
 
 abstract class $InvalidRegisterCombinationCopyWith<$Res> {
@@ -422,13 +301,11 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result serverError(),
-    @required Result emailAlreadyInUse(),
-    @required Result usernameAlreadyInUse(),
+    @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
     return invalidRegisterCombination();
   }
@@ -437,8 +314,7 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
-    Result emailAlreadyInUse(),
-    Result usernameAlreadyInUse(),
+    Result userAlreadyExists(),
     Result invalidRegisterCombination(),
     @required Result orElse(),
   }) {
@@ -453,14 +329,12 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
-    @required Result emailAlreadyInUse(EmailAlreadyInUse value),
-    @required Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
   }) {
     assert(serverError != null);
-    assert(emailAlreadyInUse != null);
-    assert(usernameAlreadyInUse != null);
+    assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
     return invalidRegisterCombination(this);
   }
@@ -469,8 +343,7 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
-    Result emailAlreadyInUse(EmailAlreadyInUse value),
-    Result usernameAlreadyInUse(UsernameAlreadyInUse value),
+    Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
     @required Result orElse(),
   }) {

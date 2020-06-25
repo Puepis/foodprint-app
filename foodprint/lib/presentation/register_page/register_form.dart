@@ -29,11 +29,10 @@ class RegisterForm extends StatelessWidget {
           () {},
           (either) => either.fold((failure) {
                 Scaffold.of(context)..hideCurrentSnackBar();
-                FlushbarHelper.createErrorf(
+                FlushbarHelper.createError(
                   message: failure.map(
                     serverError: (_) => 'Server error',
-                    emailAlreadyInUse: (_) => 'Email already in use',
-                    usernameAlreadyInUse: (_) => 'Username already in use',
+                    userAlreadyExists: (_) => 'Email or username already in use',
                     invalidRegisterCombination: (_) =>
                         'Invalid register combination',
                   ),
