@@ -7,7 +7,6 @@ part of 'foodprint_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
-T _$identity<T>(T value) => value;
 
 class _$FoodprintFailureTearOff {
   const _$FoodprintFailureTearOff();
