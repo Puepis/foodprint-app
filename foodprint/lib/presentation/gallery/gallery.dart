@@ -48,7 +48,7 @@ class Gallery extends StatelessWidget {
       return Stack(children: [
         GestureDetector(
           onTap: () => ExtendedNavigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MultiBlocProvider(
+              builder: (_) => MultiBlocProvider(
                       // expose values
                       providers: [
                         BlocProvider.value(
@@ -103,10 +103,13 @@ class Gallery extends StatelessWidget {
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
+
+        // TODO: Display snackbar
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
+          // TODO: display snackbar
           Navigator.pop(context);
         }
       },

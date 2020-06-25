@@ -46,10 +46,10 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromPlaceSearch(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
-      restaurantName: json['name'].toString(),
-      rating: (json['rating'] as num)?.toDouble() ?? -1,
-      latitude: (json['geometry']['location']['lat'] as num)?.toDouble(),
-      longitude: (json['geometry']['location']['lng'] as num)?.toDouble() 
+      restaurantName: json['name'] as String,
+      rating: json['rating'] == null ? double.parse(json['rating'].toString()) : -1,
+      latitude: double.parse(json['geometry']['location']['lat'].toString()),
+      longitude: double.parse(json['geometry']['location']['lng'].toString()),
     );
   }
 
@@ -57,9 +57,9 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
     return RestaurantDTO(
       placeId: json['restaurant_id'] as String,
       restaurantName: json['restaurant_name'] as String,
-      rating: (json['restaurant_rating'] as num)?.toDouble(),
-      latitude: (json['restaurant_lat'] as num)?.toDouble(),
-      longitude: (json['restaurant_lng'] as num)?.toDouble()
+      rating: double.parse(json['restaurant_rating'].toString()),
+      latitude: double.parse(json['restaurant_lat'].toString()),
+      longitude: double.parse(json['restaurant_lng'].toString()),
     );
   }
 }

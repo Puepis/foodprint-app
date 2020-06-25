@@ -39,9 +39,14 @@ class _PhotoDetailsPageState extends State<PhotoDetailsPage> {
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
+
+        // TODO: display scaffold indicating loading
+
         if (state is SaveSuccess) {
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
+          
+          // TODO: display scaffold indicating success
 
           // pop back to home page
           int count = 0;

@@ -1,10 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/presentation/routes/router.gr.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -43,8 +41,6 @@ class LoginForm extends StatelessWidget {
                   context
                       .bloc<AuthBloc>()
                       .add(AuthEvent.loggedIn(token: jwt)); // authenticated
-                  ExtendedNavigator.of(context).pushNamed(Routes.homeScreen,
-                      arguments: HomeScreenArguments(token: jwt));
                 }));
       },
       builder: (context, state) {
