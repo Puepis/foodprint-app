@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/restaurants/i_restaurant_search_respository.dart';
@@ -16,8 +17,6 @@ import 'package:injectable/injectable.dart';
 @LazySingleton(as: IRestaurantSearchRepository)
 class GooglePlaceSearchClient implements IRestaurantSearchRepository {
 
-  // TODO: secure API key
-  static const String _apiKey = "AIzaSyCmqpu5zqDTZzDPLYTpWhMNGOz2CHOmUNU";
   static const String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
   @override
@@ -26,7 +25,7 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
     final lat = latitude.getOrCrash();
     final lng = longitude.getOrCrash();
 
-    final String url = '$baseUrl?key=$_apiKey&location=$lat,$lng&rankby=distance&type=restaurant';
+    final String url = '$baseUrl?key=${DotEnv().env['GOOGLE_API_KEY']}&location=$lat,$lng&rankby=distance&type=restaurant';
 
     try {
       final response = await http.get(url);
@@ -44,7 +43,6 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
       }
     }
     catch (e) {
-      print(e);
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }
