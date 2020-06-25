@@ -20,6 +20,7 @@ Either<ValueFailure<String>, String> validateMaxStringLength(String input, int m
 }
 
 Either<ValueFailure<String>, String> validatePassword(String input) {
+  print(input);
   if (input.length >= 6) {
     return right(input);
   } else {

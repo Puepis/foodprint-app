@@ -37,12 +37,12 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
       },
       usernameChanged: (e) async* {
         yield state.copyWith(
-            emailAddress: EmailAddress(e.usernameStr),
+            username: Username(e.usernameStr),
             authFailureOrSuccessOption: none());
       },
       passwordChanged: (e) async* {
         yield state.copyWith(
-            emailAddress: EmailAddress(e.passwordStr),
+            password: Password(e.passwordStr),
             authFailureOrSuccessOption: none());
       },
       registerPressed: (e) async* {
