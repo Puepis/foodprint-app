@@ -22,9 +22,13 @@ class SplashPage extends StatelessWidget {
           },
         ),
       ],
-      child: const Scaffold(
+      child: Scaffold(
         body: Center(
-          child: CircularProgressIndicator(), // TODO: Create custom splash
+          child: Image.asset(
+              'assets/images/logo.png',
+              height: 200,
+              width: 300,
+            ), 
         ),
       ),
     );

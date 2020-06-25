@@ -9,13 +9,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class FoodMap extends StatefulWidget {
   final FoodprintEntity foodprint;
   final LatLng initialPos;
-  const FoodMap({Key key, @required this.initialPos, @required this.foodprint }) : super(key: key);
+  const FoodMap({Key key, @required this.initialPos, @required this.foodprint }) : assert(initialPos != null), super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
 
 class _FoodMapState extends State<FoodMap> {
-  final LatLng _toronto = const LatLng(43.6529, -79.3849); // TODO: REMOVE constant 
   GoogleMapController _mapController;
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
@@ -36,9 +35,7 @@ class _FoodMapState extends State<FoodMap> {
             )
         );
       }
-    } else {
-      _currentPos = _toronto; // default location
-    }
+    } 
 
     return Stack(
       children: [

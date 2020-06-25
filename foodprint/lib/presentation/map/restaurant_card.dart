@@ -21,7 +21,7 @@ class RestaurantCard extends StatelessWidget {
             ratings: ratingsWidget
           )
       )),
-      child: Container( // TODO: display restaurant address
+      child: Container( 
         height: 250,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
