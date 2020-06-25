@@ -12,24 +12,24 @@ class LoginForm extends StatelessWidget {
     return BlocConsumer<LoginFormBloc, LoginFormState>(
       listener: (context, state) {
         if (state.isSubmitting) {
-           Scaffold.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Logging in...'),
-                  CircularProgressIndicator(),
-                ],
+          Scaffold.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Logging in...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
         }
         state.authFailureOrSuccessOption.fold(
             () {}, // loading
             (either) => either.fold((failure) {
-              Scaffold.of(context)..hideCurrentSnackBar();
+                  Scaffold.of(context)..hideCurrentSnackBar();
                   FlushbarHelper.createError(
                     message: failure.map(
                       serverError: (_) => 'Server error',
