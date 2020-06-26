@@ -32,8 +32,8 @@ class NextPageButton extends StatelessWidget {
       child: Material(
           type: MaterialType.transparency,
           child: Ink(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
               shape: BoxShape.circle,
             ),
             child: InkWell(

@@ -33,7 +33,6 @@ class LandingPage extends StatelessWidget {
             ButtonTheme(
               height: 50,
               child: FlatButton(
-                color: Colors.orange,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30)
                 ),
@@ -56,10 +55,8 @@ class LandingPage extends StatelessWidget {
               child: OutlineButton(
                 borderSide: const BorderSide(
                   width: 1.5,
-                  color: Colors.orange
                 ),
                 highlightColor: Colors.white,
-                highlightedBorderColor: Colors.orange,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                 ),
@@ -69,7 +66,6 @@ class LandingPage extends StatelessWidget {
                 child: const Text(
                   "Register",
                   style: TextStyle(
-                      color: Colors.orange,
                       fontWeight: FontWeight.bold,
                       fontSize: 25.0
                   ),

@@ -79,9 +79,9 @@ class _CameraState extends State<Camera> {
 class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: CircularProgressIndicator(
-        backgroundColor: Colors.orange,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }

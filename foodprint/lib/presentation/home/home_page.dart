@@ -35,15 +35,15 @@ class _HomePageState extends State<HomePage> {
           Widget mapScreen = Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               SpinKitDualRing(
-                color: Colors.orange,
+                color: Theme.of(context).primaryColor,
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Text(
                 "Retrieving location",
                 style: TextStyle(
-                    color: Colors.orange,
+                  color: Theme.of(context).primaryColor,
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold),
               )

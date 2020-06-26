@@ -60,11 +60,11 @@ class RegisterPage extends StatelessWidget {
                   onTap: () {
                     ExtendedNavigator.of(context).pop();
                   },
-                  child: const Text(
+                  child: Text(
                     "Login",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.orange,
+                        color: Theme.of(context).primaryColor,
                         fontSize: 14.0),
                   ),
                 )

@@ -30,7 +30,8 @@ class LoginPage extends StatelessWidget {
               ),
               const Text(
                 "Welcome back!",
-                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontSize: 30.0, fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 2.5,
@@ -64,11 +65,11 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       ExtendedNavigator.of(context).pushNamed(Routes.registerPage);
                     },
-                    child: const Text(
+                    child: Text(
                       "Register",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.orange,
+                          color: Theme.of(context).primaryColor,
                           fontSize: 14.0),
                     ),
                   )

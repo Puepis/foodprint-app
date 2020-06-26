@@ -95,8 +95,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                           imageFile: widget.imageFile,
                           oldFoodprint: widget.oldFoodprint,
                         )
-                      : const SpinKitRing(
-                          color: Colors.blue,
+                      : SpinKitRing(
+                          color: Theme.of(context).primaryColor,
                           size: 40.0,
                         )),
             ]);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/routes/router.gr.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 
@@ -32,5 +33,15 @@ class FoodprintApp extends StatelessWidget {
 
 // Overall theme
 final ThemeData _foodprintTheme = ThemeData(
-  primarySwatch: Colors.orange,
+  brightness: Brightness.light,
+  primaryColor: primaryColor,
+  primaryColorDark: primaryColorDark,
+  primarySwatch: primarySwatch,
+  secondaryHeaderColor: secondaryColor,
+  errorColor: errorColor,
+  hintColor: hintColor,
+  hoverColor: hoverColor,
+  backgroundColor: bgColor,
+  fontFamily: 'Montserrat',
+
 );

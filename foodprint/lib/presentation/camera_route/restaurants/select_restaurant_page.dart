@@ -69,7 +69,7 @@ class SelectRestaurantPage extends StatelessWidget {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0)),
-                  color: Colors.orange,
+                  color: Theme.of(context).primaryColor,
                   onPressed: () {
                     ExtendedNavigator.of(context).push(
                         MaterialPageRoute(

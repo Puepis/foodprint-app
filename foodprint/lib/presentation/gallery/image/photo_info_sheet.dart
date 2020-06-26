@@ -6,7 +6,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:foodprint/presentation/core/styles/text_theme.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
@@ -87,7 +87,7 @@ class PhotoInfoSheet extends StatelessWidget {
             right: 5.0,
             child: IconButton(
               icon: const Icon(Icons.edit),
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               onPressed: () {
                 ExtendedNavigator.of(context).push(MaterialPageRoute(
                     builder: (_) => MultiBlocProvider(

@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+
+
 const TextStyle itemNameTextStyle = TextStyle(
     color: Colors.white,
     fontFamily: "Gotham",
@@ -32,3 +34,4 @@ const TextStyle labelTextStyle = TextStyle(
     fontFamily: "Gotham",
     fontSize: 10
 );
+
