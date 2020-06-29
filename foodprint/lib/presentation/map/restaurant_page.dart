@@ -84,7 +84,6 @@ class RestaurantPage extends StatelessWidget {
                       restaurant.restaurantName.getOrCrash(),
                       style: const TextStyle(
                         color: Colors.black,
-                        fontFamily: "Gotham",
                         fontWeight: FontWeight.w600,
                         fontSize: 25,
                       ),

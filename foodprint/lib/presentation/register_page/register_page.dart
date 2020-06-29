@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/register_page/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -24,9 +25,9 @@ class RegisterPage extends StatelessWidget {
               height: 75,
               width: 75,
             ),
-            const Text(
+            Text(
               "Create an account",
-              style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.w600),
+              style: title1,  
             ),
             const SizedBox(
               height: 2.5,

@@ -6,7 +6,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/styles/text_theme.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
@@ -44,8 +44,9 @@ class PhotoInfoSheet extends StatelessWidget {
             children: [
               Text(photo.photoDetail.name.getOrCrash(),
                   style: itemNameTextStyle),
+              const SizedBox(height: 5.0,),
               Text(formatter.format(photo.photoDetail.price.getOrCrash()),
-                  style: subtitleTextStyle),
+                  style: priceText),
               const Divider(
                 color: Colors.grey,
                 height: 30,
@@ -71,7 +72,7 @@ class PhotoInfoSheet extends StatelessWidget {
               const Text("LOCATION", style: labelTextStyle),
               const SizedBox(height: 5.0),
               Text(restaurant.restaurantName.getOrCrash(),
-                  style: subtitleTextStyle),
+                  style: restaurantName),
               const SizedBox(
                 height: 5.0,
               ),

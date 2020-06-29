@@ -6,10 +6,13 @@ import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/routes/router.gr.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FoodprintApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -17,13 +20,23 @@ class FoodprintApp extends StatelessWidget {
               ..add(const AuthEvent
                   .authCheckStarted())), // check if user is signed in
         BlocProvider(
-          create: (context) => getIt<LocationBloc>()
-            ..add(LocationRequested()),
+          create: (context) => getIt<LocationBloc>()..add(LocationRequested()),
         )
       ],
       child: MaterialApp(
         title: 'Foodprint',
-        theme: _foodprintTheme,
+        theme: ThemeData(
+            brightness: Brightness.light,
+            primaryColor: primaryColor,
+            primaryColorDark: primaryColorDark,
+            primarySwatch: primarySwatch,
+            secondaryHeaderColor: secondaryColor,
+            errorColor: errorColor,
+            hintColor: hintColor,
+            hoverColor: hoverColor,
+            backgroundColor: bgColor,
+            textTheme: GoogleFonts.rubikTextTheme(textTheme),
+        ),
         debugShowCheckedModeBanner: false,
         builder: ExtendedNavigator(router: Router()), // override default router
       ),
@@ -31,17 +44,4 @@ class FoodprintApp extends StatelessWidget {
   }
 }
 
-// Overall theme
-final ThemeData _foodprintTheme = ThemeData(
-  brightness: Brightness.light,
-  primaryColor: primaryColor,
-  primaryColorDark: primaryColorDark,
-  primarySwatch: primarySwatch,
-  secondaryHeaderColor: secondaryColor,
-  errorColor: errorColor,
-  hintColor: hintColor,
-  hoverColor: hoverColor,
-  backgroundColor: bgColor,
-  fontFamily: 'Montserrat',
-
-);
+// Inter, Raleway,

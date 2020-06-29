@@ -153,7 +153,9 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      title: const Text('Foodprint'),
+      title: Text('Foodprint',
+      style: Theme.of(context).textTheme.headline6,
+      ),
       leading: IconButton(
         icon: const Icon(Icons.person),
         onPressed: () {},

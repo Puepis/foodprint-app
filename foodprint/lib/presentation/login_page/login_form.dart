@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -122,13 +123,10 @@ class LoginForm extends StatelessWidget {
                         .bloc<LoginFormBloc>()
                         .add(const LoginFormEvent.loginPressed());
                   },
-                  child: const Text(
+                  child: Text(
                     'Login',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0),
-                  ),
+                    style: buttonText 
+                  ) 
                 ),
               ),
             ],

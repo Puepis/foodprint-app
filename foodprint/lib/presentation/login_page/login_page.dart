@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
 import 'package:foodprint/presentation/routes/router.gr.dart';
 
@@ -28,11 +29,10 @@ class LoginPage extends StatelessWidget {
                 height: 75,
                 width: 75,
               ),
-              const Text(
+              Text(
                 "Welcome back!",
-                style: TextStyle(
-                  fontSize: 30.0, fontWeight: FontWeight.w600),
-              ),
+                style: title1 
+              ), 
               const SizedBox(
                 height: 2.5,
               ),

@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
+import 'package:foodprint/presentation/core/styles/text_styles.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({Key key}) : super(key: key);
@@ -32,7 +33,8 @@ class RegisterForm extends StatelessWidget {
                 FlushbarHelper.createError(
                   message: failure.map(
                     serverError: (_) => 'Server error',
-                    userAlreadyExists: (_) => 'Email or username already in use',
+                    userAlreadyExists: (_) =>
+                        'Email or username already in use',
                     invalidRegisterCombination: (_) =>
                         'Invalid register combination',
                   ),
@@ -109,26 +111,19 @@ class RegisterForm extends StatelessWidget {
                         (r) => null)),
             const SizedBox(height: 30),
             ButtonTheme(
-              height: 50,
-              child: RaisedButton(
-                color: Theme.of(context).primaryColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                ),
-                onPressed: () {
-                  context
-                      .bloc<RegisterFormBloc>()
-                      .add(const RegisterFormEvent.registerPressed());
-                },
-                child: const Text(
-                  'Register',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),
-                ),
-              ),
-            )
+                height: 50,
+                child: RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                  ),
+                  onPressed: () {
+                    context
+                        .bloc<RegisterFormBloc>()
+                        .add(const RegisterFormEvent.registerPressed());
+                  },
+                  child: Text('Register', style: buttonText),
+                ))
           ],
         ),
       );

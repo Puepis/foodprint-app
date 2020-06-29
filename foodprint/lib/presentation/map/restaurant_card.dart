@@ -38,7 +38,6 @@ class RestaurantCard extends StatelessWidget {
                 restaurant.restaurantName.getOrCrash(),
                 style: const TextStyle(
                     color: Colors.black,
-                    fontFamily: "Gotham",
                     fontWeight: FontWeight.bold,
                     fontSize: 24
                 ),
@@ -49,7 +48,6 @@ class RestaurantCard extends StatelessWidget {
                 "YOUR PHOTOS",
                 style: TextStyle(
                     color: Colors.grey,
-                    fontFamily: "Gotham",
                     fontSize: 10
                 ),
               ),
