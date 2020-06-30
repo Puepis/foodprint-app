@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -27,7 +29,7 @@ class RegisterPage extends StatelessWidget {
             ),
             Text(
               "Create an account",
-              style: title1,  
+              style: title1,
             ),
             const SizedBox(
               height: 2.5,
@@ -59,7 +61,8 @@ class RegisterPage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    ExtendedNavigator.of(context).pop();
+                    ExtendedNavigator.of(context)
+                        .push(EnterExitRoute(exitPage: this, enterPage: const LoginPage()));
                   },
                   child: Text(
                     "Login",

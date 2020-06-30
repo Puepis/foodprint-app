@@ -36,6 +36,8 @@ class HomeScreen extends StatelessWidget {
             );
           }
           if (state is FetchFoodprintSuccess) {
+
+            // TODO: Add animation to make this transition smoother
             return HomePage(
                   foodprint: state.foodprint,
                   token: token,

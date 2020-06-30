@@ -11,6 +11,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginFormBloc, LoginFormState>(
+      // Listening for changes to the login state
       listener: (context, state) {
         if (state.isSubmitting) {
           Scaffold.of(context)
@@ -114,20 +115,16 @@ class LoginForm extends StatelessWidget {
               ButtonTheme(
                 height: 50,
                 child: RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                  ),
-                  onPressed: () {
-                    context
-                        .bloc<LoginFormBloc>()
-                        .add(const LoginFormEvent.loginPressed());
-                  },
-                  child: Text(
-                    'Login',
-                    style: buttonText 
-                  ) 
-                ),
+                    color: Theme.of(context).primaryColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(7)),
+                    ),
+                    onPressed: () {
+                      context
+                          .bloc<LoginFormBloc>()
+                          .add(const LoginFormEvent.loginPressed());
+                    },
+                    child: Text('Login', style: buttonText)),
               ),
             ],
           ),

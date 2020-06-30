@@ -16,7 +16,7 @@ class LoadingPage extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Text(
-              "Authorizing",
+              "Loading Foodprint",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 40.0,

@@ -2,8 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/presentation/routes/router.gr.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/home/home_screen.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
 
+/*
+  This class listens for the authentication state and routes accordingly
+*/
 class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,11 +18,17 @@ class SplashPage extends StatelessWidget {
           listener: (context, state) {
             state.map(
               initial: (_) {},
-              authenticated: (result) => ExtendedNavigator.of(context)
-                  .pushNamed(Routes.homeScreen,
-                      arguments: HomeScreenArguments(token: result.token)),
-              unauthenticated: (_) =>
-                  ExtendedNavigator.of(context).pushNamed(Routes.loginPage),
+
+              // Logged in
+              authenticated: (result) =>
+                  ExtendedNavigator.of(context).push(SlideLeftRoute(
+                      newPage: HomeScreen(
+                token: result.token,
+              ))),
+
+              // Logged out
+              unauthenticated: (_) => ExtendedNavigator.of(context)
+                  .push(FadeRoute(newPage: const LoginPage())), 
             );
           },
         ),
@@ -25,10 +36,10 @@ class SplashPage extends StatelessWidget {
       child: Scaffold(
         body: Center(
           child: Image.asset(
-              'assets/images/logo.png',
-              height: 200,
-              width: 300,
-            ), 
+            'assets/images/logo.png',
+            height: 200,
+            width: 300,
+          ),
         ),
       ),
     );

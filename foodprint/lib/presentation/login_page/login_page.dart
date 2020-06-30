@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
-import 'package:foodprint/presentation/routes/router.gr.dart';
+import 'package:foodprint/presentation/register_page/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -22,6 +23,7 @@ class LoginPage extends StatelessWidget {
             child: Container(
           padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
           child: Column(
+            // TODO: Make this scrollable
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.asset(
@@ -29,10 +31,7 @@ class LoginPage extends StatelessWidget {
                 height: 75,
                 width: 75,
               ),
-              Text(
-                "Welcome back!",
-                style: title1 
-              ), 
+              Text("Welcome back!", style: title1),
               const SizedBox(
                 height: 2.5,
               ),
@@ -63,7 +62,8 @@ class LoginPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      ExtendedNavigator.of(context).pushNamed(Routes.registerPage);
+                      ExtendedNavigator.of(context)
+                          .push(EnterExitRoute(exitPage: this, enterPage: const RegisterPage()));
                     },
                     child: Text(
                       "Register",
@@ -82,5 +82,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
-

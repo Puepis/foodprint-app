@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -8,6 +9,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               Text(
                 "Retrieving location",
                 style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).primaryColor,
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold),
               )
@@ -100,8 +102,7 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
-                      ? Navigator.of(context).push(
-                          _cameraRoute(context, state.latlng)) // take picture
+                      ? _useCamera(context, state.latlng) // take picture
                       : null,
                   child: const Icon(
                     Icons.add,
@@ -120,41 +121,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   // Animate transition to camera
-  Route<bool> _cameraRoute(BuildContext cxt, LatLng location) {
+  void _useCamera(BuildContext cxt, LatLng location) {
     final UserID id =
         UserID(JWT.getDecodedPayload(widget.token.getOrCrash())['sub'] as int);
 
-    return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
-                  BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
-                ],
-                child: Camera(
-                  location: location,
-                  userID: id,
-                  oldFoodprint: widget.foodprint,
-                )),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0.0, 1.0);
-          final end = Offset.zero;
-          final curve = Curves.ease;
-          final tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: child,
-          );
-        });
+    ExtendedNavigator.of(cxt).push(SlideUpEnterRoute(
+        newPage: MultiBlocProvider(
+            providers: [
+          BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
+          BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
+        ],
+            child: Camera(
+              location: location,
+              userID: id,
+              oldFoodprint: widget.foodprint,
+            ))));
   }
 
   PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      title: Text('Foodprint',
-      style: Theme.of(context).textTheme.headline6,
+      title: Text(
+        'Foodprint',
+        style: Theme.of(context).textTheme.headline6,
       ),
       leading: IconButton(
         icon: const Icon(Icons.person),

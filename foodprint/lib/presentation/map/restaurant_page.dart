@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -8,13 +7,15 @@ class RestaurantPage extends StatelessWidget {
   final RestaurantEntity restaurant;
   final List<PhotoEntity> photos;
   final Row ratings;
-  const RestaurantPage({Key key, this.restaurant, this.photos, this.ratings}) : super(key: key);
+  const RestaurantPage({Key key, this.restaurant, this.photos, this.ratings})
+      : super(key: key);
+
+  // TODO: UX page thing
   @override
   Widget build(BuildContext context) {
     // Currency formatter
     final NumberFormat formatter = NumberFormat.simpleCurrency(
-        locale: Localizations.localeOf(context).toString()
-    );
+        locale: Localizations.localeOf(context).toString());
     return Scaffold(
       body: Column(
         children: [
@@ -24,15 +25,13 @@ class RestaurantPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(0.0, 2.0),
-                      blurRadius: 6.0
-                    )
-                  ]
-                ),
+                    borderRadius: BorderRadius.circular(30.0),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0.0, 2.0),
+                          blurRadius: 6.0)
+                    ]),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: const Image(
@@ -43,9 +42,7 @@ class RestaurantPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 40.0
-                ),
+                    horizontal: 10.0, vertical: 40.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -78,28 +75,24 @@ class RestaurantPage extends StatelessWidget {
                 left: 20.0,
                 bottom: 20.0,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      restaurant.restaurantName.getOrCrash(),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 25,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        restaurant.restaurantName.getOrCrash(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 25,
+                        ),
                       ),
-                    ),
-                    ratings
-                  ]
-                ),
+                      ratings
+                    ]),
               )
             ],
           ),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.only(
-                top: 10.0,
-                bottom: 15.0
-              ),
+              padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
               itemCount: photos.length,
               itemBuilder: (context, index) {
                 final PhotoEntity photo = photos[index];
@@ -110,11 +103,11 @@ class RestaurantPage extends StatelessWidget {
                       height: 170.0,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0)
-                      ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20.0)),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -136,19 +129,17 @@ class RestaurantPage extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  formatter.format(photo.photoDetail.price.getOrCrash()),
+                                  formatter.format(
+                                      photo.photoDetail.price.getOrCrash()),
                                   style: const TextStyle(
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold
-                                  ),
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),
                             Text(
                               photo.photoDetail.comments.getOrCrash(),
-                              style: const TextStyle(
-                                color: Colors.grey
-                              ),
+                              style: const TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(height: 10.0),
                             Text(photo.timestamp.getOrCrash())

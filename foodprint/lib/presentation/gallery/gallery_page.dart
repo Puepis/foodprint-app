@@ -17,6 +17,7 @@ class Gallery extends StatelessWidget {
 
   const Gallery({Key key, @required this.foodprint}) : super(key: key);
 
+  //TODO: Add refresh gallery feature
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -28,6 +29,7 @@ class Gallery extends StatelessWidget {
     );
   }
 
+  // TODO: Use animation to display photos sequentially
   List<Widget> _buildPhotos(BuildContext context) {
     final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
         getPhotosFromFoodprint(foodprint);
