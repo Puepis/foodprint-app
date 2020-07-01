@@ -71,6 +71,9 @@ class SlideDownExitRoute extends PageRouteBuilder {
             });
 }
 
+/*
+  Fade in route
+*/
 class FadeRoute extends PageRouteBuilder {
   final Widget newPage;
   FadeRoute({this.newPage})

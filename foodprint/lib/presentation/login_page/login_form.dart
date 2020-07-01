@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -20,9 +21,14 @@ class LoginForm extends StatelessWidget {
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Logging in...'),
-                    CircularProgressIndicator(),
+                  children:  [
+                    Text(
+                      'Logging in...',
+                      style: GoogleFonts.rubik(
+                        fontSize: 20.0
+                      ),
+                      ),
+                    const CircularProgressIndicator(),
                   ],
                 ),
               ),
