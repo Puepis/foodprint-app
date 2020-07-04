@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:intl/intl.dart';
+import 'package:foodprint/domain/core/value_transformers.dart';
 
 class RestaurantPage extends StatelessWidget {
   final RestaurantEntity restaurant;
@@ -142,7 +143,7 @@ class RestaurantPage extends StatelessWidget {
                               style: const TextStyle(color: Colors.grey),
                             ),
                             const SizedBox(height: 10.0),
-                            Text(photo.timestamp.getOrCrash())
+                            Text(photo.timestamp.toReadable())
                           ],
                         ),
                       ),

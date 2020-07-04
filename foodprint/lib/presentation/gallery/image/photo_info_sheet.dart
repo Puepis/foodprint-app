@@ -11,6 +11,7 @@ import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
+import 'package:foodprint/domain/core/value_transformers.dart';
 
 class PhotoInfoSheet extends StatelessWidget {
   const PhotoInfoSheet({
@@ -60,7 +61,7 @@ class PhotoInfoSheet extends StatelessWidget {
                 style: labelTextStyle,
               ),
               const SizedBox(height: 5.0),
-              Text(photo.timestamp.getOrCrash(), style: largeTextStyle),
+              Text(photo.timestamp.toReadable(), style: largeTextStyle),
               const SizedBox(height: 20),
               const Text(
                 "COMMENTS",
