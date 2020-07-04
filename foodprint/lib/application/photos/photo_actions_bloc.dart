@@ -37,19 +37,20 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   static String get currentTimestamp {
     final DateTime now = DateTime.now();
     final String y = now.year.toString();
-    final String m = now.month < 10 ? "0${now.month}" : now.month.toString();
-    final String d = now.day.toString();
-    final String h = now.hour.toString();
-    final String min =
-        now.minute < 10 ? "0${now.minute}" : now.minute.toString();
-    final String second =
-        now.second < 10 ? "0${now.second}" : now.second.toString();
+    final String m = _formatZero(now.month);
+    final String d = _formatZero(now.day);
+    final String h = _formatZero(now.hour);
+    final String min = _formatZero(now.minute);
+    final String second = _formatZero(now.second);
     return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
+  }
+
+  static String _formatZero(int value) {
+    return value < 10 ? "0$value" : value.toString();
   }
 
   static PhotoEntity generateNewPhoto(
       int id, File imageFile, String itemName, String price, String comments) {
-
     final String time = currentTimestamp;
     final String fileName = basename(imageFile.path);
     final String imgPath = '$id/photos/$secondsSinceEpoch-$fileName';

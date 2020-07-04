@@ -6,6 +6,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +45,9 @@ class PhotoInfoSheet extends StatelessWidget {
             children: [
               Text(photo.photoDetail.name.getOrCrash(),
                   style: itemNameTextStyle),
-              const SizedBox(height: 5.0,),
+              const SizedBox(
+                height: 5.0,
+              ),
               Text(formatter.format(photo.photoDetail.price.getOrCrash()),
                   style: priceText),
               const Divider(
@@ -90,21 +93,20 @@ class PhotoInfoSheet extends StatelessWidget {
               icon: const Icon(Icons.edit),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                ExtendedNavigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => MultiBlocProvider(
-                          providers: [
-                            BlocProvider.value(
-                                value: context.bloc<PhotoActionsBloc>()),
-                            BlocProvider.value(
-                              value: context.bloc<FoodprintBloc>(),
-                            )
-                          ],
-                          child: EditImageScreen(
-                            restaurant: restaurant,
-                            foodprint: foodprint,
-                            photo: photo,
-                          ),
-                        )));
+                ExtendedNavigator.of(context).push(SlideUpEnterRoute(
+                    newPage: MultiBlocProvider(
+                  providers: [
+                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                    BlocProvider.value(
+                      value: context.bloc<FoodprintBloc>(),
+                    )
+                  ],
+                  child: EditImageScreen(
+                    restaurant: restaurant,
+                    foodprint: foodprint,
+                    photo: photo,
+                  ),
+                )));
               },
             ),
           )
