@@ -97,6 +97,7 @@ class Gallery extends StatelessWidget {
 
   void _showFullImage(
       BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
+        // TODO: change transition to arc transition
     Navigator.of(context).push(SlideUpEnterRoute(
         newPage: MultiBlocProvider(
             // expose values

@@ -7,7 +7,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
-import 'package:foodprint/presentation/gallery/edit/edit_image.dart';
+import 'package:foodprint/presentation/gallery/edit/edit_image_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';

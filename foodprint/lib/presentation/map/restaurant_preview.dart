@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/common/ratings.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/map/restaurant_page.dart';
 
 class RestaurantPreview extends StatelessWidget {
@@ -20,9 +21,19 @@ class RestaurantPreview extends StatelessWidget {
         (a, b) => b.timestamp.getOrCrash().compareTo(a.timestamp.getOrCrash()));
 
     return GestureDetector(
-      onDoubleTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => RestaurantPage(
-              restaurant: restaurant, photos: photos, ratings: ratingsWidget))),
+      onVerticalDragEnd: (details) {
+        final double dy = details.velocity.pixelsPerSecond.dy;
+        if (dy < 0) {
+          // swipe up
+          Navigator.push(
+              context,
+              SlideUpEnterRoute(
+                  newPage: RestaurantPage(
+                      restaurant: restaurant,
+                      photos: photos,
+                      ratings: ratingsWidget)));
+        }
+      },
       child: Container(
           height: 200,
           decoration: const BoxDecoration(
@@ -83,10 +94,12 @@ class RestaurantPreview extends StatelessWidget {
     );
   }
 
+  // Displays the most recent photo taken
   Widget recentPhoto() => Container(
         width: 125,
         margin: const EdgeInsets.only(right: 5.0),
         decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
                 image: MemoryImage(photos[0].bytes), fit: BoxFit.cover)),
       );
