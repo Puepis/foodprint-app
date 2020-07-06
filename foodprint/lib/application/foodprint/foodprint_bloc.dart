@@ -37,7 +37,6 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
           (foodprint) =>
               FoodprintState.fetchFoodprintSuccess(foodprint: foodprint));
     }, localFoodprintUpdated: (e) async* {
-      print("Local foodprint updated event handling");
       yield FoodprintState.foodprintUpdated(foodprint: e.newFoodprint);
     });
   }
