@@ -14,7 +14,7 @@ class SlideLeftRoute extends PageRouteBuilder {
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(1.0, 0.0); // start from the right
               const end = Offset.zero;
-              const curve = Curves.easeOut; // decelerate
+              const curve = Curves.easeOutCubic; // decelerate
 
               final tween =
                   Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
@@ -39,7 +39,7 @@ class SlideUpEnterRoute extends PageRouteBuilder {
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0); // start from bottom
               const end = Offset.zero;
-              const curve = Curves.easeIn;
+              const curve = Curves.easeOutCubic;
 
               final tween =
                   Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

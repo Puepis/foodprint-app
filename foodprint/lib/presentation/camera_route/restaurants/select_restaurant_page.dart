@@ -22,6 +22,7 @@ class SelectRestaurantPage extends StatelessWidget {
       @required this.token})
       : super(key: key);
 
+  // TODO: Implement manual restaurant search 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
