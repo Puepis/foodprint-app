@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/map/restaurant_card.dart';
+import 'package:foodprint/presentation/map/restaurant_preview.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FoodMap extends StatefulWidget {
@@ -60,17 +60,12 @@ class _FoodMapState extends State<FoodMap> {
       final marker = Marker(
           markerId: MarkerId(restaurant.restaurantID.getOrCrash()),
           position: LatLng(restaurant.latitude.getOrCrash(), restaurant.longitude.getOrCrash()),
-          infoWindow: InfoWindow(
-              title: restaurant.restaurantName.getOrCrash(),
-              snippet: photos.length == 1 ? "You've taken one photo here!"
-                  : "You've taken ${photos.length} photos here!"
-          ),
           onTap: () {
             // Show restaurant info
             showModalBottomSheet(
                 backgroundColor: Colors.transparent,
                 context: context,
-                builder: (context) => RestaurantCard(
+                builder: (context) => RestaurantPreview(
                   restaurant: restaurant,
                   photos: photos,
                 )
