@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:foodprint/presentation/login_page/login_form.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 
 class LoginPage extends StatelessWidget {
+  static const routeName = "/login";
   const LoginPage({Key key}) : super(key: key);
 
   @override
@@ -62,8 +62,8 @@ class LoginPage extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      ExtendedNavigator.of(context)
-                          .push(EnterExitRoute(exitPage: this, enterPage: const RegisterPage()));
+                      Navigator.pushReplacement(context, EnterExitRoute(
+                          exitPage: this, enterPage: const RegisterPage()));
                     },
                     child: Text(
                       "Register",

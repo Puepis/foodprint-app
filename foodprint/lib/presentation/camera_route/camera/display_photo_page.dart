@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
@@ -18,7 +18,7 @@ class DisplayPhoto extends StatefulWidget {
     @required this.loadedImage,
     @required this.imageFile,
     @required this.oldFoodprint,
-    @required this.userID,
+    @required this.token,
   }) : super(key: key);
 
   final double latitude;
@@ -26,7 +26,7 @@ class DisplayPhoto extends StatefulWidget {
   final File imageFile;
   final FileImage loadedImage;
   final FoodprintEntity oldFoodprint;
-  final UserID userID;
+  final JWT token;
 
   @override
   _DisplayPhotoState createState() => _DisplayPhotoState();
@@ -36,7 +36,6 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RestaurantSearchBloc>(
-
       // Begin searching for restaurants
       create: (context) => getIt<RestaurantSearchBloc>()
         ..add(RestaurantSearched(
@@ -49,7 +48,6 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   fit: BoxFit.fitHeight, image: widget.loadedImage)),
           child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
               listener: (context, state) {
-
             // Error searching for restaurants
             if (state is SearchStateError) {
               Scaffold.of(context)..hideCurrentSnackBar();
@@ -60,7 +58,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 ),
               ).show(context);
             }
-         }, builder: (_, state) {
+          }, builder: (_, state) {
             return Stack(children: [
               Positioned(
                   top: 30,
@@ -91,7 +89,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   child: (state is SearchStateSuccess)
                       ? NextPageButton(
                           restaurants: state.restaurants,
-                          userID: widget.userID,
+                          token: widget.token,
                           imageFile: widget.imageFile,
                           oldFoodprint: widget.oldFoodprint,
                         )
@@ -114,9 +112,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(
-                    height: 200,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 20.0),
+                    height: 205,
+                    padding: const EdgeInsets.all(20.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

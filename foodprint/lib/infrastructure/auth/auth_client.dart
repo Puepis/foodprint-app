@@ -37,7 +37,7 @@ class AuthClient implements IAuthRepository {
       return right(unit);
     } else if (res.statusCode == 401) {
       return left(const RegisterFailure.invalidRegisterCombination());
-    } else if (res.statusCode == 400) {
+    } else if (res.statusCode == 409) {
       return left(const RegisterFailure.userAlreadyExists());
     } else {
       return left(const RegisterFailure.serverError());

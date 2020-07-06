@@ -14,37 +14,43 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<FoodprintBloc>(
-            create: (context) => getIt<FoodprintBloc>()
-              ..add(FoodprintEvent.foodprintRequested(token: token))),
-        BlocProvider<PhotoActionsBloc>(
-          create: (context) => getIt<PhotoActionsBloc>(),
-        ),
-      ],
-      child: BlocBuilder<FoodprintBloc, FoodprintState>(
-        builder: (context, state) {
-          if (state is FetchFoodprintFailure) {
-            // TODO: Check failure type
-            return const LoginPage();
-          }
-          if (state is FoodprintUpdated) {
-            return HomePage(
-              foodprint: state.foodprint,
-              token: token,
-            );
-          }
-          if (state is FetchFoodprintSuccess) {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<FoodprintBloc>(
+              create: (context) => getIt<FoodprintBloc>()
+                ..add(FoodprintEvent.foodprintRequested(token: token))),
+          BlocProvider<PhotoActionsBloc>(
+            create: (context) => getIt<PhotoActionsBloc>(),
+          ),
+        ],
+        child: BlocBuilder<FoodprintBloc, FoodprintState>(
+          builder: (context, state) {
 
-            // TODO: Add animation to make this transition smoother
-            return HomePage(
-                  foodprint: state.foodprint,
-                  token: token,
-                );
-          }
-          return LoadingPage();
-        },
+            print("Rebuilding home screen");
+
+            if (state is FetchFoodprintFailure) {
+              // TODO: Check failure type
+              return const LoginPage();
+            }
+            if (state is FoodprintUpdated) {
+              print("Foodprint updated, refreshing home");
+              return HomePage(
+                foodprint: state.foodprint,
+                token: token,
+              );
+            }
+            if (state is FetchFoodprintSuccess) {
+              // TODO: Add animation to make this transition smoother
+              return HomePage(
+                foodprint: state.foodprint,
+                token: token,
+              );
+            }
+            return LoadingPage();
+          },
+        ),
       ),
     );
   }

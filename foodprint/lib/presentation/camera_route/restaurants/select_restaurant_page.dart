@@ -1,59 +1,54 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 
 class SelectRestaurantPage extends StatelessWidget {
   final FoodprintEntity oldFoodprint;
-  final UserID userID;
   final File imageFile;
   final List<RestaurantEntity> restaurants;
+  final JWT token;
   const SelectRestaurantPage(
       {Key key,
       @required this.imageFile,
       @required this.restaurants,
-      @required this.userID,
-      @required this.oldFoodprint})
+      @required this.oldFoodprint,
+      @required this.token})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(120.0),
-          child: AppBar(
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            flexibleSpace: const Center(
-              child: Text(
-                "Select your location!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(120.0),
+        child: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          flexibleSpace: const Center(
+            child: Text(
+              "Select your location!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
               ),
             ),
           ),
         ),
-        body: Container(
-            child: restaurants.isNotEmpty
-                ? Column(
-                    children: [
-                      _buildRestaurantList(context)
-                    ],
-                  )
-                : const Text("No restaurants found")),
       ),
+      body: Container(
+          child: restaurants.isNotEmpty
+              ? Column(
+                  children: [_buildRestaurantList(context)],
+                )
+              : const Text("No restaurants found")),
     );
   }
 
@@ -71,23 +66,22 @@ class SelectRestaurantPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0)),
                   color: Theme.of(context).primaryColor,
                   onPressed: () {
-                    ExtendedNavigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => MultiBlocProvider(
-                                  providers: [
-                                    BlocProvider.value(
-                                        value:
-                                            context.bloc<PhotoActionsBloc>()),
-                                    BlocProvider.value(
-                                        value: context.bloc<FoodprintBloc>())
-                                  ],
-                                  child: PhotoDetailsPage(
-                                    oldFoodprint: oldFoodprint,
-                                    userID: userID,
-                                    imageFile: imageFile,
-                                    restaurant: restaurants[index],
-                                  ),
-                                )));
+                    Navigator.of(context).push(EnterExitRoute(
+                        exitPage: this,
+                        enterPage: MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                                value: context.bloc<PhotoActionsBloc>()),
+                            BlocProvider.value(
+                                value: context.bloc<FoodprintBloc>())
+                          ],
+                          child: PhotoDetailsPage(
+                            oldFoodprint: oldFoodprint,
+                            token: token,
+                            imageFile: imageFile,
+                            restaurant: restaurants[index],
+                          ),
+                        )));
                   },
                   child: Row(
                     children: <Widget>[
@@ -115,6 +109,4 @@ class SelectRestaurantPage extends StatelessWidget {
               )),
     );
   }
-
-  
 }

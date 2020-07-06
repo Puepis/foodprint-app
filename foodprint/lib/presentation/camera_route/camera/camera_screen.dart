@@ -4,22 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
+/* 
+ * This class handles the image capture.
+ */
 class Camera extends StatefulWidget {
   final FoodprintEntity oldFoodprint;
-  final UserID userID;
   final LatLng location;
+  final JWT token;
 
   const Camera(
       {Key key,
-      @required this.userID,
       @required this.location,
-      @required this.oldFoodprint})
+      @required this.oldFoodprint,
+      @required this.token})
       : super(key: key);
   @override
   _CameraState createState() => _CameraState();
@@ -49,7 +52,7 @@ class _CameraState extends State<Camera> {
                   loadedImage: loadedImage,
                   imageFile: _imageFile,
                   oldFoodprint: widget.oldFoodprint,
-                  userID: widget.userID,
+                  token: widget.token,
                 )));
   }
 
@@ -58,8 +61,7 @@ class _CameraState extends State<Camera> {
     final PickedFile image =
         await _picker.getImage(source: source, imageQuality: 70);
     if (image == null) {
-      // Back button pressed
-      Navigator.pop(context);
+      Navigator.pop(context); // back button pressed
       return;
     }
 

@@ -2,7 +2,9 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({Key key}) : super(key: key);
@@ -40,7 +42,10 @@ class RegisterForm extends StatelessWidget {
                   ),
                 ).show(context);
               }, (success) {
-                Navigator.pop(context); // go back to login page
+                Navigator.push(
+                    context,
+                    SlideLeftRoute(
+                       newPage: const LoginPage()));
               }));
     }, builder: (context, state) {
       return Form(

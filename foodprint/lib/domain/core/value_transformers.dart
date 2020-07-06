@@ -43,10 +43,10 @@ extension TimestampParser on Timestamp {
 
   String _dateToReadable(String date) {
     final String day = date.substring(8, 10);
-    final String stringMonth = months[date.substring(5, 7)];
+    final String year = date.substring(0, 4);
+    final String month = months[date.substring(5, 7)];
     final String stringDay = day.compareTo("10") < 0 ? day[1] : day;
-    final String year = day.substring(0, 4);
-    return "$stringMonth $stringDay, $year";
+    return "$month $stringDay, $year";
   }
 
   String _timeToReadable(String time) {
@@ -60,6 +60,6 @@ extension TimestampParser on Timestamp {
     } else if (hour.compareTo("10") < 0) {
       hourString = hour[1];
     }
-    return "$hourString: $minute $amOrPm";
+    return "$hourString:$minute $amOrPm";
   }
 }

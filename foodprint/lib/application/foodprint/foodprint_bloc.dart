@@ -28,6 +28,7 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
   Stream<FoodprintState> mapEventToState(
     FoodprintEvent event,
   ) async* {
+    yield const FoodprintState.inProgress(); // reset state
     yield* event.map(foodprintRequested: (e) async* {
       final Either<FoodprintFailure, FoodprintEntity> result =
           await _remoteClient.getFoodprint(token: e.token);
@@ -36,6 +37,7 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
           (foodprint) =>
               FoodprintState.fetchFoodprintSuccess(foodprint: foodprint));
     }, localFoodprintUpdated: (e) async* {
+      print("Local foodprint updated event handling");
       yield FoodprintState.foodprintUpdated(foodprint: e.newFoodprint);
     });
   }

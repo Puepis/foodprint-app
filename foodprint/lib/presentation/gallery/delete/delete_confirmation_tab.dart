@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
@@ -22,18 +20,17 @@ class DeleteConfirmationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
     final FoodprintBloc foodprintBloc = context.bloc<FoodprintBloc>();
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
-        
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {
+          Navigator.pop(context);
+          print("Photo deleted, firing event");
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
-          Navigator.pop(context);
         }
       },
       child: Container(

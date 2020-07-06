@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 
 class SaveDetailsForm extends StatefulWidget {
-  final UserID userID;
+  final JWT token;
   final RestaurantEntity restaurant;
   final File imageFile;
   final FoodprintEntity oldFoodprint;
@@ -16,8 +17,8 @@ class SaveDetailsForm extends StatefulWidget {
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
-      @required this.userID,
-      @required this.oldFoodprint})
+      @required this.oldFoodprint,
+      @required this.token})
       : super(key: key);
   @override
   _SaveDetailsFormState createState() => _SaveDetailsFormState();
@@ -30,6 +31,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   String _price = "";
   String _comments = "";
 
+  // TODO: Add cancel button
   @override
   Widget build(BuildContext context) {
     final photoBloc = context.bloc<PhotoActionsBloc>();
@@ -39,26 +41,30 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
       listener: (context, state) {
         if (state is ActionInProgress) {
           Scaffold.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Saving photo...'),
-                  CircularProgressIndicator(),
-                ],
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text('Saving photo...'),
+                    CircularProgressIndicator(),
+                  ],
+                ),
               ),
-            ),
-          );  
+            );
         }
         if (state is SaveSuccess) {
-          foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
-              newFoodprint: state.newFoodprint));
+          print("Save success");
 
-          // pop back to home page
           int count = 0;
           Navigator.popUntil(context, (route) => count++ == 3);
+
+          print("Firing save event");
+          // Refresh home page
+          foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
+              newFoodprint: state.newFoodprint));
+          print("Event fired");
         }
       },
       child: Form(
@@ -130,9 +136,16 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                     icon: const Icon(Icons.save_alt),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save(); // save fields
+                        // Get user id
+                        final UserID id = UserID(JWT.getDecodedPayload(
+                            widget.token.getOrCrash())['sub'] as int);
+
+                        // Save fields
+                        _formKey.currentState.save();
+
+                        // Fire off save event
                         photoBloc.add(PhotoActionsEvent.saved(
-                            userID: widget.userID,
+                            userID: id,
                             imageFile: widget.imageFile,
                             itemName: _itemName,
                             price: _price,

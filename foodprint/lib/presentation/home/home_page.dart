@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -6,7 +5,6 @@ import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
@@ -122,10 +120,8 @@ class _HomePageState extends State<HomePage> {
 
   // Animate transition to camera
   void _useCamera(BuildContext cxt, LatLng location) {
-    final UserID id =
-        UserID(JWT.getDecodedPayload(widget.token.getOrCrash())['sub'] as int);
 
-    ExtendedNavigator.of(cxt).push(SlideUpEnterRoute(
+    Navigator.of(cxt).push(SlideUpEnterRoute(
         newPage: MultiBlocProvider(
             providers: [
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
@@ -133,7 +129,7 @@ class _HomePageState extends State<HomePage> {
         ],
             child: Camera(
               location: location,
-              userID: id,
+              token: widget.token,
               oldFoodprint: widget.foodprint,
             ))));
   }

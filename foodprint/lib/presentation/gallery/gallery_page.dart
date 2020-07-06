@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ class Gallery extends StatelessWidget {
 
   const Gallery({Key key, @required this.foodprint}) : super(key: key);
 
-  //TODO: Add refresh gallery feature
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -98,7 +96,7 @@ class Gallery extends StatelessWidget {
 
   void _showFullImage(
       BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
-    ExtendedNavigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
                 // expose values
                 providers: [

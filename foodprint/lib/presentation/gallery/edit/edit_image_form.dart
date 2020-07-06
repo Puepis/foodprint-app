@@ -32,7 +32,6 @@ class _EditImageFormState extends State<EditImageForm> {
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
-
       // Editing in progress
       if (state is ActionInProgress) {
         Scaffold.of(context)
@@ -55,9 +54,11 @@ class _EditImageFormState extends State<EditImageForm> {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
 
+        
         int count = 0;
         Navigator.popUntil(
-            context, (route) => count++ == 3); // pop back to gallery
+            context,
+            (route) => count++ == 3);
       }
     }, builder: (context, state) {
       return Form(
@@ -131,7 +132,7 @@ class _EditImageFormState extends State<EditImageForm> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
-                          
+
                           // Edit photo
                           photoBloc.add(PhotoActionsEvent.edited(
                               oldPhoto: widget.photo,
