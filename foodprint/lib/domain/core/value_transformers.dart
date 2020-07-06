@@ -58,7 +58,11 @@ extension TimestampParser on Timestamp {
       hourString = (int.parse(hour) - 12).toString();
       amOrPm = "pm";
     } else if (hour.compareTo("10") < 0) {
-      hourString = hour[1];
+      if (double.parse(hour[1]) == 0) {
+        hourString = "12";
+      } else {
+        hourString = hour[1];
+      }
     }
     return "$hourString:$minute $amOrPm";
   }

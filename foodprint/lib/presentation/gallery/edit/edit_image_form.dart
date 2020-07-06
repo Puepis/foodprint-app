@@ -32,6 +32,7 @@ class _EditImageFormState extends State<EditImageForm> {
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
+      // TODO: Don't use snackbar
       // Editing in progress
       if (state is ActionInProgress) {
         Scaffold.of(context)
