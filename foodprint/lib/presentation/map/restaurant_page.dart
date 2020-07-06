@@ -13,9 +13,6 @@ class RestaurantPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Currency formatter
-    final NumberFormat formatter = NumberFormat.simpleCurrency(
-        locale: Localizations.localeOf(context).toString());
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: PreferredSize(
@@ -62,20 +59,22 @@ class RestaurantPage extends StatelessWidget {
               color: Colors.white,
               padding: const EdgeInsets.all(5.0),
               height: 400,
-              child: Column(children: [
-                Row(children: const [
-                  Icon(
-                    Icons.photo,
+              child: Column(
+                children: [
+                  Row(
+                    children: const [
+                      Icon(
+                        Icons.photo,
+                      ),
+                      Text(
+                        "Your photos",
+                        style: TextStyle(fontSize: 15.0),
+                      )
+                    ],
                   ),
-                  Text(
-                    "Your photos",
-                    style: TextStyle(
-                      fontSize: 15.0
-                    ),
-                  )
-                ],),
-                
-              ],),
+                  displayPhotos(context),
+                ],
+              ),
             )
           ],
         ),
@@ -83,146 +82,85 @@ class RestaurantPage extends StatelessWidget {
     );
   }
 
-  Widget old(BuildContext context) {
-    return Column(
-      children: [
-        Stack(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Colors.black26,
-                        offset: Offset(0.0, 2.0),
-                        blurRadius: 6.0)
-                  ]),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30.0),
-                child: const Image(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/images/stock_restaurant.jpg'),
-                ),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 30.0,
-                    color: Colors.black,
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.search),
-                        iconSize: 30.0,
-                        color: Colors.black,
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.menu),
-                        iconSize: 30.0,
-                        color: Colors.black,
-                        onPressed: () => Navigator.pop(context),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Positioned(
-              left: 20.0,
-              bottom: 20.0,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [ratings]),
-            )
-          ],
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 15.0),
+  Widget displayPhotos(BuildContext context) {
+    // Currency formatter
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
+
+    return Expanded(
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
             itemCount: photos.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (BuildContext context, int index) {
               final PhotoEntity photo = photos[index];
-              return Stack(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(40.0, 5.0, 20.0, 5.0),
-                    height: 170.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(100.0, 20.0, 20.0, 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
+              return Container(
+                width: 500,
+                margin: const EdgeInsets.only(right: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: Image(
+                          image: MemoryImage(photo.bytes),
+                          fit: BoxFit.fitWidth,
+                        )),
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 120.0,
-                                child: Text(
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
                                   photo.photoDetail.name.getOrCrash(),
                                   style: const TextStyle(
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  maxLines: 2,
+                                  maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              Text(
-                                
-                                    photo.photoDetail.price.getOrCrash().toString(),
-                                style: const TextStyle(
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
+                                Text(
+                                  formatter.format(
+                                      photo.photoDetail.price.getOrCrash()),
+                                  style: const TextStyle(
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  photo.photoDetail.comments.getOrCrash(),
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                                Text(photo.timestamp.toReadable())
+                              ],
+                            ),
                           ),
-                          Text(
-                            photo.photoDetail.comments.getOrCrash(),
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                          const SizedBox(height: 10.0),
-                          Text(photo.timestamp.toReadable())
+                          Center(
+                            child: Column(
+                              children: const [
+                                Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  "Favourite",
+                                  style: TextStyle(fontSize: 15.0),
+                                )
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 20.0,
-                    top: 15.0,
-                    bottom: 15.0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image.memory(
-                        photo.bytes,
-                        width: 110.0,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               );
-            },
-          ),
-        )
-      ],
-    );
+            }));
   }
 }
