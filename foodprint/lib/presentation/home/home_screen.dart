@@ -35,7 +35,6 @@ class HomeScreen extends StatelessWidget {
               return const LoginPage();
             }
             if (state is FoodprintUpdated) {
-              print("Foodprint updated, refreshing home");
               return HomePage(
                 foodprint: state.foodprint,
                 token: token,

@@ -54,11 +54,9 @@ class _EditImageFormState extends State<EditImageForm> {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
 
-        
+        // Pop back to gallery
         int count = 0;
-        Navigator.popUntil(
-            context,
-            (route) => count++ == 3);
+        Navigator.popUntil(context, (route) => count++ == 3);
       }
     }, builder: (context, state) {
       return Form(

@@ -28,7 +28,6 @@ class DeleteConfirmationTab extends StatelessWidget {
         // When deleted, rebuild widgets and return to gallery
         if (state is DeleteSuccess) {
           Navigator.pop(context);
-          print("Photo deleted, firing event");
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
         }

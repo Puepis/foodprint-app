@@ -55,16 +55,12 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
             );
         }
         if (state is SaveSuccess) {
-          print("Save success");
-
           int count = 0;
           Navigator.popUntil(context, (route) => count++ == 3);
 
-          print("Firing save event");
           // Refresh home page
           foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
               newFoodprint: state.newFoodprint));
-          print("Event fired");
         }
       },
       child: Form(

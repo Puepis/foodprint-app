@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/routes/router.gr.dart';
+import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/register_page/register_page.dart';
 
+// TODO: Remove landing page
 class LandingPage extends StatelessWidget {
 
   @override
@@ -36,7 +38,7 @@ class LandingPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.loginPage);
+                  Navigator.of(context).pushNamed(LoginPage.routeName);
                 },
                 child: const Text(
                   "Login",
@@ -60,7 +62,7 @@ class LandingPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.registerPage);
+                  Navigator.of(context).pushNamed(RegisterPage.routeName);
                 },
                 child: const Text(
                   "Register",
