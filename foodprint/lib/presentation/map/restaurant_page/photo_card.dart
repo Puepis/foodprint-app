@@ -91,6 +91,7 @@ class PhotoCard extends StatelessWidget {
                         Icons.favorite_border,
                         color: Colors.red,
                       ),
+                      SizedBox(height: 3.0,),
                       Text(
                         "Favourite",
                         style: TextStyle(fontSize: 15.0),

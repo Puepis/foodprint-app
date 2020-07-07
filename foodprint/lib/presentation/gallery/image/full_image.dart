@@ -54,7 +54,7 @@ class FullImage extends StatelessWidget {
             }
           },
           child: Center(
-            child: Image.memory(bytes),
+            child: Hero(tag: photo.timestamp.getOrCrash(), child: Image.memory(bytes)),
           ),
         ));
   }
