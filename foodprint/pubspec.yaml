@@ -97,7 +97,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/stock_restaurant.jpg
     - assets/images/logo.png
     - .env
     - google_fonts/
