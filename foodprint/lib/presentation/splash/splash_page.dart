@@ -23,7 +23,7 @@ class SplashPage extends StatelessWidget {
                 authenticated: (result) {
                   Navigator.pushAndRemoveUntil(
                       cxt,
-                      SlideLeftRoute(
+                      FadeRoute(
                           newPage: HomeScreen(
                         token: result.token,
                       )),
