@@ -53,6 +53,8 @@ class RestaurantPreview extends StatelessWidget {
                     children: [
                       Text(
                         restaurant.restaurantName.getOrCrash(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -101,6 +103,6 @@ class RestaurantPreview extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           image: DecorationImage(
-              image: MemoryImage(photos[0].bytes), fit: BoxFit.cover)),
+              image: NetworkImage(photos[0].url.getOrCrash()), fit: BoxFit.cover)),
     );
 }

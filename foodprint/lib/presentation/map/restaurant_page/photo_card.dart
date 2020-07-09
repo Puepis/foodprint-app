@@ -32,7 +32,7 @@ class PhotoCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image(
-                  image: MemoryImage(photo.bytes),
+                  image: NetworkImage(photo.url.getOrCrash()),
                   fit: BoxFit.fitWidth,
                 ),
               ),

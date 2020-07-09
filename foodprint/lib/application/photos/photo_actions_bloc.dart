@@ -53,13 +53,11 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
       int id, File imageFile, String itemName, String price, String comments) {
     final String time = currentTimestamp;
     final String fileName = basename(imageFile.path);
-    final String imgPath = '$id/photos/$secondsSinceEpoch-$fileName';
-    final List<int> imgBytes = imageFile.readAsBytesSync().toList();
+    final String imgPath = '$id/photos/$fileName';
 
     // Construct new photo
     return PhotoEntity(
       storagePath: StoragePath(imgPath),
-      imageData: PhotoData(imgBytes),
       photoDetail: PhotoDetailEntity(
           name: PhotoName(itemName),
           price: PhotoPrice(double.parse(price)),
@@ -97,6 +95,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
           e.userID.getOrCrash(), e.imageFile, e.itemName, e.price, e.comments);
       final result = await _client.saveNewPhoto(
           userID: e.userID,
+          data: PhotoData(e.imageFile.readAsBytesSync().toList()), // Image data
           photo: newPhoto,
           restaurant: e.restaurant,
           oldFoodprint: e.foodprint);

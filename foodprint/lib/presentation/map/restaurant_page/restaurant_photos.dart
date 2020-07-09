@@ -19,37 +19,45 @@ class RestaurantPhotos extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: false,
           flexibleSpace: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  restaurant.restaurantName.getOrCrash(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 30,
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.star_border,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(30, 40, 30, 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    restaurant.restaurantName.getOrCrash(),
+                    style: const TextStyle(
                       color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
                     ),
-                    const SizedBox(
-                      width: 3.0,
-                    ),
-                    Text(
-                      restaurant.restaurantRating.getOrCrash().toString(),
-                      style: const TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                )
-              ],
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.star_border,
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        width: 3.0,
+                      ),
+                      Text(
+                        restaurant.restaurantRating.getOrCrash().toString(),
+                        style: const TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -1,6 +1,4 @@
 
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -17,7 +15,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
 
   const factory PhotoDTO({
     @required String storagePath,
-    @required List<int> bytes,
+    @required String url,
     @required PhotoDetailDTO photoDetail,
     @required String timestamp, 
   }) = _PhotoDTO;
@@ -26,7 +24,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
   factory PhotoDTO.fromEntity(PhotoEntity photo) {
     return PhotoDTO(
       storagePath: photo.storagePath.getOrCrash(), // unexpected errors
-      bytes: photo.imageData.getOrCrash(),
+      url: photo.url.getOrCrash(),
       photoDetail: PhotoDetailDTO.fromEntity(photo.photoDetail),
       timestamp: photo.timestamp.getOrCrash(),
     );
@@ -36,7 +34,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
   PhotoEntity toEntity() {
     return PhotoEntity(
       storagePath: StoragePath(storagePath), 
-      imageData: PhotoData(bytes),
+      url: URL(url),
       photoDetail: photoDetail.toEntity(),
       timestamp: Timestamp(timestamp)
     );
@@ -46,7 +44,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
   factory PhotoDTO.fromJSON(Map<String, dynamic> json) {
     return PhotoDTO(
       storagePath: json['path'].toString(),
-      bytes: parseImgData(json['data'].toString()),
+      url: json['url'].toString(),
       timestamp: parseTimestamp(json['time_taken'].toString()), 
       photoDetail: PhotoDetailDTO.fromJSON(json),
     );
@@ -57,15 +55,6 @@ abstract class PhotoDTO implements _$PhotoDTO {
     final String time = timestamp.substring(11, timestamp.length - 5);
     final result = [date, time].join(" ");
     return result;
-  }
-
-  // Convert String to List<int> 
-  static List<int> parseImgData(String json) {
-    final List<int> bytes = [];
-    for (final byte in jsonDecode(json)) {
-      bytes.add(int.parse(byte.toString()));
-    }
-    return bytes; 
   }
 }
 

@@ -19,65 +19,68 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
-              child: Container(
-            padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
-            child: SingleChildScrollView(
-                          child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset(
-        'assets/images/logo.png',
-        height: 75,
-        width: 75,
-                  ),
-                  Text("Welcome back!", style: title1),
-                  const SizedBox(
-        height: 2.5,
-                  ),
-                  const Text(
-        "Sign in to continue",
-        style: TextStyle(fontSize: 20.0, color: Colors.grey),
-                  ),
-                  const SizedBox(
-        height: 60.0,
-                  ),
-                  BlocProvider(
-        create: (context) => getIt<LoginFormBloc>(),
-        child: const LoginForm(),
-                  ),
-                  const SizedBox(height: 30.0),
-                  Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-              "Don't have an account?",
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Colors.black,
-              ),
-          ),
-          const SizedBox(
-              width: 4.0,
-          ),
-          InkWell(
-              onTap: () {
-                Navigator.pushReplacement(context, EnterExitRoute(
-                    exitPage: this, enterPage: const RegisterPage()));
-              },
-              child: Text(
-                "Register",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 14.0),
-              ),
-          )
-        ],
-                  )
-                ],
-              ),
+            child: Container(
+          padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/logo.png',
+                  height: 75,
+                  width: 75,
+                ),
+                Text("Welcome back!", style: title1),
+                const SizedBox(
+                  height: 2.5,
+                ),
+                const Text(
+                  "Sign in to continue",
+                  style: TextStyle(fontSize: 20.0, color: Colors.grey),
+                ),
+                const SizedBox(
+                  height: 60.0,
+                ),
+                BlocProvider(
+                  create: (context) => getIt<LoginFormBloc>(),
+                  child: const LoginForm(),
+                ),
+                const SizedBox(height: 30.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account?",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            EnterExitRoute(
+                                exitPage: this,
+                                enterPage: const RegisterPage()));
+                      },
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 14.0),
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
-          )),
+          ),
+        )),
       ),
     );
   }

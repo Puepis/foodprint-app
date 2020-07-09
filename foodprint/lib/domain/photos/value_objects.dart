@@ -19,6 +19,20 @@ class StoragePath extends ValueObject<String> {
   const StoragePath._(this.value);
 }
 
+class URL extends ValueObject<String> {
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  factory URL(String url) {
+    assert(url != null);
+    return URL._(
+      validateStringNotEmpty(url),
+    ); 
+  }
+
+  const URL._(this.value);
+}
+
 class PhotoData extends ValueObject<List<int>> {
   @override
   final Either<ValueFailure<List<int>>, List<int>> value;

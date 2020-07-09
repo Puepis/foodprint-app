@@ -50,5 +50,3 @@ class FoodprintApp extends StatelessWidget {
     );
   }
 }
-
-// Inter, Raleway,

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
@@ -23,9 +21,6 @@ class FullImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Image data
-    final Uint8List bytes = Uint8List.fromList(photo.imageData.getOrCrash());
-
     return Scaffold(
         backgroundColor: Colors.black,
         body: GestureDetector(
@@ -54,7 +49,7 @@ class FullImage extends StatelessWidget {
             }
           },
           child: Center(
-            child: Hero(tag: photo.timestamp.getOrCrash(), child: Image.memory(bytes)),
+            child: Hero(tag: photo.timestamp.getOrCrash(), child: Image.network(photo.url.getOrCrash())),
           ),
         ));
   }

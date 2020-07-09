@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-TextStyle title1 = GoogleFonts.montserrat(
+TextStyle title1 = GoogleFonts.rubik(
   color: Colors.black,
-  fontSize: 30.0,
-  fontWeight: FontWeight.w700
+  fontSize: 34.0,
+  fontWeight: FontWeight.w500
 ); 
 
-TextStyle buttonText = GoogleFonts.montserrat(
+TextStyle buttonText = GoogleFonts.rubik(
   color: Colors.white,
-  fontSize: 25.0,
-  fontWeight: FontWeight.w700,
+  fontSize: 26.0,
+  fontWeight: FontWeight.w500,
 );
 
 const TextStyle itemNameTextStyle = TextStyle(

@@ -52,7 +52,7 @@ class Gallery extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: MemoryImage(photo.bytes), fit: BoxFit.cover)),
+                          image: NetworkImage(photo.url.getOrCrash()), fit: BoxFit.cover)),
                 ),
               ),
             ),
