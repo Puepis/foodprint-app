@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
@@ -41,13 +42,7 @@ class SplashPage extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        body: Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 200,
-            width: 300,
-          ),
-        ),
+        backgroundColor: primaryColor,
       ),
     );
   }
