@@ -6,8 +6,21 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
+
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool _obscureText = true;
+
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +34,11 @@ class LoginForm extends StatelessWidget {
               SnackBar(
                 content: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:  [
+                  children: [
                     Text(
                       'Logging in...',
-                      style: GoogleFonts.rubik(
-                        fontSize: 20.0
-                      ),
-                      ),
+                      style: GoogleFonts.rubik(fontSize: 20.0),
+                    ),
                     const CircularProgressIndicator(),
                   ],
                 ),
@@ -83,10 +94,23 @@ class LoginForm extends StatelessWidget {
               TextFormField(
                   autocorrect: false,
                   decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          semanticLabel:
+                              _obscureText ? "Hide password" : "Show password",
+                        ),
+                        onPressed: () {
+                          _toggle();
+                        },
+                      ),
+                      hintText: '**********',
                       labelText: "Password",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(7.0))),
-                  obscureText: true,
+                  obscureText: _obscureText,
                   onChanged: (value) => context.bloc<LoginFormBloc>().add(
                       LoginFormEvent.passwordChanged(value)), // fire an event
                   validator: (_) => context
