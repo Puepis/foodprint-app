@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:foodprint/presentation/common/widgets.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 
 class LoginForm extends StatefulWidget {
@@ -136,34 +137,7 @@ class _LoginFormState extends State<LoginForm> {
                 height: 30.0,
               ),
               if (_isSubmitting)
-                ButtonTheme(
-                  height: 50,
-                  child: RaisedButton(
-                      color: Theme.of(context).primaryColorDark,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
-                      ),
-                      onPressed: () => null,
-                      child: Stack(
-                        alignment: Alignment.centerLeft,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Login', style: buttonText),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 21,
-                            width: 21,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
-                            ),
-                          ),
-                        ],
-                      )),
-                )
+                loadingButton(text: "Login")
               else
                 ButtonTheme(
                   height: 50,

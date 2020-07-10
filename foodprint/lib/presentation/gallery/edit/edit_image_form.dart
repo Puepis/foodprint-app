@@ -5,7 +5,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/common/loading_snackbar.dart';
+import 'package:foodprint/presentation/common/widgets.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class EditImageForm extends StatefulWidget {

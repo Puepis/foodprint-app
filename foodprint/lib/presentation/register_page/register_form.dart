@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
+import 'package:foodprint/presentation/common/widgets.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
@@ -111,34 +112,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         (r) => null)),
             const SizedBox(height: 30),
             if (_isSubmitting)
-              ButtonTheme(
-                  height: 50,
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                    ),
-                    onPressed: () => null,
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Register', style: buttonText),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 21,
-                          width: 21,
-                          child: CircularProgressIndicator(
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
+              loadingButton(text: "Register")
             else
               ButtonTheme(
                   height: 50,
