@@ -86,8 +86,18 @@ class _EditImageFormState extends State<EditImageForm> {
                   _price = value.trim();
                 },
                 validator: (String value) {
-                  // TODO: validate price
-                  return value.isEmpty ? 'Please enter a price' : null;
+                  if (value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  try {
+                    final double price = double.parse(value);
+                    if (price >= 0 && price < 10000) {
+                      return null;
+                    }
+                    return 'Please enter a valid price';
+                  } on FormatException {
+                    return 'Please enter a valid price';
+                  }
                 },
               ),
               const SizedBox(

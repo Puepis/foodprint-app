@@ -70,7 +70,6 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                   _itemName = value.trim();
                 },
                 validator: (String value) {
-                  // TODO: price validation
                   return value.isEmpty
                       ? 'Please enter the name of the item'
                       : null;
@@ -90,7 +89,18 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                   _price = value.trim();
                 },
                 validator: (String value) {
-                  return value.isEmpty ? 'Please enter the price' : null;
+                  if (value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+                  try {
+                    final double price = double.parse(value);
+                    if (price >= 0 && price < 10000) {
+                      return null;
+                    }
+                    return 'Please enter a valid price';
+                  } on FormatException {
+                    return 'Please enter a valid price';
+                  }
                 },
               ),
               const SizedBox(
