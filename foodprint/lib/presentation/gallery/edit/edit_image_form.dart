@@ -5,6 +5,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class EditImageForm extends StatefulWidget {
   final PhotoEntity photo;
@@ -118,14 +119,16 @@ class _EditImageFormState extends State<EditImageForm> {
                     return null;
                   }),
               Align(
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
                   child: FloatingActionButton.extended(
+                    backgroundColor: primaryColor,
                       label: const Text(
-                        'SAVE',
+                        'UPDATE',
                         style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
                       ),
                       icon: const Icon(Icons.save_alt),
                       onPressed: () {

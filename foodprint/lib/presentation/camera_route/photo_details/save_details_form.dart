@@ -7,6 +7,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class SaveDetailsForm extends StatefulWidget {
   final JWT token;
@@ -119,14 +120,15 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                     return null;
                   }),
               Align(
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
                   child: FloatingActionButton.extended(
+                    backgroundColor: primaryColor,
                     label: const Text(
                       'SAVE',
                       style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                          fontSize: 16.0, fontWeight: FontWeight.w500),
                     ),
                     icon: const Icon(Icons.save_alt),
                     onPressed: () {
