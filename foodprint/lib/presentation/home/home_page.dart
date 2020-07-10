@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               token: widget.token,
             ),
             body: _selectedIndex == 0
-                ? Stack(children: [mapScreen, menuButton()])
+                ? Stack(children: [mapScreen, mapMenuButton()])
                 : Gallery(
                     foodprint: widget.foodprint,
                   ),
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                 child: FloatingActionButton(
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
-                      ? _useCamera(context, state.latlng) // take picture
+                      ? _toCamera(context, state.latlng) // take picture
                       : null,
                   child: const Icon(
                     Icons.add,
@@ -124,7 +124,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Positioned menuButton() => Positioned(
+  // Open drawer button on the map page
+  Positioned mapMenuButton() => Positioned(
         left: 10,
         top: 35,
         child: Material(
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: const Icon(
                     Icons.menu,
-                    size: 32, 
+                    size: 32,
                   ),
                 ),
               ),
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
       );
 
   // Animate transition to camera
-  void _useCamera(BuildContext cxt, LatLng location) {
+  void _toCamera(BuildContext cxt, LatLng location) {
     Navigator.of(cxt).push(SlideUpEnterRoute(
         newPage: MultiBlocProvider(
             providers: [
@@ -168,14 +169,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   PreferredSizeWidget appBar(BuildContext context) {
+    // Don't display app bar on map page
     if (_selectedIndex == 0) {
-      return null; // map
+      return null;
     }
+
+    // Display appbar on gallery page
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
       title: Text(
-        'Foodprint',
+        'Gallery',
         style: Theme.of(context).textTheme.headline6,
       ),
       leading: Builder(

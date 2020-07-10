@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppDrawer extends StatelessWidget {
   final JWT token;
@@ -14,38 +15,27 @@ class AppDrawer extends StatelessWidget {
           _header(),
           Expanded(
             child: Container(
-              color: Colors.blue,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(top: 10),
               margin: EdgeInsets.zero,
               child: Column(
                 children: [
-                 _createDrawerItem(
-                    icon: Icons.event,
-                    text: 'Events',
+                  _createDrawerItem(
+                      icon: Icons.face, text: 'Profile', onTap: () {}),
+                  const Divider(
+                    thickness: 1.0,
                   ),
                   _createDrawerItem(
-                    icon: Icons.note,
-                    text: 'Notes',
+                      icon: Icons.settings, text: 'Settings', onTap: () {}),
+                  _createDrawerItem(
+                      icon: Icons.info, text: 'About', onTap: () {}),
+                  _createDrawerItem(
+                    icon: Icons.bug_report,
+                    text: 'Report an issue',
+                    onTap: () => null,
                   ),
-                  const Divider(),
-                  _createDrawerItem(
-                      icon: Icons.collections_bookmark, text: 'Steps'),
-                  _createDrawerItem(icon: Icons.face, text: 'Authors'),
-                  _createDrawerItem(
-                      icon: Icons.account_box, text: 'Flutter Documentation'),
-                  _createDrawerItem(icon: Icons.stars, text: 'Useful Links'),
                 ],
               ),
             ),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          _createDrawerItem(
-            icon: Icons.bug_report,
-            text: 'Report an issue',
-            onTap: () => null,
           ),
           const Divider(
             thickness: 1,
@@ -59,13 +49,15 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   const Text(
                     'Licenses',
+                    style: TextStyle(fontSize: 15.0),
                   ),
                   Text(
-                    'v0.0.1',
+                    'v1.0.0',
                     style: TextStyle(
-                      color: hintColor, 
-                      fontWeight: FontWeight.w300
-                    ),),
+                        fontSize: 15.0,
+                        color: hintColor,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ],
               ),
               dense: true,
@@ -81,15 +73,17 @@ class AppDrawer extends StatelessWidget {
     final username = JWT.getDecodedPayload(token.getOrCrash())['username'];
 
     return DrawerHeader(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primaryColor),
-      child: Stack(
-        children: [
-          Positioned(
-              bottom: 15.0,
-              left: 16.0,
-              child: Row(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(color: primaryColor),
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
                     Icons.person,
@@ -99,16 +93,26 @@ class AppDrawer extends StatelessWidget {
                   const SizedBox(
                     width: 10.0,
                   ),
-                  Text(username.toString(),
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.w500)),
+                  Expanded(
+                    child: Text(username.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: GoogleFonts.montserrat(
+                            fontSize: 26.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500)),
+                  ),
                 ],
-              )),
-        ],
-      ),
-    );
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0, top: 10),
+                child: Text("46 Photos",
+                    style: GoogleFonts.montserrat(
+                        color: Colors.white, fontSize: 16.0)),
+              ),
+            ],
+          ),
+        ));
   }
 
   Widget _createDrawerItem(
@@ -117,14 +121,16 @@ class AppDrawer extends StatelessWidget {
       // ignore: avoid_init_to_null
       GestureTapCallback onTap = null}) {
     return ListTile(
-      title: Row(
-        children: [
-          Icon(icon),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(text),
-          )
-        ],
+      leading: Icon(
+        icon,
+        size: 26.0,
+        color: primaryColorDark,
+      ),
+      title: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 16.0,
+        ),
       ),
       onTap: onTap,
     );
