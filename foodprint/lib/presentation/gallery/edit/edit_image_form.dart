@@ -5,6 +5,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/common/loading_snackbar.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class EditImageForm extends StatefulWidget {
@@ -33,22 +34,11 @@ class _EditImageFormState extends State<EditImageForm> {
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
-      // TODO: Don't use snackbar
       // Editing in progress
       if (state is ActionInProgress) {
         Scaffold.of(context)
           ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Updating image...'),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            ),
-          );
+          ..showSnackBar(loadingSnackbar(text: "Updating photo"));
       }
 
       // Update local foodprint
@@ -121,14 +111,16 @@ class _EditImageFormState extends State<EditImageForm> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 7.0),
                   child: FloatingActionButton.extended(
-                    backgroundColor: primaryColor,
+                      backgroundColor: primaryColor,
                       label: const Text(
                         'UPDATE',
                         style: TextStyle(
-                          color: Colors.black,
-                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                            color: Colors.black,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500),
                       ),
                       icon: const Icon(Icons.save_alt),
                       onPressed: () {

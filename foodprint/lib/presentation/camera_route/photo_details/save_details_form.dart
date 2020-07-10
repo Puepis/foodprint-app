@@ -7,6 +7,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/common/loading_snackbar.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class SaveDetailsForm extends StatefulWidget {
@@ -42,17 +43,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         if (state is ActionInProgress) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Saving photo...'),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            );
+            ..showSnackBar(loadingSnackbar(text: "Saving photo"));
         }
         if (state is SaveSuccess) {
           int count = 0;
@@ -122,7 +113,8 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 7.0),
                   child: FloatingActionButton.extended(
                     backgroundColor: primaryColor,
                     label: const Text(
