@@ -59,6 +59,10 @@ class _HomePageState extends State<HomePage> {
 
           return Scaffold(
             appBar: appBar(context),
+            drawerEnableOpenDragGesture: false,
+            drawer: Drawer(
+              child: ListView(),
+            ),
             body: _selectedIndex == 0
                 ? mapScreen
                 : Gallery(
@@ -120,7 +124,6 @@ class _HomePageState extends State<HomePage> {
 
   // Animate transition to camera
   void _useCamera(BuildContext cxt, LatLng location) {
-
     Navigator.of(cxt).push(SlideUpEnterRoute(
         newPage: MultiBlocProvider(
             providers: [
@@ -142,10 +145,13 @@ class _HomePageState extends State<HomePage> {
         'Foodprint',
         style: Theme.of(context).textTheme.headline6,
       ),
-      leading: IconButton(
-        icon: const Icon(Icons.person),
-        onPressed: () {},
-      ),
+      leading: Builder(
+          builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              )),
       actions: <Widget>[
         IconButton(
           icon: const Icon(Icons.exit_to_app),
