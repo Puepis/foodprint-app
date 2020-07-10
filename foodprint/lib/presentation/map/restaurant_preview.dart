@@ -12,7 +12,6 @@ class RestaurantPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Sort from newest to oldest
     photos.sort(
         (a, b) => b.timestamp.getOrCrash().compareTo(a.timestamp.getOrCrash()));
@@ -26,9 +25,9 @@ class RestaurantPreview extends StatelessWidget {
               context,
               SlideUpEnterRoute(
                   newPage: RestaurantPhotos(
-                      restaurant: restaurant,
-                      photos: photos,
-                  )));
+                restaurant: restaurant,
+                photos: photos,
+              )));
         }
       },
       child: Container(
@@ -95,11 +94,12 @@ class RestaurantPreview extends StatelessWidget {
 
   // Displays the most recent photo taken
   Widget recentPhoto() => Container(
-      width: 125,
-      margin: const EdgeInsets.only(right: 5.0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          image: DecorationImage(
-              image: NetworkImage(photos[0].url.getOrCrash()), fit: BoxFit.cover)),
-    );
+        width: 125,
+        margin: const EdgeInsets.only(right: 5.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+                image: NetworkImage(photos[0].url.getOrCrash()),
+                fit: BoxFit.cover)),
+      );
 }

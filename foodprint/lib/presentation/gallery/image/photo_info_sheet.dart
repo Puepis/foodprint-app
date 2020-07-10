@@ -74,8 +74,8 @@ class PhotoInfoSheet extends StatelessWidget {
               const Text("LOCATION", style: labelTextStyle),
               const SizedBox(height: 5.0),
               Text(restaurant.restaurantName.getOrCrash(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: restaurantName),
               const SizedBox(
                 height: 5.0,
@@ -86,13 +86,12 @@ class PhotoInfoSheet extends StatelessWidget {
                     Icons.star,
                     color: Theme.of(context).primaryColor,
                   ),
-                  const SizedBox(width: 5.0,),
+                  const SizedBox(
+                    width: 5.0,
+                  ),
                   Text(
                     restaurant.restaurantRating.getOrCrash().toString(),
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.grey
-                    ),
+                    style: const TextStyle(fontSize: 18.0, color: Colors.grey),
                   )
                 ],
               ),
