@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
@@ -9,9 +9,8 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
-import 'package:foodprint/presentation/home/app_drawer.dart';
+import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
 import 'package:foodprint/presentation/map/map.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
@@ -64,6 +63,7 @@ class _HomePageState extends State<HomePage> {
             drawerEnableOpenDragGesture: false,
             drawer: AppDrawer(
               token: widget.token,
+              foodprint: widget.foodprint
             ),
             body: _selectedIndex == 0
                 ? Stack(children: [mapScreen, mapMenuButton()])
@@ -189,14 +189,6 @@ class _HomePageState extends State<HomePage> {
                   Scaffold.of(context).openDrawer();
                 },
               )),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.exit_to_app),
-          onPressed: () {
-            context.bloc<AuthBloc>().add(AuthEvent.loggedOut(widget.token));
-          },
-        )
-      ],
     );
   }
 }

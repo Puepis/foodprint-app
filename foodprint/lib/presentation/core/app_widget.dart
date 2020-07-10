@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
+import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
@@ -45,6 +47,11 @@ class FoodprintApp extends StatelessWidget {
           SplashPage.routeName: (context) => SplashPage(),
           LoginPage.routeName: (context) => const LoginPage(),
           RegisterPage.routeName: (context) => const RegisterPage(),
+          ProfilePage.routeName: (context) => const ProfilePage(),
+          SettingsPage.routeName: (context) => const SettingsPage(),
+          AboutPage.routeName: (context) => const AboutPage(),
+          ReportIssuePage.routeName: (context) => const ReportIssuePage(),
+          LicensesPage.routeName: (context) => const LicensesPage(),
         },
       ),
     );

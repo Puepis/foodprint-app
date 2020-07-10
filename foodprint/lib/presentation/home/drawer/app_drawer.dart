@@ -1,11 +1,22 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/domain/core/value_transformers.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppDrawer extends StatelessWidget {
   final JWT token;
-  const AppDrawer({Key key, @required this.token}) : super(key: key);
+  final FoodprintEntity foodprint;
+  const AppDrawer({Key key, @required this.token, @required this.foodprint})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +31,44 @@ class AppDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   _createDrawerItem(
-                      icon: Icons.face, text: 'Profile', onTap: () {}),
+                      icon: Icons.face,
+                      text: 'Profile',
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                            context, ProfilePage.routeName);
+                      }),
+                  _createDrawerItem(
+                      icon: Icons.settings,
+                      text: 'Settings',
+                      onTap: () {
+                        Navigator.popAndPushNamed(
+                            context, SettingsPage.routeName);
+                      }),
                   const Divider(
                     thickness: 1.0,
                   ),
                   _createDrawerItem(
-                      icon: Icons.settings, text: 'Settings', onTap: () {}),
-                  _createDrawerItem(
-                      icon: Icons.info, text: 'About', onTap: () {}),
+                      icon: Icons.info,
+                      text: 'About',
+                      onTap: () {
+                        Navigator.popAndPushNamed(context, AboutPage.routeName);
+                      }),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
-                    onTap: () => null,
+                    onTap: () {
+                      Navigator.popAndPushNamed(
+                          context, ReportIssuePage.routeName);
+                    },
                   ),
+                  _createDrawerItem(
+                      icon: Icons.exit_to_app,
+                      text: 'Sign Out',
+                      onTap: () {
+                        context
+                            .bloc<AuthBloc>()
+                            .add(AuthEvent.loggedOut(token));
+                      }),
                 ],
               ),
             ),
@@ -61,7 +97,9 @@ class AppDrawer extends StatelessWidget {
                 ],
               ),
               dense: true,
-              onTap: () {},
+              onTap: () {
+                Navigator.popAndPushNamed(context, LicensesPage.routeName);
+              },
             ),
           )
         ],
@@ -71,6 +109,9 @@ class AppDrawer extends StatelessWidget {
 
   Widget _header() {
     final username = JWT.getDecodedPayload(token.getOrCrash())['username'];
+
+    final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
+        getPhotosFromFoodprint(foodprint);
 
     return DrawerHeader(
         margin: EdgeInsets.zero,
@@ -106,7 +147,7 @@ class AppDrawer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, top: 10),
-                child: Text("46 Photos",
+                child: Text("${photos.length} Photos",
                     style: GoogleFonts.montserrat(
                         color: Colors.white, fontSize: 16.0)),
               ),
