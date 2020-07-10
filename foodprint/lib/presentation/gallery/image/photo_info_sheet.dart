@@ -9,7 +9,6 @@ import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:foodprint/presentation/common/ratings.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 
 class PhotoInfoSheet extends StatelessWidget {
@@ -75,11 +74,28 @@ class PhotoInfoSheet extends StatelessWidget {
               const Text("LOCATION", style: labelTextStyle),
               const SizedBox(height: 5.0),
               Text(restaurant.restaurantName.getOrCrash(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
                   style: restaurantName),
               const SizedBox(
                 height: 5.0,
               ),
-              restaurant.restaurantRating.getOrCrash().ratingsWidget,
+              Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  const SizedBox(width: 5.0,),
+                  Text(
+                    restaurant.restaurantRating.getOrCrash().toString(),
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.grey
+                    ),
+                  )
+                ],
+              ),
               const SizedBox(height: 10.0),
               Text(
                   "${restaurant.latitude.getOrCrash()}, ${restaurant.longitude.getOrCrash()}",

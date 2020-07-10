@@ -6,8 +6,7 @@ import 'package:foodprint/presentation/map/restaurant_page/photo_section.dart';
 class RestaurantPhotos extends StatelessWidget {
   final RestaurantEntity restaurant;
   final List<PhotoEntity> photos;
-  final Row ratings;
-  const RestaurantPhotos({Key key, this.restaurant, this.photos, this.ratings})
+  const RestaurantPhotos({Key key, this.restaurant, this.photos})
       : super(key: key);
 
   @override

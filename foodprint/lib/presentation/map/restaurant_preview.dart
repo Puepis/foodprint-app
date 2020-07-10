@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/common/ratings.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 
@@ -13,8 +12,6 @@ class RestaurantPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ratingsWidget =
-        restaurant.restaurantRating.getOrCrash().ratingsWidget;
 
     // Sort from newest to oldest
     photos.sort(
@@ -31,7 +28,7 @@ class RestaurantPreview extends StatelessWidget {
                   newPage: RestaurantPhotos(
                       restaurant: restaurant,
                       photos: photos,
-                      ratings: ratingsWidget)));
+                  )));
         }
       },
       child: Container(
