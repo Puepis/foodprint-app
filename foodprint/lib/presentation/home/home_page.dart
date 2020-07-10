@@ -9,6 +9,7 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
+import 'package:foodprint/presentation/home/app_drawer.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async => false,
       child: BlocBuilder<LocationBloc, LocationState>(
         builder: (context, state) {
+          // Loading screen
           Widget mapScreen = Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,11 +62,11 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: appBar(context),
             drawerEnableOpenDragGesture: false,
-            drawer: Drawer(
-              child: ListView(),
+            drawer: AppDrawer(
+              token: widget.token,
             ),
             body: _selectedIndex == 0
-                ? mapScreen
+                ? Stack(children: [mapScreen, menuButton()])
                 : Gallery(
                     foodprint: widget.foodprint,
                   ),
@@ -122,6 +124,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Positioned menuButton() => Positioned(
+        left: 10,
+        top: 35,
+        child: Material(
+          shape: const CircleBorder(),
+          elevation: 8.0,
+          child: Container(
+            width: 48,
+            height: 48,
+            child: Ink(
+              decoration: const BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle),
+              child: Builder(
+                builder: (context) => InkWell(
+                  onTap: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  child: const Icon(
+                    Icons.menu,
+                    size: 32, 
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
   // Animate transition to camera
   void _useCamera(BuildContext cxt, LatLng location) {
     Navigator.of(cxt).push(SlideUpEnterRoute(
@@ -138,6 +168,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   PreferredSizeWidget appBar(BuildContext context) {
+    if (_selectedIndex == 0) {
+      return null; // map
+    }
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,

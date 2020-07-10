@@ -27,9 +27,7 @@ class HomeScreen extends StatelessWidget {
         ],
         child: BlocBuilder<FoodprintBloc, FoodprintState>(
           builder: (context, state) {
-
             if (state is FetchFoodprintFailure) {
-              // TODO: Check failure type
               return const LoginPage();
             }
             if (state is FoodprintUpdated) {
