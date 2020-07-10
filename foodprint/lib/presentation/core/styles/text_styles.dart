@@ -21,8 +21,8 @@ const TextStyle itemNameTextStyle = TextStyle(
     fontSize: 24
 );
 
-const TextStyle priceText = TextStyle(
-    color: Color(0xFF66BB6A),
+TextStyle priceText = TextStyle(
+    color: Colors.green.shade500,
     fontSize: 19
 );
 
