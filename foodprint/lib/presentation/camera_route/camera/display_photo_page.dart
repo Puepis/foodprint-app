@@ -71,18 +71,6 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                     ),
                     onPressed: () => Navigator.pop(context),
                   )),
-              const Positioned(
-                left: 10,
-                bottom: 20,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.refresh,
-                    color: Colors.white,
-                    size: 40.0,
-                  ),
-                  onPressed: null,
-                ),
-              ),
               Positioned(
                   bottom: 20,
                   right: 30,
