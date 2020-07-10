@@ -51,7 +51,6 @@ class FoodprintApp extends StatelessWidget {
           SettingsPage.routeName: (context) => const SettingsPage(),
           AboutPage.routeName: (context) => const AboutPage(),
           ReportIssuePage.routeName: (context) => const ReportIssuePage(),
-          LicensesPage.routeName: (context) => const LicensesPage(),
         },
       ),
     );

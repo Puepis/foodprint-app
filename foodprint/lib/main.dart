@@ -7,11 +7,16 @@ import 'package:foodprint/presentation/core/app_widget.dart';
 import 'package:injectable/injectable.dart';
 
 Future<void> main() async {
+  // Add font licenses
   LicenseRegistry.addLicense(() async* {
-    final license = await rootBundle.loadString('google_fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+    final rubik_license =
+        await rootBundle.loadString('google_fonts_rubik/OFL.txt');
+    final montserrat_license =
+        await rootBundle.loadString('google_fonts_montserrat/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], rubik_license);
+    yield LicenseEntryWithLineBreaks(['google_fonts'], montserrat_license);
   });
-  await DotEnv().load();
+  await DotEnv().load(); // env variables
   configureInjection(Environment.prod);
   runApp(FoodprintApp());
 }

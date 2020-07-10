@@ -99,4 +99,5 @@ flutter:
   assets:
     - assets/images/logo.png
     - .env
-    - google_fonts/
+    - google_fonts_rubik/
+    - google_fonts_montserrat/

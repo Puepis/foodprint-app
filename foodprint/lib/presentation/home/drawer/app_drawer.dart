@@ -98,7 +98,11 @@ class AppDrawer extends StatelessWidget {
               ),
               dense: true,
               onTap: () {
-                Navigator.popAndPushNamed(context, LicensesPage.routeName);
+                showLicensePage(
+                  context: context,
+                  applicationVersion: '1.0.0',
+                  applicationLegalese: "Legal information", // TODO: Add legal information
+                  );
               },
             ),
           )
