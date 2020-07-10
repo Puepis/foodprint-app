@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -15,6 +14,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   bool _obscureText = true;
+  bool _isSubmitting = false;
 
   void _toggle() {
     setState(() {
@@ -28,26 +28,16 @@ class _LoginFormState extends State<LoginForm> {
       // Listening for changes to the login state
       listener: (context, state) {
         if (state.isSubmitting) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Logging in...',
-                      style: GoogleFonts.rubik(fontSize: 20.0),
-                    ),
-                    const CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            );
+          setState(() {
+            _isSubmitting = true;
+          });
         }
         state.authFailureOrSuccessOption.fold(
-            () {}, // loading
+            () {},
             (either) => either.fold((failure) {
+                  setState(() {
+                    _isSubmitting = false;
+                  });
                   Scaffold.of(context)..hideCurrentSnackBar();
                   FlushbarHelper.createError(
                     message: failure.map(
@@ -57,6 +47,9 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ).show(context);
                 }, (jwt) {
+                  setState(() {
+                    _isSubmitting = false;
+                  });
                   context
                       .bloc<AuthBloc>()
                       .add(AuthEvent.loggedIn(token: jwt)); // authenticated
@@ -97,8 +90,8 @@ class _LoginFormState extends State<LoginForm> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           semanticLabel:
                               _obscureText ? "Hide password" : "Show password",
                         ),
@@ -142,20 +135,50 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 30.0,
               ),
-              ButtonTheme(
-                height: 50,
-                child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(7)),
-                    ),
-                    onPressed: () {
-                      context
-                          .bloc<LoginFormBloc>()
-                          .add(const LoginFormEvent.loginPressed());
-                    },
-                    child: Text('Login', style: buttonText)),
-              ),
+              if (_isSubmitting)
+                ButtonTheme(
+                  height: 50,
+                  child: RaisedButton(
+                      color: Theme.of(context).primaryColorDark,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                      ),
+                      onPressed: () => null,
+                      child: Stack(
+                        alignment: Alignment.centerLeft,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Login', style: buttonText),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 21,
+                            width: 21,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white),
+                            ),
+                          ),
+                        ],
+                      )),
+                )
+              else
+                ButtonTheme(
+                  height: 50,
+                  child: RaisedButton(
+                      color: Theme.of(context).primaryColor,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(7)),
+                      ),
+                      onPressed: () {
+                        context
+                            .bloc<LoginFormBloc>()
+                            .add(const LoginFormEvent.loginPressed());
+                      },
+                      child: Text('Login', style: buttonText)),
+                ),
             ],
           ),
         );

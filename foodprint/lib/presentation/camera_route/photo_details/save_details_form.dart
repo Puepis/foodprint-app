@@ -31,7 +31,6 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   String _price = "";
   String _comments = "";
 
-  // TODO: Add cancel button
   @override
   Widget build(BuildContext context) {
     final photoBloc = context.bloc<PhotoActionsBloc>();
