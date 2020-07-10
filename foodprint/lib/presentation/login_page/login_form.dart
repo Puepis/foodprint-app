@@ -157,8 +157,8 @@ class _LoginFormState extends State<LoginForm> {
                             height: 21,
                             width: 21,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                         ],

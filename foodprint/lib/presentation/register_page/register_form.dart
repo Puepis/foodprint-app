@@ -6,27 +6,24 @@ import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
-class RegisterForm extends StatelessWidget {
+class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
+
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<RegisterFormBloc, RegisterFormState>(
         listener: (context, state) {
       if (state.isSubmitting) {
-        Scaffold.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Registering...'),
-                  CircularProgressIndicator(),
-                ],
-              ),
-            ),
-          );
+        setState(() {
+          _isSubmitting = true;
+        });
       }
       state.authFailureOrSuccessOption.fold(
           () {},
@@ -43,9 +40,7 @@ class RegisterForm extends StatelessWidget {
                 ).show(context);
               }, (success) {
                 Navigator.push(
-                    context,
-                    SlideLeftRoute(
-                       newPage: const LoginPage()));
+                    context, SlideLeftRoute(newPage: const LoginPage()));
               }));
     }, builder: (context, state) {
       return Form(
@@ -115,20 +110,50 @@ class RegisterForm extends StatelessWidget {
                             orElse: () => null),
                         (r) => null)),
             const SizedBox(height: 30),
-            ButtonTheme(
-                height: 50,
-                child: RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                  ),
-                  onPressed: () {
-                    context
-                        .bloc<RegisterFormBloc>()
-                        .add(const RegisterFormEvent.registerPressed());
-                  },
-                  child: Text('Register', style: buttonText),
-                ))
+            if (_isSubmitting)
+              ButtonTheme(
+                  height: 50,
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                    ),
+                    onPressed: () => null,
+                    child: Stack(
+                      alignment: Alignment.centerLeft,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Register', style: buttonText),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 21,
+                          width: 21,
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ))
+            else
+              ButtonTheme(
+                  height: 50,
+                  child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                    ),
+                    onPressed: () {
+                      context
+                          .bloc<RegisterFormBloc>()
+                          .add(const RegisterFormEvent.registerPressed());
+                    },
+                    child: Text('Register', style: buttonText),
+                  ))
           ],
         ),
       );
