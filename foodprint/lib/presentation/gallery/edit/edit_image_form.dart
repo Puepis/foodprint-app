@@ -91,10 +91,13 @@ class _EditImageFormState extends State<EditImageForm> {
                   }
                   try {
                     final double price = double.parse(value);
-                    if (price >= 0 && price < 10000) {
-                      return null;
+                    if (price < 0) {
+                      return 'Please enter a non-negative value';
                     }
-                    return 'Please enter a valid price';
+                    if (price >= 10000) {
+                      return 'Price too high';
+                    }
+                    return null; // valid
                   } on FormatException {
                     return 'Please enter a valid price';
                   }
