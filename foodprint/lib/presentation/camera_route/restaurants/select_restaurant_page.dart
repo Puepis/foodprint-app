@@ -30,7 +30,6 @@ class SelectRestaurantPage extends StatelessWidget {
       @required this.token})
       : super(key: key);
 
-  // TODO: Implement manual restaurant search
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,58 +90,43 @@ class SelectRestaurantPage extends StatelessWidget {
 
   /// Returns the widget containing the restaurant buttons given the [context].
   Widget _buildRestaurantButtons(BuildContext context) {
-    return ListView.builder(
-        padding: const EdgeInsets.all(20),
+    return ListView.separated(
+        padding: const EdgeInsets.all(15),
         shrinkWrap: true,
         itemCount: restaurants.length,
-        itemBuilder: (cxt, index) => Container(
-              height: 50,
-              margin: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0)),
-                color: Theme.of(context).primaryColorDark,
-                onPressed: () {
-                  Navigator.of(context).push(EnterExitRoute(
-                      exitPage: this,
-                      enterPage: MultiBlocProvider(
-                        providers: [
-                          BlocProvider.value(
-                              value: context.bloc<PhotoActionsBloc>()),
-                          BlocProvider.value(
-                              value: context.bloc<FoodprintBloc>())
-                        ],
-                        child: PhotoDetailsPage(
-                          oldFoodprint: currentFoodprint,
-                          token: token,
-                          imageFile: imageFile,
-                          restaurant: restaurants[index],
-                        ),
-                      )));
-                },
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(5.0),
-                      child:
-                          const Icon(Icons.restaurant, color: Colors.white),
-                    ),
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5.0, horizontal: 5.0),
-                        child: Text(
-                            restaurants[index].restaurantName.getOrCrash(),
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300)),
-                      ),
-                    ),
-                  ],
-                ),
+        separatorBuilder: (context, index) => const Divider(),
+        itemBuilder: (cxt, index) => ListTile(
+              title: Text(restaurants[index].restaurantName.getOrCrash(),
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 18.0, fontWeight: FontWeight.w500)),
+              subtitle: Text(
+                  restaurants[index].restaurantRating.getOrCrash().toString(),
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 14.0, fontWeight: FontWeight.w300)),
+              leading: Icon(
+                Icons.restaurant,
+                size: 30,
+                color: primaryColor,
               ),
+              onTap: () {
+                Navigator.of(context).push(EnterExitRoute(
+                    exitPage: this,
+                    enterPage: MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                            value: context.bloc<PhotoActionsBloc>()),
+                        BlocProvider.value(value: context.bloc<FoodprintBloc>())
+                      ],
+                      child: PhotoDetailsPage(
+                        oldFoodprint: currentFoodprint,
+                        token: token,
+                        imageFile: imageFile,
+                        restaurant: restaurants[index],
+                      ),
+                    )));
+              },
             ));
   }
 }
