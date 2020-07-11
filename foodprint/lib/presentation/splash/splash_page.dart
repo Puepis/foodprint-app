@@ -6,9 +6,11 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
-/*
-  This class listens for the authentication state and routes accordingly
-*/
+/// The initial page that determines which page to show depending on the
+/// authentication state.
+///
+/// If the user is not authenticated, they are redirected to the [LoginPage],
+/// otherwise they are shown the [HomePage].
 class SplashPage extends StatelessWidget {
   static const routeName = "/splash";
   @override

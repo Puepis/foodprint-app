@@ -47,7 +47,7 @@ class NextPageButton extends StatelessWidget {
                     BlocProvider.value(value: context.bloc<FoodprintBloc>())
                   ],
                   child: SelectRestaurantPage(
-                      oldFoodprint: oldFoodprint,
+                      currentFoodprint: oldFoodprint,
                       token: token,
                       imageFile: imageFile,
                       restaurants: restaurants),

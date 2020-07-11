@@ -61,10 +61,7 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: appBar(context),
             drawerEnableOpenDragGesture: false,
-            drawer: AppDrawer(
-              token: widget.token,
-              foodprint: widget.foodprint
-            ),
+            drawer: AppDrawer(token: widget.token, foodprint: widget.foodprint),
             body: _selectedIndex == 0
                 ? Stack(children: [mapScreen, mapMenuButton()])
                 : Gallery(
@@ -178,9 +175,8 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       centerTitle: true,
       automaticallyImplyLeading: false,
-      title: Text(
+      title: const Text(
         'Gallery',
-        style: Theme.of(context).textTheme.headline6,
       ),
       leading: Builder(
           builder: (context) => IconButton(

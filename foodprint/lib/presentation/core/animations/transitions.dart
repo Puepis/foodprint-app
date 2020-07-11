@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
 
-/*
-  This class defines the animated route transition where the new page
-  slides from the right to the left.
-*/
+/// An animated route transition where the new page slides in from the right.
+/// 
+/// Uses a [easeOutCubic] animation curve to decelerate the motion.
 class SlideLeftRoute extends PageRouteBuilder {
   final Widget newPage;
 
@@ -25,10 +24,9 @@ class SlideLeftRoute extends PageRouteBuilder {
             });
 }
 
-/*
-  This class defines the animated route transition where the new page
-  slides from the bottom to the top.
-*/
+/// An animated route transition where the new page slides in from the bottom.
+/// 
+/// Uses a [easeOutCubic] animation curve to decelerate the motion.
 class SlideUpEnterRoute extends PageRouteBuilder {
   final Widget newPage;
 
@@ -50,6 +48,10 @@ class SlideUpEnterRoute extends PageRouteBuilder {
             });
 }
 
+/// An animated route transition where the page exits by sliding down.
+/// 
+/// To be used as the ending animation to [SlideUpEnterRoute]. Uses a [easeIn] 
+/// animation curve to accelerate the motion.
 class SlideDownExitRoute extends PageRouteBuilder {
   final Widget newPage;
 
@@ -71,9 +73,8 @@ class SlideDownExitRoute extends PageRouteBuilder {
             });
 }
 
-/*
-  Fade in route
-*/
+/// An animated route transition where the new page fades in.
+/// 
 class FadeRoute extends PageRouteBuilder {
   final Widget newPage;
   FadeRoute({@required this.newPage})
@@ -93,9 +94,10 @@ class FadeRoute extends PageRouteBuilder {
             });
 }
 
-/*
-  Slide exit page out and slide enter page in
-*/
+/// An animated route transition where the current page slides out to the left
+/// while the new page slides in from the right. 
+/// 
+/// Uses a [easeInOut] animation curve to introduce non-linear motion. 
 class EnterExitRoute extends PageRouteBuilder {
   final Widget enterPage;
   final Widget exitPage;

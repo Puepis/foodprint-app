@@ -7,7 +7,6 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -101,8 +100,9 @@ class AppDrawer extends StatelessWidget {
                 showLicensePage(
                   context: context,
                   applicationVersion: '1.0.0',
-                  applicationLegalese: "Legal information", // TODO: Add legal information
-                  );
+                  applicationLegalese:
+                      "Legal information", // TODO: Add legal information
+                );
               },
             ),
           )
@@ -145,7 +145,7 @@ class AppDrawer extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                             fontSize: 26.0,
                             color: Colors.white,
-                            fontWeight: FontWeight.w500)),
+                            fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
@@ -153,7 +153,9 @@ class AppDrawer extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 5.0, top: 10),
                 child: Text("${photos.length} Photos",
                     style: GoogleFonts.montserrat(
-                        color: Colors.white, fontSize: 16.0)),
+                        color: Colors.white,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w600)),
               ),
             ],
           ),

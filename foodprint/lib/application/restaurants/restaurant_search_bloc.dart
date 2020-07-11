@@ -41,8 +41,8 @@ class RestaurantSearchBloc
             await _client.searchRestaurants(latitude: lat, longitude: lng);
 
         // Create new state
-        yield failureOrSuccess.fold((failure) => SearchStateError(failure),
-            (success) => SearchStateSuccess(success));
+        yield failureOrSuccess.fold((f) => SearchStateError(failure: f),
+            (r) => SearchStateSuccess(restaurants: r));
       }
     }
   }

@@ -10,9 +10,10 @@ import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
-/* 
- * This class handles the image capture.
- */
+/// The widget that handles photo capturing.
+/// 
+/// The [image_picker] library is used to take a photo. Once the photo is 
+/// captured, it is displayed in the [DisplayPhoto] widget.
 class Camera extends StatefulWidget {
   final FoodprintEntity oldFoodprint;
   final LatLng location;
