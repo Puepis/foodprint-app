@@ -67,6 +67,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     .value
                     .fold(
                         (f) => f.maybeMap(
+                            empty: (_) => 'Username must not be empty',
                             exceedingLength: (_) =>
                                 'Username must not be more than 20 characters',
                             orElse: () => null),

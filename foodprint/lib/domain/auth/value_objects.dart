@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/core/failures.dart';
@@ -14,15 +13,21 @@ class Username extends ValueObject<String> {
 
   factory Username(String username) {
     assert(username != null);
-    return Username._(
-      validateMaxStringLength(username, maxLength),
-    );
+    Either<ValueFailure<String>, String> result;
+    final emptyOrNot = validateStringNotEmpty(username);
+
+    // Username not empty
+    if (emptyOrNot.isRight()) {
+      result = validateMaxStringLength(username, maxLength);
+    } else {
+      result = emptyOrNot;
+    }
+    return Username._(result);
   }
 
   // Private constructor
   const Username._(this.value) : assert(value != null);
 }
-
 
 /// The [ValueObject] representing the password for user authentication.
 @immutable
@@ -49,15 +54,13 @@ class ConfirmationPassword extends ValueObject<String> {
 
   factory ConfirmationPassword(String confirmationPassword) {
     assert(confirmationPassword != null);
-    return ConfirmationPassword._(
-      right(confirmationPassword)
-    );
+    return ConfirmationPassword._(right(confirmationPassword));
   }
 
   const ConfirmationPassword._(this.value) : assert(value != null);
 }
 
-/// The [ValueObject] representing the user id. 
+/// The [ValueObject] representing the user id.
 @immutable
 class UserID extends ValueObject<int> {
   @override
@@ -65,16 +68,10 @@ class UserID extends ValueObject<int> {
 
   factory UserID(int id) {
     assert(id != null);
-    return UserID._( 
+    return UserID._(
       right(id),
     );
   }
 
   const UserID._(this.value) : assert(value != null);
-} 
-
-
-
-
-
-
+}

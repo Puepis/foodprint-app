@@ -76,6 +76,7 @@ class _LoginFormState extends State<LoginForm> {
                       .value
                       .fold(
                           (f) => f.maybeMap(
+                              empty: (_) => 'Username must not be empty',
                               exceedingLength: (_) =>
                                   'Username length exceeded',
                               orElse: () => null),
