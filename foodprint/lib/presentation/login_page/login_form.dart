@@ -6,7 +6,6 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/core/styles/text_styles.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -133,22 +132,15 @@ class _LoginFormState extends State<LoginForm> {
                 height: 30.0,
               ),
               if (_isSubmitting)
-                loadingButton(text: "Login")
+                const AuthLoadingButton(title: "Login")
               else
-                ButtonTheme(
-                  height: 50,
-                  child: RaisedButton(
-                      color: primaryColorDark,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(7)),
-                      ),
-                      onPressed: () {
-                        context
-                            .bloc<LoginFormBloc>()
-                            .add(const LoginFormEvent.loginPressed());
-                      },
-                      child: Text('Login', style: buttonText)),
-                ),
+                AuthIdleButton(
+                    title: "Login",
+                    onPressed: () {
+                      context
+                          .bloc<LoginFormBloc>()
+                          .add(const LoginFormEvent.loginPressed());
+                    })
             ],
           ),
         );

@@ -136,22 +136,15 @@ class _RegisterFormState extends State<RegisterForm> {
                   )),
             ),
             if (_isSubmitting)
-              loadingButton(text: "Register")
+              const AuthLoadingButton(title: "Register")
             else
-              ButtonTheme(
-                  height: 50,
-                  child: RaisedButton(
-                    color: Theme.of(context).primaryColor,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(7.0)),
-                    ),
-                    onPressed: () {
-                      context
-                          .bloc<RegisterFormBloc>()
-                          .add(const RegisterFormEvent.registerPressed());
-                    },
-                    child: Text('Register', style: buttonText),
-                  ))
+              AuthIdleButton(
+                  title: "Register",
+                  onPressed: () {
+                    context
+                        .bloc<RegisterFormBloc>()
+                        .add(const RegisterFormEvent.registerPressed());
+                  })
           ],
         ),
       );
