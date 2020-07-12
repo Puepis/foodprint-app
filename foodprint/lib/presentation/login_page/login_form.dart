@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/presentation/common/widgets.dart';
+import 'package:foodprint/presentation/common/buttons.dart';
+import 'package:foodprint/presentation/common/text_fields.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 
 class LoginForm extends StatefulWidget {
@@ -62,15 +64,12 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextFormField(
-                  autocorrect: false,
-                  decoration: InputDecoration(
-                    labelText: "Username",
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7.0)),
-                  ),
-                  onChanged: (value) => context.bloc<LoginFormBloc>().add(
-                      LoginFormEvent.usernameChanged(value)), // fire an event
+              AuthFormField(
+                  labelText: "Username",
+                  prefixIconData: Icons.person,
+                  onChanged: (value) => context
+                      .bloc<LoginFormBloc>()
+                      .add(LoginFormEvent.usernameChanged(value)),
                   validator: (_) => context
                       .bloc<LoginFormBloc>()
                       .state
@@ -85,28 +84,24 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 20,
               ),
-              TextFormField(
-                  autocorrect: false,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                          semanticLabel:
-                              _obscureText ? "Hide password" : "Show password",
-                        ),
-                        onPressed: () {
-                          _toggle();
-                        },
-                      ),
-                      hintText: '********',
-                      labelText: "Password",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0))),
+              AuthFormField(
+                  labelText: "Password",
+                  prefixIconData: Icons.lock,
+                  visibilityIconButton: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: primaryColorDark,
+                      semanticLabel:
+                          _obscureText ? "Hide password" : "Show password",
+                    ),
+                    onPressed: () {
+                      _toggle();
+                    },
+                  ),
                   obscureText: _obscureText,
-                  onChanged: (value) => context.bloc<LoginFormBloc>().add(
-                      LoginFormEvent.passwordChanged(value)), // fire an event
+                  onChanged: (value) => context
+                      .bloc<LoginFormBloc>()
+                      .add(LoginFormEvent.passwordChanged(value)),
                   validator: (_) => context
                       .bloc<LoginFormBloc>()
                       .state
@@ -114,7 +109,8 @@ class _LoginFormState extends State<LoginForm> {
                       .value
                       .fold(
                           (f) => f.maybeMap(
-                              shortPassword: (_) => 'Short Password',
+                              passwordTooLong: (_) => 'Password too long',
+                              passwordTooShort: (_) => 'Password too short',
                               orElse: () => null),
                           (r) => null)),
               const SizedBox(
@@ -142,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
                 ButtonTheme(
                   height: 50,
                   child: RaisedButton(
-                      color: Theme.of(context).primaryColor,
+                      color: primaryColorDark,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(7)),
                       ),

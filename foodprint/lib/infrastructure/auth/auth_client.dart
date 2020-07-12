@@ -15,23 +15,17 @@ import 'package:http/http.dart' as http;
 // Implements the interface authentication methods (communicates with the outside world)
 @LazySingleton(as: IAuthRepository)
 class AuthClient implements IAuthRepository {
-  final JWTStorageClient _storageClient = JWTStorageClient(storage: const FlutterSecureStorage());
+  final JWTStorageClient _storageClient =
+      JWTStorageClient(storage: const FlutterSecureStorage());
 
   @override
   Future<Either<RegisterFailure, Unit>> register(
-      {@required EmailAddress emailAddress,
-      @required Username username,
-      @required Password password}) async {
-
-    final emailAddressStr = emailAddress.getOrCrash();
+      {@required Username username, @required Password password}) async {
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash();
 
-    final res = await http.post("$serverIP/api/users/register", body: {
-      "email": emailAddressStr,
-      "username": usernameStr,
-      "password": passwordStr
-    });
+    final res = await http.post("$serverIP/api/users/register",
+        body: {"username": usernameStr, "password": passwordStr});
 
     if (res.statusCode == 200) {
       return right(unit);
@@ -47,41 +41,34 @@ class AuthClient implements IAuthRepository {
   @override
   Future<Either<LoginFailure, JWT>> login(
       {@required Username username, @required Password password}) async {
-
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash();
     final res = await http.post("$serverIP/api/users/login",
         body: {"username": usernameStr, "password": passwordStr});
 
     if (res.statusCode == 200) {
-      final JWT jwt = JWT(token: res.body); // token should be valid but check in case of tampering
+      final JWT jwt = JWT(
+          token:
+              res.body); // token should be valid but check in case of tampering
 
       if (jwt.isValid()) {
-
         // Store token
         await _storageClient.storeUserToken(jwt);
         return right(jwt);
-
-      } 
-      else {
+      } else {
         return left(const LoginFailure.serverError());
       }
-
-    } 
-    else if (res.statusCode == 401) {
+    } else if (res.statusCode == 401) {
       return left(const LoginFailure.invalidLoginCombination());
-    } 
-    else {
+    } else {
       return left(const LoginFailure.serverError());
     }
   }
 
   @override
   Future<Option<JWT>> getUserToken() async {
-
     try {
-      final JWT jwt =
-          await _storageClient.getUserToken(); // try to fetch token
+      final JWT jwt = await _storageClient.getUserToken(); // try to fetch token
 
       // Check if token expired
       final String token = jwt.getOrCrash();
@@ -90,7 +77,8 @@ class AuthClient implements IAuthRepository {
       final DateTime expiry =
           DateTime.fromMillisecondsSinceEpoch((payload["exp"] as int) * 1000);
 
-      if (expiry.isAfter(DateTime.now())) { // hasn't expired
+      if (expiry.isAfter(DateTime.now())) {
+        // hasn't expired
         return some(jwt);
       }
 
@@ -105,7 +93,8 @@ class AuthClient implements IAuthRepository {
   // Log out the user
   @override
   Future<void> logout({@required JWT token}) async {
-    final String username = JWT.getDecodedPayload(token.getOrCrash())['username'].toString();
+    final String username =
+        JWT.getDecodedPayload(token.getOrCrash())['username'].toString();
 
     await http.post("$serverIP/api/users/logout", body: {"username": username});
     await _storageClient.deleteUserToken();

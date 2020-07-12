@@ -7,6 +7,7 @@ part of 'restaurant_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
 
 class _$RestaurantFailureTearOff {
   const _$RestaurantFailureTearOff();

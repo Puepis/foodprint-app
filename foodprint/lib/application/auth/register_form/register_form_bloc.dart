@@ -28,13 +28,6 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
     RegisterFormEvent event,
   ) async* {
     yield* event.map(
-      emailChanged: (e) async* {
-        yield state.copyWith(
-            emailAddress: EmailAddress(e.emailStr),
-            authFailureOrSuccessOption:
-                none() // associate new email address with new auth response
-            );
-      },
       usernameChanged: (e) async* {
         yield state.copyWith(
             username: Username(e.usernameStr),
@@ -43,25 +36,41 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
       passwordChanged: (e) async* {
         yield state.copyWith(
             password: Password(e.passwordStr),
+            passwordsMatch: e.passwordStr
+                    .compareTo(state.confirmationPassword.getOrCrash()) ==
+                0,
             authFailureOrSuccessOption: none());
+      },
+      confirmationPasswordChanged: (e) async* {
+        if (state.password.isValid()) {
+          final bool match =
+              state.password.getOrCrash().compareTo(e.confirmationStr) == 0;
+          yield state.copyWith(
+              confirmationPassword: ConfirmationPassword(e.confirmationStr),
+              passwordsMatch: match,
+              authFailureOrSuccessOption: none());
+        } else {
+          yield state.copyWith(
+              confirmationPassword: ConfirmationPassword(e.confirmationStr),
+              // The passwords can't be compared so don't display error
+              passwordsMatch: true,
+              authFailureOrSuccessOption: none());
+        }
       },
       registerPressed: (e) async* {
         Either<RegisterFailure, Unit> failureOrSuccess;
 
         // Check if the fields are valid
-        final isEmailValid = state.emailAddress.isValid();
         final isPasswordValid = state.password.isValid();
         final isUsernameValid = state.username.isValid();
 
-        if (isEmailValid && isPasswordValid && isUsernameValid) {
+        if (isPasswordValid && isUsernameValid && state.passwordsMatch) {
           yield state.copyWith(
               isSubmitting: true, authFailureOrSuccessOption: none());
 
-          // Attempt to register 
+          // Attempt to register
           failureOrSuccess = await _authClient.register(
-              emailAddress: state.emailAddress,
-              password: state.password,
-              username: state.username);
+              password: state.password, username: state.username);
         }
         // Invalid input
         yield state.copyWith(

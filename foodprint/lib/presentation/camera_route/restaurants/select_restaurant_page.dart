@@ -14,7 +14,7 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 /// select.
 ///
 /// If the list doesn't contain the desired restaurant, the user can use the
-/// [ManualRestaurantSearchPage] to find the correct one. This widget requires
+/// [ManualSearchPage] to find the correct one. This widget requires
 /// the [currentFoodprint], [imageFile], and user [token] to pass to
 /// the [PhotoDetailsPage] for saving purposes.
 class SelectRestaurantPage extends StatelessWidget {
@@ -32,59 +32,152 @@ class SelectRestaurantPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(120.0),
-        child: AppBar(
-          backgroundColor: primaryColorDark,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          flexibleSpace: const Center(
-            child: Text(
-              "Select your location!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 30,
+    if (restaurants.isNotEmpty) {
+      // List restaurants
+      return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(120.0),
+            child: AppBar(
+              backgroundColor: primaryColorDark,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+              flexibleSpace: const Center(
+                child: Text(
+                  "Select your location!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 30,
+                  ),
+                ),
               ),
             ),
           ),
+          body: Column(
+            children: [
+              _buildRestaurantButtons(context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Restaurant not listed?",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Text(
+                      "Try a manual search",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColorDark,
+                          fontSize: 16.0),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ));
+    }
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "We couldn't find any restaurants near you.",
+              style: TextStyle(
+                  fontSize: 50.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.search,
+                    color: Colors.black,
+                    size: 40,
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "Try a manual search",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 30.0),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              child: Row(
+                children: const [
+                  Expanded(
+                    child: Divider(
+                      thickness: 1,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Text(
+                    "or",
+                    style: TextStyle(color: Colors.white, fontSize: 30.0),
+                  ),
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Expanded(
+                    flex: 2,
+                      child: Divider(
+                    thickness: 1,
+                    color: Colors.white,
+                  )),
+                ],
+              ),
+            ),
+            InkWell(
+              onTap: () {},
+              child: Row(
+                children: const [
+                  Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 40,
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "Return Home",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 30.0),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       ),
-      body: Container(
-          child: restaurants.isNotEmpty
-              ? Column(
-                  children: [
-                    _buildRestaurantButtons(context),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Restaurant not listed?",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 4.0,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            "Try a manual search",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColorDark,
-                                fontSize: 16.0),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              : const Text("No restaurants found")),
     );
   }
 

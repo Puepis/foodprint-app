@@ -32,8 +32,14 @@ class _$ValueFailureTearOff {
     );
   }
 
-  ShortPassword<T> shortPassword<T>({@required T failedValue}) {
-    return ShortPassword<T>(
+  PasswordTooShort<T> passwordTooShort<T>({@required T failedValue}) {
+    return PasswordTooShort<T>(
+      failedValue: failedValue,
+    );
+  }
+
+  PasswordTooLong<T> passwordTooLong<T>({@required T failedValue}) {
+    return PasswordTooLong<T>(
       failedValue: failedValue,
     );
   }
@@ -62,7 +68,8 @@ mixin _$ValueFailure<T> {
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   });
@@ -71,7 +78,8 @@ mixin _$ValueFailure<T> {
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -81,7 +89,8 @@ mixin _$ValueFailure<T> {
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   });
@@ -90,7 +99,8 @@ mixin _$ValueFailure<T> {
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
@@ -210,14 +220,16 @@ class _$ExceedingLength<T>
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return exceedingLength(failedValue, max);
@@ -229,7 +241,8 @@ class _$ExceedingLength<T>
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -247,14 +260,16 @@ class _$ExceedingLength<T>
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return exceedingLength(this);
@@ -266,7 +281,8 @@ class _$ExceedingLength<T>
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
@@ -359,14 +375,16 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return empty(failedValue);
@@ -378,7 +396,8 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -396,14 +415,16 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return empty(this);
@@ -415,7 +436,8 @@ class _$Empty<T> with DiagnosticableTreeMixin implements Empty<T> {
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
@@ -512,14 +534,16 @@ class _$InvalidEmail<T>
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return invalidEmail(failedValue);
@@ -531,7 +555,8 @@ class _$InvalidEmail<T>
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -549,14 +574,16 @@ class _$InvalidEmail<T>
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return invalidEmail(this);
@@ -568,7 +595,8 @@ class _$InvalidEmail<T>
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
@@ -590,40 +618,40 @@ abstract class InvalidEmail<T> implements ValueFailure<T> {
   $InvalidEmailCopyWith<T, InvalidEmail<T>> get copyWith;
 }
 
-abstract class $ShortPasswordCopyWith<T, $Res>
+abstract class $PasswordTooShortCopyWith<T, $Res>
     implements $ValueFailureCopyWith<T, $Res> {
-  factory $ShortPasswordCopyWith(
-          ShortPassword<T> value, $Res Function(ShortPassword<T>) then) =
-      _$ShortPasswordCopyWithImpl<T, $Res>;
+  factory $PasswordTooShortCopyWith(
+          PasswordTooShort<T> value, $Res Function(PasswordTooShort<T>) then) =
+      _$PasswordTooShortCopyWithImpl<T, $Res>;
   @override
   $Res call({T failedValue});
 }
 
-class _$ShortPasswordCopyWithImpl<T, $Res>
+class _$PasswordTooShortCopyWithImpl<T, $Res>
     extends _$ValueFailureCopyWithImpl<T, $Res>
-    implements $ShortPasswordCopyWith<T, $Res> {
-  _$ShortPasswordCopyWithImpl(
-      ShortPassword<T> _value, $Res Function(ShortPassword<T>) _then)
-      : super(_value, (v) => _then(v as ShortPassword<T>));
+    implements $PasswordTooShortCopyWith<T, $Res> {
+  _$PasswordTooShortCopyWithImpl(
+      PasswordTooShort<T> _value, $Res Function(PasswordTooShort<T>) _then)
+      : super(_value, (v) => _then(v as PasswordTooShort<T>));
 
   @override
-  ShortPassword<T> get _value => super._value as ShortPassword<T>;
+  PasswordTooShort<T> get _value => super._value as PasswordTooShort<T>;
 
   @override
   $Res call({
     Object failedValue = freezed,
   }) {
-    return _then(ShortPassword<T>(
+    return _then(PasswordTooShort<T>(
       failedValue:
           failedValue == freezed ? _value.failedValue : failedValue as T,
     ));
   }
 }
 
-class _$ShortPassword<T>
+class _$PasswordTooShort<T>
     with DiagnosticableTreeMixin
-    implements ShortPassword<T> {
-  const _$ShortPassword({@required this.failedValue})
+    implements PasswordTooShort<T> {
+  const _$PasswordTooShort({@required this.failedValue})
       : assert(failedValue != null);
 
   @override
@@ -631,21 +659,21 @@ class _$ShortPassword<T>
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ValueFailure<$T>.shortPassword(failedValue: $failedValue)';
+    return 'ValueFailure<$T>.passwordTooShort(failedValue: $failedValue)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'ValueFailure<$T>.shortPassword'))
+      ..add(DiagnosticsProperty('type', 'ValueFailure<$T>.passwordTooShort'))
       ..add(DiagnosticsProperty('failedValue', failedValue));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is ShortPassword<T> &&
+        (other is PasswordTooShort<T> &&
             (identical(other.failedValue, failedValue) ||
                 const DeepCollectionEquality()
                     .equals(other.failedValue, failedValue)));
@@ -656,8 +684,8 @@ class _$ShortPassword<T>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
 
   @override
-  $ShortPasswordCopyWith<T, ShortPassword<T>> get copyWith =>
-      _$ShortPasswordCopyWithImpl<T, ShortPassword<T>>(this, _$identity);
+  $PasswordTooShortCopyWith<T, PasswordTooShort<T>> get copyWith =>
+      _$PasswordTooShortCopyWithImpl<T, PasswordTooShort<T>>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -665,17 +693,19 @@ class _$ShortPassword<T>
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
-    return shortPassword(failedValue);
+    return passwordTooShort(failedValue);
   }
 
   @override
@@ -684,14 +714,15 @@ class _$ShortPassword<T>
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (shortPassword != null) {
-      return shortPassword(failedValue);
+    if (passwordTooShort != null) {
+      return passwordTooShort(failedValue);
     }
     return orElse();
   }
@@ -702,17 +733,19 @@ class _$ShortPassword<T>
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
-    return shortPassword(this);
+    return passwordTooShort(this);
   }
 
   @override
@@ -721,26 +754,188 @@ class _$ShortPassword<T>
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (shortPassword != null) {
-      return shortPassword(this);
+    if (passwordTooShort != null) {
+      return passwordTooShort(this);
     }
     return orElse();
   }
 }
 
-abstract class ShortPassword<T> implements ValueFailure<T> {
-  const factory ShortPassword({@required T failedValue}) = _$ShortPassword<T>;
+abstract class PasswordTooShort<T> implements ValueFailure<T> {
+  const factory PasswordTooShort({@required T failedValue}) =
+      _$PasswordTooShort<T>;
 
   @override
   T get failedValue;
   @override
-  $ShortPasswordCopyWith<T, ShortPassword<T>> get copyWith;
+  $PasswordTooShortCopyWith<T, PasswordTooShort<T>> get copyWith;
+}
+
+abstract class $PasswordTooLongCopyWith<T, $Res>
+    implements $ValueFailureCopyWith<T, $Res> {
+  factory $PasswordTooLongCopyWith(
+          PasswordTooLong<T> value, $Res Function(PasswordTooLong<T>) then) =
+      _$PasswordTooLongCopyWithImpl<T, $Res>;
+  @override
+  $Res call({T failedValue});
+}
+
+class _$PasswordTooLongCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $PasswordTooLongCopyWith<T, $Res> {
+  _$PasswordTooLongCopyWithImpl(
+      PasswordTooLong<T> _value, $Res Function(PasswordTooLong<T>) _then)
+      : super(_value, (v) => _then(v as PasswordTooLong<T>));
+
+  @override
+  PasswordTooLong<T> get _value => super._value as PasswordTooLong<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(PasswordTooLong<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
+}
+
+class _$PasswordTooLong<T>
+    with DiagnosticableTreeMixin
+    implements PasswordTooLong<T> {
+  const _$PasswordTooLong({@required this.failedValue})
+      : assert(failedValue != null);
+
+  @override
+  final T failedValue;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ValueFailure<$T>.passwordTooLong(failedValue: $failedValue)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ValueFailure<$T>.passwordTooLong'))
+      ..add(DiagnosticsProperty('failedValue', failedValue));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is PasswordTooLong<T> &&
+            (identical(other.failedValue, failedValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.failedValue, failedValue)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
+
+  @override
+  $PasswordTooLongCopyWith<T, PasswordTooLong<T>> get copyWith =>
+      _$PasswordTooLongCopyWithImpl<T, PasswordTooLong<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result exceedingLength(T failedValue, int max),
+    @required Result empty(T failedValue),
+    @required Result invalidEmail(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
+    @required Result outofBounds(T failedValue),
+    @required Result invalidToken(T failedValue),
+  }) {
+    assert(exceedingLength != null);
+    assert(empty != null);
+    assert(invalidEmail != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
+    assert(outofBounds != null);
+    assert(invalidToken != null);
+    return passwordTooLong(failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result exceedingLength(T failedValue, int max),
+    Result empty(T failedValue),
+    Result invalidEmail(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
+    Result outofBounds(T failedValue),
+    Result invalidToken(T failedValue),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (passwordTooLong != null) {
+      return passwordTooLong(failedValue);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result exceedingLength(ExceedingLength<T> value),
+    @required Result empty(Empty<T> value),
+    @required Result invalidEmail(InvalidEmail<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
+    @required Result outofBounds(OutOfBounds<T> value),
+    @required Result invalidToken(InvalidToken<T> value),
+  }) {
+    assert(exceedingLength != null);
+    assert(empty != null);
+    assert(invalidEmail != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
+    assert(outofBounds != null);
+    assert(invalidToken != null);
+    return passwordTooLong(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result exceedingLength(ExceedingLength<T> value),
+    Result empty(Empty<T> value),
+    Result invalidEmail(InvalidEmail<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
+    Result outofBounds(OutOfBounds<T> value),
+    Result invalidToken(InvalidToken<T> value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (passwordTooLong != null) {
+      return passwordTooLong(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class PasswordTooLong<T> implements ValueFailure<T> {
+  const factory PasswordTooLong({@required T failedValue}) =
+      _$PasswordTooLong<T>;
+
+  @override
+  T get failedValue;
+  @override
+  $PasswordTooLongCopyWith<T, PasswordTooLong<T>> get copyWith;
 }
 
 abstract class $OutOfBoundsCopyWith<T, $Res>
@@ -816,14 +1011,16 @@ class _$OutOfBounds<T> with DiagnosticableTreeMixin implements OutOfBounds<T> {
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return outofBounds(failedValue);
@@ -835,7 +1032,8 @@ class _$OutOfBounds<T> with DiagnosticableTreeMixin implements OutOfBounds<T> {
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -853,14 +1051,16 @@ class _$OutOfBounds<T> with DiagnosticableTreeMixin implements OutOfBounds<T> {
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return outofBounds(this);
@@ -872,7 +1072,8 @@ class _$OutOfBounds<T> with DiagnosticableTreeMixin implements OutOfBounds<T> {
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),
@@ -969,14 +1170,16 @@ class _$InvalidToken<T>
     @required Result exceedingLength(T failedValue, int max),
     @required Result empty(T failedValue),
     @required Result invalidEmail(T failedValue),
-    @required Result shortPassword(T failedValue),
+    @required Result passwordTooShort(T failedValue),
+    @required Result passwordTooLong(T failedValue),
     @required Result outofBounds(T failedValue),
     @required Result invalidToken(T failedValue),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return invalidToken(failedValue);
@@ -988,7 +1191,8 @@ class _$InvalidToken<T>
     Result exceedingLength(T failedValue, int max),
     Result empty(T failedValue),
     Result invalidEmail(T failedValue),
-    Result shortPassword(T failedValue),
+    Result passwordTooShort(T failedValue),
+    Result passwordTooLong(T failedValue),
     Result outofBounds(T failedValue),
     Result invalidToken(T failedValue),
     @required Result orElse(),
@@ -1006,14 +1210,16 @@ class _$InvalidToken<T>
     @required Result exceedingLength(ExceedingLength<T> value),
     @required Result empty(Empty<T> value),
     @required Result invalidEmail(InvalidEmail<T> value),
-    @required Result shortPassword(ShortPassword<T> value),
+    @required Result passwordTooShort(PasswordTooShort<T> value),
+    @required Result passwordTooLong(PasswordTooLong<T> value),
     @required Result outofBounds(OutOfBounds<T> value),
     @required Result invalidToken(InvalidToken<T> value),
   }) {
     assert(exceedingLength != null);
     assert(empty != null);
     assert(invalidEmail != null);
-    assert(shortPassword != null);
+    assert(passwordTooShort != null);
+    assert(passwordTooLong != null);
     assert(outofBounds != null);
     assert(invalidToken != null);
     return invalidToken(this);
@@ -1025,7 +1231,8 @@ class _$InvalidToken<T>
     Result exceedingLength(ExceedingLength<T> value),
     Result empty(Empty<T> value),
     Result invalidEmail(InvalidEmail<T> value),
-    Result shortPassword(ShortPassword<T> value),
+    Result passwordTooShort(PasswordTooShort<T> value),
+    Result passwordTooLong(PasswordTooLong<T> value),
     Result outofBounds(OutOfBounds<T> value),
     Result invalidToken(InvalidToken<T> value),
     @required Result orElse(),

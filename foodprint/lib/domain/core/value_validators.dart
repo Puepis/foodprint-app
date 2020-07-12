@@ -20,11 +20,14 @@ Either<ValueFailure<String>, String> validateMaxStringLength(String input, int m
 }
 
 Either<ValueFailure<String>, String> validatePassword(String input) {
-  if (input.length >= 6) {
-    return right(input);
-  } else {
-    return left(ValueFailure.shortPassword(failedValue: input)); // make illegal states unrepresentable
+  if (input.length < 6) {
+    return left(ValueFailure.passwordTooShort(failedValue: input)); // make illegal states unrepresentable
   }
+  if (input.length > 32) {
+    return left(ValueFailure.passwordTooShort(failedValue: input)); // make illegal states unrepresentable
+  }
+  // Valid password
+  return right(input);
 }
 
 Either<ValueFailure<String>, String> validateStringNotEmpty(String input) {

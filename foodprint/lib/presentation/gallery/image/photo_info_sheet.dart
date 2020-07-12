@@ -29,6 +29,7 @@ class PhotoInfoSheet extends StatelessWidget {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
+    // TODO: Use RichText
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(

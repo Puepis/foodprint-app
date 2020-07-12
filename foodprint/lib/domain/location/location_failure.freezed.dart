@@ -7,6 +7,7 @@ part of 'location_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
 
 class _$LocationFailureTearOff {
   const _$LocationFailureTearOff();

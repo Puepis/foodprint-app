@@ -7,6 +7,8 @@ part of 'login_failure.dart';
 // FreezedGenerator
 // **************************************************************************
 
+T _$identity<T>(T value) => value;
+
 class _$LoginFailureTearOff {
   const _$LoginFailureTearOff();
 

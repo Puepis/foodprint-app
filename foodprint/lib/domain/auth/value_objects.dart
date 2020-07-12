@@ -5,24 +5,7 @@ import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/core/value_validators.dart';
 
-// Validated Value Object
-// - don't want a simple String to represent each field, so we use VVOs
-@immutable
-class EmailAddress extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
-
-  factory EmailAddress(String email) {
-    assert(email != null);
-    return EmailAddress._(
-      validateEmailAddress(email),
-    );
-  }
-
-  // Private constructor
-  const EmailAddress._(this.value) : assert(value != null);
-}
-
+/// The [ValueObject] representing the username for user authentication.
 @immutable
 class Username extends ValueObject<String> {
   static const maxLength = 20;
@@ -40,6 +23,8 @@ class Username extends ValueObject<String> {
   const Username._(this.value) : assert(value != null);
 }
 
+
+/// The [ValueObject] representing the password for user authentication.
 @immutable
 class Password extends ValueObject<String> {
   @override
@@ -56,6 +41,23 @@ class Password extends ValueObject<String> {
   const Password._(this.value) : assert(value != null);
 }
 
+/// The [ValueObject] representing the confirmation password for user registration.
+@immutable
+class ConfirmationPassword extends ValueObject<String> {
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  factory ConfirmationPassword(String confirmationPassword) {
+    assert(confirmationPassword != null);
+    return ConfirmationPassword._(
+      right(confirmationPassword)
+    );
+  }
+
+  const ConfirmationPassword._(this.value) : assert(value != null);
+}
+
+/// The [ValueObject] representing the user id. 
 @immutable
 class UserID extends ValueObject<int> {
   @override

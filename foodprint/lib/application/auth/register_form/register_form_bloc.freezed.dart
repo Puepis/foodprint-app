@@ -12,12 +12,6 @@ T _$identity<T>(T value) => value;
 class _$RegisterFormEventTearOff {
   const _$RegisterFormEventTearOff();
 
-  EmailChanged emailChanged(String emailStr) {
-    return EmailChanged(
-      emailStr,
-    );
-  }
-
   UsernameChanged usernameChanged(String usernameStr) {
     return UsernameChanged(
       usernameStr,
@@ -27,6 +21,13 @@ class _$RegisterFormEventTearOff {
   PasswordChanged passwordChanged(String passwordStr) {
     return PasswordChanged(
       passwordStr,
+    );
+  }
+
+  ConfirmationPasswordChanged confirmationPasswordChanged(
+      String confirmationStr) {
+    return ConfirmationPasswordChanged(
+      confirmationStr,
     );
   }
 
@@ -41,31 +42,32 @@ const $RegisterFormEvent = _$RegisterFormEventTearOff();
 mixin _$RegisterFormEvent {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result emailChanged(String emailStr),
     @required Result usernameChanged(String usernameStr),
     @required Result passwordChanged(String passwordStr),
+    @required Result confirmationPasswordChanged(String confirmationStr),
     @required Result registerPressed(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result emailChanged(String emailStr),
     Result usernameChanged(String usernameStr),
     Result passwordChanged(String passwordStr),
+    Result confirmationPasswordChanged(String confirmationStr),
     Result registerPressed(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result emailChanged(EmailChanged value),
     @required Result usernameChanged(UsernameChanged value),
     @required Result passwordChanged(PasswordChanged value),
+    @required
+        Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     @required Result registerPressed(RegisterPressed value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result emailChanged(EmailChanged value),
     Result usernameChanged(UsernameChanged value),
     Result passwordChanged(PasswordChanged value),
+    Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     Result registerPressed(RegisterPressed value),
     @required Result orElse(),
   });
@@ -84,131 +86,6 @@ class _$RegisterFormEventCopyWithImpl<$Res>
   final RegisterFormEvent _value;
   // ignore: unused_field
   final $Res Function(RegisterFormEvent) _then;
-}
-
-abstract class $EmailChangedCopyWith<$Res> {
-  factory $EmailChangedCopyWith(
-          EmailChanged value, $Res Function(EmailChanged) then) =
-      _$EmailChangedCopyWithImpl<$Res>;
-  $Res call({String emailStr});
-}
-
-class _$EmailChangedCopyWithImpl<$Res>
-    extends _$RegisterFormEventCopyWithImpl<$Res>
-    implements $EmailChangedCopyWith<$Res> {
-  _$EmailChangedCopyWithImpl(
-      EmailChanged _value, $Res Function(EmailChanged) _then)
-      : super(_value, (v) => _then(v as EmailChanged));
-
-  @override
-  EmailChanged get _value => super._value as EmailChanged;
-
-  @override
-  $Res call({
-    Object emailStr = freezed,
-  }) {
-    return _then(EmailChanged(
-      emailStr == freezed ? _value.emailStr : emailStr as String,
-    ));
-  }
-}
-
-class _$EmailChanged implements EmailChanged {
-  const _$EmailChanged(this.emailStr) : assert(emailStr != null);
-
-  @override
-  final String emailStr;
-
-  @override
-  String toString() {
-    return 'RegisterFormEvent.emailChanged(emailStr: $emailStr)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is EmailChanged &&
-            (identical(other.emailStr, emailStr) ||
-                const DeepCollectionEquality()
-                    .equals(other.emailStr, emailStr)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(emailStr);
-
-  @override
-  $EmailChangedCopyWith<EmailChanged> get copyWith =>
-      _$EmailChangedCopyWithImpl<EmailChanged>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result emailChanged(String emailStr),
-    @required Result usernameChanged(String usernameStr),
-    @required Result passwordChanged(String passwordStr),
-    @required Result registerPressed(),
-  }) {
-    assert(emailChanged != null);
-    assert(usernameChanged != null);
-    assert(passwordChanged != null);
-    assert(registerPressed != null);
-    return emailChanged(emailStr);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result emailChanged(String emailStr),
-    Result usernameChanged(String usernameStr),
-    Result passwordChanged(String passwordStr),
-    Result registerPressed(),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (emailChanged != null) {
-      return emailChanged(emailStr);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result emailChanged(EmailChanged value),
-    @required Result usernameChanged(UsernameChanged value),
-    @required Result passwordChanged(PasswordChanged value),
-    @required Result registerPressed(RegisterPressed value),
-  }) {
-    assert(emailChanged != null);
-    assert(usernameChanged != null);
-    assert(passwordChanged != null);
-    assert(registerPressed != null);
-    return emailChanged(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result emailChanged(EmailChanged value),
-    Result usernameChanged(UsernameChanged value),
-    Result passwordChanged(PasswordChanged value),
-    Result registerPressed(RegisterPressed value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (emailChanged != null) {
-      return emailChanged(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class EmailChanged implements RegisterFormEvent {
-  const factory EmailChanged(String emailStr) = _$EmailChanged;
-
-  String get emailStr;
-  $EmailChangedCopyWith<EmailChanged> get copyWith;
 }
 
 abstract class $UsernameChangedCopyWith<$Res> {
@@ -269,14 +146,14 @@ class _$UsernameChanged implements UsernameChanged {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result emailChanged(String emailStr),
     @required Result usernameChanged(String usernameStr),
     @required Result passwordChanged(String passwordStr),
+    @required Result confirmationPasswordChanged(String confirmationStr),
     @required Result registerPressed(),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return usernameChanged(usernameStr);
   }
@@ -284,9 +161,9 @@ class _$UsernameChanged implements UsernameChanged {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result emailChanged(String emailStr),
     Result usernameChanged(String usernameStr),
     Result passwordChanged(String passwordStr),
+    Result confirmationPasswordChanged(String confirmationStr),
     Result registerPressed(),
     @required Result orElse(),
   }) {
@@ -300,14 +177,15 @@ class _$UsernameChanged implements UsernameChanged {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result emailChanged(EmailChanged value),
     @required Result usernameChanged(UsernameChanged value),
     @required Result passwordChanged(PasswordChanged value),
+    @required
+        Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     @required Result registerPressed(RegisterPressed value),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return usernameChanged(this);
   }
@@ -315,9 +193,9 @@ class _$UsernameChanged implements UsernameChanged {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result emailChanged(EmailChanged value),
     Result usernameChanged(UsernameChanged value),
     Result passwordChanged(PasswordChanged value),
+    Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     Result registerPressed(RegisterPressed value),
     @required Result orElse(),
   }) {
@@ -394,14 +272,14 @@ class _$PasswordChanged implements PasswordChanged {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result emailChanged(String emailStr),
     @required Result usernameChanged(String usernameStr),
     @required Result passwordChanged(String passwordStr),
+    @required Result confirmationPasswordChanged(String confirmationStr),
     @required Result registerPressed(),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return passwordChanged(passwordStr);
   }
@@ -409,9 +287,9 @@ class _$PasswordChanged implements PasswordChanged {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result emailChanged(String emailStr),
     Result usernameChanged(String usernameStr),
     Result passwordChanged(String passwordStr),
+    Result confirmationPasswordChanged(String confirmationStr),
     Result registerPressed(),
     @required Result orElse(),
   }) {
@@ -425,14 +303,15 @@ class _$PasswordChanged implements PasswordChanged {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result emailChanged(EmailChanged value),
     @required Result usernameChanged(UsernameChanged value),
     @required Result passwordChanged(PasswordChanged value),
+    @required
+        Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     @required Result registerPressed(RegisterPressed value),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return passwordChanged(this);
   }
@@ -440,9 +319,9 @@ class _$PasswordChanged implements PasswordChanged {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result emailChanged(EmailChanged value),
     Result usernameChanged(UsernameChanged value),
     Result passwordChanged(PasswordChanged value),
+    Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     Result registerPressed(RegisterPressed value),
     @required Result orElse(),
   }) {
@@ -459,6 +338,141 @@ abstract class PasswordChanged implements RegisterFormEvent {
 
   String get passwordStr;
   $PasswordChangedCopyWith<PasswordChanged> get copyWith;
+}
+
+abstract class $ConfirmationPasswordChangedCopyWith<$Res> {
+  factory $ConfirmationPasswordChangedCopyWith(
+          ConfirmationPasswordChanged value,
+          $Res Function(ConfirmationPasswordChanged) then) =
+      _$ConfirmationPasswordChangedCopyWithImpl<$Res>;
+  $Res call({String confirmationStr});
+}
+
+class _$ConfirmationPasswordChangedCopyWithImpl<$Res>
+    extends _$RegisterFormEventCopyWithImpl<$Res>
+    implements $ConfirmationPasswordChangedCopyWith<$Res> {
+  _$ConfirmationPasswordChangedCopyWithImpl(ConfirmationPasswordChanged _value,
+      $Res Function(ConfirmationPasswordChanged) _then)
+      : super(_value, (v) => _then(v as ConfirmationPasswordChanged));
+
+  @override
+  ConfirmationPasswordChanged get _value =>
+      super._value as ConfirmationPasswordChanged;
+
+  @override
+  $Res call({
+    Object confirmationStr = freezed,
+  }) {
+    return _then(ConfirmationPasswordChanged(
+      confirmationStr == freezed
+          ? _value.confirmationStr
+          : confirmationStr as String,
+    ));
+  }
+}
+
+class _$ConfirmationPasswordChanged implements ConfirmationPasswordChanged {
+  const _$ConfirmationPasswordChanged(this.confirmationStr)
+      : assert(confirmationStr != null);
+
+  @override
+  final String confirmationStr;
+
+  @override
+  String toString() {
+    return 'RegisterFormEvent.confirmationPasswordChanged(confirmationStr: $confirmationStr)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ConfirmationPasswordChanged &&
+            (identical(other.confirmationStr, confirmationStr) ||
+                const DeepCollectionEquality()
+                    .equals(other.confirmationStr, confirmationStr)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(confirmationStr);
+
+  @override
+  $ConfirmationPasswordChangedCopyWith<ConfirmationPasswordChanged>
+      get copyWith => _$ConfirmationPasswordChangedCopyWithImpl<
+          ConfirmationPasswordChanged>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result usernameChanged(String usernameStr),
+    @required Result passwordChanged(String passwordStr),
+    @required Result confirmationPasswordChanged(String confirmationStr),
+    @required Result registerPressed(),
+  }) {
+    assert(usernameChanged != null);
+    assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
+    assert(registerPressed != null);
+    return confirmationPasswordChanged(confirmationStr);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result usernameChanged(String usernameStr),
+    Result passwordChanged(String passwordStr),
+    Result confirmationPasswordChanged(String confirmationStr),
+    Result registerPressed(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (confirmationPasswordChanged != null) {
+      return confirmationPasswordChanged(confirmationStr);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result usernameChanged(UsernameChanged value),
+    @required Result passwordChanged(PasswordChanged value),
+    @required
+        Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
+    @required Result registerPressed(RegisterPressed value),
+  }) {
+    assert(usernameChanged != null);
+    assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
+    assert(registerPressed != null);
+    return confirmationPasswordChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result usernameChanged(UsernameChanged value),
+    Result passwordChanged(PasswordChanged value),
+    Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
+    Result registerPressed(RegisterPressed value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (confirmationPasswordChanged != null) {
+      return confirmationPasswordChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ConfirmationPasswordChanged implements RegisterFormEvent {
+  const factory ConfirmationPasswordChanged(String confirmationStr) =
+      _$ConfirmationPasswordChanged;
+
+  String get confirmationStr;
+  $ConfirmationPasswordChangedCopyWith<ConfirmationPasswordChanged>
+      get copyWith;
 }
 
 abstract class $RegisterPressedCopyWith<$Res> {
@@ -497,14 +511,14 @@ class _$RegisterPressed implements RegisterPressed {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result emailChanged(String emailStr),
     @required Result usernameChanged(String usernameStr),
     @required Result passwordChanged(String passwordStr),
+    @required Result confirmationPasswordChanged(String confirmationStr),
     @required Result registerPressed(),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return registerPressed();
   }
@@ -512,9 +526,9 @@ class _$RegisterPressed implements RegisterPressed {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result emailChanged(String emailStr),
     Result usernameChanged(String usernameStr),
     Result passwordChanged(String passwordStr),
+    Result confirmationPasswordChanged(String confirmationStr),
     Result registerPressed(),
     @required Result orElse(),
   }) {
@@ -528,14 +542,15 @@ class _$RegisterPressed implements RegisterPressed {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result emailChanged(EmailChanged value),
     @required Result usernameChanged(UsernameChanged value),
     @required Result passwordChanged(PasswordChanged value),
+    @required
+        Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     @required Result registerPressed(RegisterPressed value),
   }) {
-    assert(emailChanged != null);
     assert(usernameChanged != null);
     assert(passwordChanged != null);
+    assert(confirmationPasswordChanged != null);
     assert(registerPressed != null);
     return registerPressed(this);
   }
@@ -543,9 +558,9 @@ class _$RegisterPressed implements RegisterPressed {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result emailChanged(EmailChanged value),
     Result usernameChanged(UsernameChanged value),
     Result passwordChanged(PasswordChanged value),
+    Result confirmationPasswordChanged(ConfirmationPasswordChanged value),
     Result registerPressed(RegisterPressed value),
     @required Result orElse(),
   }) {
@@ -566,11 +581,13 @@ class _$RegisterFormStateTearOff {
 
   _RegisterFormState call(
       {@required
-          EmailAddress emailAddress,
-      @required
           Username username,
       @required
           Password password,
+      @required
+          ConfirmationPassword confirmationPassword,
+      @required
+          bool passwordsMatch,
       @required
           bool showErrorMessages,
       @required
@@ -578,9 +595,10 @@ class _$RegisterFormStateTearOff {
       @required
           Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption}) {
     return _RegisterFormState(
-      emailAddress: emailAddress,
       username: username,
       password: password,
+      confirmationPassword: confirmationPassword,
+      passwordsMatch: passwordsMatch,
       showErrorMessages: showErrorMessages,
       isSubmitting: isSubmitting,
       authFailureOrSuccessOption: authFailureOrSuccessOption,
@@ -592,9 +610,10 @@ class _$RegisterFormStateTearOff {
 const $RegisterFormState = _$RegisterFormStateTearOff();
 
 mixin _$RegisterFormState {
-  EmailAddress get emailAddress;
   Username get username;
   Password get password;
+  ConfirmationPassword get confirmationPassword;
+  bool get passwordsMatch;
   bool get showErrorMessages;
   bool get isSubmitting;
   Option<Either<RegisterFailure, Unit>> get authFailureOrSuccessOption;
@@ -607,9 +626,10 @@ abstract class $RegisterFormStateCopyWith<$Res> {
           RegisterFormState value, $Res Function(RegisterFormState) then) =
       _$RegisterFormStateCopyWithImpl<$Res>;
   $Res call(
-      {EmailAddress emailAddress,
-      Username username,
+      {Username username,
       Password password,
+      ConfirmationPassword confirmationPassword,
+      bool passwordsMatch,
       bool showErrorMessages,
       bool isSubmitting,
       Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption});
@@ -625,19 +645,23 @@ class _$RegisterFormStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object emailAddress = freezed,
     Object username = freezed,
     Object password = freezed,
+    Object confirmationPassword = freezed,
+    Object passwordsMatch = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
     Object authFailureOrSuccessOption = freezed,
   }) {
     return _then(_value.copyWith(
-      emailAddress: emailAddress == freezed
-          ? _value.emailAddress
-          : emailAddress as EmailAddress,
       username: username == freezed ? _value.username : username as Username,
       password: password == freezed ? _value.password : password as Password,
+      confirmationPassword: confirmationPassword == freezed
+          ? _value.confirmationPassword
+          : confirmationPassword as ConfirmationPassword,
+      passwordsMatch: passwordsMatch == freezed
+          ? _value.passwordsMatch
+          : passwordsMatch as bool,
       showErrorMessages: showErrorMessages == freezed
           ? _value.showErrorMessages
           : showErrorMessages as bool,
@@ -657,9 +681,10 @@ abstract class _$RegisterFormStateCopyWith<$Res>
       __$RegisterFormStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {EmailAddress emailAddress,
-      Username username,
+      {Username username,
       Password password,
+      ConfirmationPassword confirmationPassword,
+      bool passwordsMatch,
       bool showErrorMessages,
       bool isSubmitting,
       Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption});
@@ -677,19 +702,23 @@ class __$RegisterFormStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object emailAddress = freezed,
     Object username = freezed,
     Object password = freezed,
+    Object confirmationPassword = freezed,
+    Object passwordsMatch = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
     Object authFailureOrSuccessOption = freezed,
   }) {
     return _then(_RegisterFormState(
-      emailAddress: emailAddress == freezed
-          ? _value.emailAddress
-          : emailAddress as EmailAddress,
       username: username == freezed ? _value.username : username as Username,
       password: password == freezed ? _value.password : password as Password,
+      confirmationPassword: confirmationPassword == freezed
+          ? _value.confirmationPassword
+          : confirmationPassword as ConfirmationPassword,
+      passwordsMatch: passwordsMatch == freezed
+          ? _value.passwordsMatch
+          : passwordsMatch as bool,
       showErrorMessages: showErrorMessages == freezed
           ? _value.showErrorMessages
           : showErrorMessages as bool,
@@ -704,25 +733,29 @@ class __$RegisterFormStateCopyWithImpl<$Res>
 
 class _$_RegisterFormState implements _RegisterFormState {
   const _$_RegisterFormState(
-      {@required this.emailAddress,
-      @required this.username,
+      {@required this.username,
       @required this.password,
+      @required this.confirmationPassword,
+      @required this.passwordsMatch,
       @required this.showErrorMessages,
       @required this.isSubmitting,
       @required this.authFailureOrSuccessOption})
-      : assert(emailAddress != null),
-        assert(username != null),
+      : assert(username != null),
         assert(password != null),
+        assert(confirmationPassword != null),
+        assert(passwordsMatch != null),
         assert(showErrorMessages != null),
         assert(isSubmitting != null),
         assert(authFailureOrSuccessOption != null);
 
   @override
-  final EmailAddress emailAddress;
-  @override
   final Username username;
   @override
   final Password password;
+  @override
+  final ConfirmationPassword confirmationPassword;
+  @override
+  final bool passwordsMatch;
   @override
   final bool showErrorMessages;
   @override
@@ -732,22 +765,25 @@ class _$_RegisterFormState implements _RegisterFormState {
 
   @override
   String toString() {
-    return 'RegisterFormState(emailAddress: $emailAddress, username: $username, password: $password, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
+    return 'RegisterFormState(username: $username, password: $password, confirmationPassword: $confirmationPassword, passwordsMatch: $passwordsMatch, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _RegisterFormState &&
-            (identical(other.emailAddress, emailAddress) ||
-                const DeepCollectionEquality()
-                    .equals(other.emailAddress, emailAddress)) &&
             (identical(other.username, username) ||
                 const DeepCollectionEquality()
                     .equals(other.username, username)) &&
             (identical(other.password, password) ||
                 const DeepCollectionEquality()
                     .equals(other.password, password)) &&
+            (identical(other.confirmationPassword, confirmationPassword) ||
+                const DeepCollectionEquality().equals(
+                    other.confirmationPassword, confirmationPassword)) &&
+            (identical(other.passwordsMatch, passwordsMatch) ||
+                const DeepCollectionEquality()
+                    .equals(other.passwordsMatch, passwordsMatch)) &&
             (identical(other.showErrorMessages, showErrorMessages) ||
                 const DeepCollectionEquality()
                     .equals(other.showErrorMessages, showErrorMessages)) &&
@@ -764,9 +800,10 @@ class _$_RegisterFormState implements _RegisterFormState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(emailAddress) ^
       const DeepCollectionEquality().hash(username) ^
       const DeepCollectionEquality().hash(password) ^
+      const DeepCollectionEquality().hash(confirmationPassword) ^
+      const DeepCollectionEquality().hash(passwordsMatch) ^
       const DeepCollectionEquality().hash(showErrorMessages) ^
       const DeepCollectionEquality().hash(isSubmitting) ^
       const DeepCollectionEquality().hash(authFailureOrSuccessOption);
@@ -779,11 +816,13 @@ class _$_RegisterFormState implements _RegisterFormState {
 abstract class _RegisterFormState implements RegisterFormState {
   const factory _RegisterFormState(
       {@required
-          EmailAddress emailAddress,
-      @required
           Username username,
       @required
           Password password,
+      @required
+          ConfirmationPassword confirmationPassword,
+      @required
+          bool passwordsMatch,
       @required
           bool showErrorMessages,
       @required
@@ -793,11 +832,13 @@ abstract class _RegisterFormState implements RegisterFormState {
               authFailureOrSuccessOption}) = _$_RegisterFormState;
 
   @override
-  EmailAddress get emailAddress;
-  @override
   Username get username;
   @override
   Password get password;
+  @override
+  ConfirmationPassword get confirmationPassword;
+  @override
+  bool get passwordsMatch;
   @override
   bool get showErrorMessages;
   @override

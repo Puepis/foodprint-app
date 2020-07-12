@@ -13,7 +13,6 @@ abstract class IAuthRepository {
 
   // unit = void
   Future<Either<RegisterFailure, Unit>> register({
-    @required EmailAddress emailAddress,
     @required Username username,
     @required Password password,
   });

@@ -2,7 +2,8 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
-import 'package:foodprint/presentation/common/widgets.dart';
+import 'package:foodprint/presentation/common/buttons.dart';
+import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
@@ -16,6 +17,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   bool _isSubmitting = false;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,9 @@ class _RegisterFormState extends State<RegisterForm> {
       state.authFailureOrSuccessOption.fold(
           () {},
           (either) => either.fold((failure) {
+                setState(() {
+                  _isSubmitting = false;
+                });
                 Scaffold.of(context)..hideCurrentSnackBar();
                 FlushbarHelper.createError(
                   message: failure.map(
@@ -49,57 +54,33 @@ class _RegisterFormState extends State<RegisterForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0)),
-              ),
-              onChanged: (value) => context
-                  .bloc<RegisterFormBloc>()
-                  .add(RegisterFormEvent.emailChanged(value)), // fire an event
-              validator: (_) => context
-                  .bloc<RegisterFormBloc>()
-                  .state
-                  .emailAddress
-                  .value
-                  .fold(
-                      (f) => f.maybeMap(
-                          invalidEmail: (_) => 'Invalid email',
-                          orElse: () => null),
-                      (r) => null),
-            ),
-            const SizedBox(height: 20.0),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Username",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.0))),
-              onChanged: (value) => context.bloc<RegisterFormBloc>().add(
-                  RegisterFormEvent.usernameChanged(value)), // fire an event
-              validator: (_) => context
-                  .bloc<RegisterFormBloc>()
-                  .state
-                  .username
-                  .value
-                  .fold(
-                      (f) => f.maybeMap(
-                          exceedingLength: (_) =>
-                              'Username must not be more than 20 characters',
-                          orElse: () => null),
-                      (r) => null),
-            ),
+            AuthFormField(
+                labelText: "Username",
+                prefixIconData: Icons.person,
+                onChanged: (value) => context
+                    .bloc<RegisterFormBloc>()
+                    .add(RegisterFormEvent.usernameChanged(value)),
+                validator: (_) => context
+                    .bloc<RegisterFormBloc>()
+                    .state
+                    .username
+                    .value
+                    .fold(
+                        (f) => f.maybeMap(
+                            exceedingLength: (_) =>
+                                'Username must not be more than 20 characters',
+                            orElse: () => null),
+                        (r) => null)),
             const SizedBox(
               height: 20,
             ),
-            TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.0)),
-                ),
-                onChanged: (value) => context.bloc<RegisterFormBloc>().add(
-                    RegisterFormEvent.passwordChanged(value)), // fire an event
+            AuthFormField(
+                labelText: "Password",
+                prefixIconData: Icons.lock,
+                obscureText: _obscureText,
+                onChanged: (value) => context
+                    .bloc<RegisterFormBloc>()
+                    .add(RegisterFormEvent.passwordChanged(value)),
                 validator: (_) => context
                     .bloc<RegisterFormBloc>()
                     .state
@@ -107,10 +88,53 @@ class _RegisterFormState extends State<RegisterForm> {
                     .value
                     .fold(
                         (f) => f.maybeMap(
-                            shortPassword: (_) => 'Short Password',
+                            passwordTooLong: (_) =>
+                                'Password must be not be longer than 32 characters',
+                            passwordTooShort: (_) =>
+                                'Password must be at least 6 characters',
                             orElse: () => null),
                         (r) => null)),
-            const SizedBox(height: 30),
+            const SizedBox(
+              height: 20,
+            ),
+            AuthFormField(
+                labelText: "Confirm Password",
+                prefixIconData: Icons.lock_outline,
+                obscureText: _obscureText,
+                onChanged: (value) => context
+                    .bloc<RegisterFormBloc>()
+                    .add(RegisterFormEvent.confirmationPasswordChanged(value)),
+                validator: (_) {
+                  return context.bloc<RegisterFormBloc>().state.passwordsMatch
+                      ? null
+                      : 'Passwords must match';
+                }),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text("Show password"),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      SizedBox(
+                        height: 25.0,
+                        width: 25.0,
+                        child: Checkbox(
+                          value: !_obscureText,
+                          onChanged: (bool newValue) {
+                            setState(() {
+                              _obscureText = !newValue;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
             if (_isSubmitting)
               loadingButton(text: "Register")
             else

@@ -41,7 +41,7 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
         if (restaurants.length > 5) {
           restaurants = restaurants.sublist(0, 5);
         }
-        return right(restaurants); // success
+        return right([]); // success
 
       } else if (data['status'] == "REQUEST_DENIED") {
         return left(const RestaurantFailure.requestDenied());

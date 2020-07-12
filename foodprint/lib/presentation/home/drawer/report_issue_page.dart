@@ -6,7 +6,7 @@ class ReportIssuePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text("Report an issue"),
       ),

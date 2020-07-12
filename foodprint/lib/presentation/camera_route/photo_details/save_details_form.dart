@@ -7,7 +7,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/common/widgets.dart';
+import 'package:foodprint/presentation/common/snackbar.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class SaveDetailsForm extends StatefulWidget {
