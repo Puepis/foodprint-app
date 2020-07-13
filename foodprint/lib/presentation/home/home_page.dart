@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
               width: 75,
               child: FittedBox(
                 child: FloatingActionButton(
+                  heroTag: "camera",
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
                       ? _toCamera(context, state.latlng) // take picture
@@ -123,32 +124,21 @@ class _HomePageState extends State<HomePage> {
 
   // Open drawer button on the map page
   Positioned mapMenuButton() => Positioned(
-        left: 10,
-        top: 35,
-        child: Material(
-          shape: const CircleBorder(),
-          elevation: 8.0,
-          child: Container(
-            width: 48,
-            height: 48,
-            child: Ink(
-              decoration: const BoxDecoration(
-                  color: Colors.white, shape: BoxShape.circle),
-              child: Builder(
-                builder: (context) => InkWell(
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: const Icon(
-                    Icons.menu,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ),
+      left: 10,
+      top: 35,
+      child: Builder(
+        builder: (context) => FloatingActionButton(
+          heroTag: "drawer",
+          backgroundColor: Colors.white,
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          child: const Icon(
+            Icons.menu,
+            size: 32.0,
           ),
         ),
-      );
+      ));
 
   // Animate transition to camera
   void _toCamera(BuildContext cxt, LatLng location) {

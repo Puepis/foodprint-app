@@ -23,6 +23,7 @@ class _FoodMapState extends State<FoodMap> {
   Map<String, Marker> _markers = {};
   bool _showRecenterButton = false;
   bool _didRecenter = false;
+  MapType _currentMapType = MapType.normal;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,7 @@ class _FoodMapState extends State<FoodMap> {
 
     return Stack(children: [
       GoogleMap(
+        mapType: _currentMapType,
         onMapCreated: (controller) => _mapController = controller,
         initialCameraPosition: CameraPosition(target: _currentPos, zoom: 16.0),
         onCameraIdle: () {},
@@ -61,47 +63,64 @@ class _FoodMapState extends State<FoodMap> {
         },
         markers: Set<Marker>.of(_markers.values),
       ),
-      if (_showRecenterButton)
-        Positioned(bottom: 65, right: 10, child: recenterButton())
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 35, 16, 16),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              FloatingActionButton(
+                heroTag: "map_type",
+                backgroundColor: Colors.white,
+                onPressed: _onMapTypeButtonPressed,
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                child: const Icon(Icons.map, size: 32.0),
+              ),
+              const SizedBox(height: 16.0),
+              if (_showRecenterButton)
+                FloatingActionButton(
+                  heroTag: "recenter",
+                  backgroundColor: Colors.white,
+                  onPressed: _onRecenterButtonPressed,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                  child: const Icon(Icons.gps_fixed, size: 32.0),
+                ),
+            ],
+          ),
+        ),
+      ),
     ]);
   }
 
-  Widget recenterButton() => Material(
-    shape: const CircleBorder(),
-    elevation: 8.0,
-      child: Container(
-          width: 43,
-          height: 43,
-          child: Ink(
-            decoration: const BoxDecoration(
-                color: Colors.white, shape: BoxShape.circle),
-            child: InkWell(
-              onTap: () {
-                if (_mapController != null) {
-                  setState(() {
-                    _didRecenter = true;
-                    _showRecenterButton = false;
-                  });
-                  _mapController.animateCamera(CameraUpdate.newCameraPosition(
-                      CameraPosition(
-                          target: LatLng(widget.initialPos.latitude,
-                              widget.initialPos.longitude))));
-                }
-              },
-              child: const Icon(
-                Icons.gps_fixed,
-                size: 26,
-              ),
-            ),
-          ),
-        ),
-  );
+  void _onMapTypeButtonPressed() {
+    setState(() {
+      _currentMapType = _currentMapType == MapType.normal
+          ? MapType.satellite
+          : MapType.normal;
+    });
+  }
+
+  void _onRecenterButtonPressed() {
+    if (_mapController != null) {
+      setState(() {
+        _didRecenter = true;
+        _showRecenterButton = false;
+      });
+      _mapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+              target: LatLng(
+                  widget.initialPos.latitude, widget.initialPos.longitude))));
+    }
+  }
 
   Map<String, Marker> generateMarkers(FoodprintEntity foodprint) {
     final Map<String, Marker> result = {};
     foodprint.restaurantPhotos
         .forEach((RestaurantEntity restaurant, List<PhotoEntity> photos) {
       final marker = Marker(
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
           markerId: MarkerId(restaurant.restaurantID.getOrCrash()),
           position: LatLng(restaurant.latitude.getOrCrash(),
               restaurant.longitude.getOrCrash()),
