@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
@@ -47,8 +48,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   /// Shows during search
   @override
   Widget buildSuggestions(BuildContext context) {
-
-    // TODO: Add attribution and change widgets
     // Fire event
     context.bloc<RestaurantSearchBloc>()
       ..add(AutocompleteRestaurantsSearched(
@@ -56,42 +55,90 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
 
     return BlocBuilder<RestaurantSearchBloc, RestaurantSearchState>(
         builder: (context, state) {
+      Widget searchBody;
+
       if (state is SearchStateLoading) {
-        return const CircularProgressIndicator();
+        searchBody = const Padding(
+            padding: EdgeInsets.all(20.0), child: CircularProgressIndicator());
       }
       if (state is SearchStateError) {
         print(state.failure.toString());
-        return const Text("");
       }
       if (state is AutocompleteSearchSuccess) {
         final predictions = state.predictions;
-        if (state.predictions.isEmpty) {
-          return const Text("No Results");
-        }
 
-        return ListView.builder(
+        searchBody = ListView.builder(
             itemCount: predictions.length,
             itemBuilder: (context, index) {
               final name = predictions[index].name.getOrCrash();
-              return ListTile(
-                onTap: () {
-                  showResults(context);
-                },
-                leading: const Icon(Icons.restaurant_menu),
-                title: RichText(
-                    text: TextSpan(
-                        text: name.substring(0, query.length),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500, color: Colors.black),
-                        children: [
-                      TextSpan(
-                          text: name.substring(query.length),
-                          style: const TextStyle(color: Colors.grey))
-                    ])),
-              );
+              final location = predictions[index].secondaryText;
+              return buildSearchResult(context, name, location);
             });
       }
-      return Container();
+
+      return Container(
+        height: double.infinity,
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Align(
+                alignment: Alignment.bottomRight,
+                child: PoweredByGoogleImage()),
+            searchBody ?? Container(),
+          ],
+        ),
+      );
     });
+  }
+
+  Widget buildSearchResult(BuildContext context, String name, String location) {
+    return ListTile(
+      onTap: () {
+        showResults(context);
+      },
+      leading: Icon(
+        Icons.location_on,
+        color: primaryColor,
+        size: 30.0,
+      ),
+      subtitle: Text(
+        location,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+      title: RichText(
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          text: TextSpan(
+              text: name.substring(0, query.length),
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: Colors.black),
+              children: [
+                TextSpan(
+                    text: name.substring(query.length),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.grey))
+              ])),
+    );
+  }
+}
+
+class PoweredByGoogleImage extends StatelessWidget {
+  final _poweredByGoogleOnWhite =
+      "assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_white.png";
+  final _poweredByGoogleOnBlack =
+      "assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_non_white.png";
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Image.asset(
+          Theme.of(context).brightness == Brightness.light
+              ? _poweredByGoogleOnWhite
+              : _poweredByGoogleOnBlack,
+          scale: 2.5,
+        ));
   }
 }

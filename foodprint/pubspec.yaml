@@ -102,3 +102,5 @@ flutter:
     - .env
     - google_fonts_rubik/
     - google_fonts_montserrat/
+    - assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_white.png
+    - assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_non_white.png
