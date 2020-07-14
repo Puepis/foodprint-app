@@ -5,6 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant_entity.freezed.dart';
 
+/// Accompanied by the [RestaurantDTO]
+/// 
 @freezed
 abstract class RestaurantEntity implements _$RestaurantEntity {
   const RestaurantEntity._();

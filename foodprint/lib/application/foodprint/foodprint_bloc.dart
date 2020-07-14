@@ -30,14 +30,18 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
   ) async* {
     yield const FoodprintState.inProgress(); // reset state
     yield* event.map(foodprintRequested: (e) async* {
-      final Either<FoodprintFailure, FoodprintEntity> result =
-          await _remoteClient.getFoodprint(token: e.token);
-      yield result.fold(
-          (f) => FoodprintState.fetchFoodprintFailure(f),
-          (foodprint) =>
-              FoodprintState.fetchFoodprintSuccess(foodprint: foodprint));
+      yield* _mapFoodprintRequestedToState(e.token);
     }, localFoodprintUpdated: (e) async* {
       yield FoodprintState.foodprintUpdated(foodprint: e.newFoodprint);
     });
+  }
+
+  Stream<FoodprintState> _mapFoodprintRequestedToState(JWT token) async* {
+    final Either<FoodprintFailure, FoodprintEntity> result =
+        await _remoteClient.getFoodprint(token: token);
+    yield result.fold(
+        (f) => FoodprintState.fetchFoodprintFailure(f),
+        (foodprint) =>
+            FoodprintState.fetchFoodprintSuccess(foodprint: foodprint));
   }
 }

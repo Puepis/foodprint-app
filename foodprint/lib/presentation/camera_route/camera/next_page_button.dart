@@ -1,31 +1,30 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/select_restaurant_page.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
 class NextPageButton extends StatelessWidget {
   const NextPageButton({
     Key key,
     @required this.restaurants,
-    @required this.imageFile,
-    @required this.token,
-    @required this.oldFoodprint,
   }) : super(key: key);
 
-  final File imageFile;
   final List<RestaurantEntity> restaurants;
-  final FoodprintEntity oldFoodprint;
-  final JWT token;
 
   @override
   Widget build(BuildContext context) {
+    final latitude = InheritedLocation.of(context).latitude;
+    final longitude = InheritedLocation.of(context).longitude;
+    final token = InheritedUser.of(context).token;
+    final oldFoodprint = InheritedUser.of(context).foodprint;
+    final imageFile = InheritedImage.of(context).imageFile;
+
     return Container(
       width: 60,
       height: 60,
@@ -47,6 +46,8 @@ class NextPageButton extends StatelessWidget {
                     BlocProvider.value(value: context.bloc<FoodprintBloc>())
                   ],
                   child: SelectRestaurantPage(
+                      latitude: latitude,
+                      longitude: longitude,
                       currentFoodprint: oldFoodprint,
                       token: token,
                       imageFile: imageFile,

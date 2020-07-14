@@ -4,15 +4,30 @@ abstract class RestaurantSearchEvent extends Equatable {
   const RestaurantSearchEvent();
 }
 
-class RestaurantSearched extends RestaurantSearchEvent {
+class NearbyRestaurantsSearched extends RestaurantSearchEvent {
   final double latitude;
   final double longitude;
 
-  const RestaurantSearched({@required this.latitude, @required this.longitude});
+  const NearbyRestaurantsSearched(
+      {@required this.latitude, @required this.longitude});
 
   @override
   List<Object> get props => [latitude, longitude];
 
   @override
-  String toString() => 'Restaurants searched: { lat: $latitude, lng: $longitude}';
+  String toString() =>
+      'Nearby restaurants searched: { lat: $latitude, lng: $longitude}';
+}
+
+class AutocompleteRestaurantsSearched extends RestaurantSearchEvent {
+  final String input;
+  final double latitude;
+  final double longitude;
+  const AutocompleteRestaurantsSearched(
+      {@required this.latitude,
+      @required this.longitude,
+      @required this.input});
+
+  @override
+  List<Object> get props => [input];
 }

@@ -9,15 +9,16 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
 // Displays all the photos
 class Gallery extends StatelessWidget {
-  final FoodprintEntity foodprint;
-
-  const Gallery({Key key, @required this.foodprint}) : super(key: key);
+  const Gallery({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final foodprint = InheritedUser.of(context).foodprint;
+
     // Photos
     final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
         getPhotosFromFoodprint(foodprint);
@@ -43,7 +44,7 @@ class Gallery extends StatelessWidget {
 
         return Stack(children: [
           GestureDetector(
-            onTap: () => _showFullImage(context, photo, restaurant),
+            onTap: () => _showFullImage(context, photo, restaurant, foodprint),
             child: Card(
               elevation: 0.0,
               clipBehavior: Clip.antiAlias,
@@ -52,7 +53,8 @@ class Gallery extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: NetworkImage(photo.url.getOrCrash()), fit: BoxFit.cover)),
+                          image: NetworkImage(photo.url.getOrCrash()),
+                          fit: BoxFit.cover)),
                 ),
               ),
             ),
@@ -64,7 +66,8 @@ class Gallery extends StatelessWidget {
               icon: const Icon(Icons.delete),
               iconSize: 25.0,
               color: Colors.white,
-              onPressed: () => _onDeletePressed(context, photo, restaurant),
+              onPressed: () =>
+                  _onDeletePressed(context, photo, restaurant, foodprint),
             ),
           ),
         ]);
@@ -73,8 +76,8 @@ class Gallery extends StatelessWidget {
   }
 
   // Show delete confirmation dialog
-  void _onDeletePressed(
-      BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
+  void _onDeletePressed(BuildContext context, PhotoEntity photo,
+      RestaurantEntity restaurant, FoodprintEntity foodprint) {
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -92,8 +95,8 @@ class Gallery extends StatelessWidget {
                     foodprint: foodprint)));
   }
 
-  void _showFullImage(
-      BuildContext context, PhotoEntity photo, RestaurantEntity restaurant) {
+  void _showFullImage(BuildContext context, PhotoEntity photo,
+      RestaurantEntity restaurant, FoodprintEntity foodprint) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => MultiBlocProvider(
                 // expose values

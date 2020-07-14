@@ -14,17 +14,31 @@ class SearchStateEmpty extends RestaurantSearchState {}
 class SearchStateLoading extends RestaurantSearchState {}
 
 // Successful search, contains list of restaurants
-class SearchStateSuccess extends RestaurantSearchState {
+class NearbySearchStateSuccess extends RestaurantSearchState {
   final List<RestaurantEntity> restaurants;
 
-  const SearchStateSuccess({@required this.restaurants});
+  const NearbySearchStateSuccess({@required this.restaurants});
 
   @override
   List<Object> get props => [restaurants];
 
   @override
   String toString() =>
-      'Search Successful { restaurants: ${restaurants.length} }';
+      'Nearby search successful { restaurants: ${restaurants.length} }';
+}
+
+// Successful search, contains list of restaurants
+class AutocompleteSearchSuccess extends RestaurantSearchState {
+  final List<AutocompleteResultEntity> predictions;
+
+  const AutocompleteSearchSuccess({@required this.predictions});
+
+  @override
+  List<Object> get props => [predictions];
+
+  @override
+  String toString() =>
+      'Autocomplete search successful { predictions : ${predictions.length} }';
 }
 
 // Error during search

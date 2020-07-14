@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:bloc/bloc.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

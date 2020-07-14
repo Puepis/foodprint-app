@@ -19,6 +19,14 @@ class _$RestaurantFailureTearOff {
   _RequestDenied requestDenied() {
     return const _RequestDenied();
   }
+
+  _OverQueryLimit overQueryLimit() {
+    return const _OverQueryLimit();
+  }
+
+  _InvalidRequest invalidRequest() {
+    return const _InvalidRequest();
+  }
 }
 
 // ignore: unused_element
@@ -29,22 +37,30 @@ mixin _$RestaurantFailure {
   Result when<Result extends Object>({
     @required Result unexpectedSearchFailure(),
     @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result unexpectedSearchFailure(),
     Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
     @required Result orElse(),
   });
 }
@@ -103,9 +119,13 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
   Result when<Result extends Object>({
     @required Result unexpectedSearchFailure(),
     @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
     return unexpectedSearchFailure();
   }
 
@@ -114,6 +134,8 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
   Result maybeWhen<Result extends Object>({
     Result unexpectedSearchFailure(),
     Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -128,9 +150,13 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
   Result map<Result extends Object>({
     @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
     return unexpectedSearchFailure(this);
   }
 
@@ -139,6 +165,8 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
   Result maybeMap<Result extends Object>({
     Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -191,9 +219,13 @@ class _$_RequestDenied implements _RequestDenied {
   Result when<Result extends Object>({
     @required Result unexpectedSearchFailure(),
     @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
     return requestDenied();
   }
 
@@ -202,6 +234,8 @@ class _$_RequestDenied implements _RequestDenied {
   Result maybeWhen<Result extends Object>({
     Result unexpectedSearchFailure(),
     Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -216,9 +250,13 @@ class _$_RequestDenied implements _RequestDenied {
   Result map<Result extends Object>({
     @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
     return requestDenied(this);
   }
 
@@ -227,6 +265,8 @@ class _$_RequestDenied implements _RequestDenied {
   Result maybeMap<Result extends Object>({
     Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
     Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -239,4 +279,204 @@ class _$_RequestDenied implements _RequestDenied {
 
 abstract class _RequestDenied implements RestaurantFailure {
   const factory _RequestDenied() = _$_RequestDenied;
+}
+
+abstract class _$OverQueryLimitCopyWith<$Res> {
+  factory _$OverQueryLimitCopyWith(
+          _OverQueryLimit value, $Res Function(_OverQueryLimit) then) =
+      __$OverQueryLimitCopyWithImpl<$Res>;
+}
+
+class __$OverQueryLimitCopyWithImpl<$Res>
+    extends _$RestaurantFailureCopyWithImpl<$Res>
+    implements _$OverQueryLimitCopyWith<$Res> {
+  __$OverQueryLimitCopyWithImpl(
+      _OverQueryLimit _value, $Res Function(_OverQueryLimit) _then)
+      : super(_value, (v) => _then(v as _OverQueryLimit));
+
+  @override
+  _OverQueryLimit get _value => super._value as _OverQueryLimit;
+}
+
+class _$_OverQueryLimit implements _OverQueryLimit {
+  const _$_OverQueryLimit();
+
+  @override
+  String toString() {
+    return 'RestaurantFailure.overQueryLimit()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _OverQueryLimit);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpectedSearchFailure(),
+    @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    return overQueryLimit();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpectedSearchFailure(),
+    Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (overQueryLimit != null) {
+      return overQueryLimit();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    return overQueryLimit(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (overQueryLimit != null) {
+      return overQueryLimit(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _OverQueryLimit implements RestaurantFailure {
+  const factory _OverQueryLimit() = _$_OverQueryLimit;
+}
+
+abstract class _$InvalidRequestCopyWith<$Res> {
+  factory _$InvalidRequestCopyWith(
+          _InvalidRequest value, $Res Function(_InvalidRequest) then) =
+      __$InvalidRequestCopyWithImpl<$Res>;
+}
+
+class __$InvalidRequestCopyWithImpl<$Res>
+    extends _$RestaurantFailureCopyWithImpl<$Res>
+    implements _$InvalidRequestCopyWith<$Res> {
+  __$InvalidRequestCopyWithImpl(
+      _InvalidRequest _value, $Res Function(_InvalidRequest) _then)
+      : super(_value, (v) => _then(v as _InvalidRequest));
+
+  @override
+  _InvalidRequest get _value => super._value as _InvalidRequest;
+}
+
+class _$_InvalidRequest implements _InvalidRequest {
+  const _$_InvalidRequest();
+
+  @override
+  String toString() {
+    return 'RestaurantFailure.invalidRequest()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _InvalidRequest);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpectedSearchFailure(),
+    @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    return invalidRequest();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpectedSearchFailure(),
+    Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidRequest != null) {
+      return invalidRequest();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    return invalidRequest(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidRequest != null) {
+      return invalidRequest(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _InvalidRequest implements RestaurantFailure {
+  const factory _InvalidRequest() = _$_InvalidRequest;
 }

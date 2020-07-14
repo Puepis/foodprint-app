@@ -43,7 +43,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   }
 
   // Deserialize JSON
-  factory RestaurantDTO.fromPlaceSearch(Map<String, dynamic> json) {
+  factory RestaurantDTO.fromNearbyPlaceSearch(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
       restaurantName: json['name'] as String,
@@ -52,6 +52,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       longitude: double.parse(json['geometry']['location']['lng'].toString()),
     );
   }
+
 
   factory RestaurantDTO.fromFoodprintAPI(Map<String, dynamic> json) {
     return RestaurantDTO(

@@ -1,30 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// The widget that handles photo capturing.
-/// 
-/// The [image_picker] library is used to take a photo. Once the photo is 
+///
+/// The [image_picker] library is used to take a photo. Once the photo is
 /// captured, it is displayed in the [DisplayPhoto] widget.
 class Camera extends StatefulWidget {
-  final FoodprintEntity oldFoodprint;
-  final LatLng location;
-  final JWT token;
-
-  const Camera(
-      {Key key,
-      @required this.location,
-      @required this.oldFoodprint,
-      @required this.token})
-      : super(key: key);
+  const Camera({Key key}) : super(key: key);
   @override
   _CameraState createState() => _CameraState();
 }
@@ -42,19 +28,12 @@ class _CameraState extends State<Camera> {
     return Scaffold(
         body: (_imageFile == null)
             ? LoadingIndicator()
-            : MultiBlocProvider(
-                providers: [
-                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                    BlocProvider.value(value: context.bloc<FoodprintBloc>())
-                  ],
-                child: DisplayPhoto(
-                  latitude: widget.location.latitude,
-                  longitude: widget.location.longitude,
-                  loadedImage: loadedImage,
-                  imageFile: _imageFile,
-                  oldFoodprint: widget.oldFoodprint,
-                  token: widget.token,
-                )));
+            : InheritedImage(
+                imageFile: _imageFile,
+                loadedImage: loadedImage,
+                child: const DisplayPhoto(
+                ),
+              ));
   }
 
   Future<void> _takePhoto(ImageSource source, BuildContext context) async {
@@ -83,8 +62,7 @@ class LoadingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CircularProgressIndicator(
-      ),
+      child: CircularProgressIndicator(),
     );
   }
 }

@@ -19,7 +19,7 @@ part 'login_form_bloc.freezed.dart';
 
 // This is the business logic component (BLoC) for the login page
 
-// In this application layer we decide how the data flows: in this case we redirect the 
+// In this application layer we decide how the data flows: in this case we redirect the
 // login data to the authFacade
 @injectable
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
@@ -37,38 +37,47 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   ) async* {
     yield* event.map(
       usernameChanged: (e) async* {
-        yield state.copyWith(
-            username: Username(e.usernameStr),
-            authFailureOrSuccessOption: none());
+        yield* _mapUsernameChangedToState(e.usernameStr);
       },
       passwordChanged: (e) async* {
-        yield state.copyWith(
-            password: Password(e.passwordStr),
-            authFailureOrSuccessOption: none());
+        yield* _mapPasswordChangedToState(e.passwordStr);
       },
       loginPressed: (e) async* {
-        Either<LoginFailure, JWT> result;
-
-        final isPasswordValid = state.password.isValid();
-        final isUsernameValid = state.username.isValid();
-
-        if (isPasswordValid && isUsernameValid) {
-
-          // In progress
-          yield state.copyWith(
-              isSubmitting: true, authFailureOrSuccessOption: none());
-
-          // Attempt to login
-          result = await _authClient.login(
-              password: state.password, username: state.username);
-        }
-        // Nonvalid input
-        yield state.copyWith(
-          isSubmitting: false,
-          authFailureOrSuccessOption: optionOf(result), 
-          showErrorMessages: true,
-        );
+        yield* _mapLoginPressedToState();
       },
+    );
+  }
+
+  Stream<LoginFormState> _mapUsernameChangedToState(String usernameStr) async* {
+    yield state.copyWith(
+        username: Username(usernameStr), authFailureOrSuccessOption: none());
+  }
+
+  Stream<LoginFormState> _mapPasswordChangedToState(String passwordStr) async* {
+    yield state.copyWith(
+        password: Password(passwordStr), authFailureOrSuccessOption: none());
+  }
+
+  Stream<LoginFormState> _mapLoginPressedToState() async* {
+    Either<LoginFailure, JWT> result;
+
+    final isPasswordValid = state.password.isValid();
+    final isUsernameValid = state.username.isValid();
+
+    if (isPasswordValid && isUsernameValid) {
+      // In progress
+      yield state.copyWith(
+          isSubmitting: true, authFailureOrSuccessOption: none());
+
+      // Attempt to login
+      result = await _authClient.login(
+          password: state.password, username: state.username);
+    }
+    // Nonvalid input
+    yield state.copyWith(
+      isSubmitting: false,
+      authFailureOrSuccessOption: optionOf(result),
+      showErrorMessages: true,
     );
   }
 }

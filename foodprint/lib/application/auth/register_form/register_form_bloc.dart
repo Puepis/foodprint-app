@@ -29,57 +29,74 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   ) async* {
     yield* event.map(
       usernameChanged: (e) async* {
-        yield state.copyWith(
-            username: Username(e.usernameStr),
-            authFailureOrSuccessOption: none());
+        yield* _mapUsernameChangedToState(e.usernameStr);
       },
       passwordChanged: (e) async* {
-        yield state.copyWith(
-            password: Password(e.passwordStr),
-            passwordsMatch: e.passwordStr
-                    .compareTo(state.confirmationPassword.getOrCrash()) ==
-                0,
-            authFailureOrSuccessOption: none());
+        yield* _mapPasswordChangedToState(e.passwordStr);
       },
       confirmationPasswordChanged: (e) async* {
-        if (state.password.isValid()) {
-          final bool match =
-              state.password.getOrCrash().compareTo(e.confirmationStr) == 0;
-          yield state.copyWith(
-              confirmationPassword: ConfirmationPassword(e.confirmationStr),
-              passwordsMatch: match,
-              authFailureOrSuccessOption: none());
-        } else {
-          yield state.copyWith(
-              confirmationPassword: ConfirmationPassword(e.confirmationStr),
-              // The passwords can't be compared so don't display error
-              passwordsMatch: true,
-              authFailureOrSuccessOption: none());
-        }
+        yield* _mapConfirmationPasswordChangedToState(e.confirmationStr);
       },
       registerPressed: (e) async* {
-        Either<RegisterFailure, Unit> failureOrSuccess;
-
-        // Check if the fields are valid
-        final isPasswordValid = state.password.isValid();
-        final isUsernameValid = state.username.isValid();
-
-        if (isPasswordValid && isUsernameValid && state.passwordsMatch) {
-          yield state.copyWith(
-              isSubmitting: true, authFailureOrSuccessOption: none());
-
-          // Attempt to register
-          failureOrSuccess = await _authClient.register(
-              password: state.password, username: state.username);
-        }
-        // Invalid input
-        yield state.copyWith(
-          isSubmitting: false,
-          authFailureOrSuccessOption: optionOf(
-              failureOrSuccess), // if null, return none() otherwise some(failureOrSuccess)
-          showErrorMessages: true,
-        );
+        yield* _mapRegisterPressedToState();
       },
+    );
+  }
+
+  Stream<RegisterFormState> _mapUsernameChangedToState(
+      String usernameStr) async* {
+    yield state.copyWith(
+        username: Username(usernameStr), authFailureOrSuccessOption: none());
+  }
+
+  Stream<RegisterFormState> _mapPasswordChangedToState(
+      String passwordStr) async* {
+    yield state.copyWith(
+        password: Password(passwordStr),
+        passwordsMatch:
+            passwordStr.compareTo(state.confirmationPassword.getOrCrash()) == 0,
+        authFailureOrSuccessOption: none());
+  }
+
+  Stream<RegisterFormState> _mapConfirmationPasswordChangedToState(
+      String confirmationStr) async* {
+    if (state.password.isValid()) {
+      final bool match =
+          state.password.getOrCrash().compareTo(confirmationStr) == 0;
+      yield state.copyWith(
+          confirmationPassword: ConfirmationPassword(confirmationStr),
+          passwordsMatch: match,
+          authFailureOrSuccessOption: none());
+    } else {
+      yield state.copyWith(
+          confirmationPassword: ConfirmationPassword(confirmationStr),
+          // The passwords can't be compared so don't display error
+          passwordsMatch: true,
+          authFailureOrSuccessOption: none());
+    }
+  }
+
+  Stream<RegisterFormState> _mapRegisterPressedToState() async* {
+    Either<RegisterFailure, Unit> failureOrSuccess;
+
+    // Check if the fields are valid
+    final isPasswordValid = state.password.isValid();
+    final isUsernameValid = state.username.isValid();
+
+    if (isPasswordValid && isUsernameValid && state.passwordsMatch) {
+      yield state.copyWith(
+          isSubmitting: true, authFailureOrSuccessOption: none());
+
+      // Attempt to register
+      failureOrSuccess = await _authClient.register(
+          password: state.password, username: state.username);
+    }
+    // Invalid input
+    yield state.copyWith(
+      isSubmitting: false,
+      authFailureOrSuccessOption: optionOf(
+          failureOrSuccess), // if null, return none() otherwise some(failureOrSuccess)
+      showErrorMessages: true,
     );
   }
 }

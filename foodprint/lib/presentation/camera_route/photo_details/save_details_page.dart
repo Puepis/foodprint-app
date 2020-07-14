@@ -7,6 +7,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class PhotoDetailsPage extends StatelessWidget {
   final RestaurantEntity restaurant;
@@ -18,34 +19,22 @@ class PhotoDetailsPage extends StatelessWidget {
       @required this.imageFile,
       @required this.restaurant,
       @required this.oldFoodprint,
-      @required this.token
-      })
+      @required this.token})
       : super(key: key);
+
+  static const Color backgroundColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(120.0),
-          child: AppBar(
-            centerTitle: true,
-            automaticallyImplyLeading: false,
-            flexibleSpace: const Center(
-              child: Text(
-                "Fill in the details!",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30,
-                ),
-              ),
-            ),
-          ),
+      backgroundColor: backgroundColor,
+        appBar: AppBar(
+          elevation: 0,
+          centerTitle: true,
+          backgroundColor: backgroundColor,
         ),
         body: Container(
-            margin: const EdgeInsets.fromLTRB(7.5, 10.0, 7.5, 0),
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            padding: const EdgeInsets.all(20),
             child: MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
@@ -53,11 +42,28 @@ class PhotoDetailsPage extends StatelessWidget {
                   value: context.bloc<FoodprintBloc>(),
                 )
               ],
-              child: SaveDetailsForm(
-                imageFile: imageFile,
-                oldFoodprint: oldFoodprint,
-                restaurant: restaurant,
-                token: token,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Fill in the details!",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SaveDetailsForm(
+                      imageFile: imageFile,
+                      oldFoodprint: oldFoodprint,
+                      restaurant: restaurant,
+                      token: token,
+                    ),
+                  ],
+                ),
               ),
             )));
   }

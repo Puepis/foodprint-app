@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 import 'package:foodprint/presentation/map/restaurant_preview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class FoodMap extends StatefulWidget {
   final FoodprintEntity foodprint;
-  final LatLng initialPos;
-  const FoodMap({Key key, @required this.initialPos, @required this.foodprint})
-      : assert(initialPos != null),
-        super(key: key);
+  const FoodMap({Key key, @required this.foodprint}) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
@@ -24,20 +22,24 @@ class _FoodMapState extends State<FoodMap> {
   bool _showRecenterButton = false;
   bool _didRecenter = false;
   MapType _currentMapType = MapType.normal;
+  InheritedLocation _initialPos;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final location = InheritedLocation.of(context);
+    _currentPos = LatLng(location.latitude, location.longitude);
+    _initialPos = location;
+  }
 
   @override
   Widget build(BuildContext context) {
     _markers = generateMarkers(widget.foodprint);
 
-    // Add marker indicating current location
-    if (widget.initialPos != null) {
-      _currentPos = widget.initialPos;
-
-      // Move camera to initial location
-      if (_mapController != null) {
-        _mapController.moveCamera(CameraUpdate.newLatLng(
-            LatLng(_currentPos.latitude, _currentPos.longitude)));
-      }
+    // Move camera to initial location
+    if (_mapController != null) {
+      _mapController.moveCamera(CameraUpdate.newLatLng(
+          LatLng(_currentPos.latitude, _currentPos.longitude)));
     }
 
     return Stack(children: [
@@ -109,8 +111,7 @@ class _FoodMapState extends State<FoodMap> {
       });
       _mapController.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(
-              target: LatLng(
-                  widget.initialPos.latitude, widget.initialPos.longitude))));
+              target: LatLng(_initialPos.latitude, _initialPos.longitude))));
     }
   }
 

@@ -1,2 +1,2 @@
-export 'manual_search_page.dart';
+export 'restaurant_search_delegate.dart';
 export 'select_restaurant_page.dart';

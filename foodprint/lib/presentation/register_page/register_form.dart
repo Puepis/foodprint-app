@@ -5,7 +5,6 @@ import 'package:foodprint/application/auth/register_form/register_form_bloc.dart
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class RegisterForm extends StatefulWidget {

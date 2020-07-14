@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
@@ -10,15 +9,13 @@ import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  final FoodprintEntity foodprint;
-  final JWT token;
-
-  const HomePage({Key key, @required this.token, @required this.foodprint})
-      : super(key: key);
+  const HomePage({Key key}) : super(key: key);
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -28,45 +25,33 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final foodprint = InheritedUser.of(context).foodprint;
+    final token = InheritedUser.of(context).token;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: BlocBuilder<LocationBloc, LocationState>(
         builder: (context, state) {
           // Loading screen
-          Widget mapScreen = Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SpinKitDualRing(
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                "Retrieving location",
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ));
+          Widget mapScreen = const Center(child: CircularProgressIndicator());
 
           if (state is GetLocationSuccess) {
-            mapScreen = FoodMap(
-              initialPos: state.latlng,
-              foodprint: widget.foodprint,
+            mapScreen = InheritedLocation(
+              latitude: state.latlng.latitude,
+              longitude: state.latlng.longitude,
+              child: FoodMap(
+                foodprint: foodprint,
+              ),
             );
           }
 
           return Scaffold(
             appBar: appBar(context),
             drawerEnableOpenDragGesture: false,
-            drawer: AppDrawer(token: widget.token, foodprint: widget.foodprint),
+            drawer: AppDrawer(token: token, foodprint: foodprint),
             body: _selectedIndex == 0
                 ? Stack(children: [mapScreen, mapMenuButton()])
-                : Gallery(
-                    foodprint: widget.foodprint,
-                  ),
+                : const Gallery(),
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: Container(
@@ -104,7 +89,8 @@ class _HomePageState extends State<HomePage> {
                   heroTag: "camera",
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
-                      ? _toCamera(context, state.latlng) // take picture
+                      ? _toCamera(context, state.latlng, token,
+                          foodprint) // take picture
                       : null,
                   child: const Icon(
                     Icons.add,
@@ -141,18 +127,21 @@ class _HomePageState extends State<HomePage> {
       ));
 
   // Animate transition to camera
-  void _toCamera(BuildContext cxt, LatLng location) {
+  void _toCamera(
+      BuildContext cxt, LatLng location, JWT token, FoodprintEntity foodprint) {
     Navigator.of(cxt).push(SlideUpEnterRoute(
-        newPage: MultiBlocProvider(
-            providers: [
+        newPage: InheritedUser(
+      foodprint: foodprint,
+      token: token,
+      child: InheritedLocation(
+        latitude: location.latitude,
+        longitude: location.longitude,
+        child: MultiBlocProvider(providers: [
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
-        ],
-            child: Camera(
-              location: location,
-              token: widget.token,
-              oldFoodprint: widget.foodprint,
-            ))));
+        ], child: const Camera()),
+      ),
+    )));
   }
 
   PreferredSizeWidget appBar(BuildContext context) {

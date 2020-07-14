@@ -6,6 +6,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/presentation/home/loading_page.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -31,16 +32,17 @@ class HomeScreen extends StatelessWidget {
               return const LoginPage();
             }
             if (state is FoodprintUpdated) {
-              return HomePage(
+              return InheritedUser(
                 foodprint: state.foodprint,
                 token: token,
+                child: const HomePage(),
               );
             }
             if (state is FetchFoodprintSuccess) {
-              // TODO: Add animation to make this transition smoother
-              return HomePage(
+              return InheritedUser(
                 foodprint: state.foodprint,
                 token: token,
+                child: const HomePage(),
               );
             }
             return LoadingPage();

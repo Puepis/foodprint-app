@@ -4,6 +4,7 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+import 'package:foodprint/domain/manual_search/search_cache.dart';
 import 'package:foodprint/infrastructure/auth/auth_client.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/infrastructure/location/device_location_client.dart';
@@ -36,8 +37,8 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<LoginFormBloc>(() => LoginFormBloc(g<IAuthRepository>()));
   g.registerFactory<RegisterFormBloc>(
       () => RegisterFormBloc(g<IAuthRepository>()));
-  g.registerFactory<RestaurantSearchBloc>(
-      () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
+  g.registerFactory<RestaurantSearchBloc>(() => RestaurantSearchBloc(
+      g<IRestaurantSearchRepository>(), g<AutocompleteSearchCache>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
   g.registerFactory<FoodprintBloc>(
       () => FoodprintBloc(g<IRemoteFoodprintRepository>()));
@@ -45,4 +46,7 @@ void $initGetIt(GetIt g, {String environment}) {
       () => RemotePhotosClient(g<LocalFoodprintClient>()));
   g.registerFactory<PhotoActionsBloc>(
       () => PhotoActionsBloc(g<IPhotoRepository>()));
+
+  //Eager singletons must be registered in the right order
+  g.registerSingleton<AutocompleteSearchCache>(AutocompleteSearchCache());
 }

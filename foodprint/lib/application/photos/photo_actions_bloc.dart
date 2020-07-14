@@ -49,7 +49,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     return value < 10 ? "0$value" : value.toString();
   }
 
-  static PhotoEntity generateNewPhoto(
+  static PhotoEntity _generateNewPhoto(
       int id, File imageFile, String itemName, String price, String comments) {
     final String time = currentTimestamp;
     final String fileName = basename(imageFile.path);
@@ -72,35 +72,63 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   ) async* {
     yield const PhotoActionsState.actionInProgress();
     yield* event.map(deleted: (e) async* {
-      final result = await _client.deletePhoto(
-          photo: e.photo, restaurant: e.restaurant, oldFoodprint: e.foodprint);
-      yield result.fold((failure) => PhotoActionsState.deleteFailure(failure),
-          (newFoodprint) => PhotoActionsState.deleteSuccess(newFoodprint));
+      yield* _mapDeletedToState(e.photo, e.restaurant, e.foodprint);
     }, edited: (e) async* {
-      final newDetails = PhotoDetailEntity(
-          name: PhotoName(e.newName),
-          price: PhotoPrice(double.parse(e.newPrice)),
-          comments: PhotoComments(e.newComments));
-      final result = await _client.updatePhotoDetails(
-          oldPhoto: e.oldPhoto,
-          photoDetail: newDetails,
-          restaurant: e.restaurant,
-          oldFoodprint: e.foodprint);
-      yield result.fold(
-        (failure) => PhotoActionsState.editFailure(failure),
-        (newFoodprint) => PhotoActionsState.editSuccess(newFoodprint),
-      );
+      yield* _mapEditedToState(e.newName, e.newPrice, e.newComments, e.oldPhoto,
+          e.restaurant, e.foodprint);
     }, saved: (e) async* {
-      final newPhoto = generateNewPhoto(
-          e.userID.getOrCrash(), e.imageFile, e.itemName, e.price, e.comments);
-      final result = await _client.saveNewPhoto(
-          userID: e.userID,
-          data: PhotoData(e.imageFile.readAsBytesSync().toList()), // Image data
-          photo: newPhoto,
-          restaurant: e.restaurant,
-          oldFoodprint: e.foodprint);
-      yield result.fold((l) => PhotoActionsState.saveFailure(l),
-          (r) => PhotoActionsState.saveSuccess(r));
+      yield* _mapSavedToState(e.userID, e.imageFile, e.itemName, e.price,
+          e.comments, e.restaurant, e.foodprint);
     });
+  }
+
+  Stream<PhotoActionsState> _mapDeletedToState(PhotoEntity photo,
+      RestaurantEntity restaurant, FoodprintEntity foodprint) async* {
+    final result = await _client.deletePhoto(
+        photo: photo, restaurant: restaurant, oldFoodprint: foodprint);
+    yield result.fold((failure) => PhotoActionsState.deleteFailure(failure),
+        (newFoodprint) => PhotoActionsState.deleteSuccess(newFoodprint));
+  }
+
+  Stream<PhotoActionsState> _mapEditedToState(
+      String newName,
+      String newPrice,
+      String newComments,
+      PhotoEntity oldPhoto,
+      RestaurantEntity restaurant,
+      FoodprintEntity foodprint) async* {
+    final newDetails = PhotoDetailEntity(
+        name: PhotoName(newName),
+        price: PhotoPrice(double.parse(newPrice)),
+        comments: PhotoComments(newComments));
+    final result = await _client.updatePhotoDetails(
+        oldPhoto: oldPhoto,
+        photoDetail: newDetails,
+        restaurant: restaurant,
+        oldFoodprint: foodprint);
+    yield result.fold(
+      (failure) => PhotoActionsState.editFailure(failure),
+      (newFoodprint) => PhotoActionsState.editSuccess(newFoodprint),
+    );
+  }
+
+  Stream<PhotoActionsState> _mapSavedToState(
+      UserID userID,
+      File imageFile,
+      String itemName,
+      String price,
+      String comments,
+      RestaurantEntity restaurant,
+      FoodprintEntity foodprint) async* {
+    final newPhoto = _generateNewPhoto(
+        userID.getOrCrash(), imageFile, itemName, price, comments);
+    final result = await _client.saveNewPhoto(
+        userID: userID,
+        data: PhotoData(imageFile.readAsBytesSync().toList()), // Image data
+        photo: newPhoto,
+        restaurant: restaurant,
+        oldFoodprint: foodprint);
+    yield result.fold((l) => PhotoActionsState.saveFailure(l),
+        (r) => PhotoActionsState.saveSuccess(r));
   }
 }

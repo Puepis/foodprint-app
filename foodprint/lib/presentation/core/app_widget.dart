@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
+import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -16,18 +17,23 @@ class FoodprintApp extends StatelessWidget {
     final TextTheme textTheme = Theme.of(context).textTheme;
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-            create: (context) => getIt<AuthBloc>()
-              ..add(const AuthEvent
-                  .authCheckStarted())), // check if user is signed in
-        BlocProvider(
-          create: (context) => getIt<LocationBloc>()..add(LocationRequested()),
-        )
-      ],
-      child: MaterialApp(
-        title: 'Foodprint',
-        theme: ThemeData(
+        providers: [
+          BlocProvider(
+              create: (context) => getIt<AuthBloc>()
+                ..add(const AuthEvent
+                    .authCheckStarted())), // check if user is signed in
+          BlocProvider(
+            create: (context) =>
+                getIt<LocationBloc>()..add(LocationRequested()),
+          ),
+          BlocProvider(
+            lazy: false,
+            create: (context) => getIt<RestaurantSearchBloc>(),
+          )
+        ],
+        child: MaterialApp(
+          title: 'Foodprint',
+          theme: ThemeData(
             brightness: Brightness.light,
             primaryColor: primaryColor,
             primaryColorDark: primaryColorDark,
@@ -38,20 +44,19 @@ class FoodprintApp extends StatelessWidget {
             hoverColor: hoverColor,
             backgroundColor: bgColor,
             textTheme: GoogleFonts.rubikTextTheme(textTheme),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: const LoginPage(),
-        initialRoute: SplashPage.routeName,
-        routes: {
-          SplashPage.routeName: (context) => SplashPage(),
-          LoginPage.routeName: (context) => const LoginPage(),
-          RegisterPage.routeName: (context) => const RegisterPage(),
-          ProfilePage.routeName: (context) => const ProfilePage(),
-          SettingsPage.routeName: (context) => const SettingsPage(),
-          AboutPage.routeName: (context) => const AboutPage(),
-          ReportIssuePage.routeName: (context) => const ReportIssuePage(),
-        },
-      ),
-    );
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const LoginPage(),
+          initialRoute: SplashPage.routeName,
+          routes: {
+            SplashPage.routeName: (context) => SplashPage(),
+            LoginPage.routeName: (context) => const LoginPage(),
+            RegisterPage.routeName: (context) => const RegisterPage(),
+            ProfilePage.routeName: (context) => const ProfilePage(),
+            SettingsPage.routeName: (context) => const SettingsPage(),
+            AboutPage.routeName: (context) => const AboutPage(),
+            ReportIssuePage.routeName: (context) => const ReportIssuePage(),
+          },
+        ));
   }
 }

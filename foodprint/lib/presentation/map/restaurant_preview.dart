@@ -93,6 +93,7 @@ class RestaurantPreview extends StatelessWidget {
   }
 
   // Displays the most recent photo taken
+  // TODO: Display restaurant photo instead
   Widget recentPhoto() => Container(
         width: 125,
         margin: const EdgeInsets.only(right: 5.0),
