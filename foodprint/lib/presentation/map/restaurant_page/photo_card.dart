@@ -33,7 +33,7 @@ class PhotoCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image(
                   image: NetworkImage(photo.url.getOrCrash()),
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

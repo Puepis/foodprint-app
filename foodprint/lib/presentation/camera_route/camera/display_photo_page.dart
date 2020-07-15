@@ -32,7 +32,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
       onWillPop: () async => false,
       child: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(fit: BoxFit.fitHeight, image: loadedImage)),
+          color: Colors.black,
+            image: DecorationImage(fit: BoxFit.fitWidth, image: loadedImage)),
         child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
             listener: (context, state) {
           // Error searching for restaurants
