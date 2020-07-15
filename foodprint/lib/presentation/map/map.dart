@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -16,37 +18,27 @@ class FoodMap extends StatefulWidget {
 }
 
 class _FoodMapState extends State<FoodMap> {
-  GoogleMapController _mapController;
+  final Completer<GoogleMapController> _mapController = Completer();
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
   bool _showRecenterButton = false;
   bool _didRecenter = false;
   MapType _currentMapType = MapType.normal;
   InheritedLocation _initialPos;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final location = InheritedLocation.of(context);
-    _currentPos = LatLng(location.latitude, location.longitude);
-    _initialPos = location;
-  }
+  final double mapZoom = 16.0;
 
   @override
   Widget build(BuildContext context) {
+    _initialPos = InheritedLocation.of(context);
+    _currentPos = LatLng(_initialPos.latitude, _initialPos.longitude);
     _markers = generateMarkers(widget.foodprint);
-
-    // Move camera to initial location
-    if (_mapController != null) {
-      _mapController.moveCamera(CameraUpdate.newLatLng(
-          LatLng(_currentPos.latitude, _currentPos.longitude)));
-    }
 
     return Stack(children: [
       GoogleMap(
         mapType: _currentMapType,
-        onMapCreated: (controller) => _mapController = controller,
-        initialCameraPosition: CameraPosition(target: _currentPos, zoom: 16.0),
+        onMapCreated: (controller) => _mapController.complete(controller),
+        initialCameraPosition:
+            CameraPosition(target: _currentPos, zoom: mapZoom),
         onCameraIdle: () {},
         onCameraMove: (CameraPosition position) {
           _currentPos = position.target;
@@ -103,15 +95,16 @@ class _FoodMapState extends State<FoodMap> {
     });
   }
 
-  void _onRecenterButtonPressed() {
+  Future<void> _onRecenterButtonPressed() async {
     if (_mapController != null) {
+      final GoogleMapController controller = await _mapController.future;
       setState(() {
         _didRecenter = true;
         _showRecenterButton = false;
       });
-      _mapController.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(
-              target: LatLng(_initialPos.latitude, _initialPos.longitude))));
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          zoom: mapZoom,
+          target: LatLng(_initialPos.latitude, _initialPos.longitude))));
     }
   }
 
