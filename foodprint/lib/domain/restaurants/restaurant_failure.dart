@@ -9,4 +9,5 @@ abstract class RestaurantFailure with _$RestaurantFailure {
   const factory RestaurantFailure.requestDenied() = _RequestDenied;
   const factory RestaurantFailure.overQueryLimit() = _OverQueryLimit;
   const factory RestaurantFailure.invalidRequest() = _InvalidRequest;
+  const factory RestaurantFailure.notFound() = _NotFound;
 }

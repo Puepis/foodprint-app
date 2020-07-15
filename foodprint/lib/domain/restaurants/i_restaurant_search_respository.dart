@@ -5,6 +5,7 @@ import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/manual_search/autocomplete_result_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_failure.dart';
+import 'package:foodprint/domain/restaurants/value_objects.dart';
 
 // Creates an abstraction between the infrastructure layer and the business logic (domain) layer
 abstract class IRestaurantSearchRepository {
@@ -14,9 +15,13 @@ abstract class IRestaurantSearchRepository {
     @required Longitude longitude,
   });
 
-  Future<Either<RestaurantFailure, List<AutocompleteResultEntity>>> autocompleteSearch({
-    @required String input,
-    @required Latitude latitude,
-    @required Longitude longitude
+  Future<Either<RestaurantFailure, List<AutocompleteResultEntity>>>
+      autocompleteSearch(
+          {@required String input,
+          @required Latitude latitude,
+          @required Longitude longitude});
+
+  Future<Either<RestaurantFailure, RestaurantEntity>> fetchRestaurantDetails({
+    @required RestaurantID id,
   });
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
+import 'package:foodprint/domain/manual_search/autocomplete_result_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class RestaurantSearchDelegate extends SearchDelegate<String> {
@@ -10,7 +11,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    // actions for the app bar
     return [
       IconButton(
         icon: const Icon(Icons.clear),
@@ -38,41 +38,33 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   /// Shows results based on the selection
   @override
   Widget buildResults(BuildContext context) {
-    return Container(
-      color: Colors.orange,
-      height: 100,
-      width: 100,
-    );
+    return Container();
   }
 
-  /// Shows during search
+  /// Builds the suggestion body as the user types
   @override
   Widget buildSuggestions(BuildContext context) {
     // Fire event
-    context.bloc<RestaurantSearchBloc>()
-      ..add(AutocompleteRestaurantsSearched(
+    context.bloc<ManualSearchBloc>()
+      ..add(AutocompleteSearched(
           latitude: latitude, longitude: longitude, input: query));
 
-    return BlocBuilder<RestaurantSearchBloc, RestaurantSearchState>(
+    return BlocBuilder<ManualSearchBloc, ManualSearchState>(
         builder: (context, state) {
       Widget searchBody;
 
-      if (state is SearchStateLoading) {
+      if (state is AutocompleteSearchLoading) {
         searchBody = const Padding(
             padding: EdgeInsets.all(20.0), child: CircularProgressIndicator());
-      }
-      if (state is SearchStateError) {
-        print(state.failure.toString());
       }
       if (state is AutocompleteSearchSuccess) {
         final predictions = state.predictions;
 
+        // Construct results
         searchBody = ListView.builder(
             itemCount: predictions.length,
             itemBuilder: (context, index) {
-              final name = predictions[index].name.getOrCrash();
-              final location = predictions[index].secondaryText;
-              return buildSearchResult(context, name, location);
+              return buildSearchSuggestion(context, predictions[index], query);
             });
       }
 
@@ -92,10 +84,16 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
     });
   }
 
-  Widget buildSearchResult(BuildContext context, String name, String location) {
+  /// One entry in the suggestion list
+  Widget buildSearchSuggestion(BuildContext context,
+      AutocompleteResultEntity prediction, String search) {
+    final id = prediction.id.getOrCrash();
+    final name = prediction.name.getOrCrash();
+    final location = prediction.secondaryText;
+
     return ListTile(
       onTap: () {
-        showResults(context);
+        close(context, id);
       },
       leading: Icon(
         Icons.location_on,
@@ -111,12 +109,13 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
           text: TextSpan(
-              text: name.substring(0, query.length),
+              // TODO: Handle out of range error
+              text: name.substring(0, search.length),
               style: const TextStyle(
                   fontWeight: FontWeight.w500, color: Colors.black),
               children: [
                 TextSpan(
-                    text: name.substring(query.length),
+                    text: name.substring(search.length),
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, color: Colors.grey))
               ])),
@@ -124,6 +123,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   }
 }
 
+/// The "powered by Google" logo as required by the Places API Policies
 class PoweredByGoogleImage extends StatelessWidget {
   final _poweredByGoogleOnWhite =
       "assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_white.png";

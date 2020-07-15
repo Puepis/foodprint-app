@@ -43,7 +43,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   }
 
   // Deserialize JSON
-  factory RestaurantDTO.fromNearbyPlaceSearch(Map<String, dynamic> json) {
+  factory RestaurantDTO.fromPlaceSearches(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
       restaurantName: json['name'] as String,

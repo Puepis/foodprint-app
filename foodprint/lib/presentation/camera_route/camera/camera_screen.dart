@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
+import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,10 +31,12 @@ class _CameraState extends State<Camera> {
     return Scaffold(
         body: (_imageFile == null)
             ? LoadingIndicator()
-            : InheritedImage(
-                imageFile: _imageFile,
-                loadedImage: loadedImage,
-                child: const DisplayPhoto(
+            : BlocProvider(
+                create: (context) => getIt<RestaurantSearchBloc>(),
+                child: InheritedImage(
+                  imageFile: _imageFile,
+                  loadedImage: loadedImage,
+                  child: const DisplayPhoto(),
                 ),
               ));
   }

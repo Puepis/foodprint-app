@@ -2,7 +2,9 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
+import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart'
+    hide SearchStateError;
+import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
@@ -19,16 +21,15 @@ class DisplayPhoto extends StatefulWidget {
 class _DisplayPhotoState extends State<DisplayPhoto> {
   @override
   Widget build(BuildContext context) {
+    final loadedImage = InheritedImage.of(context).loadedImage;
     final latitude = InheritedLocation.of(context).latitude;
     final longitude = InheritedLocation.of(context).longitude;
-    final loadedImage = InheritedImage.of(context).loadedImage;
 
-    // Search for restaurants
-    context.bloc<RestaurantSearchBloc>().add(
-        NearbyRestaurantsSearched(latitude: latitude, longitude: longitude));
+    final nearbySearchBloc = context.bloc<RestaurantSearchBloc>();
+    final manualSearchBloc = context.bloc<ManualSearchBloc>();
 
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () async => false,
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(fit: BoxFit.fitHeight, image: loadedImage)),
@@ -38,25 +39,41 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
           if (state is SearchStateError) {
             Scaffold.of(context)..hideCurrentSnackBar();
             FlushbarHelper.createError(
-              message: state.failure.maybeMap(
+              message: state.failure.map(
                 requestDenied: (_) => 'Request denied',
                 unexpectedSearchFailure: (_) => 'Unexpected search failure',
-                orElse: () => null, // TODO: Handle other failures
+                overQueryLimit: (_) => 'Over query limit',
+                invalidRequest: (_) => 'Invalid request',
+                notFound: (_) => 'Place not found',
               ),
             ).show(context);
           }
         }, builder: (_, state) {
+          // Only search once
+          if (state is SearchStateEmpty) {
+            nearbySearchBloc.add(NearbyRestaurantsSearched(
+                latitude: latitude, longitude: longitude));
+          }
           return Stack(children: [
             Positioned(
                 top: 30,
                 left: 10,
                 child: IconButton(
+                  iconSize: 50.0,
                   icon: const Icon(
                     Icons.cancel,
                     color: Colors.red,
-                    size: 50.0,
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () async {
+                    final bool pop = await _willCancel();
+                    if (pop) {
+                      Navigator.pop(context);
+
+                      // Reset search states
+                      nearbySearchBloc.add(ResetNearbySearch());
+                      manualSearchBloc.add(ResetManualSearch());
+                    }
+                  },
                 )),
             Positioned(
                 bottom: 20,
@@ -75,7 +92,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     );
   }
 
-  Future<bool> _onWillPop() async {
+  Future<bool> _willCancel() async {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(

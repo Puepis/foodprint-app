@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -187,6 +188,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                           comments: _comments,
                           restaurant: widget.restaurant,
                           foodprint: widget.oldFoodprint));
+
+                      // Reset manual search state
+                      context.bloc<ManualSearchBloc>().add(ResetManualSearch());
                     }
                   },
                 ),

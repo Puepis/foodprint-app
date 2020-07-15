@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
-import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
+import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -28,7 +28,7 @@ class FoodprintApp extends StatelessWidget {
           ),
           BlocProvider(
             lazy: false,
-            create: (context) => getIt<RestaurantSearchBloc>(),
+            create: (context) => getIt<ManualSearchBloc>(),
           )
         ],
         child: MaterialApp(

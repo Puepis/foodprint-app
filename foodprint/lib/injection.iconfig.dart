@@ -16,8 +16,9 @@ import 'package:foodprint/domain/restaurants/i_restaurant_search_respository.dar
 import 'package:foodprint/infrastructure/foodprint/local_foodprint_client.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
+import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
-import 'package:foodprint/application/restaurants/restaurant_search_bloc.dart';
+import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/infrastructure/photos/remote_photos_client.dart';
@@ -35,10 +36,12 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<LocalFoodprintClient>(() => LocalFoodprintClient());
   g.registerFactory<LocationBloc>(() => LocationBloc(g<ILocationRepository>()));
   g.registerFactory<LoginFormBloc>(() => LoginFormBloc(g<IAuthRepository>()));
+  g.registerFactory<ManualSearchBloc>(() => ManualSearchBloc(
+      g<IRestaurantSearchRepository>(), g<AutocompleteSearchCache>()));
   g.registerFactory<RegisterFormBloc>(
       () => RegisterFormBloc(g<IAuthRepository>()));
-  g.registerFactory<RestaurantSearchBloc>(() => RestaurantSearchBloc(
-      g<IRestaurantSearchRepository>(), g<AutocompleteSearchCache>()));
+  g.registerFactory<RestaurantSearchBloc>(
+      () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
   g.registerFactory<FoodprintBloc>(
       () => FoodprintBloc(g<IRemoteFoodprintRepository>()));

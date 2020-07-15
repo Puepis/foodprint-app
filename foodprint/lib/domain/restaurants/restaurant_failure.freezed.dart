@@ -27,6 +27,10 @@ class _$RestaurantFailureTearOff {
   _InvalidRequest invalidRequest() {
     return const _InvalidRequest();
   }
+
+  _NotFound notFound() {
+    return const _NotFound();
+  }
 }
 
 // ignore: unused_element
@@ -39,6 +43,7 @@ mixin _$RestaurantFailure {
     @required Result requestDenied(),
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
+    @required Result notFound(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -46,6 +51,7 @@ mixin _$RestaurantFailure {
     Result requestDenied(),
     Result overQueryLimit(),
     Result invalidRequest(),
+    Result notFound(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -54,6 +60,7 @@ mixin _$RestaurantFailure {
     @required Result requestDenied(_RequestDenied value),
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -61,6 +68,7 @@ mixin _$RestaurantFailure {
     Result requestDenied(_RequestDenied value),
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
     @required Result orElse(),
   });
 }
@@ -121,11 +129,13 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     @required Result requestDenied(),
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
+    @required Result notFound(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return unexpectedSearchFailure();
   }
 
@@ -136,6 +146,7 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     Result requestDenied(),
     Result overQueryLimit(),
     Result invalidRequest(),
+    Result notFound(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -152,11 +163,13 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     @required Result requestDenied(_RequestDenied value),
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return unexpectedSearchFailure(this);
   }
 
@@ -167,6 +180,7 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     Result requestDenied(_RequestDenied value),
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -221,11 +235,13 @@ class _$_RequestDenied implements _RequestDenied {
     @required Result requestDenied(),
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
+    @required Result notFound(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return requestDenied();
   }
 
@@ -236,6 +252,7 @@ class _$_RequestDenied implements _RequestDenied {
     Result requestDenied(),
     Result overQueryLimit(),
     Result invalidRequest(),
+    Result notFound(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -252,11 +269,13 @@ class _$_RequestDenied implements _RequestDenied {
     @required Result requestDenied(_RequestDenied value),
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return requestDenied(this);
   }
 
@@ -267,6 +286,7 @@ class _$_RequestDenied implements _RequestDenied {
     Result requestDenied(_RequestDenied value),
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -321,11 +341,13 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     @required Result requestDenied(),
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
+    @required Result notFound(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return overQueryLimit();
   }
 
@@ -336,6 +358,7 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     Result requestDenied(),
     Result overQueryLimit(),
     Result invalidRequest(),
+    Result notFound(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -352,11 +375,13 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     @required Result requestDenied(_RequestDenied value),
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return overQueryLimit(this);
   }
 
@@ -367,6 +392,7 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     Result requestDenied(_RequestDenied value),
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -421,11 +447,13 @@ class _$_InvalidRequest implements _InvalidRequest {
     @required Result requestDenied(),
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
+    @required Result notFound(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return invalidRequest();
   }
 
@@ -436,6 +464,7 @@ class _$_InvalidRequest implements _InvalidRequest {
     Result requestDenied(),
     Result overQueryLimit(),
     Result invalidRequest(),
+    Result notFound(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -452,11 +481,13 @@ class _$_InvalidRequest implements _InvalidRequest {
     @required Result requestDenied(_RequestDenied value),
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
+    assert(notFound != null);
     return invalidRequest(this);
   }
 
@@ -467,6 +498,7 @@ class _$_InvalidRequest implements _InvalidRequest {
     Result requestDenied(_RequestDenied value),
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -479,4 +511,108 @@ class _$_InvalidRequest implements _InvalidRequest {
 
 abstract class _InvalidRequest implements RestaurantFailure {
   const factory _InvalidRequest() = _$_InvalidRequest;
+}
+
+abstract class _$NotFoundCopyWith<$Res> {
+  factory _$NotFoundCopyWith(_NotFound value, $Res Function(_NotFound) then) =
+      __$NotFoundCopyWithImpl<$Res>;
+}
+
+class __$NotFoundCopyWithImpl<$Res>
+    extends _$RestaurantFailureCopyWithImpl<$Res>
+    implements _$NotFoundCopyWith<$Res> {
+  __$NotFoundCopyWithImpl(_NotFound _value, $Res Function(_NotFound) _then)
+      : super(_value, (v) => _then(v as _NotFound));
+
+  @override
+  _NotFound get _value => super._value as _NotFound;
+}
+
+class _$_NotFound implements _NotFound {
+  const _$_NotFound();
+
+  @override
+  String toString() {
+    return 'RestaurantFailure.notFound()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _NotFound);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpectedSearchFailure(),
+    @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
+    @required Result notFound(),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    assert(notFound != null);
+    return notFound();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpectedSearchFailure(),
+    Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
+    Result notFound(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notFound != null) {
+      return notFound();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    assert(notFound != null);
+    return notFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (notFound != null) {
+      return notFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NotFound implements RestaurantFailure {
+  const factory _NotFound() = _$_NotFound;
 }
