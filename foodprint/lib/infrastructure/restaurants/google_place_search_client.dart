@@ -108,7 +108,7 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
   Future<Either<RestaurantFailure, RestaurantEntity>> fetchRestaurantDetails(
       {RestaurantID id}) async {
     final String url =
-        "$placeDetailsBaseUrl?place_id=${id.getOrCrash()}&fields=place_id,name,geometry,rating&key=${DotEnv().env['GOOGLE_API_KEY']}";
+        "$placeDetailsBaseUrl?place_id=${id.getOrCrash()}&fields=place_id,name,geometry,rating,type&key=${DotEnv().env['GOOGLE_API_KEY']}";
 
     try {
       final response = await http.get(url);

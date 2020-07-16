@@ -16,8 +16,8 @@ abstract class RestaurantEntity implements _$RestaurantEntity {
     @required RestaurantName restaurantName,
     @required RestaurantRating restaurantRating,
     @required Latitude latitude,
-    @required Longitude longitude
-
+    @required Longitude longitude,
+    @required RestaurantTypes types,
   }) = _RestaurantEntity;
 
 }

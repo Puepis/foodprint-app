@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
@@ -14,24 +12,21 @@ import 'package:http/http.dart' as http;
 
 @LazySingleton(as: IRemoteFoodprintRepository)
 class RemoteFoodprintClient implements IRemoteFoodprintRepository {
-
   // Fetch the user's foodprint
   @override
-  Future<Either<FoodprintFailure, FoodprintEntity>> getFoodprint({@required JWT token}) async {
-
-    final res = await http.get(
-        '$serverIP/api/users/foodprint',
-        headers: {"authorization": "Bearer ${token.getOrCrash()}"}
-    );
+  Future<Either<FoodprintFailure, FoodprintEntity>> getFoodprint(
+      {@required JWT token}) async {
+    final res = await http.get('$serverIP/api/users/foodprint',
+        headers: {"authorization": "Bearer ${token.getOrCrash()}"});
 
     if (res.statusCode == 200) {
-      final FoodprintEntity foodprint = FoodprintDTO.fromJSON(jsonDecode(res.body) as Map<String, dynamic>).toEntity();
+      final FoodprintEntity foodprint =
+          FoodprintDTO.fromJSON(jsonDecode(res.body) as Map<String, dynamic>)
+              .toEntity();
       return right(foodprint);
-    } 
-    else if (res.statusCode == 403) {
+    } else if (res.statusCode == 403) {
       return left(const FoodprintFailure.unauthorizedToken());
-    }
-    else {
+    } else {
       return left(const FoodprintFailure.serverError());
     }
   }

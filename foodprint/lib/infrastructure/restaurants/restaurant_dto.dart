@@ -18,6 +18,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
     @required double rating,
     @required double latitude,
     @required double longitude,
+    @required List<String> types,
   }) = _RestaurantDTO;
 
   // Convert entity to DTO
@@ -27,7 +28,8 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       restaurantName: restaurant.restaurantName.getOrCrash(),
       rating: restaurant.restaurantRating.getOrCrash(),
       latitude: restaurant.latitude.getOrCrash(),
-      longitude: restaurant.longitude.getOrCrash() 
+      longitude: restaurant.longitude.getOrCrash(), 
+      types: restaurant.types.getOrCrash(),
     );
   }
 
@@ -39,6 +41,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       restaurantRating: RestaurantRating(rating),
       latitude: Latitude(latitude),
       longitude: Longitude(longitude),
+      types: RestaurantTypes(types),
     );
   }
 
@@ -50,6 +53,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       rating: json['rating'] == null ? -1.0 : double.parse(json['rating'].toString()),
       latitude: double.parse(json['geometry']['location']['lat'].toString()),
       longitude: double.parse(json['geometry']['location']['lng'].toString()),
+      types: List<String>.from(json['types'] as List), 
     );
   }
 
@@ -61,6 +65,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       rating: double.parse(json['restaurant_rating'].toString()),
       latitude: double.parse(json['restaurant_lat'].toString()),
       longitude: double.parse(json['restaurant_lng'].toString()),
+      types: List<String>.from(json['restaurant_types'] as List)
     );
   }
 }

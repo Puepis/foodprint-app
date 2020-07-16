@@ -1,5 +1,3 @@
-
-
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
@@ -13,7 +11,7 @@ class RestaurantID extends ValueObject<String> {
     assert(id != null);
     return RestaurantID._(
       validateStringNotEmpty(id),
-    ); 
+    );
   }
 
   const RestaurantID._(this.value);
@@ -25,9 +23,7 @@ class RestaurantName extends ValueObject<String> {
 
   factory RestaurantName(String restaurantName) {
     assert(restaurantName != null);
-    return RestaurantName._(
-      validateStringNotEmpty(restaurantName)
-    ); 
+    return RestaurantName._(validateStringNotEmpty(restaurantName));
   }
 
   const RestaurantName._(this.value);
@@ -43,8 +39,20 @@ class RestaurantRating extends ValueObject<double> {
     assert(rating != null);
     return RestaurantRating._(
       validateDoubleInRange(rating, min, max),
-    ); 
+    );
   }
 
   const RestaurantRating._(this.value);
+}
+
+class RestaurantTypes extends ValueObject<List<String>> {
+  @override
+  final Either<ValueFailure<List<String>>, List<String>> value;
+
+  factory RestaurantTypes(List<String> types) {
+    assert(types != null);
+    return RestaurantTypes._(right(types));
+  }
+
+  const RestaurantTypes._(this.value);
 }

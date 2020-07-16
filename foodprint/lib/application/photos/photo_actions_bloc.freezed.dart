@@ -876,7 +876,7 @@ abstract class Saved implements PhotoActionsEvent {
 class _$PhotoActionsStateTearOff {
   const _$PhotoActionsStateTearOff();
 
-  Initial intial() {
+  Initial initial() {
     return const Initial();
   }
 
@@ -927,7 +927,7 @@ const $PhotoActionsState = _$PhotoActionsStateTearOff();
 mixin _$PhotoActionsState {
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -938,7 +938,7 @@ mixin _$PhotoActionsState {
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -950,7 +950,7 @@ mixin _$PhotoActionsState {
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -961,7 +961,7 @@ mixin _$PhotoActionsState {
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1007,7 +1007,7 @@ class _$Initial implements Initial {
 
   @override
   String toString() {
-    return 'PhotoActionsState.intial()';
+    return 'PhotoActionsState.initial()';
   }
 
   @override
@@ -1021,7 +1021,7 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1030,7 +1030,7 @@ class _$Initial implements Initial {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1038,13 +1038,13 @@ class _$Initial implements Initial {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return intial();
+    return initial();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1055,8 +1055,8 @@ class _$Initial implements Initial {
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (intial != null) {
-      return intial();
+    if (initial != null) {
+      return initial();
     }
     return orElse();
   }
@@ -1064,7 +1064,7 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1073,7 +1073,7 @@ class _$Initial implements Initial {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1081,13 +1081,13 @@ class _$Initial implements Initial {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return intial(this);
+    return initial(this);
   }
 
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1098,8 +1098,8 @@ class _$Initial implements Initial {
     @required Result orElse(),
   }) {
     assert(orElse != null);
-    if (intial != null) {
-      return intial(this);
+    if (initial != null) {
+      return initial(this);
     }
     return orElse();
   }
@@ -1145,7 +1145,7 @@ class _$ActionInProgress implements ActionInProgress {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1154,7 +1154,7 @@ class _$ActionInProgress implements ActionInProgress {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1168,7 +1168,7 @@ class _$ActionInProgress implements ActionInProgress {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1188,7 +1188,7 @@ class _$ActionInProgress implements ActionInProgress {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1197,7 +1197,7 @@ class _$ActionInProgress implements ActionInProgress {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1211,7 +1211,7 @@ class _$ActionInProgress implements ActionInProgress {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1302,7 +1302,7 @@ class _$DeleteFailure implements DeleteFailure {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1311,7 +1311,7 @@ class _$DeleteFailure implements DeleteFailure {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1325,7 +1325,7 @@ class _$DeleteFailure implements DeleteFailure {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1345,7 +1345,7 @@ class _$DeleteFailure implements DeleteFailure {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1354,7 +1354,7 @@ class _$DeleteFailure implements DeleteFailure {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1368,7 +1368,7 @@ class _$DeleteFailure implements DeleteFailure {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1465,7 +1465,7 @@ class _$DeleteSuccess implements DeleteSuccess {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1474,7 +1474,7 @@ class _$DeleteSuccess implements DeleteSuccess {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1488,7 +1488,7 @@ class _$DeleteSuccess implements DeleteSuccess {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1508,7 +1508,7 @@ class _$DeleteSuccess implements DeleteSuccess {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1517,7 +1517,7 @@ class _$DeleteSuccess implements DeleteSuccess {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1531,7 +1531,7 @@ class _$DeleteSuccess implements DeleteSuccess {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1625,7 +1625,7 @@ class _$EditFailure implements EditFailure {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1634,7 +1634,7 @@ class _$EditFailure implements EditFailure {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1648,7 +1648,7 @@ class _$EditFailure implements EditFailure {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1668,7 +1668,7 @@ class _$EditFailure implements EditFailure {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1677,7 +1677,7 @@ class _$EditFailure implements EditFailure {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1691,7 +1691,7 @@ class _$EditFailure implements EditFailure {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1788,7 +1788,7 @@ class _$EditSuccess implements EditSuccess {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1797,7 +1797,7 @@ class _$EditSuccess implements EditSuccess {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1811,7 +1811,7 @@ class _$EditSuccess implements EditSuccess {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1831,7 +1831,7 @@ class _$EditSuccess implements EditSuccess {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -1840,7 +1840,7 @@ class _$EditSuccess implements EditSuccess {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1854,7 +1854,7 @@ class _$EditSuccess implements EditSuccess {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -1948,7 +1948,7 @@ class _$SaveFailure implements SaveFailure {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1957,7 +1957,7 @@ class _$SaveFailure implements SaveFailure {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -1971,7 +1971,7 @@ class _$SaveFailure implements SaveFailure {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -1991,7 +1991,7 @@ class _$SaveFailure implements SaveFailure {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -2000,7 +2000,7 @@ class _$SaveFailure implements SaveFailure {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -2014,7 +2014,7 @@ class _$SaveFailure implements SaveFailure {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),
@@ -2111,7 +2111,7 @@ class _$SaveSuccess implements SaveSuccess {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result intial(),
+    @required Result initial(),
     @required Result actionInProgress(),
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -2120,7 +2120,7 @@ class _$SaveSuccess implements SaveSuccess {
     @required Result saveFailure(PhotoFailure failure),
     @required Result saveSuccess(FoodprintEntity newFoodprint),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -2134,7 +2134,7 @@ class _$SaveSuccess implements SaveSuccess {
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result intial(),
+    Result initial(),
     Result actionInProgress(),
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(FoodprintEntity newFoodprint),
@@ -2154,7 +2154,7 @@ class _$SaveSuccess implements SaveSuccess {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result intial(Initial value),
+    @required Result initial(Initial value),
     @required Result actionInProgress(ActionInProgress value),
     @required Result deleteFailure(DeleteFailure value),
     @required Result deleteSuccess(DeleteSuccess value),
@@ -2163,7 +2163,7 @@ class _$SaveSuccess implements SaveSuccess {
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
   }) {
-    assert(intial != null);
+    assert(initial != null);
     assert(actionInProgress != null);
     assert(deleteFailure != null);
     assert(deleteSuccess != null);
@@ -2177,7 +2177,7 @@ class _$SaveSuccess implements SaveSuccess {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result intial(Initial value),
+    Result initial(Initial value),
     Result actionInProgress(ActionInProgress value),
     Result deleteFailure(DeleteFailure value),
     Result deleteSuccess(DeleteSuccess value),

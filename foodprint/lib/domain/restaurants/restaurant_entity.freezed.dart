@@ -17,13 +17,15 @@ class _$RestaurantEntityTearOff {
       @required RestaurantName restaurantName,
       @required RestaurantRating restaurantRating,
       @required Latitude latitude,
-      @required Longitude longitude}) {
+      @required Longitude longitude,
+      @required RestaurantTypes types}) {
     return _RestaurantEntity(
       restaurantID: restaurantID,
       restaurantName: restaurantName,
       restaurantRating: restaurantRating,
       latitude: latitude,
       longitude: longitude,
+      types: types,
     );
   }
 }
@@ -37,6 +39,7 @@ mixin _$RestaurantEntity {
   RestaurantRating get restaurantRating;
   Latitude get latitude;
   Longitude get longitude;
+  RestaurantTypes get types;
 
   $RestaurantEntityCopyWith<RestaurantEntity> get copyWith;
 }
@@ -50,7 +53,8 @@ abstract class $RestaurantEntityCopyWith<$Res> {
       RestaurantName restaurantName,
       RestaurantRating restaurantRating,
       Latitude latitude,
-      Longitude longitude});
+      Longitude longitude,
+      RestaurantTypes types});
 }
 
 class _$RestaurantEntityCopyWithImpl<$Res>
@@ -68,6 +72,7 @@ class _$RestaurantEntityCopyWithImpl<$Res>
     Object restaurantRating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
+    Object types = freezed,
   }) {
     return _then(_value.copyWith(
       restaurantID: restaurantID == freezed
@@ -82,6 +87,7 @@ class _$RestaurantEntityCopyWithImpl<$Res>
       latitude: latitude == freezed ? _value.latitude : latitude as Latitude,
       longitude:
           longitude == freezed ? _value.longitude : longitude as Longitude,
+      types: types == freezed ? _value.types : types as RestaurantTypes,
     ));
   }
 }
@@ -97,7 +103,8 @@ abstract class _$RestaurantEntityCopyWith<$Res>
       RestaurantName restaurantName,
       RestaurantRating restaurantRating,
       Latitude latitude,
-      Longitude longitude});
+      Longitude longitude,
+      RestaurantTypes types});
 }
 
 class __$RestaurantEntityCopyWithImpl<$Res>
@@ -117,6 +124,7 @@ class __$RestaurantEntityCopyWithImpl<$Res>
     Object restaurantRating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
+    Object types = freezed,
   }) {
     return _then(_RestaurantEntity(
       restaurantID: restaurantID == freezed
@@ -131,6 +139,7 @@ class __$RestaurantEntityCopyWithImpl<$Res>
       latitude: latitude == freezed ? _value.latitude : latitude as Latitude,
       longitude:
           longitude == freezed ? _value.longitude : longitude as Longitude,
+      types: types == freezed ? _value.types : types as RestaurantTypes,
     ));
   }
 }
@@ -141,12 +150,14 @@ class _$_RestaurantEntity extends _RestaurantEntity {
       @required this.restaurantName,
       @required this.restaurantRating,
       @required this.latitude,
-      @required this.longitude})
+      @required this.longitude,
+      @required this.types})
       : assert(restaurantID != null),
         assert(restaurantName != null),
         assert(restaurantRating != null),
         assert(latitude != null),
         assert(longitude != null),
+        assert(types != null),
         super._();
 
   @override
@@ -159,10 +170,12 @@ class _$_RestaurantEntity extends _RestaurantEntity {
   final Latitude latitude;
   @override
   final Longitude longitude;
+  @override
+  final RestaurantTypes types;
 
   @override
   String toString() {
-    return 'RestaurantEntity(restaurantID: $restaurantID, restaurantName: $restaurantName, restaurantRating: $restaurantRating, latitude: $latitude, longitude: $longitude)';
+    return 'RestaurantEntity(restaurantID: $restaurantID, restaurantName: $restaurantName, restaurantRating: $restaurantRating, latitude: $latitude, longitude: $longitude, types: $types)';
   }
 
   @override
@@ -183,7 +196,9 @@ class _$_RestaurantEntity extends _RestaurantEntity {
                     .equals(other.latitude, latitude)) &&
             (identical(other.longitude, longitude) ||
                 const DeepCollectionEquality()
-                    .equals(other.longitude, longitude)));
+                    .equals(other.longitude, longitude)) &&
+            (identical(other.types, types) ||
+                const DeepCollectionEquality().equals(other.types, types)));
   }
 
   @override
@@ -193,7 +208,8 @@ class _$_RestaurantEntity extends _RestaurantEntity {
       const DeepCollectionEquality().hash(restaurantName) ^
       const DeepCollectionEquality().hash(restaurantRating) ^
       const DeepCollectionEquality().hash(latitude) ^
-      const DeepCollectionEquality().hash(longitude);
+      const DeepCollectionEquality().hash(longitude) ^
+      const DeepCollectionEquality().hash(types);
 
   @override
   _$RestaurantEntityCopyWith<_RestaurantEntity> get copyWith =>
@@ -207,7 +223,8 @@ abstract class _RestaurantEntity extends RestaurantEntity {
       @required RestaurantName restaurantName,
       @required RestaurantRating restaurantRating,
       @required Latitude latitude,
-      @required Longitude longitude}) = _$_RestaurantEntity;
+      @required Longitude longitude,
+      @required RestaurantTypes types}) = _$_RestaurantEntity;
 
   @override
   RestaurantID get restaurantID;
@@ -219,6 +236,8 @@ abstract class _RestaurantEntity extends RestaurantEntity {
   Latitude get latitude;
   @override
   Longitude get longitude;
+  @override
+  RestaurantTypes get types;
   @override
   _$RestaurantEntityCopyWith<_RestaurantEntity> get copyWith;
 }
