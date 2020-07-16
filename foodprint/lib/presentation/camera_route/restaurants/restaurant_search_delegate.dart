@@ -57,14 +57,16 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         searchBody = const Padding(
             padding: EdgeInsets.all(20.0), child: CircularProgressIndicator());
       }
+      // TODO: Handle no results
       if (state is AutocompleteSearchSuccess) {
         final predictions = state.predictions;
+        final searchedStr = state.searchedStr;
 
         // Construct results
         searchBody = ListView.builder(
             itemCount: predictions.length,
             itemBuilder: (context, index) {
-              return buildSearchSuggestion(context, predictions[index], query);
+              return buildSearchSuggestion(context, predictions[index], searchedStr);
             });
       }
 
@@ -74,9 +76,10 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            Align(
-                alignment: Alignment.bottomRight,
-                child: PoweredByGoogleImage()),
+            // TODO: Show powered by Google logo for release
+            // Align(
+            //     alignment: Alignment.bottomRight,
+            //     child: PoweredByGoogleImage()),
             searchBody ?? Container(),
           ],
         ),
@@ -85,8 +88,8 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   }
 
   /// One entry in the suggestion list
-  Widget buildSearchSuggestion(BuildContext context,
-      AutocompleteResultEntity prediction, String search) {
+  Widget buildSearchSuggestion(
+      BuildContext context, AutocompleteResultEntity prediction, String input) {
     final id = prediction.id.getOrCrash();
     final name = prediction.name.getOrCrash();
     final location = prediction.secondaryText;
@@ -109,13 +112,12 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
           text: TextSpan(
-              // TODO: Handle out of range error
-              text: name.substring(0, search.length),
+              text: name.substring(0, input.length),
               style: const TextStyle(
                   fontWeight: FontWeight.w500, color: Colors.black),
               children: [
                 TextSpan(
-                    text: name.substring(search.length),
+                    text: name.substring(input.length),
                     style: const TextStyle(
                         fontWeight: FontWeight.w500, color: Colors.grey))
               ])),

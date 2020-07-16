@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/presentation/map/restaurant_page/photo_card.dart';
-import 'package:intl/intl.dart';
 
 class PhotoSection extends StatelessWidget {
   final List<PhotoEntity> photos;
@@ -39,11 +38,7 @@ class PhotoSection extends StatelessWidget {
   }
 
   Widget displayPhotos(BuildContext context) {
-    // Currency formatter
-    final NumberFormat formatter = NumberFormat.simpleCurrency(
-        locale: Localizations.localeOf(context).toString());
-
-    return Expanded(
+       return Expanded(
         child: Padding(
       padding: const EdgeInsets.only(bottom: 12.0, left: 12.0),
       child: ListView.builder(
@@ -51,7 +46,7 @@ class PhotoSection extends StatelessWidget {
           itemCount: photos.length,
           itemBuilder: (BuildContext context, int index) {
             final PhotoEntity photo = photos[index];
-            return PhotoCard(photo: photo, formatter: formatter);
+            return PhotoCard(photo: photo);
           }),
     ));
   }

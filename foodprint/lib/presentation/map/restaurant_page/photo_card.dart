@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:foodprint/domain/core/value_objects.dart';
+import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
+import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 
+/// Displays the [photo] in the form of a card under the
+/// [PhotoSection] of the [RestaurantPhotos] page
 class PhotoCard extends StatelessWidget {
   const PhotoCard({
     Key key,
     @required this.photo,
-    @required this.formatter,
   }) : super(key: key);
 
   final PhotoEntity photo;
-  final NumberFormat formatter;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,8 @@ class PhotoCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image(
-                  image: NetworkImage(photo.url.getOrCrash()),
-                  fit: BoxFit.cover,
-                ),
-              ),
+            DisplayImage(
+              photoUrl: photo.url,
             ),
             Container(
               decoration: BoxDecoration(
@@ -49,59 +46,109 @@ class PhotoCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          photo.photoDetail.name.getOrCrash(),
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Text(
-                          formatter
-                              .format(photo.photoDetail.price.getOrCrash()),
-                          style: TextStyle(
-                              color: Colors.green.shade500,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        Text(
-                          photo.timestamp.toReadable(),
-                          style: const TextStyle(fontSize: 15.0),
-                        )
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        Icons.favorite_border,
-                        color: Colors.red,
-                      ),
-                      SizedBox(height: 3.0,),
-                      Text(
-                        "Favourite",
-                        style: TextStyle(fontSize: 15.0),
-                      )
-                    ],
-                  )
+                  DisplayInfo(
+                      photoDetail: photo.photoDetail,
+                      timestamp: photo.timestamp),
+                  buildFavouriteSection()
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildFavouriteSection() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Icon(
+          Icons.favorite_border,
+          color: Colors.red,
+        ),
+        SizedBox(
+          height: 3.0,
+        ),
+        Text(
+          "Favourite",
+          style: TextStyle(fontSize: 15.0),
+        )
+      ],
+    );
+  }
+}
+
+/// Displays the photo details
+class DisplayInfo extends StatelessWidget {
+  const DisplayInfo({
+    Key key,
+    @required this.photoDetail,
+    @required this.timestamp,
+  }) : super(key: key);
+
+  final PhotoDetailEntity photoDetail;
+  final Timestamp timestamp;
+
+  @override
+  Widget build(BuildContext context) {
+    // Currency formatter
+    final NumberFormat formatter = NumberFormat.simpleCurrency(
+        locale: Localizations.localeOf(context).toString());
+
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            photoDetail.name.getOrCrash(),
+            style: const TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Text(
+            formatter.format(photoDetail.price.getOrCrash()),
+            style: TextStyle(
+                color: Colors.green.shade500,
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Text(
+            timestamp.toReadable(),
+            style: const TextStyle(fontSize: 15.0),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class DisplayImage extends StatelessWidget {
+  const DisplayImage({
+    Key key,
+    @required this.photoUrl,
+  }) : super(key: key);
+
+  final URL photoUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image(
+          image: NetworkImage(photoUrl.getOrCrash()),
+          fit: BoxFit.cover,
         ),
       ),
     );

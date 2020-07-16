@@ -33,7 +33,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black,
-            image: DecorationImage(fit: BoxFit.fitWidth, image: loadedImage)),
+            image: DecorationImage(fit: BoxFit.contain, image: loadedImage)),
         child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
             listener: (context, state) {
           // Error searching for restaurants
@@ -77,8 +77,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   },
                 )),
             Positioned(
-                bottom: 20,
-                right: 30,
+                bottom: 30,
+                right: 20,
                 child: (state is NearbySearchStateSuccess)
                     ? NextPageButton(
                         restaurants: state.restaurants,

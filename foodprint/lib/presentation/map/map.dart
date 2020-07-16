@@ -29,6 +29,8 @@ class _FoodMapState extends State<FoodMap> {
 
   @override
   Widget build(BuildContext context) {
+    
+    // Initialize variables
     _initialPos = InheritedLocation.of(context);
     _currentPos = LatLng(_initialPos.latitude, _initialPos.longitude);
     _markers = generateMarkers(widget.foodprint);
@@ -40,21 +42,7 @@ class _FoodMapState extends State<FoodMap> {
         initialCameraPosition:
             CameraPosition(target: _currentPos, zoom: mapZoom),
         onCameraIdle: () {},
-        onCameraMove: (CameraPosition position) {
-          _currentPos = position.target;
-
-          // Only re-render once
-          if (!_showRecenterButton && !_didRecenter) {
-            setState(() {
-              _showRecenterButton = true;
-            });
-          }
-
-          // Moved away from initial position
-          if (_didRecenter) {
-            _didRecenter = false;
-          }
-        },
+        onCameraMove: _onCameraMove,
         markers: Set<Marker>.of(_markers.values),
       ),
       Padding(
@@ -85,6 +73,22 @@ class _FoodMapState extends State<FoodMap> {
         ),
       ),
     ]);
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    _currentPos = position.target;
+
+    // Only re-render once
+    if (!_showRecenterButton && !_didRecenter) {
+      setState(() {
+        _showRecenterButton = true;
+      });
+    }
+
+    // Moved away from initial position
+    if (_didRecenter) {
+      _didRecenter = false;
+    }
   }
 
   void _onMapTypeButtonPressed() {
