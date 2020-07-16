@@ -17,15 +17,15 @@ class LegalPage extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         children: [
           ListTile(
-            title: Text("Terms & Conditions"),
+            title: const Text("Terms & Conditions"),
             onTap: () => Navigator.push(context, SlideUpEnterRoute(newPage: const TermsOfService())),
           ),
           ListTile(
-            title: Text("Privacy Policy"),
+            title: const Text("Privacy Policy"),
             onTap: () => Navigator.push(context, SlideUpEnterRoute(newPage: const PrivacyPolicy()),)
           ),
           ListTile(
-            title: Text("Software Licenses"),
+            title: const Text("Software Licenses"),
             onTap: () => showLicensePage(
               context: context,
               applicationVersion: '1.0.0',

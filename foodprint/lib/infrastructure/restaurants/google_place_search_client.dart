@@ -20,7 +20,6 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
   static const String nearbySearchBaseUrl =
       "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
-
   static const String autocompleteSearchBaseUrl =
       "https://maps.googleapis.com/maps/api/place/autocomplete/json";
 

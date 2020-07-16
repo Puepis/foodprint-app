@@ -8,6 +8,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
   final double longitude;
   RestaurantSearchDelegate(this.latitude, this.longitude);
+  static const _acceptedTypes = ["restaurant", "food", "cafe", "bar", "bakery"];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -41,6 +42,16 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
     return Container();
   }
 
+  /// Sort by accepted results
+  bool _isAccepted(AutocompleteResultEntity place) {
+    for (final keyword in _acceptedTypes) {
+      if (place.types.contains(keyword)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// Builds the suggestion body as the user types
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -58,7 +69,8 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
             padding: EdgeInsets.all(20.0), child: CircularProgressIndicator());
       }
       if (state is AutocompleteSearchSuccess) {
-        final predictions = state.predictions;
+        final predictions =
+            state.predictions.where((place) => _isAccepted(place)).toList();
         final searchedStr = state.searchedStr;
 
         // No results found
