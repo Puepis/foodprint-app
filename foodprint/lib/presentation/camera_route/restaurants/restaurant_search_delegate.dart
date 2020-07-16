@@ -10,6 +10,26 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   RestaurantSearchDelegate(this.latitude, this.longitude);
   static const _acceptedTypes = ["restaurant", "food", "cafe", "bar", "bakery"];
 
+  // Custom appBarTheme
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    assert(context != null);
+    final ThemeData theme = Theme.of(context);
+    assert(theme != null);
+    return theme.copyWith(
+      primaryColor: Colors.white,
+      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+      primaryColorBrightness: Brightness.light,
+      primaryTextTheme: theme.textTheme,
+      inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+          hintStyle:
+              const TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
+    );
+  }
+
+  @override
+  String get searchFieldLabel => 'Search restaurants';
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
