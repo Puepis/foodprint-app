@@ -8,6 +8,7 @@ abstract class LocationState extends Equatable {
 }
 
 class LocationStateInitial extends LocationState {}
+class LocationStateLoading extends LocationState {}
 
 class GetLocationSuccess extends LocationState {
   final LatLng latlng;

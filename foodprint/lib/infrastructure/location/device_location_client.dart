@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/location/i_location_repository.dart';
 import 'package:foodprint/domain/location/location_failure.dart';
@@ -9,10 +8,9 @@ import 'package:location/location.dart';
 @LazySingleton(as: ILocationRepository)
 class DeviceLocationClient implements ILocationRepository {
   final Location location = Location();
-  
+
   @override
   Future<Either<LocationFailure, LatLng>> getLocation() async {
-
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
     LocationData pos;

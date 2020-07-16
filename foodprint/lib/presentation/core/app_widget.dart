@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
@@ -22,10 +21,6 @@ class FoodprintApp extends StatelessWidget {
               create: (context) => getIt<AuthBloc>()
                 ..add(const AuthEvent
                     .authCheckStarted())), // check if user is signed in
-          BlocProvider(
-            create: (context) =>
-                getIt<LocationBloc>()..add(LocationRequested()),
-          ),
           BlocProvider(
             lazy: false,
             create: (context) => getIt<ManualSearchBloc>(),

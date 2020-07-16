@@ -10,7 +10,7 @@ import 'package:injectable/injectable.dart';
 part 'location_event.dart';
 part 'location_state.dart';
 
-@injectable 
+@injectable
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final ILocationRepository _locationClient;
 
@@ -21,6 +21,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     LocationEvent event,
   ) async* {
     if (event is LocationRequested) {
+      yield LocationStateLoading();
       final Either<LocationFailure, LatLng> result =
           await _locationClient.getLocation();
       yield result.fold((f) => GetLocationFailure(f),

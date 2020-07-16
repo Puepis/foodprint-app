@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
+import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
@@ -19,6 +20,10 @@ class HomeScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) =>
+                getIt<LocationBloc>()..add(LocationRequested()),
+          ),
           BlocProvider<FoodprintBloc>(
               create: (context) => getIt<FoodprintBloc>()
                 ..add(FoodprintEvent.foodprintRequested(token: token))),
@@ -27,7 +32,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
         child: BlocBuilder<FoodprintBloc, FoodprintState>(
-          builder: (context, state) {
+          builder: (_, state) {
             if (state is FetchFoodprintFailure) {
               return const LoginPage();
             }

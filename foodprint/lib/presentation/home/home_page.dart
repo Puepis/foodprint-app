@@ -36,15 +36,11 @@ class _HomePageState extends State<HomePage> {
           Widget mapScreen = const Center(child: CircularProgressIndicator());
 
           if (state is GetLocationSuccess) {
-            mapScreen = InheritedLocation(
-              latitude: state.latlng.latitude,
-              longitude: state.latlng.longitude,
-              child: FoodMap(
-                foodprint: foodprint,
-              ),
+            mapScreen = FoodMap(
+              foodprint: foodprint,
             );
           }
-
+          
           return Scaffold(
             appBar: appBar(context),
             drawerEnableOpenDragGesture: false,
