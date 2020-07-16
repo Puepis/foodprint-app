@@ -57,17 +57,34 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         searchBody = const Padding(
             padding: EdgeInsets.all(20.0), child: CircularProgressIndicator());
       }
-      // TODO: Handle no results
       if (state is AutocompleteSearchSuccess) {
         final predictions = state.predictions;
         final searchedStr = state.searchedStr;
 
-        // Construct results
-        searchBody = ListView.builder(
-            itemCount: predictions.length,
-            itemBuilder: (context, index) {
-              return buildSearchSuggestion(context, predictions[index], searchedStr);
-            });
+        // No results found
+        if (predictions.isEmpty) {
+          searchBody = Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                'No results found for "$searchedStr"',
+                style: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0),
+              ),
+            ),
+          );
+        } else {
+          // Construct results
+          searchBody = ListView.builder(
+              itemCount: predictions.length,
+              itemBuilder: (context, index) {
+                return buildSearchSuggestion(
+                    context, predictions[index], searchedStr);
+              });
+        }
       }
 
       return Container(
