@@ -83,7 +83,7 @@ class AppDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Licenses',
+                    'Legal',
                     style: TextStyle(fontSize: 15.0),
                   ),
                   Text(
@@ -97,12 +97,7 @@ class AppDrawer extends StatelessWidget {
               ),
               dense: true,
               onTap: () {
-                showLicensePage(
-                  context: context,
-                  applicationVersion: '1.0.0',
-                  applicationLegalese:
-                      "Legal information", // TODO: Add legal information
-                );
+                Navigator.pushNamed(context, LegalPage.routeName);
               },
             ),
           )

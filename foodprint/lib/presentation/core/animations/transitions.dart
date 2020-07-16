@@ -37,7 +37,7 @@ class SlideUpEnterRoute extends PageRouteBuilder {
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0); // start from bottom
               const end = Offset.zero;
-              const curve = Curves.easeOutCubic;
+              const curve = Curves.easeOutExpo;
 
               final tween =
                   Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

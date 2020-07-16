@@ -5,6 +5,8 @@ import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/home/drawer/legal/privacy_policy.dart';
+import 'package:foodprint/presentation/home/drawer/legal/tos.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
@@ -51,6 +53,9 @@ class FoodprintApp extends StatelessWidget {
             SettingsPage.routeName: (context) => const SettingsPage(),
             AboutPage.routeName: (context) => const AboutPage(),
             ReportIssuePage.routeName: (context) => const ReportIssuePage(),
+            LegalPage.routeName: (context) => const LegalPage(),
+            TermsOfService.routeName: (context) => const TermsOfService(),
+            PrivacyPolicy.routeName: (context) => const PrivacyPolicy(),
           },
         ));
   }

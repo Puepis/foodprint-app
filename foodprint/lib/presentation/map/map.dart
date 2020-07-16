@@ -7,11 +7,9 @@ import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 import 'package:foodprint/presentation/map/restaurant_preview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 
 class FoodMap extends StatefulWidget {
   final FoodprintEntity foodprint;
