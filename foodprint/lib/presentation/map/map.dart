@@ -22,14 +22,13 @@ class _FoodMapState extends State<FoodMap> {
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
   bool _showRecenterButton = false;
-  bool _didRecenter = false;
+  bool _didRecenter = true;
   MapType _currentMapType = MapType.normal;
   InheritedLocation _initialPos;
   final double mapZoom = 16.0;
 
   @override
   Widget build(BuildContext context) {
-    
     // Initialize variables
     _initialPos = InheritedLocation.of(context);
     _currentPos = LatLng(_initialPos.latitude, _initialPos.longitude);
@@ -41,7 +40,13 @@ class _FoodMapState extends State<FoodMap> {
         onMapCreated: (controller) => _mapController.complete(controller),
         initialCameraPosition:
             CameraPosition(target: _currentPos, zoom: mapZoom),
-        onCameraIdle: () {},
+        onCameraIdle: () {
+          if (!_showRecenterButton && !_didRecenter) {
+            setState(() {
+              _didRecenter = true;
+            });
+          }
+        },
         onCameraMove: _onCameraMove,
         markers: Set<Marker>.of(_markers.values),
       ),
@@ -60,7 +65,7 @@ class _FoodMapState extends State<FoodMap> {
                 child: const Icon(Icons.map, size: 32.0),
               ),
               const SizedBox(height: 16.0),
-              if (_showRecenterButton)
+              if (_showRecenterButton && !_didRecenter)
                 FloatingActionButton(
                   heroTag: "recenter",
                   backgroundColor: Colors.white,
@@ -78,16 +83,14 @@ class _FoodMapState extends State<FoodMap> {
   void _onCameraMove(CameraPosition position) {
     _currentPos = position.target;
 
-    // Only re-render once
-    if (!_showRecenterButton && !_didRecenter) {
+    print("$_showRecenterButton, $_didRecenter");
+
+    // Moving away
+    if (!_showRecenterButton && _didRecenter) {
       setState(() {
         _showRecenterButton = true;
+        _didRecenter = false;
       });
-    }
-
-    // Moved away from initial position
-    if (_didRecenter) {
-      _didRecenter = false;
     }
   }
 
@@ -103,7 +106,6 @@ class _FoodMapState extends State<FoodMap> {
     if (_mapController != null) {
       final GoogleMapController controller = await _mapController.future;
       setState(() {
-        _didRecenter = true;
         _showRecenterButton = false;
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
