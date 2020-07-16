@@ -25,10 +25,7 @@ part 'login_form_bloc.freezed.dart';
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   final IAuthRepository _authClient;
 
-  LoginFormBloc(this._authClient);
-
-  @override
-  LoginFormState get initialState => LoginFormState.initial();
+  LoginFormBloc(this._authClient) : super(LoginFormState.initial());
 
   // Event handlers transform events->state and passes it back to the UI
   @override

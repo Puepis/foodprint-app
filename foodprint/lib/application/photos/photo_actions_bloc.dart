@@ -25,10 +25,7 @@ part 'photo_actions_bloc.freezed.dart';
 class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   final IPhotoRepository _client;
 
-  PhotoActionsBloc(this._client);
-
-  @override
-  PhotoActionsState get initialState => const PhotoActionsState.intial();
+  PhotoActionsBloc(this._client) : super(const PhotoActionsState.initial());
 
   static int get secondsSinceEpoch =>
       (DateTime.now().millisecondsSinceEpoch / 1000).round();

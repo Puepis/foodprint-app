@@ -62,7 +62,7 @@ dependencies:
   # Generate code for routing
   auto_route: ^0.5.0
   # State management
-  flutter_bloc: ^4.0.1
+  flutter_bloc: ^5.0.1
   # Environment varibles
   flutter_dotenv: ^2.1.0
   google_fonts: ^1.1.0

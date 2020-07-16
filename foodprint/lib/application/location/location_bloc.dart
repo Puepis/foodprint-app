@@ -14,9 +14,7 @@ part 'location_state.dart';
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final ILocationRepository _locationClient;
 
-  LocationBloc(this._locationClient);
-  @override
-  LocationState get initialState => LocationStateInitial();
+  LocationBloc(this._locationClient) : super(LocationStateInitial());
 
   @override
   Stream<LocationState> mapEventToState(

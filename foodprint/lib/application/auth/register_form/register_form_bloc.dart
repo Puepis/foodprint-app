@@ -18,10 +18,7 @@ part 'register_form_bloc.freezed.dart';
 class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   final IAuthRepository _authClient;
 
-  RegisterFormBloc(this._authClient);
-
-  @override
-  RegisterFormState get initialState => RegisterFormState.initial();
+  RegisterFormBloc(this._authClient) : super(RegisterFormState.initial());
 
   @override
   Stream<RegisterFormState> mapEventToState(

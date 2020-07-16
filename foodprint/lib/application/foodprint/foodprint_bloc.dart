@@ -19,10 +19,7 @@ part 'foodprint_bloc.freezed.dart';
 class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
   final IRemoteFoodprintRepository _remoteClient;
 
-  FoodprintBloc(this._remoteClient);
-
-  @override
-  FoodprintState get initialState => const FoodprintState.initial();
+  FoodprintBloc(this._remoteClient) : super(const FoodprintState.initial());
 
   @override
   Stream<FoodprintState> mapEventToState(

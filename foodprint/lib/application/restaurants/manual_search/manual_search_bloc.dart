@@ -27,10 +27,7 @@ class ManualSearchBloc extends Bloc<ManualSearchEvent, ManualSearchState> {
   /// Cache that stores previously-searched terms
   final AutocompleteSearchCache _cache;
 
-  ManualSearchBloc(this._client, this._cache);
-
-  @override
-  ManualSearchState get initialState => ManualSearchInitial();
+  ManualSearchBloc(this._client, this._cache) : super(ManualSearchInitial());
 
   /// Overriding transformEvents in order to debounce the AutocompleteRestaurantsSearched event
   /// to give the user time to stop typing before searching.
@@ -55,7 +52,7 @@ class ManualSearchBloc extends Bloc<ManualSearchEvent, ManualSearchState> {
     ManualSearchEvent event,
   ) async* {
     if (event is ResetManualSearch) {
-      yield initialState;
+      yield ManualSearchInitial();
     }
     if (event is AutocompleteSearched) {
       yield* _mapAutocompleteSearchToState(
@@ -76,7 +73,8 @@ class ManualSearchBloc extends Bloc<ManualSearchEvent, ManualSearchState> {
       final Longitude lng = Longitude(longitude);
 
       if (_cache.contains(input)) {
-        yield AutocompleteSearchSuccess(predictions: _cache.get(input));
+        yield AutocompleteSearchSuccess(
+            predictions: _cache.get(input), searchedStr: input);
       } else {
         final Either<RestaurantFailure, List<AutocompleteResultEntity>>
             failureOrSuccess = await _client.autocompleteSearch(
@@ -84,7 +82,7 @@ class ManualSearchBloc extends Bloc<ManualSearchEvent, ManualSearchState> {
 
         yield failureOrSuccess.fold((f) => SearchStateError(failure: f), (p) {
           _cache.set(input, p); // update cache
-          return AutocompleteSearchSuccess(predictions: p);
+          return AutocompleteSearchSuccess(predictions: p, searchedStr: input);
         });
       }
     }

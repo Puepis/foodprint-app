@@ -21,17 +21,14 @@ class RestaurantSearchBloc
   /// Repository that handles the restaurant search
   final IRestaurantSearchRepository _client;
 
-  RestaurantSearchBloc(this._client);
-
-  @override
-  RestaurantSearchState get initialState => SearchStateEmpty();
+  RestaurantSearchBloc(this._client) : super(SearchStateEmpty());
 
   @override
   Stream<RestaurantSearchState> mapEventToState(
     RestaurantSearchEvent event,
   ) async* {
     if (event is ResetNearbySearch) {
-      yield initialState;
+      yield SearchStateEmpty();
     }
     if (event is NearbyRestaurantsSearched) {
       yield* _mapNearbySearchToState(event.latitude, event.longitude);

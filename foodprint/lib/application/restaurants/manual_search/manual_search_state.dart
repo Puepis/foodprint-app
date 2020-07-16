@@ -19,8 +19,10 @@ class PlaceDetailSearchLoading extends ManualSearchState {}
 
 class AutocompleteSearchSuccess extends ManualSearchState {
   final List<AutocompleteResultEntity> predictions;
+  final String searchedStr;
 
-  const AutocompleteSearchSuccess({@required this.predictions});
+  const AutocompleteSearchSuccess(
+      {@required this.predictions, @required this.searchedStr});
 
   @override
   List<Object> get props => [predictions];
