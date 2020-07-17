@@ -1,5 +1,3 @@
-
-
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
@@ -24,11 +22,11 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   // Convert entity to DTO
   factory RestaurantDTO.fromEntity(RestaurantEntity restaurant) {
     return RestaurantDTO(
-      placeId: restaurant.restaurantID.getOrCrash(), 
+      placeId: restaurant.restaurantID.getOrCrash(),
       restaurantName: restaurant.restaurantName.getOrCrash(),
       rating: restaurant.restaurantRating.getOrCrash(),
       latitude: restaurant.latitude.getOrCrash(),
-      longitude: restaurant.longitude.getOrCrash(), 
+      longitude: restaurant.longitude.getOrCrash(),
       types: restaurant.types.getOrCrash(),
     );
   }
@@ -50,22 +48,26 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
       restaurantName: json['name'] as String,
-      rating: json['rating'] == null ? -1.0 : double.parse(json['rating'].toString()),
+      rating: json['rating'] == null
+          ? -1.0
+          : double.parse(json['rating'].toString()),
       latitude: double.parse(json['geometry']['location']['lat'].toString()),
       longitude: double.parse(json['geometry']['location']['lng'].toString()),
-      types: List<String>.from(json['types'] as List), 
+      types: List<String>.from(json['types'] as List),
     );
   }
 
-
   factory RestaurantDTO.fromFoodprintAPI(Map<String, dynamic> json) {
     return RestaurantDTO(
-      placeId: json['restaurant_id'] as String,
-      restaurantName: json['restaurant_name'] as String,
-      rating: double.parse(json['restaurant_rating'].toString()),
-      latitude: double.parse(json['restaurant_lat'].toString()),
-      longitude: double.parse(json['restaurant_lng'].toString()),
-      types: List<String>.from(json['restaurant_types'] as List)
-    );
+        placeId: json['restaurant_id'] as String,
+        restaurantName: json['restaurant_name'] as String,
+        rating: double.parse(json['restaurant_rating'].toString()),
+        latitude: double.parse(json['restaurant_lat'].toString()),
+        longitude: double.parse(json['restaurant_lng'].toString()),
+        types: _parseTypes(json['restaurant_types'] as List));
+  }
+
+  static List<String> _parseTypes(List types) {
+    return types.map((e) => e['type'] as String).toList();
   }
 }

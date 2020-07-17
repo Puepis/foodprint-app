@@ -30,8 +30,9 @@ class RestaurantPhotos extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 30,
                     ),
+                    textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                    maxLines: 2,
                   ),
                   const SizedBox(
                     height: 5.0,
