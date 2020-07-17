@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/foodprint/i_local_foodprint_repository.dart';
@@ -9,36 +7,47 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class LocalFoodprintClient implements ILocalFoodprintRepository {
-
-  @override
-  FoodprintEntity addPhotoToFoodprint({
-    @required PhotoEntity newPhoto,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint
-  }) {
-    
-    final restaurantPhotos = oldFoodprint.restaurantPhotos;
-    if (restaurantPhotos.containsKey(restaurant)) {
-      restaurantPhotos[restaurant].insert(0, newPhoto);
+  Map<RestaurantEntity, List<PhotoEntity>> _insertPhoto(
+      Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos,
+      RestaurantEntity restaurant,
+      PhotoEntity newPhoto) {
+    bool _keyExists = false;
+    for (final key in restaurantPhotos.keys) {
+      // Key already exists
+      if (key.restaurantID.getOrCrash() == restaurant.restaurantID.getOrCrash()) {
+        _keyExists = true;
+        restaurantPhotos[key].insert(0, newPhoto);
+      }
     }
-    else {
+    if (!_keyExists) {
       restaurantPhotos[restaurant] = [newPhoto];
     }
+    return restaurantPhotos;
+  }
+
+  /// Add a new photo to the foodprint stored in local state
+  @override
+  FoodprintEntity addPhotoToFoodprint(
+      {@required PhotoEntity newPhoto,
+      @required RestaurantEntity restaurant,
+      @required FoodprintEntity oldFoodprint}) {
+    final restaurantPhotos =
+        _insertPhoto(oldFoodprint.restaurantPhotos, restaurant, newPhoto);
     return FoodprintEntity(restaurantPhotos: restaurantPhotos);
   }
 
   @override
-  FoodprintEntity removePhotoFromFoodprint({
-    @required PhotoEntity photo,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint
-  }) {
+  FoodprintEntity removePhotoFromFoodprint(
+      {@required PhotoEntity photo,
+      @required RestaurantEntity restaurant,
+      @required FoodprintEntity oldFoodprint}) {
     dynamic removeKey;
-    final restaurantPhotos = oldFoodprint.restaurantPhotos; 
-    restaurantPhotos.forEach((key, value) {
-      if (key == restaurant) {
-        value.removeWhere((e) => e.storagePath.getOrCrash().compareTo(photo.storagePath.getOrCrash()) == 0);
-        if (value.isEmpty) {
+    final restaurantPhotos = oldFoodprint.restaurantPhotos;
+    restaurantPhotos.forEach((key, photos) {
+      if (key.restaurantID.getOrCrash() == restaurant.restaurantID.getOrCrash()) {
+        photos.removeWhere((e) =>
+            e.storagePath.getOrCrash() == photo.storagePath.getOrCrash());
+        if (photos.isEmpty) {
           removeKey = key;
         }
       }
@@ -50,16 +59,18 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
   }
 
   @override
-  FoodprintEntity editPhotoInFoodprint({
-    @required PhotoEntity photo,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint
-  }) {
+  FoodprintEntity editPhotoInFoodprint(
+      {@required PhotoEntity photo,
+      @required RestaurantEntity restaurant,
+      @required FoodprintEntity oldFoodprint}) {
     final restaurantPhotos = oldFoodprint.restaurantPhotos;
     restaurantPhotos.forEach((key, photos) {
-      if (key == restaurant) {
+      if (key.restaurantID.getOrCrash() == restaurant.restaurantID.getOrCrash()) {
         for (final p in photos) {
-          if (p.storagePath.getOrCrash().compareTo(photo.storagePath.getOrCrash()) == 0) {
+          if (p.storagePath
+                  .getOrCrash()
+                  .compareTo(photo.storagePath.getOrCrash()) ==
+              0) {
             final index = photos.indexOf(p);
             photos[index] = photo;
           }
@@ -69,5 +80,3 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
     return FoodprintEntity(restaurantPhotos: restaurantPhotos);
   }
 }
-
-
