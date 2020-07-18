@@ -19,10 +19,12 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final username = JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Drawer(
       child: Column(
         children: [
-          _header(),
+          _buildHeader(username),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 10),
@@ -30,7 +32,7 @@ class AppDrawer extends StatelessWidget {
               child: Column(
                 children: [
                   _createDrawerItem(
-                      icon: Icons.face,
+                      icon: Icons.person,
                       text: 'Profile',
                       onTap: () {
                         Navigator.popAndPushNamed(
@@ -76,38 +78,41 @@ class AppDrawer extends StatelessWidget {
             thickness: 1,
             height: 1,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Legal',
-                    style: TextStyle(fontSize: 15.0),
-                  ),
-                  Text(
-                    'v1.0.0',
-                    style: TextStyle(
-                        fontSize: 15.0,
-                        color: hintColor,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ],
-              ),
-              dense: true,
-              onTap: () {
-                Navigator.pushNamed(context, LegalPage.routeName);
-              },
-            ),
-          )
+          _buildLegal(context)
         ],
       ),
     );
   }
 
-  Widget _header() {
-    final username = JWT.getDecodedPayload(token.getOrCrash())['username'];
+  Padding _buildLegal(BuildContext context) {
+    return Padding(
+          padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+          child: ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Legal',
+                  style: TextStyle(fontSize: 15.0),
+                ),
+                Text(
+                  'v1.0.0',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      color: hintColor,
+                      fontWeight: FontWeight.w300),
+                ),
+              ],
+            ),
+            dense: true,
+            onTap: () {
+              Navigator.pushNamed(context, LegalPage.routeName);
+            },
+          ),
+        );
+  }
+
+  Widget _buildHeader(String username) {
 
     final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
         getPhotosFromFoodprint(foodprint);
@@ -126,7 +131,7 @@ class AppDrawer extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(
-                    Icons.person,
+                    Icons.face,
                     color: Colors.white,
                     size: 40,
                   ),
