@@ -41,7 +41,7 @@ class SelectRestaurantPage extends StatefulWidget {
 }
 
 class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
-  final Color backgroundColor = Colors.white;
+  final Color backgroundColor = foodprintPrimaryColorSwatch[50];
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +93,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     });
   }
 
+  /// Builds the scaffold body based on the [ManualBlocState]  
   Widget _buildBody(
       ManualSearchState state, ManualSearchBloc bloc, BuildContext context) {
     if (state is PlaceDetailSearchLoading) {
@@ -111,23 +112,22 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     } else if (state is PlaceDetailSearchSuccess) {
       // Provide user with actions
       return Center(
-        child: Stack(
-          alignment: Alignment.topCenter,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.check_circle_outline,
-                  color: Colors.green,
-                  size: 100,
-                ),
-                Text(
-                  "Success!",
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                ),
-              ],
+            const Icon(
+              Icons.check_circle_outline,
+              color: Colors.green,
+              size: 100,
             ),
+            const SizedBox(height: 5,),
+            const Text(
+              "Restaurant Selected!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 40,),
             _buildActions(state, bloc),
           ],
         ),
@@ -158,85 +158,104 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   }
 
   Widget _buildActions(PlaceDetailSearchSuccess state, ManualSearchBloc bloc) {
-    return Align(
-      alignment: const Alignment(0.0, 0.7),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.extended(
-              backgroundColor: primaryColor,
-              icon: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-              ),
-              heroTag: "proceed",
-              onPressed: _toDetails(state.restaurant),
-              label: Text(
-                "Proceed",
-                style: _buttonStyle,
-              )),
-          const SizedBox(
-            height: 15,
-          ),
-          FlatButton(
-            onPressed: () => bloc.add(ResetManualSearch()),
-            child: Text(
-              "Cancel",
-              style: _buttonStyle.copyWith(color: Colors.black),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FloatingActionButton.extended(
+            backgroundColor: primaryColor,
+            icon: const Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
             ),
+            heroTag: "proceed",
+            onPressed: _toDetails(state.restaurant),
+            label: Text(
+              "Proceed",
+              style: _buttonStyle,
+            )),
+        const SizedBox(
+          height: 15,
+        ),
+        FlatButton(
+          onPressed: () => bloc.add(ResetManualSearch()),
+          child: Text(
+            "Cancel",
+            style: _buttonStyle.copyWith(color: Colors.black),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   final TextStyle _buttonStyle = const TextStyle(
       color: Colors.white, fontWeight: FontWeight.normal, fontSize: 20);
 
+  /// Returns a callback to proceed to the next page based on the [restaurant]
   void Function() _toDetails(RestaurantEntity restaurant) {
     return () {
-      Navigator.of(context).push(EnterExitRoute(
-          exitPage: widget,
-          enterPage: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-              BlocProvider.value(value: context.bloc<FoodprintBloc>())
-            ],
-            child: PhotoDetailsPage(
-              oldFoodprint: widget.currentFoodprint,
-              token: widget.token,
-              imageFile: widget.imageFile,
-              restaurant: restaurant,
-            ),
-          )));
+      Navigator.of(context).push(SlideLeftRoute(
+          newPage: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+          BlocProvider.value(value: context.bloc<FoodprintBloc>())
+        ],
+        child: PhotoDetailsPage(
+          oldFoodprint: widget.currentFoodprint,
+          token: widget.token,
+          imageFile: widget.imageFile,
+          restaurant: restaurant,
+        ),
+      )));
     };
   }
 
   /// Returns the widget containing the restaurant buttons given the [context].
   Widget _buildRestaurantButtons(BuildContext context) {
-    // https://www.youtube.com/watch?v=RpQLFAFqMlw
-    // TODO: Add community restaurant photo to list tile
     return ListView.separated(
         shrinkWrap: true,
         itemCount: widget.restaurants.length,
-        separatorBuilder: (context, index) => const Divider(),
-        itemBuilder: (cxt, index) => ListTile(
-            title: Text(widget.restaurants[index].restaurantName.getOrCrash(),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    fontSize: 18.0, fontWeight: FontWeight.w500)),
-            subtitle: Text(
-                widget.restaurants[index].restaurantRating
-                    .getOrCrash()
-                    .toString(),
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                    fontSize: 14.0, fontWeight: FontWeight.w300)),
-            leading: const Icon(
-              Icons.restaurant,
-              size: 30,
-              color: Colors.black,
+        separatorBuilder: (context, index) => const SizedBox(
+              height: 10,
             ),
-            onTap: _toDetails(widget.restaurants[index])));
+        itemBuilder: (cxt, index) => _buildButton(index));
+  }
+
+  Widget _buildButton(int index) {
+    return Card(
+      color: foodprintPrimaryColorSwatch[200],
+      child: ListTile(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          title: Text(widget.restaurants[index].restaurantName.getOrCrash(),
+              overflow: TextOverflow.ellipsis,
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
+          subtitle: Container(
+            margin: const EdgeInsets.only(top: 5),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.star,
+                  color: foodprintPrimaryColorSwatch[600],
+                  size: 20,
+                ),
+                const SizedBox(
+                  width: 5.0,
+                ),
+                Text(
+                    widget.restaurants[index].restaurantRating
+                        .getOrCrash()
+                        .toString(),
+                    style: const TextStyle(
+                        fontSize: 16.0, fontWeight: FontWeight.w500)),
+              ],
+            ),
+          ),
+          trailing: const Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.black,
+          ),
+          onTap: _toDetails(widget.restaurants[index])),
+    );
   }
 }
