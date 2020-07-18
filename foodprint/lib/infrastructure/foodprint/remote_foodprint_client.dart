@@ -10,9 +10,12 @@ import 'package:foodprint/infrastructure/foodprint/foodprint_dto.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
+/// Responsible for communicating with the remote API to process the 
+/// user's foodprint
 @LazySingleton(as: IRemoteFoodprintRepository)
 class RemoteFoodprintClient implements IRemoteFoodprintRepository {
-  // Fetch the user's foodprint
+
+  /// Fetches the user's foodprint given the user's [token]
   @override
   Future<Either<FoodprintFailure, FoodprintEntity>> getFoodprint(
       {@required JWT token}) async {
