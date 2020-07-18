@@ -148,7 +148,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
                   color: primaryColor),
             ),
             const SizedBox(
-              height: 20,
+              height: 25,
             ),
             _buildRestaurantButtons(context),
           ],
@@ -222,6 +222,10 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
 
   Widget _buildButton(int index) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0)
+      ),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
       color: foodprintPrimaryColorSwatch[200],
       child: ListTile(
           contentPadding:

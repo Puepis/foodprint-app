@@ -18,6 +18,7 @@ class FullImage extends StatelessWidget {
     @required this.foodprint,
   }) : super(key: key);
 
+  // TODO: Try parallax
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

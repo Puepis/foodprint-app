@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
@@ -34,24 +35,32 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   String _price = "";
   String _comments = "";
 
-  TextStyle sectionTitleStyle = const TextStyle(
+  final TextStyle _sectionTitleStyle = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
 
-  SizedBox sectionHeadingSpace = const SizedBox(
+  final TextStyle _hintStyle =
+      TextStyle(color: Colors.grey.shade500, fontSize: 16.0);
+
+  final SizedBox _sectionHeadingSpace = const SizedBox(
     height: 10.0,
   );
 
-  SizedBox sectionSpace = const SizedBox(
+  final SizedBox _sectionSpace = const SizedBox(
     height: 10.0,
   );
 
-  Row sectionTitle({String title, IconData iconData}) => Row(
+  Row _buildSectionTitle(
+          {String title, IconData iconData, Color iconColor = Colors.black}) =>
+      Row(
         children: [
-          Icon(iconData),
+          Icon(
+            iconData,
+            color: iconColor,
+          ),
           const SizedBox(
             width: 5.0,
           ),
-          Text(title, style: sectionTitleStyle),
+          Text(title, style: _sectionTitleStyle),
         ],
       );
 
@@ -60,33 +69,30 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
     final photoBloc = context.bloc<PhotoActionsBloc>();
     final foodprintBloc = context.bloc<FoodprintBloc>();
 
-    return BlocListener<PhotoActionsBloc, PhotoActionsState>(
-      listener: (context, state) {
-        if (state is ActionInProgress) {
-          Scaffold.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(loadingSnackbar(text: "Saving photo"));
-        }
-        if (state is SaveSuccess) {
-          int count = 0;
-          Navigator.popUntil(context, (route) => count++ == 3);
+    return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
+        listener: (context, state) {
+      if (state is SaveSuccess) {
+        int count = 0;
+        Navigator.popUntil(context, (route) => count++ == 3);
 
-          // Refresh home page
-          foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
-              newFoodprint: state.newFoodprint));
-        }
-      },
-      child: Form(
+        // Refresh home page
+        foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
+            newFoodprint: state.newFoodprint));
+      }
+    }, builder: (context, state) {
+      return Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            sectionTitle(title: "Item Name", iconData: Icons.restaurant_menu),
-            sectionHeadingSpace,
+            _buildSectionTitle(
+                title: "Item Name", iconData: Icons.restaurant_menu),
+            _sectionHeadingSpace,
             TextFormField(
               cursorColor: primaryColor,
               maxLength: 50,
               decoration: InputDecoration(
+                hintStyle: _hintStyle,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7.0)),
                 hintText: 'What are you eating/drinking?',
@@ -100,15 +106,19 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                     : null;
               },
             ),
-            sectionSpace,
-            sectionTitle(title: "Price", iconData: Icons.attach_money),
-            sectionHeadingSpace,
+            _sectionSpace,
+            _buildSectionTitle(
+                title: "Price",
+                iconData: Icons.attach_money,
+                iconColor: Colors.green),
+            _sectionHeadingSpace,
             TextFormField(
               cursorColor: primaryColor,
               maxLength: 8,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: "How much is it?",
+                hintStyle: _hintStyle,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(7.0)),
               ),
@@ -133,15 +143,19 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 }
               },
             ),
-            sectionSpace,
-            sectionTitle(title: "Comments", iconData: Icons.rate_review),
-            sectionHeadingSpace,
+            _sectionSpace,
+            _buildSectionTitle(
+                title: "Comments",
+                iconData: Icons.rate_review,
+                iconColor: foodprintPrimaryColorSwatch[600]),
+            _sectionHeadingSpace,
             TextFormField(
                 cursorColor: primaryColor,
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 maxLength: 200,
                 decoration: InputDecoration(
+                  hintStyle: _hintStyle,
                   hintText: "Any thoughts?",
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(7.0)),
@@ -166,10 +180,19 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                         fontSize: 16.0,
                         fontWeight: FontWeight.w500),
                   ),
-                  icon: const Icon(
-                    Icons.save_alt,
-                    color: Colors.white,
-                  ),
+                  icon: (state is ActionInProgress)
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.0),
+                          child: SpinKitRing(
+                            lineWidth: 3,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        )
+                      : const Icon(
+                          Icons.save_alt,
+                          color: Colors.white,
+                        ),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       // Get user id
@@ -198,7 +221,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
             )
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
