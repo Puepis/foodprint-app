@@ -30,7 +30,6 @@ class PhotoDetailsPage extends StatelessWidget {
       backgroundColor: backgroundColor,
         appBar: AppBar(
           elevation: 0,
-          centerTitle: true,
           backgroundColor: backgroundColor,
         ),
         body: Container(

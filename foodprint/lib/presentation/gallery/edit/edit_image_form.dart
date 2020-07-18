@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -27,6 +28,32 @@ class _EditImageFormState extends State<EditImageForm> {
   final _formKey = GlobalKey<FormState>();
   String _itemName, _price, _comments;
 
+  final TextStyle _sectionTitleStyle = const TextStyle(
+      color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
+
+  final SizedBox _sectionHeadingSpace = const SizedBox(
+    height: 10.0,
+  );
+
+  final SizedBox _sectionSpace = const SizedBox(
+    height: 10.0,
+  );
+
+  Row _buildSectionTitle(
+          {String title, IconData iconData, Color iconColor = Colors.black}) =>
+      Row(
+        children: [
+          Icon(
+            iconData,
+            color: iconColor,
+          ),
+          const SizedBox(
+            width: 5.0,
+          ),
+          Text(title, style: _sectionTitleStyle),
+        ],
+      );
+
   @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
@@ -34,13 +61,6 @@ class _EditImageFormState extends State<EditImageForm> {
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
-      // Editing in progress
-      if (state is ActionInProgress) {
-        Scaffold.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(loadingSnackbar(text: "Updating photo"));
-      }
-
       // Update local foodprint
       if (state is EditSuccess) {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
@@ -53,107 +73,132 @@ class _EditImageFormState extends State<EditImageForm> {
     }, builder: (context, state) {
       return Form(
         key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextFormField(
-                initialValue: widget.photo.photoDetail.name.getOrCrash(),
-                maxLength: 50,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.restaurant_menu),
-                  labelText: 'Item Name',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionTitle(
+                title: "Item Name", iconData: Icons.restaurant_menu),
+            _sectionHeadingSpace,
+            TextFormField(
+              initialValue: widget.photo.photoDetail.name.getOrCrash(),
+              cursorColor: primaryColor,
+              maxLength: 50,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7.0)),
+              ),
+              onSaved: (String value) {
+                _itemName = value.trim();
+              },
+              validator: (String value) {
+                return value.isEmpty
+                    ? 'Please enter the name of the item'
+                    : null;
+              },
+            ),
+            _sectionSpace,
+            _buildSectionTitle(
+                title: "Price",
+                iconData: Icons.attach_money,
+                iconColor: Colors.green),
+            _sectionHeadingSpace,
+            TextFormField(
+              initialValue:
+                  widget.photo.photoDetail.price.getOrCrash().toString(),
+              cursorColor: primaryColor,
+              maxLength: 8,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(7.0)),
+              ),
+              onSaved: (String value) {
+                _price = value.trim();
+              },
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter a price';
+                }
+                try {
+                  final double price = double.parse(value);
+                  if (price < 0) {
+                    return 'Please enter a non-negative value';
+                  }
+                  if (price >= 10000) {
+                    return 'Price too high';
+                  }
+                  return null; // valid
+                } on FormatException {
+                  return 'Please enter a valid price';
+                }
+              },
+            ),
+            _sectionSpace,
+            _buildSectionTitle(
+                title: "Comments",
+                iconData: Icons.rate_review,
+                iconColor: foodprintPrimaryColorSwatch[600]),
+            _sectionHeadingSpace,
+            TextFormField(
+                initialValue: widget.photo.photoDetail.comments.getOrCrash(),
+                cursorColor: primaryColor,
+                keyboardType: TextInputType.multiline,
+                maxLines: 5,
+                maxLength: 200,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(7.0)),
                 ),
                 onSaved: (String value) {
-                  _itemName = value.trim();
+                  _comments = value.trim();
                 },
                 validator: (String value) {
-                  return value.isEmpty ? 'Please enter an item name' : null;
-                },
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              TextFormField(
-                initialValue:
-                    widget.photo.photoDetail.price.getOrCrash().toString(),
-                maxLength: 8,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  icon: Icon(Icons.attach_money),
-                  labelText: 'Price',
-                ),
-                onSaved: (String value) {
-                  _price = value.trim();
-                },
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter a price';
-                  }
-                  try {
-                    final double price = double.parse(value);
-                    if (price < 0) {
-                      return 'Please enter a non-negative value';
-                    }
-                    if (price >= 10000) {
-                      return 'Price too high';
-                    }
-                    return null; // valid
-                  } on FormatException {
-                    return 'Please enter a valid price';
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              TextFormField(
-                  initialValue: widget.photo.photoDetail.comments.getOrCrash(),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  maxLength: 200,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.rate_review),
-                    labelText: 'Comments',
-                  ),
-                  onSaved: (String value) {
-                    _comments = value.trim();
-                  },
-                  validator: (String value) {
-                    return null;
-                  }),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 7.0),
-                  child: FloatingActionButton.extended(
-                      backgroundColor: primaryColor,
-                      label: const Text(
-                        'UPDATE',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      icon: const Icon(Icons.save_alt),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          _formKey.currentState.save();
+                  return null;
+                }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
+                child: FloatingActionButton.extended(
+                    backgroundColor: primaryColor,
+                    label: const Text(
+                      'UPDATE',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    icon: (state is ActionInProgress)
+                        ? const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 3.0),
+                            child: SpinKitRing(
+                              lineWidth: 3,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          )
+                        : const Icon(
+                            Icons.save_alt,
+                            color: Colors.white,
+                          ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
 
-                          // Edit photo
-                          photoBloc.add(PhotoActionsEvent.edited(
-                              oldPhoto: widget.photo,
-                              newName: _itemName,
-                              newPrice: _price,
-                              newComments: _comments,
-                              restaurant: widget.restaurant,
-                              foodprint: widget.foodprint));
-                        }
-                      }),
-                ),
-              )
-            ],
-          ),
+                        // Edit photo
+                        photoBloc.add(PhotoActionsEvent.edited(
+                            oldPhoto: widget.photo,
+                            newName: _itemName,
+                            newPrice: _price,
+                            newComments: _comments,
+                            restaurant: widget.restaurant,
+                            foodprint: widget.foodprint));
+                      }
+                    }),
+              ),
+            )
+          ],
         ),
       );
     });

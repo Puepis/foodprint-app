@@ -30,10 +30,7 @@ class SaveDetailsForm extends StatefulWidget {
 
 class _SaveDetailsFormState extends State<SaveDetailsForm> {
   final _formKey = GlobalKey<FormState>();
-
-  String _itemName = "";
-  String _price = "";
-  String _comments = "";
+  String _itemName, _price, _comments;
 
   final TextStyle _sectionTitleStyle = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
