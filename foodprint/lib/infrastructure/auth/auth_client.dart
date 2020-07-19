@@ -92,11 +92,7 @@ class AuthClient implements IAuthRepository {
 
   // Log out the user
   @override
-  Future<void> logout({@required JWT token}) async {
-    final String username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'].toString();
-
-    await http.post("$serverIP/api/users/logout", body: {"username": username});
+  Future<void> logout() async {
     await _storageClient.deleteUserToken();
   }
 }

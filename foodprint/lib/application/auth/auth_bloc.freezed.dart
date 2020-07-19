@@ -22,10 +22,8 @@ class _$AuthEventTearOff {
     );
   }
 
-  LoggedOut loggedOut(JWT token) {
-    return LoggedOut(
-      token,
-    );
+  LoggedOut loggedOut() {
+    return const LoggedOut();
   }
 }
 
@@ -37,13 +35,13 @@ mixin _$AuthEvent {
   Result when<Result extends Object>({
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
-    @required Result loggedOut(JWT token),
+    @required Result loggedOut(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result authCheckStarted(),
     Result loggedIn(JWT token),
-    Result loggedOut(JWT token),
+    Result loggedOut(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -111,7 +109,7 @@ class _$AuthCheckStarted implements AuthCheckStarted {
   Result when<Result extends Object>({
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
-    @required Result loggedOut(JWT token),
+    @required Result loggedOut(),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
@@ -124,7 +122,7 @@ class _$AuthCheckStarted implements AuthCheckStarted {
   Result maybeWhen<Result extends Object>({
     Result authCheckStarted(),
     Result loggedIn(JWT token),
-    Result loggedOut(JWT token),
+    Result loggedOut(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -223,7 +221,7 @@ class _$LoggedIn implements LoggedIn {
   Result when<Result extends Object>({
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
-    @required Result loggedOut(JWT token),
+    @required Result loggedOut(),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
@@ -236,7 +234,7 @@ class _$LoggedIn implements LoggedIn {
   Result maybeWhen<Result extends Object>({
     Result authCheckStarted(),
     Result loggedIn(JWT token),
-    Result loggedOut(JWT token),
+    Result loggedOut(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -285,7 +283,6 @@ abstract class LoggedIn implements AuthEvent {
 abstract class $LoggedOutCopyWith<$Res> {
   factory $LoggedOutCopyWith(LoggedOut value, $Res Function(LoggedOut) then) =
       _$LoggedOutCopyWithImpl<$Res>;
-  $Res call({JWT token});
 }
 
 class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
@@ -295,55 +292,35 @@ class _$LoggedOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
   @override
   LoggedOut get _value => super._value as LoggedOut;
-
-  @override
-  $Res call({
-    Object token = freezed,
-  }) {
-    return _then(LoggedOut(
-      token == freezed ? _value.token : token as JWT,
-    ));
-  }
 }
 
 class _$LoggedOut implements LoggedOut {
-  const _$LoggedOut(this.token) : assert(token != null);
-
-  @override
-  final JWT token;
+  const _$LoggedOut();
 
   @override
   String toString() {
-    return 'AuthEvent.loggedOut(token: $token)';
+    return 'AuthEvent.loggedOut()';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is LoggedOut &&
-            (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+    return identical(this, other) || (other is LoggedOut);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
-
-  @override
-  $LoggedOutCopyWith<LoggedOut> get copyWith =>
-      _$LoggedOutCopyWithImpl<LoggedOut>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
-    @required Result loggedOut(JWT token),
+    @required Result loggedOut(),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
-    return loggedOut(token);
+    return loggedOut();
   }
 
   @override
@@ -351,12 +328,12 @@ class _$LoggedOut implements LoggedOut {
   Result maybeWhen<Result extends Object>({
     Result authCheckStarted(),
     Result loggedIn(JWT token),
-    Result loggedOut(JWT token),
+    Result loggedOut(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (loggedOut != null) {
-      return loggedOut(token);
+      return loggedOut();
     }
     return orElse();
   }
@@ -391,10 +368,7 @@ class _$LoggedOut implements LoggedOut {
 }
 
 abstract class LoggedOut implements AuthEvent {
-  const factory LoggedOut(JWT token) = _$LoggedOut;
-
-  JWT get token;
-  $LoggedOutCopyWith<LoggedOut> get copyWith;
+  const factory LoggedOut() = _$LoggedOut;
 }
 
 class _$AuthStateTearOff {

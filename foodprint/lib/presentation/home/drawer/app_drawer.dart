@@ -58,8 +58,6 @@ class AppDrawer extends StatelessWidget {
                     icon: Icons.bug_report,
                     text: 'Report an issue',
                     onTap: () {
-                      Navigator.popAndPushNamed(
-                          context, ReportIssuePage.routeName);
                     },
                   ),
                   _createDrawerItem(
@@ -68,7 +66,7 @@ class AppDrawer extends StatelessWidget {
                       onTap: () {
                         context
                             .bloc<AuthBloc>()
-                            .add(AuthEvent.loggedOut(token));
+                            .add(const AuthEvent.loggedOut());
                       }),
                 ],
               ),

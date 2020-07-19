@@ -97,7 +97,7 @@ class MonthlyVisitsChart extends StatelessWidget {
       ),
       borderData: FlBorderData(
           show: true,
-          border: Border.all(color: const Color(0xff37434d), width: 1)),
+          border: Border.all(color: const Color(0xff37434d),)),
       minX: 0,
       maxX: 11,
       minY: 0,

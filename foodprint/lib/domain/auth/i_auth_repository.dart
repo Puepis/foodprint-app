@@ -23,7 +23,5 @@ abstract class IAuthRepository {
     @required Password password,
   });
 
-  Future<void> logout({
-    @required JWT token 
-  });
+  Future<void> logout();
 }

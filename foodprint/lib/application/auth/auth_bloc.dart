@@ -33,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthState.authenticated(token: e.token);
       },
       loggedOut: (e) async* {
-        await _authClient.logout(token: e.token);
+        await _authClient.logout();
         yield const AuthState.unauthenticated(); // user logged out
       },
     ); 
