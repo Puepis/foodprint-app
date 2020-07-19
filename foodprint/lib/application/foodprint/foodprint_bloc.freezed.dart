@@ -315,8 +315,8 @@ abstract class LocalFoodprintUpdated implements FoodprintEvent {
 class _$FoodprintStateTearOff {
   const _$FoodprintStateTearOff();
 
-  Initial initial() {
-    return const Initial();
+  FoodprintStateInitial initial() {
+    return const FoodprintStateInitial();
   }
 
   InProgress inProgress() {
@@ -366,7 +366,7 @@ mixin _$FoodprintState {
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -374,7 +374,7 @@ mixin _$FoodprintState {
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -398,22 +398,25 @@ class _$FoodprintStateCopyWithImpl<$Res>
   final $Res Function(FoodprintState) _then;
 }
 
-abstract class $InitialCopyWith<$Res> {
-  factory $InitialCopyWith(Initial value, $Res Function(Initial) then) =
-      _$InitialCopyWithImpl<$Res>;
+abstract class $FoodprintStateInitialCopyWith<$Res> {
+  factory $FoodprintStateInitialCopyWith(FoodprintStateInitial value,
+          $Res Function(FoodprintStateInitial) then) =
+      _$FoodprintStateInitialCopyWithImpl<$Res>;
 }
 
-class _$InitialCopyWithImpl<$Res> extends _$FoodprintStateCopyWithImpl<$Res>
-    implements $InitialCopyWith<$Res> {
-  _$InitialCopyWithImpl(Initial _value, $Res Function(Initial) _then)
-      : super(_value, (v) => _then(v as Initial));
+class _$FoodprintStateInitialCopyWithImpl<$Res>
+    extends _$FoodprintStateCopyWithImpl<$Res>
+    implements $FoodprintStateInitialCopyWith<$Res> {
+  _$FoodprintStateInitialCopyWithImpl(
+      FoodprintStateInitial _value, $Res Function(FoodprintStateInitial) _then)
+      : super(_value, (v) => _then(v as FoodprintStateInitial));
 
   @override
-  Initial get _value => super._value as Initial;
+  FoodprintStateInitial get _value => super._value as FoodprintStateInitial;
 }
 
-class _$Initial implements Initial {
-  const _$Initial();
+class _$FoodprintStateInitial implements FoodprintStateInitial {
+  const _$FoodprintStateInitial();
 
   @override
   String toString() {
@@ -422,7 +425,7 @@ class _$Initial implements Initial {
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is Initial);
+    return identical(this, other) || (other is FoodprintStateInitial);
   }
 
   @override
@@ -465,7 +468,7 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -482,7 +485,7 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -497,8 +500,8 @@ class _$Initial implements Initial {
   }
 }
 
-abstract class Initial implements FoodprintState {
-  const factory Initial() = _$Initial;
+abstract class FoodprintStateInitial implements FoodprintState {
+  const factory FoodprintStateInitial() = _$FoodprintStateInitial;
 }
 
 abstract class $InProgressCopyWith<$Res> {
@@ -569,7 +572,7 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -586,7 +589,7 @@ class _$InProgress implements InProgress {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -713,7 +716,7 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -730,7 +733,7 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -857,7 +860,7 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -874,7 +877,7 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -1004,7 +1007,7 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result map<Result extends Object>({
-    @required Result initial(Initial value),
+    @required Result initial(FoodprintStateInitial value),
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
@@ -1021,7 +1024,7 @@ class _$FoodprintUpdated implements FoodprintUpdated {
   @override
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
-    Result initial(Initial value),
+    Result initial(FoodprintStateInitial value),
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
