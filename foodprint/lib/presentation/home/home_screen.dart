@@ -12,7 +12,8 @@ import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class HomeScreen extends StatelessWidget {
   final JWT token;
-  const HomeScreen({Key key, @required this.token}) : super(key: key);
+  const HomeScreen({Key key, @required this.token})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +22,7 @@ class HomeScreen extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) =>
-                getIt<LocationBloc>()..add(LocationRequested()),
+            create: (context) => getIt<LocationBloc>(),
           ),
           BlocProvider<FoodprintBloc>(
               create: (context) => getIt<FoodprintBloc>()

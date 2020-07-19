@@ -6,7 +6,6 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/common/snackbar.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class EditImageForm extends StatefulWidget {
@@ -66,7 +65,7 @@ class _EditImageFormState extends State<EditImageForm> {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
 
-        // Pop back to gallery
+
         int count = 0;
         Navigator.popUntil(context, (route) => count++ == 3);
       }

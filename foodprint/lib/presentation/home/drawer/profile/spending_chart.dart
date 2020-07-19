@@ -77,10 +77,10 @@ class SpendingPieChart extends StatelessWidget {
             value: 40,
             title: '',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+                color: Color(0xffffffff)),
           );
         case 1:
           return PieChartSectionData(
@@ -88,10 +88,10 @@ class SpendingPieChart extends StatelessWidget {
             value: 30,
             radius: radius,
             title: '',
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+                color: Color(0xffffffff)),
           );
         case 2:
           return PieChartSectionData(
@@ -99,10 +99,10 @@ class SpendingPieChart extends StatelessWidget {
             value: 15,
             title: '',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+                color: Color(0xffffffff)),
           );
         case 3:
           return PieChartSectionData(
@@ -110,10 +110,10 @@ class SpendingPieChart extends StatelessWidget {
             value: 15,
             title: '',
             radius: radius,
-            titleStyle: TextStyle(
+            titleStyle: const TextStyle(
                 fontSize: fontSize,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xffffffff)),
+                color: Color(0xffffffff)),
           );
         default:
           return null;
