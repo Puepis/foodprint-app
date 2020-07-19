@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -44,8 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ).show(context);
               }, (success) {
-                Navigator.push(
-                    context, SlideLeftRoute(newPage: const LoginPage()));
+                Navigator.pushNamed(context, LoginPage.routeOnRegisterSuccess);
               }));
     }, builder: (context, state) {
       return Form(

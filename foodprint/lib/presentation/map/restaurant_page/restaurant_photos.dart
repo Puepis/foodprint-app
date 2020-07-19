@@ -4,6 +4,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/map/restaurant_page/photo_section.dart';
 
 class RestaurantPhotos extends StatelessWidget {
+  static const routeName = "/restaurant_photos";
   final RestaurantEntity restaurant;
   final List<PhotoEntity> photos;
   const RestaurantPhotos({Key key, this.restaurant, this.photos})

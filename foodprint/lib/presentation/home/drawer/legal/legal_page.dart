@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/home/drawer/legal/privacy_policy.dart';
 import 'package:foodprint/presentation/home/drawer/legal/tos.dart';
 
@@ -18,11 +17,11 @@ class LegalPage extends StatelessWidget {
         children: [
           ListTile(
             title: const Text("Terms & Conditions"),
-            onTap: () => Navigator.push(context, SlideUpEnterRoute(newPage: const TermsOfService())),
+            onTap: () => Navigator.pushNamed(context, TermsOfService.routeName),
           ),
           ListTile(
             title: const Text("Privacy Policy"),
-            onTap: () => Navigator.push(context, SlideUpEnterRoute(newPage: const PrivacyPolicy()),)
+            onTap: () => Navigator.pushNamed(context, PrivacyPolicy.routeName),
           ),
           ListTile(
             title: const Text("Software Licenses"),

@@ -11,9 +11,9 @@ import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeOnLogin = "/on_login";
   final JWT token;
-  const HomeScreen({Key key, @required this.token})
-      : super(key: key);
+  const HomeScreen({Key key, @required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

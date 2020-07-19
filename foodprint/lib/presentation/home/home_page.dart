@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Refresh the location 
+    // Refresh the location
     context.bloc<LocationBloc>().add(LocationRequested());
   }
 
@@ -40,7 +40,6 @@ class _HomePageState extends State<HomePage> {
       onWillPop: () async => false,
       child: BlocBuilder<LocationBloc, LocationState>(
         builder: (context, state) {
-
           // Loading screen
           Widget mapScreen = const Center(child: CircularProgressIndicator());
 
@@ -169,6 +168,12 @@ class _HomePageState extends State<HomePage> {
                   Scaffold.of(context).openDrawer();
                 },
               )),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.tune),
+          onPressed: () {},
+        )
+      ],
     );
   }
 }

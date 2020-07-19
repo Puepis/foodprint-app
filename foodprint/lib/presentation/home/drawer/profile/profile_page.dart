@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
-import 'package:foodprint/presentation/home/drawer/profile/stats_section.dart';
+import 'package:foodprint/presentation/home/drawer/profile/sections/stats_section.dart';
+import 'package:foodprint/presentation/home/drawer/profile/sections/user_section.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String routeName = "/profile";
-  const ProfilePage({Key key}) : super(key: key);
+  final JWT token;
+  final FoodprintEntity foodprint;
+  const ProfilePage({Key key, this.token, this.foodprint}) : super(key: key);
 
   Color get backgroundColor => foodprintPrimaryColorSwatch[300];
 
@@ -28,11 +33,10 @@ class ProfilePage extends StatelessWidget {
           child: CustomScrollView(
             physics: const ClampingScrollPhysics(),
             slivers: [
-              _buildHeader('Profile'),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
-                  child: Container(),
+                  child: UserSection(),
                 ),
               ),
               _buildHeader('Summary'),

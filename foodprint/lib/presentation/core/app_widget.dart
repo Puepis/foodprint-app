@@ -5,10 +5,9 @@ import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
-import 'package:foodprint/presentation/home/drawer/legal/privacy_policy.dart';
-import 'package:foodprint/presentation/home/drawer/legal/tos.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
+import 'package:foodprint/presentation/router/route_generator.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -49,14 +48,12 @@ class FoodprintApp extends StatelessWidget {
             SplashPage.routeName: (context) => SplashPage(),
             LoginPage.routeName: (context) => const LoginPage(),
             RegisterPage.routeName: (context) => const RegisterPage(),
-            ProfilePage.routeName: (context) => const ProfilePage(),
             SettingsPage.routeName: (context) => const SettingsPage(),
             AboutPage.routeName: (context) => const AboutPage(),
             ReportIssuePage.routeName: (context) => const ReportIssuePage(),
             LegalPage.routeName: (context) => const LegalPage(),
-            TermsOfService.routeName: (context) => const TermsOfService(),
-            PrivacyPolicy.routeName: (context) => const PrivacyPolicy(),
           },
+          onGenerateRoute: RouteGenerator.generateRoute,
         ));
   }
 }

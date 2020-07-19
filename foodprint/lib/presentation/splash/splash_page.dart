@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/router/home_screen_args.dart';
 
 /// The initial page that determines which page to show depending on the
 /// authentication state.
@@ -23,20 +23,18 @@ class SplashPage extends StatelessWidget {
 
                 // Logged in
                 authenticated: (result) {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushNamedAndRemoveUntil(
                       cxt,
-                      FadeRoute(
-                          newPage: HomeScreen(
-                        token: result.token,
-                      )),
-                      ModalRoute.withName(SplashPage.routeName));
+                      HomeScreen.routeOnLogin,
+                      ModalRoute.withName(SplashPage.routeName),
+                      arguments: HomeScreenArgs(token: result.token));
                 },
 
                 // Logged out
                 unauthenticated: (_) {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushNamedAndRemoveUntil(
                       cxt,
-                      FadeRoute(newPage: const LoginPage()),
+                      LoginPage.routeOnLogout,
                       ModalRoute.withName(SplashPage.routeName));
                 });
           },

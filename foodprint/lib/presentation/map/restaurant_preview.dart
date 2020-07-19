@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
+import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
 
 class RestaurantPreview extends StatelessWidget {
   final RestaurantEntity restaurant;
@@ -21,13 +21,9 @@ class RestaurantPreview extends StatelessWidget {
         final double dy = details.velocity.pixelsPerSecond.dy;
         if (dy < 0) {
           // swipe up
-          Navigator.push(
-              context,
-              SlideUpEnterRoute(
-                  newPage: RestaurantPhotos(
-                restaurant: restaurant,
-                photos: photos,
-              )));
+          Navigator.pushNamed(context, RestaurantPhotos.routeName,
+              arguments:
+                  RestaurantPhotosArgs(photos: photos, restaurant: restaurant));
         }
       },
       child: Container(

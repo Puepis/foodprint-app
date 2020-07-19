@@ -30,7 +30,7 @@ class SpendingPieChart extends StatelessWidget {
                 children: const [
                   Indicator(
                     color: Color(0xff0293ee),
-                    text: 'First',
+                    text: 'Restaurant',
                     isSquare: true,
                   ),
                   SizedBox(
@@ -38,7 +38,7 @@ class SpendingPieChart extends StatelessWidget {
                   ),
                   Indicator(
                     color: Color(0xfff8b250),
-                    text: 'Second',
+                    text: 'Cafe',
                     isSquare: true,
                   ),
                   SizedBox(
@@ -46,7 +46,7 @@ class SpendingPieChart extends StatelessWidget {
                   ),
                   Indicator(
                     color: Color(0xff845bef),
-                    text: 'Third',
+                    text: 'Bakery',
                     isSquare: true,
                   ),
                   SizedBox(
@@ -54,7 +54,7 @@ class SpendingPieChart extends StatelessWidget {
                   ),
                   Indicator(
                     color: Color(0xff13d38e),
-                    text: 'Fourth',
+                    text: 'Bar',
                     isSquare: true,
                   ),
                 ],

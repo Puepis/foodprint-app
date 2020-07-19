@@ -9,6 +9,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -19,8 +20,8 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final username = JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
+    final username =
+        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Drawer(
       child: Column(
         children: [
@@ -36,7 +37,9 @@ class AppDrawer extends StatelessWidget {
                       text: 'Profile',
                       onTap: () {
                         Navigator.popAndPushNamed(
-                            context, ProfilePage.routeName);
+                            context, ProfilePage.routeName,
+                            arguments: ProfilePageArgs(
+                                token: token, foodprint: foodprint));
                       }),
                   _createDrawerItem(
                       icon: Icons.settings,
@@ -57,8 +60,7 @@ class AppDrawer extends StatelessWidget {
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
-                    onTap: () {
-                    },
+                    onTap: () {},
                   ),
                   _createDrawerItem(
                       icon: Icons.exit_to_app,
@@ -84,34 +86,33 @@ class AppDrawer extends StatelessWidget {
 
   Padding _buildLegal(BuildContext context) {
     return Padding(
-          padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-          child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Legal',
-                  style: TextStyle(fontSize: 15.0),
-                ),
-                Text(
-                  'v1.0.0',
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: hintColor,
-                      fontWeight: FontWeight.w300),
-                ),
-              ],
+      padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Legal',
+              style: TextStyle(fontSize: 15.0),
             ),
-            dense: true,
-            onTap: () {
-              Navigator.pushNamed(context, LegalPage.routeName);
-            },
-          ),
-        );
+            Text(
+              'v1.0.0',
+              style: TextStyle(
+                  fontSize: 15.0,
+                  color: hintColor,
+                  fontWeight: FontWeight.w300),
+            ),
+          ],
+        ),
+        dense: true,
+        onTap: () {
+          Navigator.pushNamed(context, LegalPage.routeName);
+        },
+      ),
+    );
   }
 
   Widget _buildHeader(String username) {
-
     final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
         getPhotosFromFoodprint(foodprint);
 

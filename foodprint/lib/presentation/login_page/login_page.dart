@@ -10,6 +10,8 @@ import 'package:foodprint/presentation/register_page/register_page.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
+  static const routeOnRegisterSuccess = "/login_on_register_success";
+  static const routeOnLogout = "/from_logout";
   const LoginPage({Key key}) : super(key: key);
 
   @override
