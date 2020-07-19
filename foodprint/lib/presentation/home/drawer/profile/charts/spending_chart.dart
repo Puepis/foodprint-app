@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/home/drawer/profile/indicator.dart';
+import 'package:foodprint/presentation/home/drawer/profile/charts/indicator.dart';
 
 class SpendingPieChart extends StatelessWidget {
   const SpendingPieChart({Key key}) : super(key: key);

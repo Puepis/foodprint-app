@@ -24,7 +24,7 @@ class EditImageScreen extends StatefulWidget {
 
 class _EditImageScreenState extends State<EditImageScreen> {
 
-  static Color backgroundColor = foodprintPrimaryColorSwatch[50];
+  Color get backgroundColor => foodprintPrimaryColorSwatch[50];
 
   @override
   Widget build(BuildContext context) {

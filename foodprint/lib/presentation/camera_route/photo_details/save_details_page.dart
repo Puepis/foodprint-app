@@ -22,7 +22,7 @@ class PhotoDetailsPage extends StatelessWidget {
       @required this.token})
       : super(key: key);
 
-  static Color backgroundColor = foodprintPrimaryColorSwatch[50];
+  Color get backgroundColor => foodprintPrimaryColorSwatch[50];
 
   @override
   Widget build(BuildContext context) {
