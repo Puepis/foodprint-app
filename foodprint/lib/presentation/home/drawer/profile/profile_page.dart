@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
-import 'package:foodprint/presentation/home/drawer/profile/sections/stats_section.dart';
-import 'package:foodprint/presentation/home/drawer/profile/sections/summary_section.dart';
-import 'package:foodprint/presentation/home/drawer/profile/sections/user_section.dart';
+import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String routeName = "/profile";
@@ -45,8 +43,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
                   child: SummarySection(
                     foodprint: foodprint,
@@ -56,25 +53,13 @@ class ProfilePage extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
-                  child: StatsSection(),
+                  child: StatsSection(
+                    foodprint: foodprint,
+                  ),
                 ),
               ),
             ],
           ),
         ));
   }
-
-  SliverPadding _buildHeader(String title) => SliverPadding(
-        padding: const EdgeInsets.all(20.0),
-        sliver: SliverToBoxAdapter(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 35.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      );
 }

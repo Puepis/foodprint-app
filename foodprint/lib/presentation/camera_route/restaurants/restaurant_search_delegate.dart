@@ -8,6 +8,8 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
   final double longitude;
   RestaurantSearchDelegate(this.latitude, this.longitude);
+
+  /// Restrict search to these types
   static const _acceptedTypes = ["restaurant", "food", "cafe", "bar", "bakery"];
 
   // Custom appBarTheme

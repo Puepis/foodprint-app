@@ -21,17 +21,17 @@ class SummarySection extends StatelessWidget {
     return Row(
       children: [
         _buildStatCard(
-            title: photos.length == 1 ? 'Photo' : 'Photos',
-            count: photos.length.toString(),
-            color: Colors.purple),
+          title: photos.length == 1 ? 'Photo' : 'Photos',
+          count: photos.length.toString(),
+        ),
         _buildStatCard(
-            title: numLocations == 1 ? 'Location' : 'Locations',
-            count: numLocations.toString(),
-            color: Colors.lightBlue),
+          title: numLocations == 1 ? 'Location' : 'Locations',
+          count: numLocations.toString(),
+        ),
         _buildStatCard(
-            title: numFavourites == 1 ? 'Favourite' : 'Favourites',
-            count: numFavourites.toString(),
-            color: Colors.green),
+          title: numFavourites == 1 ? 'Favourite' : 'Favourites',
+          count: numFavourites.toString(),
+        ),
       ],
     );
   }
@@ -41,9 +41,6 @@ class SummarySection extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(8.0),
         padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
