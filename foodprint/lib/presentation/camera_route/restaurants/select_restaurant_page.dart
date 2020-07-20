@@ -223,7 +223,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   Widget _buildButton(int index) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0)
+        borderRadius: BorderRadius.circular(10.0)
       ),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       color: foodprintPrimaryColorSwatch[200],
