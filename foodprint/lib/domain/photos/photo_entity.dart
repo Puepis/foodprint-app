@@ -16,8 +16,10 @@ abstract class PhotoEntity implements _$PhotoEntity {
     URL url,
     @required PhotoDetailEntity photoDetail,
     @required Timestamp timestamp,
+    @required bool isFavourite,
   }) = _PhotoEntity;
 
+  /// Either some type of value failure or none()
   Option<ValueFailure<dynamic>> get failureOption {
     return storagePath.failureOrNone
         .andThen(url.failureOrNone)

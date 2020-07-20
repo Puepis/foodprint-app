@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -26,6 +27,7 @@ class EditImageForm extends StatefulWidget {
 class _EditImageFormState extends State<EditImageForm> {
   final _formKey = GlobalKey<FormState>();
   String _itemName, _price, _comments;
+  bool _isFavourite;
 
   final TextStyle _sectionTitleStyle = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
@@ -54,17 +56,30 @@ class _EditImageFormState extends State<EditImageForm> {
       );
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _isFavourite = widget.photo.isFavourite;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
     final FoodprintBloc foodprintBloc = context.bloc<FoodprintBloc>();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
+      if (state is EditFailure) {
+        Scaffold.of(context)..hideCurrentSnackBar();
+        FlushbarHelper.createError(
+          message: state.failure.map(
+              invalidPhoto: (_) => 'Invalid Photo',
+              serverError: (_) => 'Server Error'),
+        ).show(context);
+      }
       // Update local foodprint
       if (state is EditSuccess) {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
-
 
         int count = 0;
         Navigator.popUntil(context, (route) => count++ == 3);
@@ -75,6 +90,34 @@ class _EditImageFormState extends State<EditImageForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _isFavourite = !_isFavourite;
+                        });
+                      },
+                      child: Icon(
+                        _isFavourite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5.0,
+                    ),
+                    Text(
+                      "Favourite",
+                      style: _sectionTitleStyle,
+                    ),
+                  ],
+                )),
+            const SizedBox(
+              height: 20,
+            ),
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),
             _sectionHeadingSpace,
@@ -191,6 +234,7 @@ class _EditImageFormState extends State<EditImageForm> {
                             newName: _itemName,
                             newPrice: _price,
                             newComments: _comments,
+                            isFavourite: _isFavourite,
                             restaurant: widget.restaurant,
                             foodprint: widget.foodprint));
                       }

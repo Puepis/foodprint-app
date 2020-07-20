@@ -24,6 +24,7 @@ abstract class IPhotoRepository {
   Future<Either<PhotoFailure, FoodprintEntity>> updatePhotoDetails({
     @required PhotoEntity oldPhoto,
     @required PhotoDetailEntity photoDetail,
+    @required bool isFavourite,
     @required RestaurantEntity restaurant,
     @required FoodprintEntity oldFoodprint
   });

@@ -46,10 +46,12 @@ class PhotoCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  DisplayInfo(
-                      photoDetail: photo.photoDetail,
-                      timestamp: photo.timestamp),
-                  buildFavouriteSection()
+                  Expanded(
+                    child: DisplayInfo(
+                        isFavourite: photo.isFavourite,
+                        photoDetail: photo.photoDetail,
+                        timestamp: photo.timestamp),
+                  ),
                 ],
               ),
             ),
@@ -58,35 +60,18 @@ class PhotoCard extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildFavouriteSection() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(
-          Icons.favorite_border,
-          color: Colors.red,
-        ),
-        SizedBox(
-          height: 3.0,
-        ),
-        Text(
-          "Favourite",
-          style: TextStyle(fontSize: 15.0),
-        )
-      ],
-    );
-  }
 }
 
 /// Displays the photo details
 class DisplayInfo extends StatelessWidget {
   const DisplayInfo({
     Key key,
+    @required this.isFavourite,
     @required this.photoDetail,
     @required this.timestamp,
   }) : super(key: key);
 
+  final bool isFavourite;
   final PhotoDetailEntity photoDetail;
   final Timestamp timestamp;
 
@@ -96,39 +81,46 @@ class DisplayInfo extends StatelessWidget {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            photoDetail.name.getOrCrash(),
-            style: const TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(
-            height: 5.0,
-          ),
-          Text(
-            formatter.format(photoDetail.price.getOrCrash()),
-            style: TextStyle(
-                color: Colors.green.shade500,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              photoDetail.name.getOrCrash(),
+              style: const TextStyle(
                 fontSize: 18.0,
-                fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 5.0,
-          ),
-          Text(
-            timestamp.toReadable(),
-            style: const TextStyle(fontSize: 15.0),
-          )
-        ],
-      ),
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Icon(
+              isFavourite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 5.0,
+        ),
+        Text(
+          formatter.format(photoDetail.price.getOrCrash()),
+          style: TextStyle(
+              color: Colors.green.shade500,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 5.0,
+        ),
+        Text(
+          timestamp.toReadable(),
+          style: const TextStyle(fontSize: 15.0),
+        )
+      ],
     );
   }
 }

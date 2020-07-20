@@ -16,12 +16,14 @@ class _$PhotoDTOTearOff {
       {@required String storagePath,
       @required String url,
       @required PhotoDetailDTO photoDetail,
-      @required String timestamp}) {
+      @required String timestamp,
+      @required bool isFavourite}) {
     return _PhotoDTO(
       storagePath: storagePath,
       url: url,
       photoDetail: photoDetail,
       timestamp: timestamp,
+      isFavourite: isFavourite,
     );
   }
 }
@@ -34,6 +36,7 @@ mixin _$PhotoDTO {
   String get url;
   PhotoDetailDTO get photoDetail;
   String get timestamp;
+  bool get isFavourite;
 
   $PhotoDTOCopyWith<PhotoDTO> get copyWith;
 }
@@ -45,7 +48,8 @@ abstract class $PhotoDTOCopyWith<$Res> {
       {String storagePath,
       String url,
       PhotoDetailDTO photoDetail,
-      String timestamp});
+      String timestamp,
+      bool isFavourite});
 
   $PhotoDetailDTOCopyWith<$Res> get photoDetail;
 }
@@ -63,6 +67,7 @@ class _$PhotoDTOCopyWithImpl<$Res> implements $PhotoDTOCopyWith<$Res> {
     Object url = freezed,
     Object photoDetail = freezed,
     Object timestamp = freezed,
+    Object isFavourite = freezed,
   }) {
     return _then(_value.copyWith(
       storagePath:
@@ -72,6 +77,8 @@ class _$PhotoDTOCopyWithImpl<$Res> implements $PhotoDTOCopyWith<$Res> {
           ? _value.photoDetail
           : photoDetail as PhotoDetailDTO,
       timestamp: timestamp == freezed ? _value.timestamp : timestamp as String,
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
     ));
   }
 
@@ -94,7 +101,8 @@ abstract class _$PhotoDTOCopyWith<$Res> implements $PhotoDTOCopyWith<$Res> {
       {String storagePath,
       String url,
       PhotoDetailDTO photoDetail,
-      String timestamp});
+      String timestamp,
+      bool isFavourite});
 
   @override
   $PhotoDetailDTOCopyWith<$Res> get photoDetail;
@@ -114,6 +122,7 @@ class __$PhotoDTOCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
     Object url = freezed,
     Object photoDetail = freezed,
     Object timestamp = freezed,
+    Object isFavourite = freezed,
   }) {
     return _then(_PhotoDTO(
       storagePath:
@@ -123,6 +132,8 @@ class __$PhotoDTOCopyWithImpl<$Res> extends _$PhotoDTOCopyWithImpl<$Res>
           ? _value.photoDetail
           : photoDetail as PhotoDetailDTO,
       timestamp: timestamp == freezed ? _value.timestamp : timestamp as String,
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
     ));
   }
 }
@@ -132,11 +143,13 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
       {@required this.storagePath,
       @required this.url,
       @required this.photoDetail,
-      @required this.timestamp})
+      @required this.timestamp,
+      @required this.isFavourite})
       : assert(storagePath != null),
         assert(url != null),
         assert(photoDetail != null),
         assert(timestamp != null),
+        assert(isFavourite != null),
         super._();
 
   @override
@@ -147,10 +160,12 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
   final PhotoDetailDTO photoDetail;
   @override
   final String timestamp;
+  @override
+  final bool isFavourite;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PhotoDTO(storagePath: $storagePath, url: $url, photoDetail: $photoDetail, timestamp: $timestamp)';
+    return 'PhotoDTO(storagePath: $storagePath, url: $url, photoDetail: $photoDetail, timestamp: $timestamp, isFavourite: $isFavourite)';
   }
 
   @override
@@ -161,7 +176,8 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('storagePath', storagePath))
       ..add(DiagnosticsProperty('url', url))
       ..add(DiagnosticsProperty('photoDetail', photoDetail))
-      ..add(DiagnosticsProperty('timestamp', timestamp));
+      ..add(DiagnosticsProperty('timestamp', timestamp))
+      ..add(DiagnosticsProperty('isFavourite', isFavourite));
   }
 
   @override
@@ -178,7 +194,10 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
                     .equals(other.photoDetail, photoDetail)) &&
             (identical(other.timestamp, timestamp) ||
                 const DeepCollectionEquality()
-                    .equals(other.timestamp, timestamp)));
+                    .equals(other.timestamp, timestamp)) &&
+            (identical(other.isFavourite, isFavourite) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFavourite, isFavourite)));
   }
 
   @override
@@ -187,7 +206,8 @@ class _$_PhotoDTO extends _PhotoDTO with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(storagePath) ^
       const DeepCollectionEquality().hash(url) ^
       const DeepCollectionEquality().hash(photoDetail) ^
-      const DeepCollectionEquality().hash(timestamp);
+      const DeepCollectionEquality().hash(timestamp) ^
+      const DeepCollectionEquality().hash(isFavourite);
 
   @override
   _$PhotoDTOCopyWith<_PhotoDTO> get copyWith =>
@@ -200,7 +220,8 @@ abstract class _PhotoDTO extends PhotoDTO {
       {@required String storagePath,
       @required String url,
       @required PhotoDetailDTO photoDetail,
-      @required String timestamp}) = _$_PhotoDTO;
+      @required String timestamp,
+      @required bool isFavourite}) = _$_PhotoDTO;
 
   @override
   String get storagePath;
@@ -210,6 +231,8 @@ abstract class _PhotoDTO extends PhotoDTO {
   PhotoDetailDTO get photoDetail;
   @override
   String get timestamp;
+  @override
+  bool get isFavourite;
   @override
   _$PhotoDTOCopyWith<_PhotoDTO> get copyWith;
 }

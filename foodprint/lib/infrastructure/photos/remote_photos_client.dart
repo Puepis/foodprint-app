@@ -30,6 +30,7 @@ class RemotePhotosClient implements IPhotoRepository {
       "image": {
         "path": photo.storagePath.getOrCrash(),
         "data": imageData.getOrCrash().toString(),
+        "favourite": photo.isFavourite ? 'true': 'false', 
         "details": {
           "name": photo.photoDetail.name.getOrCrash(),
           "price": photo.photoDetail.price.getOrCrash().toString(),
@@ -68,7 +69,9 @@ class RemotePhotosClient implements IPhotoRepository {
           storagePath: photo.storagePath,
           url: URL(url),
           photoDetail: photo.photoDetail,
-          timestamp: photo.timestamp);
+          timestamp: photo.timestamp,
+          isFavourite: photo.isFavourite
+          );
 
       // Update local foodprint
       final FoodprintEntity newFoodprint =
@@ -84,18 +87,20 @@ class RemotePhotosClient implements IPhotoRepository {
     }
   }
 
-  // Edit a photo
+  // Edit a photo on the server side
   @override
   Future<Either<PhotoFailure, FoodprintEntity>> updatePhotoDetails(
       {@required PhotoEntity oldPhoto,
       @required PhotoDetailEntity photoDetail,
+      @required bool isFavourite,
       @required RestaurantEntity restaurant,
       @required FoodprintEntity oldFoodprint}) async {
     final res = await http.put("$serverIP/api/photos", body: {
       "path": oldPhoto.storagePath.getOrCrash(),
       "photo_name": photoDetail.name.getOrCrash(),
       "price": photoDetail.price.getOrCrash().toString(),
-      "comments": photoDetail.comments.getOrCrash()
+      "comments": photoDetail.comments.getOrCrash(),
+      "favourite": isFavourite ? 'true' : 'false'
     });
 
     if (res.statusCode == 200) {
@@ -104,6 +109,7 @@ class RemotePhotosClient implements IPhotoRepository {
         url: oldPhoto.url,
         photoDetail: photoDetail,
         timestamp: oldPhoto.timestamp,
+        isFavourite: isFavourite
       );
 
       final FoodprintEntity newFoodprint =

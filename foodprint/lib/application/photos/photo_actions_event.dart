@@ -13,6 +13,7 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
     @required String newName,
     @required String newPrice,
     @required String newComments,
+    @required bool isFavourite,
     @required RestaurantEntity restaurant,
     @required FoodprintEntity foodprint 
   }) = Edited;

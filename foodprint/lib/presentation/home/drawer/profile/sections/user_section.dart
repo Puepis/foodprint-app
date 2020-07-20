@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class UserSection extends StatelessWidget {
-  final Username username;
-  const UserSection({Key key, this.username}) : super(key: key);
+  final String username;
+  const UserSection({Key key, @required this.username}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class UserSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Username",
+                    username,
                     style: const TextStyle(
                       fontSize: 38,
                       fontWeight: FontWeight.w600,

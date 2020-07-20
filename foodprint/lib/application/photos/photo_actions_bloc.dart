@@ -30,7 +30,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   static int get secondsSinceEpoch =>
       (DateTime.now().millisecondsSinceEpoch / 1000).round();
 
-  // Format datetime
+  // Formats the datetime
   static String get currentTimestamp {
     final DateTime now = DateTime.now();
     final String y = now.year.toString();
@@ -42,10 +42,12 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
   }
 
+  /// Determines whether to add a zero in front of a numeric value
   static String _formatZero(int value) {
     return value < 10 ? "0$value" : value.toString();
   }
 
+  /// Creates a new [PhotoEntity] based on the saved parameters
   static PhotoEntity _generateNewPhoto(
       int id, File imageFile, String itemName, String price, String comments) {
     final String time = currentTimestamp;
@@ -54,13 +56,13 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
 
     // Construct new photo
     return PhotoEntity(
-      storagePath: StoragePath(imgPath),
-      photoDetail: PhotoDetailEntity(
-          name: PhotoName(itemName),
-          price: PhotoPrice(double.parse(price)),
-          comments: PhotoComments(comments)),
-      timestamp: Timestamp(time.substring(0, time.length - 3)),
-    );
+        storagePath: StoragePath(imgPath),
+        photoDetail: PhotoDetailEntity(
+            name: PhotoName(itemName),
+            price: PhotoPrice(double.parse(price)),
+            comments: PhotoComments(comments)),
+        timestamp: Timestamp(time.substring(0, time.length - 3)),
+        isFavourite: false);
   }
 
   @override
@@ -71,8 +73,8 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     yield* event.map(deleted: (e) async* {
       yield* _mapDeletedToState(e.photo, e.restaurant, e.foodprint);
     }, edited: (e) async* {
-      yield* _mapEditedToState(e.newName, e.newPrice, e.newComments, e.oldPhoto,
-          e.restaurant, e.foodprint);
+      yield* _mapEditedToState(e.newName, e.newPrice, e.newComments,
+          e.isFavourite, e.oldPhoto, e.restaurant, e.foodprint);
     }, saved: (e) async* {
       yield* _mapSavedToState(e.userID, e.imageFile, e.itemName, e.price,
           e.comments, e.restaurant, e.foodprint);
@@ -91,6 +93,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
       String newName,
       String newPrice,
       String newComments,
+      bool isFavourite,
       PhotoEntity oldPhoto,
       RestaurantEntity restaurant,
       FoodprintEntity foodprint) async* {
@@ -102,7 +105,8 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
         oldPhoto: oldPhoto,
         photoDetail: newDetails,
         restaurant: restaurant,
-        oldFoodprint: foodprint);
+        oldFoodprint: foodprint,
+        isFavourite: isFavourite);
     yield result.fold(
       (failure) => PhotoActionsState.editFailure(failure),
       (newFoodprint) => PhotoActionsState.editSuccess(newFoodprint),

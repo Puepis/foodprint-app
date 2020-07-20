@@ -18,6 +18,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
     @required String url,
     @required PhotoDetailDTO photoDetail,
     @required String timestamp, 
+    @required bool isFavourite,
   }) = _PhotoDTO;
 
   // Convert entity to DTO
@@ -27,6 +28,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
       url: photo.url.getOrCrash(),
       photoDetail: PhotoDetailDTO.fromEntity(photo.photoDetail),
       timestamp: photo.timestamp.getOrCrash(),
+      isFavourite: photo.isFavourite
     );
   }
 
@@ -36,7 +38,8 @@ abstract class PhotoDTO implements _$PhotoDTO {
       storagePath: StoragePath(storagePath), 
       url: URL(url),
       photoDetail: photoDetail.toEntity(),
-      timestamp: Timestamp(timestamp)
+      timestamp: Timestamp(timestamp),
+      isFavourite: isFavourite 
     );
   }
 
@@ -47,6 +50,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
       url: json['url'].toString(),
       timestamp: parseTimestamp(json['time_taken'].toString()), 
       photoDetail: PhotoDetailDTO.fromJSON(json),
+      isFavourite: json['favourite'] == 'true'
     );
   }
 

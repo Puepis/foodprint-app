@@ -16,12 +16,14 @@ class _$PhotoEntityTearOff {
       {@required StoragePath storagePath,
       URL url,
       @required PhotoDetailEntity photoDetail,
-      @required Timestamp timestamp}) {
+      @required Timestamp timestamp,
+      @required bool isFavourite}) {
     return _PhotoEntity(
       storagePath: storagePath,
       url: url,
       photoDetail: photoDetail,
       timestamp: timestamp,
+      isFavourite: isFavourite,
     );
   }
 }
@@ -34,6 +36,7 @@ mixin _$PhotoEntity {
   URL get url;
   PhotoDetailEntity get photoDetail;
   Timestamp get timestamp;
+  bool get isFavourite;
 
   $PhotoEntityCopyWith<PhotoEntity> get copyWith;
 }
@@ -46,7 +49,8 @@ abstract class $PhotoEntityCopyWith<$Res> {
       {StoragePath storagePath,
       URL url,
       PhotoDetailEntity photoDetail,
-      Timestamp timestamp});
+      Timestamp timestamp,
+      bool isFavourite});
 
   $PhotoDetailEntityCopyWith<$Res> get photoDetail;
 }
@@ -64,6 +68,7 @@ class _$PhotoEntityCopyWithImpl<$Res> implements $PhotoEntityCopyWith<$Res> {
     Object url = freezed,
     Object photoDetail = freezed,
     Object timestamp = freezed,
+    Object isFavourite = freezed,
   }) {
     return _then(_value.copyWith(
       storagePath: storagePath == freezed
@@ -75,6 +80,8 @@ class _$PhotoEntityCopyWithImpl<$Res> implements $PhotoEntityCopyWith<$Res> {
           : photoDetail as PhotoDetailEntity,
       timestamp:
           timestamp == freezed ? _value.timestamp : timestamp as Timestamp,
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
     ));
   }
 
@@ -99,7 +106,8 @@ abstract class _$PhotoEntityCopyWith<$Res>
       {StoragePath storagePath,
       URL url,
       PhotoDetailEntity photoDetail,
-      Timestamp timestamp});
+      Timestamp timestamp,
+      bool isFavourite});
 
   @override
   $PhotoDetailEntityCopyWith<$Res> get photoDetail;
@@ -120,6 +128,7 @@ class __$PhotoEntityCopyWithImpl<$Res> extends _$PhotoEntityCopyWithImpl<$Res>
     Object url = freezed,
     Object photoDetail = freezed,
     Object timestamp = freezed,
+    Object isFavourite = freezed,
   }) {
     return _then(_PhotoEntity(
       storagePath: storagePath == freezed
@@ -131,6 +140,8 @@ class __$PhotoEntityCopyWithImpl<$Res> extends _$PhotoEntityCopyWithImpl<$Res>
           : photoDetail as PhotoDetailEntity,
       timestamp:
           timestamp == freezed ? _value.timestamp : timestamp as Timestamp,
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
     ));
   }
 }
@@ -140,10 +151,12 @@ class _$_PhotoEntity extends _PhotoEntity {
       {@required this.storagePath,
       this.url,
       @required this.photoDetail,
-      @required this.timestamp})
+      @required this.timestamp,
+      @required this.isFavourite})
       : assert(storagePath != null),
         assert(photoDetail != null),
         assert(timestamp != null),
+        assert(isFavourite != null),
         super._();
 
   @override
@@ -154,10 +167,12 @@ class _$_PhotoEntity extends _PhotoEntity {
   final PhotoDetailEntity photoDetail;
   @override
   final Timestamp timestamp;
+  @override
+  final bool isFavourite;
 
   @override
   String toString() {
-    return 'PhotoEntity(storagePath: $storagePath, url: $url, photoDetail: $photoDetail, timestamp: $timestamp)';
+    return 'PhotoEntity(storagePath: $storagePath, url: $url, photoDetail: $photoDetail, timestamp: $timestamp, isFavourite: $isFavourite)';
   }
 
   @override
@@ -174,7 +189,10 @@ class _$_PhotoEntity extends _PhotoEntity {
                     .equals(other.photoDetail, photoDetail)) &&
             (identical(other.timestamp, timestamp) ||
                 const DeepCollectionEquality()
-                    .equals(other.timestamp, timestamp)));
+                    .equals(other.timestamp, timestamp)) &&
+            (identical(other.isFavourite, isFavourite) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFavourite, isFavourite)));
   }
 
   @override
@@ -183,7 +201,8 @@ class _$_PhotoEntity extends _PhotoEntity {
       const DeepCollectionEquality().hash(storagePath) ^
       const DeepCollectionEquality().hash(url) ^
       const DeepCollectionEquality().hash(photoDetail) ^
-      const DeepCollectionEquality().hash(timestamp);
+      const DeepCollectionEquality().hash(timestamp) ^
+      const DeepCollectionEquality().hash(isFavourite);
 
   @override
   _$PhotoEntityCopyWith<_PhotoEntity> get copyWith =>
@@ -196,7 +215,8 @@ abstract class _PhotoEntity extends PhotoEntity {
       {@required StoragePath storagePath,
       URL url,
       @required PhotoDetailEntity photoDetail,
-      @required Timestamp timestamp}) = _$_PhotoEntity;
+      @required Timestamp timestamp,
+      @required bool isFavourite}) = _$_PhotoEntity;
 
   @override
   StoragePath get storagePath;
@@ -206,6 +226,8 @@ abstract class _PhotoEntity extends PhotoEntity {
   PhotoDetailEntity get photoDetail;
   @override
   Timestamp get timestamp;
+  @override
+  bool get isFavourite;
   @override
   _$PhotoEntityCopyWith<_PhotoEntity> get copyWith;
 }

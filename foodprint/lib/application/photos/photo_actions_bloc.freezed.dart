@@ -28,6 +28,7 @@ class _$PhotoActionsEventTearOff {
       @required String newName,
       @required String newPrice,
       @required String newComments,
+      @required bool isFavourite,
       @required RestaurantEntity restaurant,
       @required FoodprintEntity foodprint}) {
     return Edited(
@@ -35,6 +36,7 @@ class _$PhotoActionsEventTearOff {
       newName: newName,
       newPrice: newPrice,
       newComments: newComments,
+      isFavourite: isFavourite,
       restaurant: restaurant,
       foodprint: foodprint,
     );
@@ -78,6 +80,7 @@ mixin _$PhotoActionsEvent {
             String newName,
             String newPrice,
             String newComments,
+            bool isFavourite,
             RestaurantEntity restaurant,
             FoodprintEntity foodprint),
     @required
@@ -99,6 +102,7 @@ mixin _$PhotoActionsEvent {
         String newName,
         String newPrice,
         String newComments,
+        bool isFavourite,
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
@@ -293,6 +297,7 @@ class _$Deleted implements Deleted {
             String newName,
             String newPrice,
             String newComments,
+            bool isFavourite,
             RestaurantEntity restaurant,
             FoodprintEntity foodprint),
     @required
@@ -321,6 +326,7 @@ class _$Deleted implements Deleted {
         String newName,
         String newPrice,
         String newComments,
+        bool isFavourite,
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
@@ -394,6 +400,7 @@ abstract class $EditedCopyWith<$Res>
       String newName,
       String newPrice,
       String newComments,
+      bool isFavourite,
       RestaurantEntity restaurant,
       FoodprintEntity foodprint});
 
@@ -418,6 +425,7 @@ class _$EditedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
     Object newName = freezed,
     Object newPrice = freezed,
     Object newComments = freezed,
+    Object isFavourite = freezed,
     Object restaurant = freezed,
     Object foodprint = freezed,
   }) {
@@ -427,6 +435,8 @@ class _$EditedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
       newPrice: newPrice == freezed ? _value.newPrice : newPrice as String,
       newComments:
           newComments == freezed ? _value.newComments : newComments as String,
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
       restaurant: restaurant == freezed
           ? _value.restaurant
           : restaurant as RestaurantEntity,
@@ -453,12 +463,14 @@ class _$Edited implements Edited {
       @required this.newName,
       @required this.newPrice,
       @required this.newComments,
+      @required this.isFavourite,
       @required this.restaurant,
       @required this.foodprint})
       : assert(oldPhoto != null),
         assert(newName != null),
         assert(newPrice != null),
         assert(newComments != null),
+        assert(isFavourite != null),
         assert(restaurant != null),
         assert(foodprint != null);
 
@@ -471,13 +483,15 @@ class _$Edited implements Edited {
   @override
   final String newComments;
   @override
+  final bool isFavourite;
+  @override
   final RestaurantEntity restaurant;
   @override
   final FoodprintEntity foodprint;
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.edited(oldPhoto: $oldPhoto, newName: $newName, newPrice: $newPrice, newComments: $newComments, restaurant: $restaurant, foodprint: $foodprint)';
+    return 'PhotoActionsEvent.edited(oldPhoto: $oldPhoto, newName: $newName, newPrice: $newPrice, newComments: $newComments, isFavourite: $isFavourite, restaurant: $restaurant, foodprint: $foodprint)';
   }
 
   @override
@@ -496,6 +510,9 @@ class _$Edited implements Edited {
             (identical(other.newComments, newComments) ||
                 const DeepCollectionEquality()
                     .equals(other.newComments, newComments)) &&
+            (identical(other.isFavourite, isFavourite) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFavourite, isFavourite)) &&
             (identical(other.restaurant, restaurant) ||
                 const DeepCollectionEquality()
                     .equals(other.restaurant, restaurant)) &&
@@ -511,6 +528,7 @@ class _$Edited implements Edited {
       const DeepCollectionEquality().hash(newName) ^
       const DeepCollectionEquality().hash(newPrice) ^
       const DeepCollectionEquality().hash(newComments) ^
+      const DeepCollectionEquality().hash(isFavourite) ^
       const DeepCollectionEquality().hash(restaurant) ^
       const DeepCollectionEquality().hash(foodprint);
 
@@ -530,6 +548,7 @@ class _$Edited implements Edited {
             String newName,
             String newPrice,
             String newComments,
+            bool isFavourite,
             RestaurantEntity restaurant,
             FoodprintEntity foodprint),
     @required
@@ -545,8 +564,8 @@ class _$Edited implements Edited {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
-    return edited(
-        oldPhoto, newName, newPrice, newComments, restaurant, foodprint);
+    return edited(oldPhoto, newName, newPrice, newComments, isFavourite,
+        restaurant, foodprint);
   }
 
   @override
@@ -559,6 +578,7 @@ class _$Edited implements Edited {
         String newName,
         String newPrice,
         String newComments,
+        bool isFavourite,
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(
@@ -573,8 +593,8 @@ class _$Edited implements Edited {
   }) {
     assert(orElse != null);
     if (edited != null) {
-      return edited(
-          oldPhoto, newName, newPrice, newComments, restaurant, foodprint);
+      return edited(oldPhoto, newName, newPrice, newComments, isFavourite,
+          restaurant, foodprint);
     }
     return orElse();
   }
@@ -614,6 +634,7 @@ abstract class Edited implements PhotoActionsEvent {
       @required String newName,
       @required String newPrice,
       @required String newComments,
+      @required bool isFavourite,
       @required RestaurantEntity restaurant,
       @required FoodprintEntity foodprint}) = _$Edited;
 
@@ -621,6 +642,7 @@ abstract class Edited implements PhotoActionsEvent {
   String get newName;
   String get newPrice;
   String get newComments;
+  bool get isFavourite;
   @override
   RestaurantEntity get restaurant;
   @override
@@ -772,6 +794,7 @@ class _$Saved implements Saved {
             String newName,
             String newPrice,
             String newComments,
+            bool isFavourite,
             RestaurantEntity restaurant,
             FoodprintEntity foodprint),
     @required
@@ -801,6 +824,7 @@ class _$Saved implements Saved {
         String newName,
         String newPrice,
         String newComments,
+        bool isFavourite,
         RestaurantEntity restaurant,
         FoodprintEntity foodprint),
     Result saved(

@@ -150,7 +150,8 @@ class AppDrawer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, top: 10),
-                child: Text("${photos.length} Photos",
+                child: Text(
+                    photos.length == 1 ? "1 Photo" : "${photos.length} Photos",
                     style: GoogleFonts.montserrat(
                         color: Colors.white,
                         fontSize: 16.0,

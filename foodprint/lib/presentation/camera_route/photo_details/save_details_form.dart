@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -67,6 +68,14 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
+      if (state is SaveFailure) {
+        Scaffold.of(context)..hideCurrentSnackBar();
+        FlushbarHelper.createError(
+          message: state.failure.map(
+              invalidPhoto: (_) => 'Invalid Photo',
+              serverError: (_) => 'Server Error'),
+        ).show(context);
+      }
       if (state is SaveSuccess) {
         int count = 0;
         Navigator.popUntil(context, (route) => count++ == 3);

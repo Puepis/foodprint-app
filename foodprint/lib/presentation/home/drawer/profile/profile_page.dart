@@ -4,6 +4,7 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/sections/stats_section.dart';
+import 'package:foodprint/presentation/home/drawer/profile/sections/summary_section.dart';
 import 'package:foodprint/presentation/home/drawer/profile/sections/user_section.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -16,6 +17,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final username =
+        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -36,11 +39,20 @@ class ProfilePage extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
-                  child: UserSection(),
+                  child: UserSection(
+                    username: username,
+                  ),
                 ),
               ),
-              _buildHeader('Summary'),
-              _buildHeader('Your Stats'),
+              SliverPadding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10),
+                sliver: SliverToBoxAdapter(
+                  child: SummarySection(
+                    foodprint: foodprint,
+                  ),
+                ),
+              ),
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
