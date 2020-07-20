@@ -4,13 +4,14 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class SummarySection extends StatelessWidget {
   final FoodprintEntity foodprint;
   const SummarySection({Key key, @required this.foodprint}) : super(key: key);
 
   int get numLocations => foodprint.restaurantPhotos.keys.length;
+  int get numFavourites => foodprint.restaurantPhotos.values.fold(
+      0, (prev, photos) => prev + photos.where((p) => p.isFavourite).length);
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +21,17 @@ class SummarySection extends StatelessWidget {
     return Row(
       children: [
         _buildStatCard(
-            title: 'Photos',
+            title: photos.length == 1 ? 'Photo' : 'Photos',
             count: photos.length.toString(),
             color: Colors.purple),
         _buildStatCard(
-            title: 'Locations',
+            title: numLocations == 1 ? 'Location' : 'Locations',
             count: numLocations.toString(),
             color: Colors.lightBlue),
-        _buildStatCard(title: 'Favourites', count: '0', color: Colors.green),
+        _buildStatCard(
+            title: numFavourites == 1 ? 'Favourite' : 'Favourites',
+            count: numFavourites.toString(),
+            color: Colors.green),
       ],
     );
   }
