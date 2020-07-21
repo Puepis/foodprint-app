@@ -53,7 +53,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
           : double.parse(json['rating'].toString()),
       latitude: double.parse(json['geometry']['location']['lat'].toString()),
       longitude: double.parse(json['geometry']['location']['lng'].toString()),
-      types: List<String>.from(json['types'] as List),
+      types: _parseTypesFromPlaceSearches(json['types'] as List),
     );
   }
 
@@ -64,10 +64,25 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
         rating: double.parse(json['restaurant_rating'].toString()),
         latitude: double.parse(json['restaurant_lat'].toString()),
         longitude: double.parse(json['restaurant_lng'].toString()),
-        types: _parseTypes(json['restaurant_types'] as List));
+        types: _parseTypesFromAPI(json['restaurant_types'] as List));
   }
 
-  static List<String> _parseTypes(List types) {
+  static List<String> _parseTypesFromPlaceSearches(List types) {
+    // Only keep one of [bar, bakery, cafe, restaurant]
+    final List<String> result = List<String>.from(types);
+    if (result.contains("bar")) {
+      return ["bar"];
+    }
+    if (result.contains("bakery")) {
+      return ["bakery"];
+    }
+    if (result.contains("cafe")) {
+      return ["cafe"];
+    }
+    return ["restaurant"];
+  }
+
+  static List<String> _parseTypesFromAPI(List types) {
     return types.map((e) => e['type'] as String).toList();
   }
 }

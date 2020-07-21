@@ -1,36 +1,25 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:foodprint/domain/core/value_transformers.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/display_models/summary_model.dart';
 
 class SummarySection extends StatelessWidget {
-  final FoodprintEntity foodprint;
-  const SummarySection({Key key, @required this.foodprint}) : super(key: key);
-
-  int get numLocations => foodprint.restaurantPhotos.keys.length;
-  int get numFavourites => foodprint.restaurantPhotos.values.fold(
-      0, (prev, photos) => prev + photos.where((p) => p.isFavourite).length);
+  final SummaryModel summary;
+  const SummarySection({Key key, @required this.summary}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
-        getPhotosFromFoodprint(foodprint);
-
     return Row(
       children: [
         _buildStatCard(
-          title: photos.length == 1 ? 'Photo' : 'Photos',
-          count: photos.length.toString(),
+          title: summary.photos.length == 1 ? 'Photo' : 'Photos',
+          count: summary.photos.length.toString(),
         ),
         _buildStatCard(
-          title: numLocations == 1 ? 'Location' : 'Locations',
-          count: numLocations.toString(),
+          title: summary.numLocations == 1 ? 'Location' : 'Locations',
+          count: summary.numLocations.toString(),
         ),
         _buildStatCard(
-          title: numFavourites == 1 ? 'Favourite' : 'Favourites',
-          count: numFavourites.toString(),
+          title: summary.numFavourites == 1 ? 'Favourite' : 'Favourites',
+          count: summary.numFavourites.toString(),
         ),
       ],
     );

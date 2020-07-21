@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/presentation/display_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 
@@ -46,7 +47,7 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
                   child: SummarySection(
-                    foodprint: foodprint,
+                    summary: SummaryModel(foodprint),
                   ),
                 ),
               ),

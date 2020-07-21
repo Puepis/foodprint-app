@@ -1,6 +1,6 @@
 export 'about_page.dart';
 export 'app_drawer.dart';
 export 'legal/legal_page.dart';
-export 'profile/profile_page.dart';
+export 'profile/pages/profile_page.dart';
 export 'report_issue_page.dart';
 export 'settings_page.dart';

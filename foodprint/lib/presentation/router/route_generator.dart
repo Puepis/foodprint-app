@@ -3,12 +3,14 @@ import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/legal/legal.dart';
+import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
+import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -30,6 +32,14 @@ class RouteGenerator {
         return SlideUpEnterRoute(newPage: const TermsOfService());
       case PrivacyPolicy.routeName:
         return SlideUpEnterRoute(newPage: const PrivacyPolicy());
+      case SpendingBreakdownPage.routeName:
+        if (args is SpendingBreakdownPageArgs) {
+          return FadeRoute(
+              newPage: SpendingBreakdownPage(
+            spending: args.spending,
+          ));
+        }
+        return _errorRoute();
       case RestaurantPhotos.routeName:
         if (args is RestaurantPhotosArgs) {
           return SlideUpEnterRoute(
