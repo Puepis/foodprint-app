@@ -41,10 +41,20 @@ class SpendingModel extends FoodprintModel {
   }
 
   /// Respective chart colours
-  Color get restaurantColor => const Color(0xff0293ee);
-  Color get bakeryColor => const Color(0xfff8b250);
-  Color get barColor => const Color(0xff845bef);
-  Color get cafeColor => const Color(0xff13d38f);
+  Color get cafeColor => const Color(0xFFFC6C84);
+  Color get barColor => const Color(0xFFFDB876);
+  Color get bakeryColor => const Color(0xFF58D8A1);
+  Color get restaurantColor => const Color(0xFF518FFD);
+  List<Color> get focusColors =>
+      [cafeColor, barColor, bakeryColor, restaurantColor];
+
+  /// Displayed in the breakdown chart
+  Color get hideCafeColor => Colors.red.shade50;
+  Color get hideBarColor => Colors.orange.shade50;
+  Color get hideBakeryColor => Colors.green.shade50;
+  Color get hideRestaurantColor => Colors.blue.shade50;
+  List<Color> get hiddenColors =>
+      [hideCafeColor, hideBarColor, hideBakeryColor, hideRestaurantColor];
 
   /// Retrieves the categorical totals (money spent)
   Map<String, double> get categoryTotals {
@@ -74,7 +84,8 @@ class SpendingModel extends FoodprintModel {
             res.update("restaurant", (value) => value + restaurantTotal);
       }
     }
-    assert(res.values.fold(0, (p, c) => p + c) == totalSpent);
+    assert(res.values.fold(0, (p, c) => p + c).toStringAsFixed(2) ==
+        totalSpent.toStringAsFixed(2));
     return res;
   }
 

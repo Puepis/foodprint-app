@@ -4,7 +4,7 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/display_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 
-/// The chart that is displayed in the profile spending card 
+/// The chart that is displayed in the profile spending card
 class SpendingPieChart extends StatelessWidget {
   final SpendingModel spending;
   const SpendingPieChart({Key key, @required this.spending}) : super(key: key);
@@ -81,19 +81,20 @@ class SpendingPieChart extends StatelessWidget {
             title: '',
             radius: radius,
           );
+
         case 1:
-          return PieChartSectionData(
-            color: spending.bakeryColor,
-            value: percentages["bakery"],
-            radius: radius,
-            title: '',
-          );
-        case 2:
           return PieChartSectionData(
             color: spending.barColor,
             value: percentages["bar"],
             title: '',
             radius: radius,
+          );
+        case 2:
+          return PieChartSectionData(
+            color: spending.bakeryColor,
+            value: percentages["bakery"],
+            radius: radius,
+            title: '',
           );
         case 3:
           return PieChartSectionData(

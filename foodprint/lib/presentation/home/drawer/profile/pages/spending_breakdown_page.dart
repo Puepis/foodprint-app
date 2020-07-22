@@ -45,8 +45,8 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
     // The current category to display
     final String category = widget.spending.displaySections[_index];
 
-    // Color on the pie chart
-    final Color color = widget.spending.categoryColors[category];
+    // Color that has focus in the pie chart
+    final Color focusColor = widget.spending.focusColors[_index];
 
     final String title = widget.spending.displayTitles[_index];
 
@@ -56,6 +56,10 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
     // Percentage of total to display, rounded to 2 decimal places
     final String percentage =
         widget.spending.percentages[category].toStringAsFixed(2);
+
+    // Colors to display in the breakdown chart
+    final colors = widget.spending.hiddenColors;
+    colors[_index] = focusColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -67,41 +71,49 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                BreakdownChart(
-                  spending: widget.spending,
-                ),
-                _buildHeader(title, formatter, spent, color, percentage),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () => _index > 0
-                          ? setState(() {
-                              _index -= 1;
-                            })
-                          : null,
-                      child: const Icon(
-                        Icons.chevron_left,
-                        size: 30,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 325,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  _buildHeader(title, formatter, spent, focusColor, percentage),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => _index > 0
+                            ? setState(() {
+                                _index -= 1;
+                              })
+                            : null,
+                        child: const Icon(
+                          Icons.chevron_left,
+                          size: 30,
+                        ),
                       ),
+                      InkWell(
+                        onTap: () => _index < numSections - 1
+                            ? setState(() {
+                                _index += 1;
+                              })
+                            : null,
+                        child: const Icon(
+                          Icons.chevron_right,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: BreakdownChart(
+                      spending: widget.spending,
+                      colors: colors,
                     ),
-                    InkWell(
-                      onTap: () => _index < numSections - 1
-                          ? setState(() {
-                              _index += 1;
-                            })
-                          : null,
-                      child: const Icon(
-                        Icons.chevron_right,
-                        size: 30,
-                      ),
-                    )
-                  ],
-                )
-              ],
+                  ),
+                ],
+              ),
             ),
             BreakdownDetails(
               breakdown: _getBreakdown(),
@@ -117,6 +129,7 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
   Column _buildHeader(String title, NumberFormat formatter, double spent,
       Color color, String percentage) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           title,
@@ -165,16 +178,14 @@ class BreakdownDetails extends StatelessWidget {
         locale: Localizations.localeOf(context).toString());
 
     return Container(
-      decoration: BoxDecoration(
-        color: foodprintPrimaryColorSwatch[50] 
-      ),
+      decoration: BoxDecoration(color: foodprintPrimaryColorSwatch[50]),
       child: Column(
         children: [
           ListTile(
             title: Text(
               '$numRestaurants $type${numRestaurants > 1 ? 's' : ''}',
-              style: const TextStyle(
-                  fontSize: 18.0, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
           ),
           const Divider(
