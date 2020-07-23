@@ -42,15 +42,7 @@ class HomeScreen extends StatelessWidget {
             if (state is FetchFoodprintFailure) {
               return const LoginPage();
             }
-
-            // Update foodprint stored in memory 
-            if (state is FoodprintUpdated) {
-              return InheritedUser(
-                foodprint: state.foodprint,
-                token: token,
-                child: const HomePage(),
-              );
-            }
+            
             if (state is FetchFoodprintSuccess) {
               return InheritedUser(
                 foodprint: state.foodprint,

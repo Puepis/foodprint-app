@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
@@ -66,7 +65,6 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   @override
   Widget build(BuildContext context) {
     final photoBloc = context.bloc<PhotoActionsBloc>();
-    final foodprintBloc = context.bloc<FoodprintBloc>();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
@@ -79,10 +77,6 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         ).show(context);
       }
       if (state is SaveSuccess) {
-        // Refresh home page
-        foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
-            newFoodprint: state.newFoodprint));
-
         // Refresh the app
         context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
       }

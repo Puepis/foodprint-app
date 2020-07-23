@@ -17,47 +17,22 @@ class _$FoodprintEventTearOff {
       token: token,
     );
   }
-
-  LocalFoodprintUpdated localFoodprintUpdated(
-      {@required FoodprintEntity newFoodprint}) {
-    return LocalFoodprintUpdated(
-      newFoodprint: newFoodprint,
-    );
-  }
 }
 
 // ignore: unused_element
 const $FoodprintEvent = _$FoodprintEventTearOff();
 
 mixin _$FoodprintEvent {
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result foodprintRequested(JWT token),
-    @required Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-  });
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result foodprintRequested(JWT token),
-    Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-    @required Result orElse(),
-  });
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result foodprintRequested(FoodprintRequested value),
-    @required Result localFoodprintUpdated(LocalFoodprintUpdated value),
-  });
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result foodprintRequested(FoodprintRequested value),
-    Result localFoodprintUpdated(LocalFoodprintUpdated value),
-    @required Result orElse(),
-  });
+  JWT get token;
+
+  $FoodprintEventCopyWith<FoodprintEvent> get copyWith;
 }
 
 abstract class $FoodprintEventCopyWith<$Res> {
   factory $FoodprintEventCopyWith(
           FoodprintEvent value, $Res Function(FoodprintEvent) then) =
       _$FoodprintEventCopyWithImpl<$Res>;
+  $Res call({JWT token});
 }
 
 class _$FoodprintEventCopyWithImpl<$Res>
@@ -67,12 +42,23 @@ class _$FoodprintEventCopyWithImpl<$Res>
   final FoodprintEvent _value;
   // ignore: unused_field
   final $Res Function(FoodprintEvent) _then;
+
+  @override
+  $Res call({
+    Object token = freezed,
+  }) {
+    return _then(_value.copyWith(
+      token: token == freezed ? _value.token : token as JWT,
+    ));
+  }
 }
 
-abstract class $FoodprintRequestedCopyWith<$Res> {
+abstract class $FoodprintRequestedCopyWith<$Res>
+    implements $FoodprintEventCopyWith<$Res> {
   factory $FoodprintRequestedCopyWith(
           FoodprintRequested value, $Res Function(FoodprintRequested) then) =
       _$FoodprintRequestedCopyWithImpl<$Res>;
+  @override
   $Res call({JWT token});
 }
 
@@ -122,194 +108,16 @@ class _$FoodprintRequested implements FoodprintRequested {
   @override
   $FoodprintRequestedCopyWith<FoodprintRequested> get copyWith =>
       _$FoodprintRequestedCopyWithImpl<FoodprintRequested>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result foodprintRequested(JWT token),
-    @required Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-  }) {
-    assert(foodprintRequested != null);
-    assert(localFoodprintUpdated != null);
-    return foodprintRequested(token);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result foodprintRequested(JWT token),
-    Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (foodprintRequested != null) {
-      return foodprintRequested(token);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result foodprintRequested(FoodprintRequested value),
-    @required Result localFoodprintUpdated(LocalFoodprintUpdated value),
-  }) {
-    assert(foodprintRequested != null);
-    assert(localFoodprintUpdated != null);
-    return foodprintRequested(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result foodprintRequested(FoodprintRequested value),
-    Result localFoodprintUpdated(LocalFoodprintUpdated value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (foodprintRequested != null) {
-      return foodprintRequested(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class FoodprintRequested implements FoodprintEvent {
   const factory FoodprintRequested({@required JWT token}) =
       _$FoodprintRequested;
 
+  @override
   JWT get token;
+  @override
   $FoodprintRequestedCopyWith<FoodprintRequested> get copyWith;
-}
-
-abstract class $LocalFoodprintUpdatedCopyWith<$Res> {
-  factory $LocalFoodprintUpdatedCopyWith(LocalFoodprintUpdated value,
-          $Res Function(LocalFoodprintUpdated) then) =
-      _$LocalFoodprintUpdatedCopyWithImpl<$Res>;
-  $Res call({FoodprintEntity newFoodprint});
-
-  $FoodprintEntityCopyWith<$Res> get newFoodprint;
-}
-
-class _$LocalFoodprintUpdatedCopyWithImpl<$Res>
-    extends _$FoodprintEventCopyWithImpl<$Res>
-    implements $LocalFoodprintUpdatedCopyWith<$Res> {
-  _$LocalFoodprintUpdatedCopyWithImpl(
-      LocalFoodprintUpdated _value, $Res Function(LocalFoodprintUpdated) _then)
-      : super(_value, (v) => _then(v as LocalFoodprintUpdated));
-
-  @override
-  LocalFoodprintUpdated get _value => super._value as LocalFoodprintUpdated;
-
-  @override
-  $Res call({
-    Object newFoodprint = freezed,
-  }) {
-    return _then(LocalFoodprintUpdated(
-      newFoodprint: newFoodprint == freezed
-          ? _value.newFoodprint
-          : newFoodprint as FoodprintEntity,
-    ));
-  }
-
-  @override
-  $FoodprintEntityCopyWith<$Res> get newFoodprint {
-    if (_value.newFoodprint == null) {
-      return null;
-    }
-    return $FoodprintEntityCopyWith<$Res>(_value.newFoodprint, (value) {
-      return _then(_value.copyWith(newFoodprint: value));
-    });
-  }
-}
-
-class _$LocalFoodprintUpdated implements LocalFoodprintUpdated {
-  const _$LocalFoodprintUpdated({@required this.newFoodprint})
-      : assert(newFoodprint != null);
-
-  @override
-  final FoodprintEntity newFoodprint;
-
-  @override
-  String toString() {
-    return 'FoodprintEvent.localFoodprintUpdated(newFoodprint: $newFoodprint)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is LocalFoodprintUpdated &&
-            (identical(other.newFoodprint, newFoodprint) ||
-                const DeepCollectionEquality()
-                    .equals(other.newFoodprint, newFoodprint)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newFoodprint);
-
-  @override
-  $LocalFoodprintUpdatedCopyWith<LocalFoodprintUpdated> get copyWith =>
-      _$LocalFoodprintUpdatedCopyWithImpl<LocalFoodprintUpdated>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result foodprintRequested(JWT token),
-    @required Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-  }) {
-    assert(foodprintRequested != null);
-    assert(localFoodprintUpdated != null);
-    return localFoodprintUpdated(newFoodprint);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result foodprintRequested(JWT token),
-    Result localFoodprintUpdated(FoodprintEntity newFoodprint),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (localFoodprintUpdated != null) {
-      return localFoodprintUpdated(newFoodprint);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result foodprintRequested(FoodprintRequested value),
-    @required Result localFoodprintUpdated(LocalFoodprintUpdated value),
-  }) {
-    assert(foodprintRequested != null);
-    assert(localFoodprintUpdated != null);
-    return localFoodprintUpdated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result foodprintRequested(FoodprintRequested value),
-    Result localFoodprintUpdated(LocalFoodprintUpdated value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (localFoodprintUpdated != null) {
-      return localFoodprintUpdated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class LocalFoodprintUpdated implements FoodprintEvent {
-  const factory LocalFoodprintUpdated(
-      {@required FoodprintEntity newFoodprint}) = _$LocalFoodprintUpdated;
-
-  FoodprintEntity get newFoodprint;
-  $LocalFoodprintUpdatedCopyWith<LocalFoodprintUpdated> get copyWith;
 }
 
 class _$FoodprintStateTearOff {
@@ -335,12 +143,6 @@ class _$FoodprintStateTearOff {
       failure,
     );
   }
-
-  FoodprintUpdated foodprintUpdated({@required FoodprintEntity foodprint}) {
-    return FoodprintUpdated(
-      foodprint: foodprint,
-    );
-  }
 }
 
 // ignore: unused_element
@@ -353,7 +155,6 @@ mixin _$FoodprintState {
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -361,7 +162,6 @@ mixin _$FoodprintState {
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -370,7 +170,6 @@ mixin _$FoodprintState {
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -378,7 +177,6 @@ mixin _$FoodprintState {
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
     @required Result orElse(),
   });
 }
@@ -438,13 +236,11 @@ class _$FoodprintStateInitial implements FoodprintStateInitial {
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return initial();
   }
 
@@ -455,7 +251,6 @@ class _$FoodprintStateInitial implements FoodprintStateInitial {
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -472,13 +267,11 @@ class _$FoodprintStateInitial implements FoodprintStateInitial {
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return initial(this);
   }
 
@@ -489,7 +282,6 @@ class _$FoodprintStateInitial implements FoodprintStateInitial {
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -542,13 +334,11 @@ class _$InProgress implements InProgress {
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return inProgress();
   }
 
@@ -559,7 +349,6 @@ class _$InProgress implements InProgress {
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -576,13 +365,11 @@ class _$InProgress implements InProgress {
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return inProgress(this);
   }
 
@@ -593,7 +380,6 @@ class _$InProgress implements InProgress {
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -686,13 +472,11 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return fetchFoodprintSuccess(foodprint);
   }
 
@@ -703,7 +487,6 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -720,13 +503,11 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return fetchFoodprintSuccess(this);
   }
 
@@ -737,7 +518,6 @@ class _$FetchFoodprintSuccess implements FetchFoodprintSuccess {
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -830,13 +610,11 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
     @required Result inProgress(),
     @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return fetchFoodprintFailure(failure);
   }
 
@@ -847,7 +625,6 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
     Result inProgress(),
     Result fetchFoodprintSuccess(FoodprintEntity foodprint),
     Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -864,13 +641,11 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
     @required Result inProgress(InProgress value),
     @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
   }) {
     assert(initial != null);
     assert(inProgress != null);
     assert(fetchFoodprintSuccess != null);
     assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
     return fetchFoodprintFailure(this);
   }
 
@@ -881,7 +656,6 @@ class _$FetchFoodprintFailure implements FetchFoodprintFailure {
     Result inProgress(InProgress value),
     Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
     Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -898,151 +672,4 @@ abstract class FetchFoodprintFailure implements FoodprintState {
 
   FoodprintFailure get failure;
   $FetchFoodprintFailureCopyWith<FetchFoodprintFailure> get copyWith;
-}
-
-abstract class $FoodprintUpdatedCopyWith<$Res> {
-  factory $FoodprintUpdatedCopyWith(
-          FoodprintUpdated value, $Res Function(FoodprintUpdated) then) =
-      _$FoodprintUpdatedCopyWithImpl<$Res>;
-  $Res call({FoodprintEntity foodprint});
-
-  $FoodprintEntityCopyWith<$Res> get foodprint;
-}
-
-class _$FoodprintUpdatedCopyWithImpl<$Res>
-    extends _$FoodprintStateCopyWithImpl<$Res>
-    implements $FoodprintUpdatedCopyWith<$Res> {
-  _$FoodprintUpdatedCopyWithImpl(
-      FoodprintUpdated _value, $Res Function(FoodprintUpdated) _then)
-      : super(_value, (v) => _then(v as FoodprintUpdated));
-
-  @override
-  FoodprintUpdated get _value => super._value as FoodprintUpdated;
-
-  @override
-  $Res call({
-    Object foodprint = freezed,
-  }) {
-    return _then(FoodprintUpdated(
-      foodprint: foodprint == freezed
-          ? _value.foodprint
-          : foodprint as FoodprintEntity,
-    ));
-  }
-
-  @override
-  $FoodprintEntityCopyWith<$Res> get foodprint {
-    if (_value.foodprint == null) {
-      return null;
-    }
-    return $FoodprintEntityCopyWith<$Res>(_value.foodprint, (value) {
-      return _then(_value.copyWith(foodprint: value));
-    });
-  }
-}
-
-class _$FoodprintUpdated implements FoodprintUpdated {
-  const _$FoodprintUpdated({@required this.foodprint})
-      : assert(foodprint != null);
-
-  @override
-  final FoodprintEntity foodprint;
-
-  @override
-  String toString() {
-    return 'FoodprintState.foodprintUpdated(foodprint: $foodprint)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is FoodprintUpdated &&
-            (identical(other.foodprint, foodprint) ||
-                const DeepCollectionEquality()
-                    .equals(other.foodprint, foodprint)));
-  }
-
-  @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(foodprint);
-
-  @override
-  $FoodprintUpdatedCopyWith<FoodprintUpdated> get copyWith =>
-      _$FoodprintUpdatedCopyWithImpl<FoodprintUpdated>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result initial(),
-    @required Result inProgress(),
-    @required Result fetchFoodprintSuccess(FoodprintEntity foodprint),
-    @required Result fetchFoodprintFailure(FoodprintFailure failure),
-    @required Result foodprintUpdated(FoodprintEntity foodprint),
-  }) {
-    assert(initial != null);
-    assert(inProgress != null);
-    assert(fetchFoodprintSuccess != null);
-    assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
-    return foodprintUpdated(foodprint);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result initial(),
-    Result inProgress(),
-    Result fetchFoodprintSuccess(FoodprintEntity foodprint),
-    Result fetchFoodprintFailure(FoodprintFailure failure),
-    Result foodprintUpdated(FoodprintEntity foodprint),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (foodprintUpdated != null) {
-      return foodprintUpdated(foodprint);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result initial(FoodprintStateInitial value),
-    @required Result inProgress(InProgress value),
-    @required Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
-    @required Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    @required Result foodprintUpdated(FoodprintUpdated value),
-  }) {
-    assert(initial != null);
-    assert(inProgress != null);
-    assert(fetchFoodprintSuccess != null);
-    assert(fetchFoodprintFailure != null);
-    assert(foodprintUpdated != null);
-    return foodprintUpdated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result initial(FoodprintStateInitial value),
-    Result inProgress(InProgress value),
-    Result fetchFoodprintSuccess(FetchFoodprintSuccess value),
-    Result fetchFoodprintFailure(FetchFoodprintFailure value),
-    Result foodprintUpdated(FoodprintUpdated value),
-    @required Result orElse(),
-  }) {
-    assert(orElse != null);
-    if (foodprintUpdated != null) {
-      return foodprintUpdated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FoodprintUpdated implements FoodprintState {
-  const factory FoodprintUpdated({@required FoodprintEntity foodprint}) =
-      _$FoodprintUpdated;
-
-  FoodprintEntity get foodprint;
-  $FoodprintUpdatedCopyWith<FoodprintUpdated> get copyWith;
 }

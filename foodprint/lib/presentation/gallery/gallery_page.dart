@@ -12,7 +12,7 @@ import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.da
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
-/// Displays all of the user's photos 
+/// Displays all of the user's photos
 class Gallery extends StatelessWidget {
   final JWT token;
   const Gallery({Key key, @required this.token}) : super(key: key);
@@ -92,12 +92,13 @@ class Gallery extends StatelessWidget {
                   BlocProvider.value(value: context.bloc<FoodprintBloc>()),
                 ],
                 child: DeleteConfirmationTab(
+                    token: token,
                     photo: photo,
                     restaurant: restaurant,
                     foodprint: foodprint)));
   }
 
-  /// Show the full image 
+  /// Show the full image
   void _showFullImage(BuildContext context, PhotoEntity photo,
       RestaurantEntity restaurant, FoodprintEntity foodprint) {
     Navigator.of(context).push(MaterialPageRoute(

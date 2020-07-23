@@ -14,7 +14,9 @@ part 'foodprint_event.dart';
 part 'foodprint_state.dart';
 part 'foodprint_bloc.freezed.dart';
 
-// Foodprint BLoC
+/// The BLoC that is reponsible for retrieving the user's foodprint (data)
+/// 
+/// Maps incoming [FoodprintEvent] to [FoodprintState]
 @injectable
 class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
   final IRemoteFoodprintRepository _remoteClient;
@@ -26,11 +28,7 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
     FoodprintEvent event,
   ) async* {
     yield const FoodprintState.inProgress(); // reset state
-    yield* event.map(foodprintRequested: (e) async* {
-      yield* _mapFoodprintRequestedToState(e.token);
-    }, localFoodprintUpdated: (e) async* {
-      yield FoodprintState.foodprintUpdated(foodprint: e.newFoodprint);
-    });
+    yield* _mapFoodprintRequestedToState(event.token);
   }
 
   Stream<FoodprintState> _mapFoodprintRequestedToState(JWT token) async* {

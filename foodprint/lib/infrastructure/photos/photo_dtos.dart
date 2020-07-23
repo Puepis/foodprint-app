@@ -50,7 +50,7 @@ abstract class PhotoDTO implements _$PhotoDTO {
       url: json['url'].toString(),
       timestamp: parseTimestamp(json['time_taken'].toString()), 
       photoDetail: PhotoDetailDTO.fromJSON(json),
-      isFavourite: json['favourite'] == 'true'
+      isFavourite: json['favourite'].toString().contains('t') 
     );
   }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
@@ -11,6 +10,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The form used to edit the details of [photo]
 class EditImageForm extends StatefulWidget {
   final JWT token;
   final PhotoEntity photo;
@@ -68,7 +68,6 @@ class _EditImageFormState extends State<EditImageForm> {
   @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
-    final FoodprintBloc foodprintBloc = context.bloc<FoodprintBloc>();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
@@ -80,11 +79,7 @@ class _EditImageFormState extends State<EditImageForm> {
               serverError: (_) => 'Server Error'),
         ).show(context);
       }
-      // Update local foodprint
       if (state is EditSuccess) {
-        foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
-            newFoodprint: state.newFoodprint));
-
         // Refresh the app
         context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
       }
@@ -120,7 +115,7 @@ class _EditImageFormState extends State<EditImageForm> {
                   ],
                 )),
             const SizedBox(
-              height: 20,
+              height: 30,
             ),
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),
