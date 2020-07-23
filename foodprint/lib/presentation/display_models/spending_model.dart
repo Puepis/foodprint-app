@@ -53,8 +53,17 @@ class SpendingModel extends FoodprintModel {
   Color get hideBarColor => Colors.orange.shade50;
   Color get hideBakeryColor => Colors.green.shade50;
   Color get hideRestaurantColor => Colors.blue.shade50;
-  List<Color> get hiddenColors =>
-      [hideCafeColor, hideBarColor, hideBakeryColor, hideRestaurantColor];
+  List<Color> get displayHiddenColors {
+    final List<Color> result = [];
+    for (final category in displaySections) {
+      final int index = categories.indexOf(category);
+      result.add(hiddenColors[index]);
+    }
+    return result;
+  }
+
+   List<Color> get hiddenColors =>
+       [hideCafeColor, hideBarColor, hideBakeryColor, hideRestaurantColor];
 
   /// Retrieves the categorical totals (money spent)
   Map<String, double> get categoryTotals {

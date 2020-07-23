@@ -46,7 +46,7 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
     final String category = widget.spending.displaySections[_index];
 
     // Color that has focus in the pie chart
-    final Color focusColor = widget.spending.focusColors[_index];
+    final Color focusColor = widget.spending.categoryColors[category];
 
     final String title = widget.spending.displayTitles[_index];
 
@@ -58,7 +58,8 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
         widget.spending.percentages[category].toStringAsFixed(2);
 
     // Colors to display in the breakdown chart
-    final colors = widget.spending.hiddenColors;
+    final colors = widget.spending.displayHiddenColors;
+    print(colors);
     colors[_index] = focusColor;
 
     return Scaffold(
