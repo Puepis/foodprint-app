@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 import 'package:foodprint/presentation/router/settings_page_args.dart';
 
+/// Displays the user's stats in a visually appealing and organized manner.
 class ProfilePage extends StatelessWidget {
   static const String routeName = "/profile";
   final JWT token;

@@ -12,7 +12,7 @@ import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.da
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
-// Displays all the photos
+/// Displays all of the user's photos 
 class Gallery extends StatelessWidget {
   final JWT token;
   const Gallery({Key key, @required this.token}) : super(key: key);
@@ -77,7 +77,7 @@ class Gallery extends StatelessWidget {
     );
   }
 
-  // Show delete confirmation dialog
+  /// Show delete confirmation dialog
   void _onDeletePressed(BuildContext context, PhotoEntity photo,
       RestaurantEntity restaurant, FoodprintEntity foodprint) {
     showModalBottomSheet(
@@ -97,6 +97,7 @@ class Gallery extends StatelessWidget {
                     foodprint: foodprint)));
   }
 
+  /// Show the full image 
   void _showFullImage(BuildContext context, PhotoEntity photo,
       RestaurantEntity restaurant, FoodprintEntity foodprint) {
     Navigator.of(context).push(MaterialPageRoute(

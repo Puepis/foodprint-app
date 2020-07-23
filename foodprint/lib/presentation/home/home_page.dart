@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
         child: MultiBlocProvider(providers: [
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
-        ], child: const Camera()),
+        ], child: const FoodprintCapture()),
       ),
     )));
   }

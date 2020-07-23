@@ -12,13 +12,13 @@ import 'package:image_picker/image_picker.dart';
 ///
 /// The [image_picker] library is used to take a photo. Once the photo is
 /// captured, it is displayed in the [DisplayPhoto] widget.
-class Camera extends StatefulWidget {
-  const Camera({Key key}) : super(key: key);
+class FoodprintCapture extends StatefulWidget {
+  const FoodprintCapture({Key key}) : super(key: key);
   @override
-  _CameraState createState() => _CameraState();
+  _FoodprintCaptureState createState() => _FoodprintCaptureState();
 }
 
-class _CameraState extends State<Camera> {
+class _FoodprintCaptureState extends State<FoodprintCapture> {
   File _imageFile;
   FileImage loadedImage;
 

@@ -13,6 +13,7 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The form that users fill out which describes the photo that they have taken.
 class SaveDetailsForm extends StatefulWidget {
   final JWT token;
   final RestaurantEntity restaurant;

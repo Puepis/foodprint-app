@@ -12,6 +12,7 @@ import 'package:foodprint/presentation/gallery/edit/edit_image_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 
+/// Displays the photo's details
 class PhotoInfoSheet extends StatelessWidget {
   const PhotoInfoSheet({
     Key key,
