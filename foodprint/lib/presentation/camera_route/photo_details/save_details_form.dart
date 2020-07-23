@@ -202,8 +202,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       // Get user id
-                      final UserID id = UserID(JWT.getDecodedPayload(
-                          widget.token.getOrCrash())['sub'] as int);
+                      final id = UserID(int.parse(JWT
+                          .getDecodedPayload(widget.token.getOrCrash())['sub']
+                          .toString()));
 
                       // Save fields
                       _formKey.currentState.save();

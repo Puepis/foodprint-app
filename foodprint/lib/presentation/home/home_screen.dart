@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => getIt<LocationBloc>(),
+            create: (context) => getIt<LocationBloc>()..add(LocationRequested()),
           ),
           BlocProvider<FoodprintBloc>(
               create: (context) => getIt<FoodprintBloc>()

@@ -23,14 +23,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
-  /// Called when the widget is changed (when image is saved/edited/deleted)
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh the location
-    context.bloc<LocationBloc>().add(LocationRequested());
-  }
-
   @override
   Widget build(BuildContext context) {
     final foodprint = InheritedUser.of(context).foodprint;
