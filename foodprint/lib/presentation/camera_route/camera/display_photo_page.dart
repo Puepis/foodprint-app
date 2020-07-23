@@ -6,6 +6,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
     hide SearchStateError;
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 
@@ -58,12 +59,12 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
           return Stack(children: [
             Positioned(
                 top: 30,
-                left: 10,
+                left: 5,
                 child: IconButton(
                   iconSize: 50.0,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.cancel,
-                    color: Colors.red,
+                    color: Colors.red.shade400,
                   ),
                   onPressed: () async {
                     final bool pop = await _willCancel();
@@ -97,7 +98,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: Colors.white,
+                  backgroundColor: foodprintPrimaryColorSwatch[50],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(
@@ -126,10 +127,10 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                                 borderRadius: BorderRadius.circular(30.0)),
                             color: Colors.black87,
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text(
+                            child: Text(
                               "Confirm",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: foodprintPrimaryColorSwatch[50],
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold),
                             ),

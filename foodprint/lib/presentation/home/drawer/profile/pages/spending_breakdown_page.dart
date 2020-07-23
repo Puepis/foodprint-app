@@ -59,7 +59,6 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
 
     // Colors to display in the breakdown chart
     final colors = widget.spending.displayHiddenColors;
-    print(colors);
     colors[_index] = focusColor;
 
     return Scaffold(
