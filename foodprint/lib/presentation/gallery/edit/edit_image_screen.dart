@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -9,11 +10,13 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_form.dart';
 
 class EditImageScreen extends StatefulWidget {
+  final JWT token;
   final FoodprintEntity foodprint;
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
   const EditImageScreen(
       {Key key,
+      @required this.token,
       @required this.photo,
       @required this.foodprint,
       @required this.restaurant})
@@ -23,16 +26,15 @@ class EditImageScreen extends StatefulWidget {
 }
 
 class _EditImageScreenState extends State<EditImageScreen> {
-
   Color get backgroundColor => foodprintPrimaryColorSwatch[50];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor,
         appBar: AppBar(
-         elevation: 0.0, 
-         backgroundColor: backgroundColor,
+          elevation: 0.0,
+          backgroundColor: backgroundColor,
         ),
         body: Container(
             padding: const EdgeInsets.all(20),
@@ -56,6 +58,7 @@ class _EditImageScreenState extends State<EditImageScreen> {
                       height: 40,
                     ),
                     EditImageForm(
+                        token: widget.token,
                         foodprint: widget.foodprint,
                         photo: widget.photo,
                         restaurant: widget.restaurant),

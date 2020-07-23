@@ -20,8 +20,8 @@ class MonthlyVisitsCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
+          children: const [
+            Text(
               "Monthly Visits",
               style: TextStyle(
                 color: Colors.black,
@@ -29,7 +29,7 @@ class MonthlyVisitsCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const MonthlyVisitsChart(),
+            MonthlyVisitsChart(),
           ],
         ),
       ),

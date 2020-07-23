@@ -2,19 +2,23 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 class EditImageForm extends StatefulWidget {
+  final JWT token;
   final PhotoEntity photo;
   final FoodprintEntity foodprint;
   final RestaurantEntity restaurant;
   const EditImageForm(
       {Key key,
+      @required this.token,
       @required this.photo,
       @required this.foodprint,
       @required this.restaurant})
@@ -81,8 +85,8 @@ class _EditImageFormState extends State<EditImageForm> {
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
 
-        int count = 0;
-        Navigator.popUntil(context, (route) => count++ == 3);
+        // Refresh the app
+        context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
       }
     }, builder: (context, state) {
       return Form(

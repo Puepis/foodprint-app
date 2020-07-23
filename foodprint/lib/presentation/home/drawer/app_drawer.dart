@@ -10,6 +10,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
+import 'package:foodprint/presentation/router/settings_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -20,6 +21,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Drawer(
@@ -46,7 +48,8 @@ class AppDrawer extends StatelessWidget {
                       text: 'Settings',
                       onTap: () {
                         Navigator.popAndPushNamed(
-                            context, SettingsPage.routeName);
+                            context, SettingsPage.routeName,
+                            arguments: SettingsPageArgs(token: token));
                       }),
                   const Divider(
                     thickness: 1.0,

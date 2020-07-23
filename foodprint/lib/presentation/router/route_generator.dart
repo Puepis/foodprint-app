@@ -5,12 +5,16 @@ import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/legal/legal.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
+import 'package:foodprint/presentation/home/settings/change_password_page.dart';
+import 'package:foodprint/presentation/home/settings/change_username_page.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
+import 'package:foodprint/presentation/router/settings_page_args.dart';
 import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
+import 'package:foodprint/presentation/router/update_account_args.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -57,6 +61,27 @@ class RouteGenerator {
         if (args is HomeScreenArgs) {
           return FadeRoute(
               newPage: HomeScreen(
+            token: args.token,
+          ));
+        }
+        return _errorRoute();
+      case SettingsPage.routeName:
+        if (args is SettingsPageArgs) {
+          return FadeRoute(newPage: SettingsPage(token: args.token));
+        }
+        return _errorRoute();
+      case ChangeUsernamePage.routeName:
+        if (args is ChangeUsernameArgs) {
+          return FadeRoute(
+              newPage: ChangeUsernamePage(
+            token: args.token,
+          ));
+        }
+        return _errorRoute();
+      case ChangePasswordPage.routeName:
+        if (args is ChangePasswordArgs) {
+          return FadeRoute(
+              newPage: ChangePasswordPage(
             token: args.token,
           ));
         }

@@ -25,6 +25,12 @@ class _$AuthEventTearOff {
   LoggedOut loggedOut() {
     return const LoggedOut();
   }
+
+  RefreshAccount refreshAccount({@required JWT token}) {
+    return RefreshAccount(
+      token: token,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -36,12 +42,14 @@ mixin _$AuthEvent {
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
     @required Result loggedOut(),
+    @required Result refreshAccount(JWT token),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result authCheckStarted(),
     Result loggedIn(JWT token),
     Result loggedOut(),
+    Result refreshAccount(JWT token),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -49,12 +57,14 @@ mixin _$AuthEvent {
     @required Result authCheckStarted(AuthCheckStarted value),
     @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
+    @required Result refreshAccount(RefreshAccount value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result authCheckStarted(AuthCheckStarted value),
     Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
+    Result refreshAccount(RefreshAccount value),
     @required Result orElse(),
   });
 }
@@ -110,10 +120,12 @@ class _$AuthCheckStarted implements AuthCheckStarted {
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
     @required Result loggedOut(),
+    @required Result refreshAccount(JWT token),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return authCheckStarted();
   }
 
@@ -123,6 +135,7 @@ class _$AuthCheckStarted implements AuthCheckStarted {
     Result authCheckStarted(),
     Result loggedIn(JWT token),
     Result loggedOut(),
+    Result refreshAccount(JWT token),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -138,10 +151,12 @@ class _$AuthCheckStarted implements AuthCheckStarted {
     @required Result authCheckStarted(AuthCheckStarted value),
     @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
+    @required Result refreshAccount(RefreshAccount value),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return authCheckStarted(this);
   }
 
@@ -151,6 +166,7 @@ class _$AuthCheckStarted implements AuthCheckStarted {
     Result authCheckStarted(AuthCheckStarted value),
     Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
+    Result refreshAccount(RefreshAccount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -222,10 +238,12 @@ class _$LoggedIn implements LoggedIn {
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
     @required Result loggedOut(),
+    @required Result refreshAccount(JWT token),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return loggedIn(token);
   }
 
@@ -235,6 +253,7 @@ class _$LoggedIn implements LoggedIn {
     Result authCheckStarted(),
     Result loggedIn(JWT token),
     Result loggedOut(),
+    Result refreshAccount(JWT token),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -250,10 +269,12 @@ class _$LoggedIn implements LoggedIn {
     @required Result authCheckStarted(AuthCheckStarted value),
     @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
+    @required Result refreshAccount(RefreshAccount value),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return loggedIn(this);
   }
 
@@ -263,6 +284,7 @@ class _$LoggedIn implements LoggedIn {
     Result authCheckStarted(AuthCheckStarted value),
     Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
+    Result refreshAccount(RefreshAccount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -316,10 +338,12 @@ class _$LoggedOut implements LoggedOut {
     @required Result authCheckStarted(),
     @required Result loggedIn(JWT token),
     @required Result loggedOut(),
+    @required Result refreshAccount(JWT token),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return loggedOut();
   }
 
@@ -329,6 +353,7 @@ class _$LoggedOut implements LoggedOut {
     Result authCheckStarted(),
     Result loggedIn(JWT token),
     Result loggedOut(),
+    Result refreshAccount(JWT token),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -344,10 +369,12 @@ class _$LoggedOut implements LoggedOut {
     @required Result authCheckStarted(AuthCheckStarted value),
     @required Result loggedIn(LoggedIn value),
     @required Result loggedOut(LoggedOut value),
+    @required Result refreshAccount(RefreshAccount value),
   }) {
     assert(authCheckStarted != null);
     assert(loggedIn != null);
     assert(loggedOut != null);
+    assert(refreshAccount != null);
     return loggedOut(this);
   }
 
@@ -357,6 +384,7 @@ class _$LoggedOut implements LoggedOut {
     Result authCheckStarted(AuthCheckStarted value),
     Result loggedIn(LoggedIn value),
     Result loggedOut(LoggedOut value),
+    Result refreshAccount(RefreshAccount value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -369,6 +397,129 @@ class _$LoggedOut implements LoggedOut {
 
 abstract class LoggedOut implements AuthEvent {
   const factory LoggedOut() = _$LoggedOut;
+}
+
+abstract class $RefreshAccountCopyWith<$Res> {
+  factory $RefreshAccountCopyWith(
+          RefreshAccount value, $Res Function(RefreshAccount) then) =
+      _$RefreshAccountCopyWithImpl<$Res>;
+  $Res call({JWT token});
+}
+
+class _$RefreshAccountCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $RefreshAccountCopyWith<$Res> {
+  _$RefreshAccountCopyWithImpl(
+      RefreshAccount _value, $Res Function(RefreshAccount) _then)
+      : super(_value, (v) => _then(v as RefreshAccount));
+
+  @override
+  RefreshAccount get _value => super._value as RefreshAccount;
+
+  @override
+  $Res call({
+    Object token = freezed,
+  }) {
+    return _then(RefreshAccount(
+      token: token == freezed ? _value.token : token as JWT,
+    ));
+  }
+}
+
+class _$RefreshAccount implements RefreshAccount {
+  const _$RefreshAccount({@required this.token}) : assert(token != null);
+
+  @override
+  final JWT token;
+
+  @override
+  String toString() {
+    return 'AuthEvent.refreshAccount(token: $token)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is RefreshAccount &&
+            (identical(other.token, token) ||
+                const DeepCollectionEquality().equals(other.token, token)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(token);
+
+  @override
+  $RefreshAccountCopyWith<RefreshAccount> get copyWith =>
+      _$RefreshAccountCopyWithImpl<RefreshAccount>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result authCheckStarted(),
+    @required Result loggedIn(JWT token),
+    @required Result loggedOut(),
+    @required Result refreshAccount(JWT token),
+  }) {
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
+    assert(loggedOut != null);
+    assert(refreshAccount != null);
+    return refreshAccount(token);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result authCheckStarted(),
+    Result loggedIn(JWT token),
+    Result loggedOut(),
+    Result refreshAccount(JWT token),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (refreshAccount != null) {
+      return refreshAccount(token);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result authCheckStarted(AuthCheckStarted value),
+    @required Result loggedIn(LoggedIn value),
+    @required Result loggedOut(LoggedOut value),
+    @required Result refreshAccount(RefreshAccount value),
+  }) {
+    assert(authCheckStarted != null);
+    assert(loggedIn != null);
+    assert(loggedOut != null);
+    assert(refreshAccount != null);
+    return refreshAccount(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result authCheckStarted(AuthCheckStarted value),
+    Result loggedIn(LoggedIn value),
+    Result loggedOut(LoggedOut value),
+    Result refreshAccount(RefreshAccount value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (refreshAccount != null) {
+      return refreshAccount(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RefreshAccount implements AuthEvent {
+  const factory RefreshAccount({@required JWT token}) = _$RefreshAccount;
+
+  JWT get token;
+  $RefreshAccountCopyWith<RefreshAccount> get copyWith;
 }
 
 class _$AuthStateTearOff {
@@ -387,6 +538,10 @@ class _$AuthStateTearOff {
   Unauthenticated unauthenticated() {
     return const Unauthenticated();
   }
+
+  Loading loading() {
+    return const Loading();
+  }
 }
 
 // ignore: unused_element
@@ -398,12 +553,14 @@ mixin _$AuthState {
     @required Result initial(),
     @required Result authenticated(JWT token),
     @required Result unauthenticated(),
+    @required Result loading(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
     Result authenticated(JWT token),
     Result unauthenticated(),
+    Result loading(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -411,12 +568,14 @@ mixin _$AuthState {
     @required Result initial(Initial value),
     @required Result authenticated(Authenticated value),
     @required Result unauthenticated(Unauthenticated value),
+    @required Result loading(Loading value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result initial(Initial value),
     Result authenticated(Authenticated value),
     Result unauthenticated(Unauthenticated value),
+    Result loading(Loading value),
     @required Result orElse(),
   });
 }
@@ -470,10 +629,12 @@ class _$Initial implements Initial {
     @required Result initial(),
     @required Result authenticated(JWT token),
     @required Result unauthenticated(),
+    @required Result loading(),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return initial();
   }
 
@@ -483,6 +644,7 @@ class _$Initial implements Initial {
     Result initial(),
     Result authenticated(JWT token),
     Result unauthenticated(),
+    Result loading(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -498,10 +660,12 @@ class _$Initial implements Initial {
     @required Result initial(Initial value),
     @required Result authenticated(Authenticated value),
     @required Result unauthenticated(Unauthenticated value),
+    @required Result loading(Loading value),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return initial(this);
   }
 
@@ -511,6 +675,7 @@ class _$Initial implements Initial {
     Result initial(Initial value),
     Result authenticated(Authenticated value),
     Result unauthenticated(Unauthenticated value),
+    Result loading(Loading value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -584,10 +749,12 @@ class _$Authenticated implements Authenticated {
     @required Result initial(),
     @required Result authenticated(JWT token),
     @required Result unauthenticated(),
+    @required Result loading(),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return authenticated(token);
   }
 
@@ -597,6 +764,7 @@ class _$Authenticated implements Authenticated {
     Result initial(),
     Result authenticated(JWT token),
     Result unauthenticated(),
+    Result loading(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -612,10 +780,12 @@ class _$Authenticated implements Authenticated {
     @required Result initial(Initial value),
     @required Result authenticated(Authenticated value),
     @required Result unauthenticated(Unauthenticated value),
+    @required Result loading(Loading value),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return authenticated(this);
   }
 
@@ -625,6 +795,7 @@ class _$Authenticated implements Authenticated {
     Result initial(Initial value),
     Result authenticated(Authenticated value),
     Result unauthenticated(Unauthenticated value),
+    Result loading(Loading value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -680,10 +851,12 @@ class _$Unauthenticated implements Unauthenticated {
     @required Result initial(),
     @required Result authenticated(JWT token),
     @required Result unauthenticated(),
+    @required Result loading(),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return unauthenticated();
   }
 
@@ -693,6 +866,7 @@ class _$Unauthenticated implements Unauthenticated {
     Result initial(),
     Result authenticated(JWT token),
     Result unauthenticated(),
+    Result loading(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -708,10 +882,12 @@ class _$Unauthenticated implements Unauthenticated {
     @required Result initial(Initial value),
     @required Result authenticated(Authenticated value),
     @required Result unauthenticated(Unauthenticated value),
+    @required Result loading(Loading value),
   }) {
     assert(initial != null);
     assert(authenticated != null);
     assert(unauthenticated != null);
+    assert(loading != null);
     return unauthenticated(this);
   }
 
@@ -721,6 +897,7 @@ class _$Unauthenticated implements Unauthenticated {
     Result initial(Initial value),
     Result authenticated(Authenticated value),
     Result unauthenticated(Unauthenticated value),
+    Result loading(Loading value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -733,4 +910,101 @@ class _$Unauthenticated implements Unauthenticated {
 
 abstract class Unauthenticated implements AuthState {
   const factory Unauthenticated() = _$Unauthenticated;
+}
+
+abstract class $LoadingCopyWith<$Res> {
+  factory $LoadingCopyWith(Loading value, $Res Function(Loading) then) =
+      _$LoadingCopyWithImpl<$Res>;
+}
+
+class _$LoadingCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
+    implements $LoadingCopyWith<$Res> {
+  _$LoadingCopyWithImpl(Loading _value, $Res Function(Loading) _then)
+      : super(_value, (v) => _then(v as Loading));
+
+  @override
+  Loading get _value => super._value as Loading;
+}
+
+class _$Loading implements Loading {
+  const _$Loading();
+
+  @override
+  String toString() {
+    return 'AuthState.loading()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is Loading);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result initial(),
+    @required Result authenticated(JWT token),
+    @required Result unauthenticated(),
+    @required Result loading(),
+  }) {
+    assert(initial != null);
+    assert(authenticated != null);
+    assert(unauthenticated != null);
+    assert(loading != null);
+    return loading();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result initial(),
+    Result authenticated(JWT token),
+    Result unauthenticated(),
+    Result loading(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (loading != null) {
+      return loading();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result initial(Initial value),
+    @required Result authenticated(Authenticated value),
+    @required Result unauthenticated(Unauthenticated value),
+    @required Result loading(Loading value),
+  }) {
+    assert(initial != null);
+    assert(authenticated != null);
+    assert(unauthenticated != null);
+    assert(loading != null);
+    return loading(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result initial(Initial value),
+    Result authenticated(Authenticated value),
+    Result unauthenticated(Unauthenticated value),
+    Result loading(Loading value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (loading != null) {
+      return loading(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Loading implements AuthState {
+  const factory Loading() = _$Loading;
 }

@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/image/photo_info_sheet.dart';
 
 class FullImage extends StatelessWidget {
+  final JWT token;
   final FoodprintEntity foodprint;
   final RestaurantEntity restaurant;
   final PhotoEntity photo;
   const FullImage({
     Key key,
+    @required this.token,
     @required this.restaurant,
     @required this.photo,
     @required this.foodprint,
@@ -39,6 +42,7 @@ class FullImage extends StatelessWidget {
                         BlocProvider.value(value: context.bloc<FoodprintBloc>())
                       ],
                       child: PhotoInfoSheet(
+                        token: token,
                         photo: photo,
                         restaurant: restaurant,
                         foodprint: foodprint,

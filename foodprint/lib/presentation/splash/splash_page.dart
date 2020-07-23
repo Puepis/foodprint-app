@@ -20,6 +20,7 @@ class SplashPage extends StatelessWidget {
           listener: (cxt, state) {
             state.map(
                 initial: (_) {},
+                loading: (_) {},
 
                 // Logged in
                 authenticated: (result) {

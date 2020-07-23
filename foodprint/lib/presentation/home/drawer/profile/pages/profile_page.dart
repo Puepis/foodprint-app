@@ -5,6 +5,7 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/display_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
+import 'package:foodprint/presentation/router/settings_page_args.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String routeName = "/profile";
@@ -25,8 +26,9 @@ class ProfilePage extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: () =>
-                  Navigator.pushNamed(context, SettingsPage.routeName),
+              onPressed: () => Navigator.pushNamed(
+                  context, SettingsPage.routeName,
+                  arguments: SettingsPageArgs(token: token)),
             )
           ],
         ),

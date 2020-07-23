@@ -21,21 +21,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-   yield* event.map(
-      authCheckStarted: (e) async* {
-        final Option<JWT> result = await _authClient.getUserToken();
-        yield result.fold(
-          () => const AuthState.unauthenticated(), 
-          (token) => AuthState.authenticated(token: token) 
-        );
-      },
-      loggedIn: (e) async* {
-        yield AuthState.authenticated(token: e.token);
-      },
-      loggedOut: (e) async* {
-        await _authClient.logout();
-        yield const AuthState.unauthenticated(); // user logged out
-      },
-    ); 
+    yield* event.map(authCheckStarted: (e) async* {
+      final Option<JWT> result = await _authClient.getUserToken();
+      yield result.fold(() => const AuthState.unauthenticated(),
+          (token) => AuthState.authenticated(token: token));
+    }, loggedIn: (e) async* {
+      yield const AuthState.loading();
+      yield AuthState.authenticated(token: e.token);
+    }, loggedOut: (e) async* {
+      await _authClient.logout();
+      yield const AuthState.unauthenticated(); // user logged out
+    }, refreshAccount: (e) async* {
+      yield const AuthState.loading();
+      await _authClient.replaceToken(newToken: e.token);
+      yield AuthState.authenticated(token: e.token);
+    });
   }
 }

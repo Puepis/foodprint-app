@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
             drawer: AppDrawer(token: token, foodprint: foodprint),
             body: _selectedIndex == 0
                 ? Stack(children: [mapScreen, mapMenuButton()])
-                : const Gallery(),
+                : Gallery(token: token,),
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: Container(

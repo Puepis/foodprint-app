@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -14,11 +15,13 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 class PhotoInfoSheet extends StatelessWidget {
   const PhotoInfoSheet({
     Key key,
+    @required this.token,
     @required this.photo,
     @required this.restaurant,
     @required this.foodprint,
   }) : super(key: key);
 
+  final JWT token;
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
   final FoodprintEntity foodprint;
@@ -29,7 +32,6 @@ class PhotoInfoSheet extends StatelessWidget {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
-    // TODO: Use RichText
     return Container(
       decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -118,6 +120,7 @@ class PhotoInfoSheet extends StatelessWidget {
                     )
                   ],
                   child: EditImageScreen(
+                    token: token,
                     restaurant: restaurant,
                     foodprint: foodprint,
                     photo: photo,

@@ -3,6 +3,7 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
@@ -77,12 +78,12 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         ).show(context);
       }
       if (state is SaveSuccess) {
-        int count = 0;
-        Navigator.popUntil(context, (route) => count++ == 3);
-
         // Refresh home page
         foodprintBloc.add(FoodprintEvent.localFoodprintUpdated(
             newFoodprint: state.newFoodprint));
+
+        // Refresh the app
+        context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
       }
     }, builder: (context, state) {
       return Form(

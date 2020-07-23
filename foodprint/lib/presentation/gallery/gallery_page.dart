@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -13,7 +14,8 @@ import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
 // Displays all the photos
 class Gallery extends StatelessWidget {
-  const Gallery({Key key}) : super(key: key);
+  final JWT token;
+  const Gallery({Key key, @required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +109,7 @@ class Gallery extends StatelessWidget {
                   )
                 ],
                 child: FullImage(
+                  token: token,
                   foodprint: foodprint,
                   photo: photo,
                   restaurant: restaurant,

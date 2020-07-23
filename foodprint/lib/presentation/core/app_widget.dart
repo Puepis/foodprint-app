@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
@@ -18,6 +19,9 @@ class FoodprintApp extends StatelessWidget {
 
     return MultiBlocProvider(
         providers: [
+          BlocProvider(
+            create: (context) => getIt<AccountBloc>(),
+          ),
           BlocProvider(
               create: (context) => getIt<AuthBloc>()
                 ..add(const AuthEvent
@@ -48,7 +52,6 @@ class FoodprintApp extends StatelessWidget {
             SplashPage.routeName: (context) => SplashPage(),
             LoginPage.routeName: (context) => const LoginPage(),
             RegisterPage.routeName: (context) => const RegisterPage(),
-            SettingsPage.routeName: (context) => const SettingsPage(),
             AboutPage.routeName: (context) => const AboutPage(),
             ReportIssuePage.routeName: (context) => const ReportIssuePage(),
             LegalPage.routeName: (context) => const LegalPage(),

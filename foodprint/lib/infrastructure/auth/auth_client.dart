@@ -47,9 +47,7 @@ class AuthClient implements IAuthRepository {
         body: {"username": usernameStr, "password": passwordStr});
 
     if (res.statusCode == 200) {
-      final JWT jwt = JWT(
-          token:
-              res.body); // token should be valid but check in case of tampering
+      final JWT jwt = JWT(token: res.body);
 
       if (jwt.isValid()) {
         // Store token
@@ -94,5 +92,10 @@ class AuthClient implements IAuthRepository {
   @override
   Future<void> logout() async {
     await _storageClient.deleteUserToken();
+  }
+
+  @override
+  Future<void> replaceToken({@required JWT newToken}) async {
+    await _storageClient.storeUserToken(newToken);
   }
 }

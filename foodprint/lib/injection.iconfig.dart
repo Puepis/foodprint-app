@@ -5,6 +5,8 @@
 // **************************************************************************
 
 import 'package:foodprint/domain/manual_search/search_cache.dart';
+import 'package:foodprint/infrastructure/account/account_client.dart';
+import 'package:foodprint/domain/account/i_account_repository.dart';
 import 'package:foodprint/infrastructure/auth/auth_client.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/infrastructure/location/device_location_client.dart';
@@ -19,6 +21,7 @@ import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
+import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/infrastructure/photos/remote_photos_client.dart';
@@ -27,6 +30,7 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
+  g.registerLazySingleton<IAccountRepository>(() => AccountClient());
   g.registerLazySingleton<IAuthRepository>(() => AuthClient());
   g.registerLazySingleton<ILocationRepository>(() => DeviceLocationClient());
   g.registerLazySingleton<IRemoteFoodprintRepository>(
@@ -42,6 +46,7 @@ void $initGetIt(GetIt g, {String environment}) {
       () => RegisterFormBloc(g<IAuthRepository>()));
   g.registerFactory<RestaurantSearchBloc>(
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
+  g.registerFactory<AccountBloc>(() => AccountBloc(g<IAccountRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
   g.registerFactory<FoodprintBloc>(
       () => FoodprintBloc(g<IRemoteFoodprintRepository>()));
