@@ -24,7 +24,7 @@ class _FoodMapState extends State<FoodMap> {
   LatLng _initialPos;
   Map<String, Marker> _markers = {};
   bool _showRecenterButton = false;
-  bool _didRecenter = true;
+  bool _wasInitial = true;
   MapType _currentMapType = MapType.normal;
   final double mapZoom = 16.0;
 
@@ -44,14 +44,9 @@ class _FoodMapState extends State<FoodMap> {
           onMapCreated: (controller) => _mapController.complete(controller),
           initialCameraPosition:
               CameraPosition(target: _currentPos, zoom: mapZoom),
-          onCameraIdle: () {
-            // Recentered and finished animating
-            if (!_showRecenterButton && !_didRecenter) {
-              setState(() {
-                _didRecenter = true;
-              });
-            }
-          },
+          onCameraIdle: () => setState(() {
+            _wasInitial = true;
+          }),
           onCameraMove: _onCameraMove,
           markers: Set<Marker>.of(_markers.values),
         ),
@@ -70,7 +65,7 @@ class _FoodMapState extends State<FoodMap> {
                   child: const Icon(Icons.map, size: 32.0),
                 ),
                 const SizedBox(height: 16.0),
-                if (_showRecenterButton && !_didRecenter)
+                if (_showRecenterButton)
                   FloatingActionButton(
                     heroTag: "recenter",
                     backgroundColor: Colors.white,
@@ -89,11 +84,11 @@ class _FoodMapState extends State<FoodMap> {
   void _onCameraMove(CameraPosition position) {
     _currentPos = position.target;
 
-    // Moving away
-    if (!_showRecenterButton && _didRecenter) {
+    // Moving away from initial position
+    if (!_showRecenterButton && !_isInitial(_currentPos) && _wasInitial) {
       setState(() {
+        _wasInitial = false;
         _showRecenterButton = true;
-        _didRecenter = false;
       });
     }
   }
@@ -110,7 +105,8 @@ class _FoodMapState extends State<FoodMap> {
     if (_mapController != null) {
       final GoogleMapController controller = await _mapController.future;
       setState(() {
-        _showRecenterButton = false; // begin recentering
+        _wasInitial = false;
+        _showRecenterButton = false;
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
           zoom: mapZoom,
@@ -141,5 +137,14 @@ class _FoodMapState extends State<FoodMap> {
       result[restaurant.restaurantID.getOrCrash()] = marker;
     });
     return result;
+  }
+
+  bool _isInitial(LatLng pos) {
+    final double latDiff = (pos.latitude - _initialPos.latitude).abs();
+    final double lngDiff = (pos.longitude - _initialPos.longitude).abs();
+    if (latDiff < 0.001 && lngDiff < 0.001) {
+      return true;
+    }
+    return false;
   }
 }

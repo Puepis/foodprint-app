@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -111,8 +110,9 @@ class _UserSectionState extends State<UserSection> {
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: FadeInImage.memoryNetwork(
-                        fadeInDuration: const Duration(milliseconds: 200),
-                          placeholder: kTransparentImage, image: url),
+                          fadeInDuration: const Duration(milliseconds: 200),
+                          placeholder: kTransparentImage,
+                          image: url),
                     ),
                   ),
                 ),
@@ -166,12 +166,12 @@ class _UserSectionState extends State<UserSection> {
       final ImageSource source =
           (result == 0) ? ImageSource.camera : ImageSource.gallery;
 
-      // TODO: Check gallery permission
       final PickedFile image =
           await _picker.getImage(source: source, imageQuality: 70);
 
       if (image != null) {
         final File _imageFile = File(image.path);
+
         context
             .bloc<AccountBloc>()
             .add(AvatarChanged(newAvatarFile: _imageFile, token: widget.token));
