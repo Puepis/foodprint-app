@@ -53,9 +53,8 @@ class AuthClient implements IAuthRepository {
         // Store token
         await _storageClient.storeUserToken(jwt);
         return right(jwt);
-      } else {
-        return left(const LoginFailure.serverError());
       }
+      return left(const LoginFailure.serverError());
     } else if (res.statusCode == 401) {
       return left(const LoginFailure.invalidLoginCombination());
     } else {

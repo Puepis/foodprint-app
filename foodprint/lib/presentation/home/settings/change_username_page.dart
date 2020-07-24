@@ -44,10 +44,10 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
           }
 
           if (state is UsernameChangeSuccess) {
+            // Refresh the app
             context
                 .bloc<AuthBloc>()
                 .add(AuthEvent.refreshAccount(token: state.token));
-            Navigator.pop(context);
           }
         },
         child: Padding(

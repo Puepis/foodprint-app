@@ -19,9 +19,10 @@ abstract class IAccountRepository {
     @required Password newPassword,
   });
 
-  Future<Either<AccountFailure, Unit>> changeAvatar({
+  Future<Either<AccountFailure, JWT>> changeAvatar({
     @required UserID id,
     @required PhotoData data,
+    @required String fileName,
   });
 
   Future<Either<AccountFailure, Unit>> deleteAccount({

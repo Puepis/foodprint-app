@@ -11,6 +11,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path/path.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
@@ -50,14 +51,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final PhotoData photoData = PhotoData(data);
 
     // Get user id
-    final id = UserID(JWT.getDecodedPayload(token.getOrCrash())['sub'] as int);
+    final id = UserID(
+        int.parse(JWT.getDecodedPayload(token.getOrCrash())['sub'].toString()));
+
+    final String fileName = basename(newAvatarFile.path);
 
     // Change avatar
-    final Either<AccountFailure, Unit> result =
-        await _accountClient.changeAvatar(id: id, data: photoData);
+    final Either<AccountFailure, JWT> result = await _accountClient
+        .changeAvatar(id: id, data: photoData, fileName: fileName);
 
-    yield result.fold(
-        (l) => AvatarChangeError(failure: l), (r) => AvatarChangeSuccess());
+    yield result.fold((l) => AvatarChangeError(failure: l),
+        (r) => AvatarChangeSuccess(token: r));
   }
 
   Stream<AccountState> _mapUsernameChangedToState(

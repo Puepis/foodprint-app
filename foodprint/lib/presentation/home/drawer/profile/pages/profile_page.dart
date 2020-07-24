@@ -18,8 +18,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -42,7 +40,7 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
                   child: UserSection(
-                    username: username,
+                    token: token,
                   ),
                 ),
               ),

@@ -14,16 +14,24 @@ import 'package:http/http.dart' as http;
 
 @LazySingleton(as: IAccountRepository)
 class AccountClient implements IAccountRepository {
+  /// Makes a request to the server to change the avatar and handles the reponse
   @override
-  Future<Either<AccountFailure, Unit>> changeAvatar(
-      {@required UserID id, @required PhotoData data}) async {
+  Future<Either<AccountFailure, JWT>> changeAvatar(
+      {@required UserID id,
+      @required PhotoData data,
+      @required String fileName}) async {
     final res = await http.post("$serverIP/api/users/avatar", body: {
       "id": id.getOrCrash().toString(),
-      "data": data.getOrCrash().toString()
+      "avatar_data": data.getOrCrash().toString(),
+      "file_name": fileName
     });
 
     if (res.statusCode == 200) {
-      return right(unit);
+      final JWT token = JWT(token: res.body);
+      if (token.isValid()) {
+        return right(token);
+      }
+      return left(const AccountFailure.serverError());
     } else {
       return left(const AccountFailure.serverError());
     }

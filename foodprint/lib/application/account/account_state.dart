@@ -25,7 +25,18 @@ class UsernameChangeSuccess extends AccountState {
   }
 }
 
-class AvatarChangeSuccess extends AccountState {}
+class AvatarChangeSuccess extends AccountState {
+  final JWT token;
+  const AvatarChangeSuccess({@required this.token});
+
+  @override
+  List<Object> get props => [token];
+
+  @override
+  String toString() {
+    return "Avatar successfully changed";
+  }
+}
 
 class PasswordChangeSuccess extends AccountState {}
 
