@@ -3,6 +3,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class RestaurantPreview extends StatelessWidget {
   final RestaurantEntity restaurant;
@@ -91,10 +92,15 @@ class RestaurantPreview extends StatelessWidget {
   Widget recentPhoto() => Container(
         width: 125,
         margin: const EdgeInsets.only(right: 5.0),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            image: DecorationImage(
-                image: NetworkImage(photos[0].url.getOrCrash()),
-                fit: BoxFit.cover)),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: FadeInImage.memoryNetwork(
+                fadeInDuration: const Duration(milliseconds: 200),
+                placeholder: kTransparentImage,
+                image: photos[0].url.getOrCrash()),
+          ),
+        ),
       );
 }

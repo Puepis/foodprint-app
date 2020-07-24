@@ -11,6 +11,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
@@ -35,8 +36,8 @@ class Gallery extends StatelessWidget {
       itemCount: photos.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+        crossAxisSpacing: 5,
+        mainAxisSpacing: 5,
       ),
       padding: const EdgeInsets.all(10.0),
       itemBuilder: (context, index) {
@@ -47,16 +48,21 @@ class Gallery extends StatelessWidget {
         return Stack(children: [
           GestureDetector(
             onTap: () => _showFullImage(context, photo, restaurant, foodprint),
-            child: Card(
-              elevation: 0.0,
-              clipBehavior: Clip.antiAlias,
-              child: Hero(
-                tag: photo.timestamp.getOrCrash(),
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(photo.url.getOrCrash()),
-                          fit: BoxFit.cover)),
+            child: SizedBox.expand(
+              child: Card(
+                elevation: 0.0,
+                clipBehavior: Clip.antiAlias,
+                child: Hero(
+                  tag: photo.timestamp.getOrCrash(),
+                  child: ClipRRect(
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: FadeInImage.memoryNetwork(
+                        fadeInDuration: const Duration(milliseconds: 200),
+                          placeholder: kTransparentImage,
+                          image: photo.url.getOrCrash()),
+                    ),
+                  ),
                 ),
               ),
             ),

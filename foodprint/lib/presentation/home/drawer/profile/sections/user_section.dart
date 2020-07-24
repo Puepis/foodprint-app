@@ -111,6 +111,7 @@ class _UserSectionState extends State<UserSection> {
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: FadeInImage.memoryNetwork(
+                        fadeInDuration: const Duration(milliseconds: 200),
                           placeholder: kTransparentImage, image: url),
                     ),
                   ),

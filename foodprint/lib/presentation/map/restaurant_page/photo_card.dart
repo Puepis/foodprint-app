@@ -5,6 +5,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 /// Displays the [photo] in the form of a card under the
 /// [PhotoSection] of the [RestaurantPhotos] page
@@ -138,9 +139,12 @@ class DisplayImage extends StatelessWidget {
     return Positioned.fill(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image(
-          image: NetworkImage(photoUrl.getOrCrash()),
+        child: FittedBox(
           fit: BoxFit.cover,
+          child: FadeInImage.memoryNetwork(
+              fadeInDuration: const Duration(milliseconds: 200),
+              placeholder: kTransparentImage,
+              image: photoUrl.getOrCrash()),
         ),
       ),
     );
