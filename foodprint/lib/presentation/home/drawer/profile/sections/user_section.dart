@@ -10,10 +10,10 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-/// Displays the user's avatar and username
+/// Displays the user's avatar and username.
 ///
 /// Here the user can edit their avatar either by taking a picture or selecting
-/// from their device's gallery
+/// from their device's gallery.
 class UserSection extends StatefulWidget {
   final JWT token;
   const UserSection({Key key, @required this.token}) : super(key: key);
