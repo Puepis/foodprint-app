@@ -21,7 +21,6 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     return Drawer(
@@ -37,42 +36,36 @@ class AppDrawer extends StatelessWidget {
                   _createDrawerItem(
                       icon: Icons.person,
                       text: 'Profile',
-                      onTap: () {
-                        Navigator.popAndPushNamed(
-                            context, ProfilePage.routeName,
-                            arguments: ProfilePageArgs(
-                                token: token, foodprint: foodprint));
-                      }),
+                      onTap: () => Navigator.popAndPushNamed(
+                          context, ProfilePage.routeName,
+                          arguments: ProfilePageArgs(
+                              token: token, foodprint: foodprint))),
                   _createDrawerItem(
                       icon: Icons.settings,
                       text: 'Settings',
-                      onTap: () {
-                        Navigator.popAndPushNamed(
-                            context, SettingsPage.routeName,
-                            arguments: SettingsPageArgs(token: token));
-                      }),
+                      onTap: () => Navigator.popAndPushNamed(
+                          context, SettingsPage.routeName,
+                          arguments: SettingsPageArgs(token: token))),
                   const Divider(
                     thickness: 1.0,
                   ),
                   _createDrawerItem(
                       icon: Icons.info,
                       text: 'About',
-                      onTap: () {
-                        Navigator.popAndPushNamed(context, AboutPage.routeName);
-                      }),
+                      onTap: () => Navigator.popAndPushNamed(
+                          context, AboutPage.routeName)),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
-                    onTap: () {},
+                    onTap: () => Navigator.popAndPushNamed(
+                        context, ReportIssuePage.routeName),
                   ),
                   _createDrawerItem(
                       icon: Icons.exit_to_app,
                       text: 'Sign Out',
-                      onTap: () {
-                        context
-                            .bloc<AuthBloc>()
-                            .add(const AuthEvent.loggedOut());
-                      }),
+                      onTap: () => context
+                          .bloc<AuthBloc>()
+                          .add(const AuthEvent.loggedOut())),
                 ],
               ),
             ),
@@ -108,9 +101,7 @@ class AppDrawer extends StatelessWidget {
           ],
         ),
         dense: true,
-        onTap: () {
-          Navigator.pushNamed(context, LegalPage.routeName);
-        },
+        onTap: () => Navigator.pushNamed(context, LegalPage.routeName),
       ),
     );
   }
