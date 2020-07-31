@@ -6,6 +6,8 @@
 
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@drawable/normal_background</item>
+        <item name="android:windowFullscreen">true</item>
+
     </style>
 
 </resources>
