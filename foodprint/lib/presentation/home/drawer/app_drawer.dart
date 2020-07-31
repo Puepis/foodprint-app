@@ -1,17 +1,13 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
-import 'package:foodprint/presentation/router/settings_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class AppDrawer extends StatelessWidget {
   final JWT token;
@@ -23,10 +19,13 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
+    final url =
+        JWT.getDecodedPayload(token.getOrCrash())['avatar_url'] as String;
+
     return Drawer(
       child: Column(
         children: [
-          _buildHeader(username),
+          _buildHeader(username, url),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 10),
@@ -35,23 +34,14 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   _createDrawerItem(
                       icon: Icons.person,
-                      text: 'Profile',
+                      text: 'My profile',
                       onTap: () => Navigator.popAndPushNamed(
                           context, ProfilePage.routeName,
                           arguments: ProfilePageArgs(
                               token: token, foodprint: foodprint))),
                   _createDrawerItem(
-                      icon: Icons.settings,
-                      text: 'Settings',
-                      onTap: () => Navigator.popAndPushNamed(
-                          context, SettingsPage.routeName,
-                          arguments: SettingsPageArgs(token: token))),
-                  const Divider(
-                    thickness: 1.0,
-                  ),
-                  _createDrawerItem(
                       icon: Icons.info,
-                      text: 'About',
+                      text: 'About Foodprint',
                       onTap: () => Navigator.popAndPushNamed(
                           context, AboutPage.routeName)),
                   _createDrawerItem(
@@ -80,100 +70,98 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Padding _buildLegal(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-      child: ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Legal',
-              style: TextStyle(fontSize: 15.0),
-            ),
-            Text(
-              'v1.0.0',
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: hintColor,
-                  fontWeight: FontWeight.w300),
-            ),
-          ],
-        ),
-        dense: true,
-        onTap: () => Navigator.pushNamed(context, LegalPage.routeName),
-      ),
-    );
-  }
-
-  Widget _buildHeader(String username) {
-    final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
-        getPhotosFromFoodprint(foodprint);
-
-    return DrawerHeader(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        decoration: BoxDecoration(color: primaryColor),
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Padding _buildLegal(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(
-                    Icons.face,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  Expanded(
-                    child: Text(username.toString(),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: GoogleFonts.montserrat(
-                            fontSize: 26.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                ],
+              const Text(
+                'Legal',
+                style: TextStyle(fontSize: 15.0),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 5.0, top: 10),
-                child: Text(
-                    photos.length == 1 ? "1 Photo" : "${photos.length} Photos",
-                    style: GoogleFonts.montserrat(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600)),
+              Text(
+                'v1.0.0',
+                style: TextStyle(
+                    fontSize: 15.0,
+                    color: hintColor,
+                    fontWeight: FontWeight.w300),
               ),
             ],
           ),
-        ));
-  }
+          dense: true,
+          onTap: () => Navigator.pushNamed(context, LegalPage.routeName),
+        ),
+      );
+
+  Widget _buildHeader(String username, String url) => DrawerHeader(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(color: primaryColor),
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 65,
+                  width: 65,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: FadeInImage.memoryNetwork(
+                          fadeInDuration: const Duration(milliseconds: 200),
+                          placeholder: kTransparentImage,
+                          image: url),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 15.0,
+                ),
+                Expanded(
+                  child: Text(username.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: GoogleFonts.rubik(
+                          fontSize: 26.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ));
 
   Widget _createDrawerItem(
-      {@required IconData icon,
-      @required String text,
-      // ignore: avoid_init_to_null
-      GestureTapCallback onTap = null}) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        size: 26.0,
-        color: primaryColorDark,
-      ),
-      title: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 16.0,
+          {@required IconData icon,
+          @required String text,
+          GestureTapCallback onTap}) =>
+      ListTile(
+        title: Row(
+          children: [
+            Icon(
+              icon,
+              size: 26.0,
+              color: primaryColorDark,
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Text(
+              text,
+              style: const TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ],
         ),
-      ),
-      onTap: onTap,
-    );
-  }
+        onTap: onTap,
+      );
 }
