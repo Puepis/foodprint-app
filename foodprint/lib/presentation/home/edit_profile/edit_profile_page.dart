@@ -6,24 +6,26 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/home/settings/change_password_page.dart';
-import 'package:foodprint/presentation/home/settings/change_username_page.dart';
 import 'package:foodprint/presentation/router/update_account_args.dart';
 
-class SettingsPage extends StatelessWidget {
+import 'edit_profile.dart';
+
+class EditProfilePage extends StatelessWidget {
   final JWT token;
-  static const String routeName = "/settings";
-  const SettingsPage({Key key, @required this.token}) : super(key: key);
+  static const String routeName = "/edit_profile";
+  const EditProfilePage({Key key, @required this.token}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
 
+    const TextStyle _fieldTitleStyle = TextStyle(
+        color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
+
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Settings"),
+          title: const Text("Edit Profile"),
         ),
         body: BlocListener<AccountBloc, AccountState>(
           listener: (context, state) {
@@ -42,26 +44,12 @@ class SettingsPage extends StatelessWidget {
             }
           },
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    "Account",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text("Username",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0)),
+                  Text("Username", style: _fieldTitleStyle),
                   const SizedBox(
                     height: 10,
                   ),
@@ -80,11 +68,7 @@ class SettingsPage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Text("Password",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0)),
+                  Text("Password", style: _fieldTitleStyle),
                   const SizedBox(
                     height: 10,
                   ),
@@ -119,23 +103,24 @@ class SettingsPage extends StatelessWidget {
                             .add(AccountDeleted(token: token));
                       }
                     },
-                    child: const Text(
-                      "Delete Account",
-                      style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.grey,
+                          size: 22,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "Delete Account",
+                          style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        "version 1.0.0",
-                        style: TextStyle(color: Colors.grey, fontSize: 14.0),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),

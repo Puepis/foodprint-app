@@ -51,7 +51,7 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+          padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -63,7 +63,7 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
-                        fontSize: 18.0),
+                        fontSize: 16.0),
                   ),
                   const SizedBox(
                     height: 10,

@@ -1,4 +1,3 @@
-export '../settings/settings_page.dart';
 export 'about_page.dart';
 export 'app_drawer.dart';
 export 'legal/legal_page.dart';

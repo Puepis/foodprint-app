@@ -3,6 +3,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/map/restaurant_page/photo_section.dart';
 
+/// Displays the user's photos taken at the restaurant 
 class RestaurantPhotos extends StatelessWidget {
   static const routeName = "/restaurant_photos";
   final RestaurantEntity restaurant;

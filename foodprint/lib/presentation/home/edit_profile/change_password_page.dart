@@ -13,7 +13,7 @@ class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({Key key, @required this.token}) : super(key: key);
 
   static const _sectionTitleStyle = TextStyle(
-      color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
+      color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
 
   @override
   _ChangePasswordPageState createState() => _ChangePasswordPageState();
@@ -54,7 +54,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+          padding: const EdgeInsets.all(20),
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,

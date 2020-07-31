@@ -107,20 +107,33 @@ class AppDrawer extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  height: 65,
-                  width: 65,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: FadeInImage.memoryNetwork(
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          placeholder: kTransparentImage,
-                          image: url),
+                if (url == null)
+                  Container(
+                    height: 65,
+                    width: 65,
+                    decoration: BoxDecoration(
+                        color: foodprintPrimaryColorSwatch[50],
+                        borderRadius: BorderRadius.circular(100)),
+                    child: const Icon(
+                      Icons.person_outline,
+                      size: 52,
+                    ),
+                  )
+                else
+                  Container(
+                    height: 65,
+                    width: 65,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: FadeInImage.memoryNetwork(
+                            fadeInDuration: const Duration(milliseconds: 200),
+                            placeholder: kTransparentImage,
+                            image: url),
+                      ),
                     ),
                   ),
-                ),
                 const SizedBox(
                   width: 15.0,
                 ),

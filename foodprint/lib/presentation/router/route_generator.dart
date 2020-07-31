@@ -4,15 +4,14 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/legal/legal.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
+import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
-import 'package:foodprint/presentation/home/settings/change_password_page.dart';
-import 'package:foodprint/presentation/home/settings/change_username_page.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
-import 'package:foodprint/presentation/router/settings_page_args.dart';
+import 'package:foodprint/presentation/router/edit_profile_args.dart';
 import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
 import 'package:foodprint/presentation/router/update_account_args.dart';
 
@@ -65,9 +64,9 @@ class RouteGenerator {
           ));
         }
         return _errorRoute();
-      case SettingsPage.routeName:
-        if (args is SettingsPageArgs) {
-          return FadeRoute(newPage: SettingsPage(token: args.token));
+      case EditProfilePage.routeName:
+        if (args is EditProfileArgs) {
+          return FadeRoute(newPage: EditProfilePage(token: args.token));
         }
         return _errorRoute();
       case ChangeUsernamePage.routeName:

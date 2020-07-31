@@ -25,7 +25,7 @@ class SummarySection extends StatelessWidget {
     );
   }
 
-  Expanded _buildStatCard({String count, String title, Color color}) {
+  Expanded _buildStatCard({String count, String title}) {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.all(8.0),
