@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery.dart';
-import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
-import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class RestaurantPreview extends StatelessWidget {
