@@ -17,4 +17,5 @@
  <color name="navy">#000080</color>
  <color name="black">#000000</color>
  <color name="foodprint_primary">#F6B26B</color>
+	<color name="splash_color">#ffffff</color>
 </resources>
