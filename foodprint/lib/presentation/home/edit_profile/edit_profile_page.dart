@@ -52,7 +52,7 @@ class EditProfilePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text("Username", style: _fieldTitleStyle),
+                  Text("Username", style: _fieldTitleStyle),
                   const SizedBox(
                     height: 10,
                   ),
@@ -71,7 +71,7 @@ class EditProfilePage extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Text("Password", style: _fieldTitleStyle),
+                  Text("Password", style: _fieldTitleStyle),
                   const SizedBox(
                     height: 10,
                   ),
