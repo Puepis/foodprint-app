@@ -10,10 +10,13 @@ import 'package:foodprint/presentation/router/update_account_args.dart';
 
 import 'edit_profile.dart';
 
+/// The page that allows users to edit their profile and delete their account.
 class EditProfilePage extends StatelessWidget {
   final JWT token;
   static const String routeName = "/edit_profile";
-  const EditProfilePage({Key key, @required this.token}) : super(key: key);
+  const EditProfilePage({Key key, @required this.token})
+      : assert(token != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class EditProfilePage extends StatelessWidget {
             }
 
             if (state is DeleteAccountSuccess) {
-              // Log user out
+              // Log out
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
@@ -128,6 +131,7 @@ class EditProfilePage extends StatelessWidget {
         ));
   }
 
+  /// Displays a dialog that confirms the user's account deletion
   Future<bool> _confirmDeletion(BuildContext context) async {
     return (await showDialog(
             context: context,

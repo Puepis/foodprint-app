@@ -7,9 +7,11 @@ import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakd
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery.dart';
 import 'package:foodprint/presentation/map/restaurant_page/restaurant_photos.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
+import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
 import 'package:foodprint/presentation/router/restaurant_photos_args.dart';
 import 'package:foodprint/presentation/router/edit_profile_args.dart';
 import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
@@ -43,10 +45,20 @@ class RouteGenerator {
           ));
         }
         return _errorRoute();
+      // TODO: Remove
       case RestaurantPhotos.routeName:
         if (args is RestaurantPhotosArgs) {
           return SlideUpEnterRoute(
               newPage: RestaurantPhotos(
+            restaurant: args.restaurant,
+            photos: args.photos,
+          ));
+        }
+        return _errorRoute();
+      case RestaurantGallery.routeName:
+        if (args is RestaurantGalleryArgs) {
+          return SlideUpEnterRoute(
+              newPage: RestaurantGallery(
             restaurant: args.restaurant,
             photos: args.photos,
           ));

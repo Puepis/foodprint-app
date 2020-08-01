@@ -9,11 +9,14 @@ import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+/// The main drawer displayed from the home page
 class AppDrawer extends StatelessWidget {
   final JWT token;
   final FoodprintEntity foodprint;
   const AppDrawer({Key key, @required this.token, @required this.foodprint})
-      : super(key: key);
+      : assert(token != null),
+        assert(foodprint != null),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,30 +73,7 @@ class AppDrawer extends StatelessWidget {
     );
   }
 
-  Padding _buildLegal(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
-        child: ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Legal',
-                style: TextStyle(fontSize: 15.0),
-              ),
-              Text(
-                'v1.0.0',
-                style: TextStyle(
-                    fontSize: 15.0,
-                    color: hintColor,
-                    fontWeight: FontWeight.w300),
-              ),
-            ],
-          ),
-          dense: true,
-          onTap: () => Navigator.pushNamed(context, LegalPage.routeName),
-        ),
-      );
-
+  /// Build the drawer header
   Widget _buildHeader(String username, String url) => DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
@@ -151,6 +131,31 @@ class AppDrawer extends StatelessWidget {
           ],
         ),
       ));
+
+  /// Builds the tile that is shown at the bottom of the drawer
+  Padding _buildLegal(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(top: 7.0, bottom: 7.0),
+        child: ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Legal',
+                style: TextStyle(fontSize: 15.0),
+              ),
+              Text(
+                'v1.0.0',
+                style: TextStyle(
+                    fontSize: 15.0,
+                    color: hintColor,
+                    fontWeight: FontWeight.w300),
+              ),
+            ],
+          ),
+          dense: true,
+          onTap: () => Navigator.pushNamed(context, LegalPage.routeName),
+        ),
+      );
 
   Widget _createDrawerItem(
           {@required IconData icon,
