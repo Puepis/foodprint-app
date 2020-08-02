@@ -1,0 +1,96 @@
+name: foodprint
+description: The app for foodies
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Locale for currency formatting
+  intl: ^0.16.1
+  # Location and google maps
+  google_maps_flutter: ^0.5.25+3
+  location: ^3.0.0
+  geolocator: ^5.3.1
+  # Provider for exposing values (used to manage state)
+  provider: ^4.1.0
+  # Camera
+  camera: ^0.5.7+4
+  image_picker: ^0.6.7
+  image_cropper: ^1.2.1
+  # Files
+  path: ^1.6.4
+  path_provider: ^1.6.5
+  # Toasts
+  fluttertoast: ^4.0.1
+  # Remote API
+  http: ^0.12.0+4
+  # Local storage
+  flutter_secure_storage: ^3.3.2
+  shared_preferences: ^0.5.7+3
+  permission_handler: ^5.0.0
+  # Image compression
+  flutter_image_compress: ^0.6.8
+  # Custom spinners
+  flutter_spinkit: ^4.1.2
+  # Value/class equality
+  equatable: ^1.2.0
+  # Functional programming
+  dartz: ^0.9.1
+  # Service locator
+  get_it: ^4.0.2
+  # Contains annotations for freezed
+  freezed_annotation: ^0.7.1
+  # Dependency injection
+  injectable: ^0.4.0+1
+  flushbar: ^1.10.4
+  # Unique ids
+  uuid: ^2.1.0
+  # Generate code for routing
+  auto_route: ^0.5.0
+  # State management
+  flutter_bloc: ^5.0.1
+  # Environment varibles
+  flutter_dotenv: ^2.1.0
+  google_fonts: ^1.1.0
+  rxdart: ^0.24.1
+  fl_chart: ^0.10.1
+  transparent_image: ^1.0.0
+  bug_report: ^0.0.1-dev.3
+
+  cupertino_icons: ^0.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  # Replace default launcher icon
+  flutter_launcher_icons: "^0.7.3"
+  # Create mocks
+  mockito: ^4.1.0
+  # Tool that runs code generators
+  build_runner:
+  # Code generator
+  freezed: ^0.10.9
+  injectable_generator: ^0.4.1
+  auto_route_generator: ^0.5.0
+  lint: ^1.2.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/inverted_logo.png"
+
+flutter:
+  # Use Material Icons class
+  uses-material-design: true
+
+  assets:
+    - assets/images/logo.png
+    - .env
+    - google_fonts_rubik/
+    - google_fonts_montserrat/
+    - assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_white.png
+    - assets/powered_by_google/android/res/drawable-xxhdpi/powered_by_google_on_non_white.png
