@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+/// Displays all the photos taken at a particular restaurant in a carousel
 class RestaurantGallery extends StatelessWidget {
   static const routeName = "/restaurant_gallery";
   final RestaurantEntity restaurant;
@@ -18,7 +19,7 @@ class RestaurantGallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: foodprintPrimaryColorSwatch[100],
+      backgroundColor: foodprintPrimaryColorSwatch[50],
       body: Column(
         children: <Widget>[
           Padding(
@@ -32,6 +33,14 @@ class RestaurantGallery extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 34,
               ),
+            ),
+          ),
+          SizedBox(
+            width: 100,
+            child: Divider(
+              color: Theme.of(context).primaryColor,
+              height: 20,
+              thickness: 2.0,
             ),
           ),
           Expanded(
@@ -87,14 +96,17 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
+    // Calculate padding
+    double value = _pageOffset - index;
+    value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0) as double;
+    final topPadding = Curves.easeInOut.transform(1 - value) * 150;
+
     final photo = widget.photos[index];
-    final scale = max(_viewportFraction,
-        (1 - (_pageOffset - index).abs()) + _viewportFraction);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
       padding: EdgeInsets.only(
-        top: 46 - scale * 20,
+        top: topPadding,
       ),
       child: Column(
         children: [
