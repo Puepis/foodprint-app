@@ -50,6 +50,7 @@ class Gallery extends StatelessWidget {
             onTap: () => _showFullImage(context, photo, restaurant, foodprint),
             child: SizedBox.expand(
               child: Card(
+                color: Colors.black,
                 elevation: 0.0,
                 clipBehavior: Clip.antiAlias,
                 child: Hero(

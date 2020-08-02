@@ -1,10 +1,12 @@
-
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+part 'landscape_photo.dart';
+part 'portrait_photo.dart';
 
 /// Displays all the photos taken at a particular restaurant in a carousel
 class RestaurantGallery extends StatelessWidget {
@@ -20,17 +22,18 @@ class RestaurantGallery extends StatelessWidget {
     return Scaffold(
       backgroundColor: foodprintPrimaryColorSwatch[50],
       body: Column(
-        children: <Widget>[
+        children: [
           Padding(
-            padding: const EdgeInsets.only(
-              top: kToolbarHeight,
-            ),
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 5),
             child: Text(
               restaurant.restaurantName.getOrCrash(),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 34,
+                fontSize: 30,
               ),
             ),
           ),
@@ -102,55 +105,18 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
 
     final photo = widget.photos[index];
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
-      padding: EdgeInsets.only(
-        top: topPadding,
-      ),
-      child: Column(
-        children: [
-          FittedBox(
-            fit: BoxFit.cover,
-            child: FadeInImage.memoryNetwork(
-                fadeInDuration: const Duration(milliseconds: 200),
-                placeholder: kTransparentImage,
-                image: photo.url.getOrCrash()),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: TextSpan(
-                      text: '${photo.photoDetail.name.getOrCrash()}\n',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: formatter
-                              .format(photo.photoDetail.price.getOrCrash()),
-                          style: TextStyle(
-                              height: 1.3,
-                              color: Colors.green.shade500,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ]),
-                ),
-                Icon(
-                  photo.isFavourite ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                  size: 26,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) => constraints.maxWidth < 600
+          ? PortraitPhoto(
+              photo: photo,
+              topPadding: topPadding,
+              constraints: constraints,
+              formatter: formatter)
+          : LandscapePhoto(
+              photo: photo,
+              topPadding: topPadding,
+              constraints: constraints,
+              formatter: formatter),
     );
   }
 }

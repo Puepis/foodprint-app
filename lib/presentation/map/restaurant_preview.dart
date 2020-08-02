@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery.dart';
 import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -23,21 +24,25 @@ class RestaurantPreview extends StatelessWidget {
         if (dy < 0) {
           // swipe up
           Navigator.pushNamed(context, RestaurantGallery.routeName,
-              arguments:
-                  RestaurantGalleryArgs(photos: photos, restaurant: restaurant));
+              arguments: RestaurantGalleryArgs(
+                  photos: photos, restaurant: restaurant));
         }
       },
       child: Container(
           height: 200,
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0)),
-              color: Colors.white),
+          decoration: BoxDecoration(
+            color: foodprintPrimaryColorSwatch[50],
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0)),
+          ),
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
               recentPhoto(),
+              const SizedBox(
+                width: 5.0,
+              ),
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(5.0),
@@ -89,13 +94,14 @@ class RestaurantPreview extends StatelessWidget {
     );
   }
 
-  Widget recentPhoto() => Container(
-        width: 125,
-        margin: const EdgeInsets.only(right: 5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
+  Widget recentPhoto() => ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          color: Colors.black,
+          height: double.infinity,
+          width: 125,
           child: FittedBox(
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
             child: FadeInImage.memoryNetwork(
                 fadeInDuration: const Duration(milliseconds: 200),
                 placeholder: kTransparentImage,
