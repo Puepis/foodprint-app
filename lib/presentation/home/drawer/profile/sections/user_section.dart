@@ -39,10 +39,10 @@ class _UserSectionState extends State<UserSection> {
           ).show(context);
         }
 
-        if (state is AccountActionLoading) {
+        if (state is AvatarChangeLoading) {
           Scaffold.of(context)..hideCurrentSnackBar();
           FlushbarHelper.createInformation(
-            message: 'Saving avatar...',
+            message: 'Saving changes...',
           ).show(context);
         }
 
