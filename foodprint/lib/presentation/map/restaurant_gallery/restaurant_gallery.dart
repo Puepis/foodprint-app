@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -104,7 +103,7 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
     final photo = widget.photos[index];
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 14),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
       padding: EdgeInsets.only(
         top: topPadding,
       ),
