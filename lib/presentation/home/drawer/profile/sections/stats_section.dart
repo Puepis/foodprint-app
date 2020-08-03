@@ -9,16 +9,14 @@ class StatsSection extends StatelessWidget {
   const StatsSection({Key key, @required this.foodprint}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        MonthlyVisitsCard(
-          foodprint: foodprint,
-        ),
-        SpendingCard(
-          spending: SpendingModel(foodprint),
-        )
-      ],
-    );
-  }
+  Widget build(BuildContext context) => Column(
+        children: [
+          MonthlyVisitsCard(
+            foodprint: foodprint,
+          ),
+          SpendingCard(
+            spending: SpendingModel(foodprint),
+          )
+        ],
+      );
 }

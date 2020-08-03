@@ -28,6 +28,9 @@ class _UserSectionState extends State<UserSection> {
     final username =
         JWT.getDecodedPayload(widget.token.getOrCrash())['username'] as String;
 
+    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
+        as String;
+
     return BlocListener<AccountBloc, AccountState>(
       listener: (context, state) {
         if (state is AvatarChangeError) {
@@ -55,7 +58,7 @@ class _UserSectionState extends State<UserSection> {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            _buildProfilePicture(),
+            _buildAvatar(url),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, top: 35),
@@ -79,68 +82,62 @@ class _UserSectionState extends State<UserSection> {
     );
   }
 
-  /// Displays the profile picture based on the user's avatar
+  /// Displays the user's avatar
   ///
   /// The url is stored in the user's JWT and can be null
-  Widget _buildProfilePicture() {
-    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
-        as String;
-
-    return Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.zero,
-          child: (url == null)
-              ? Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      color: foodprintPrimaryColorSwatch[50],
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Icon(
-                    Icons.person_outline,
-                    size: 100,
-                  ),
-                )
-              : Container(
-                  height: 120,
-                  width: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: FadeInImage.memoryNetwork(
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          placeholder: kTransparentImage,
-                          image: url),
+  Widget _buildAvatar(String url) => Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.zero,
+            child: (url == null)
+                ? Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                        color: foodprintPrimaryColorSwatch[50],
+                        borderRadius: BorderRadius.circular(100)),
+                    child: const Icon(
+                      Icons.person_outline,
+                      size: 100,
+                    ),
+                  )
+                : Container(
+                    height: 120,
+                    width: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: FittedBox(
+                        fit: BoxFit.cover,
+                        child: FadeInImage.memoryNetwork(
+                            fadeInDuration: const Duration(milliseconds: 200),
+                            placeholder: kTransparentImage,
+                            image: url),
+                      ),
                     ),
                   ),
-                ),
-        ),
-        Positioned(
-          right: 0,
-          top: 0,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: foodprintPrimaryColorSwatch[100],
-                  borderRadius: BorderRadius.circular(50)),
-              child: InkWell(
-                onTap: _onEditAvatar,
-                child: const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.edit,
-                    size: 20.0,
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: foodprintPrimaryColorSwatch[100],
+                    borderRadius: BorderRadius.circular(50)),
+                child: InkWell(
+                  onTap: _onEditAvatar,
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.edit,
+                      size: 20.0,
+                    ),
                   ),
-                ),
-              )),
-        ),
-      ],
-    );
-  }
+                )),
+          ),
+        ],
+      );
 
-  // ignore: avoid_void_async
-  void _onEditAvatar() async {
+  Future<void> _onEditAvatar() async {
     final result = await showDialog(
         context: context,
         builder: (context) => Dialog(

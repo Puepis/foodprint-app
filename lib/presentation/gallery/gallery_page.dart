@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -16,20 +15,14 @@ import 'package:transparent_image/transparent_image.dart';
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
   final JWT token;
-  const Gallery({Key key, @required this.token}) : super(key: key);
+  final List<Tuple2<PhotoEntity, RestaurantEntity>> photos;
+  const Gallery({Key key, @required this.token, @required this.photos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final foodprint = InheritedUser.of(context).foodprint;
 
-    // Photos
-    final List<Tuple2<PhotoEntity, RestaurantEntity>> photos =
-        getPhotosFromFoodprint(foodprint);
-
-    // Sort from newest to oldest
-    photos.sort((a, b) => b.value1.timestamp
-        .getOrCrash()
-        .compareTo(a.value1.timestamp.getOrCrash()));
+    
 
     // Build photos lazily
     return GridView.builder(
@@ -59,7 +52,7 @@ class Gallery extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
                       child: FadeInImage.memoryNetwork(
-                        fadeInDuration: const Duration(milliseconds: 200),
+                          fadeInDuration: const Duration(milliseconds: 200),
                           placeholder: kTransparentImage,
                           image: photo.url.getOrCrash()),
                     ),
