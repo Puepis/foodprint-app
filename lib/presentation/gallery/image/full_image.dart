@@ -1,61 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:flutter/rendering.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/image/photo_info_sheet.dart';
 
-class FullImage extends StatelessWidget {
-  final JWT token;
-  final FoodprintEntity foodprint;
-  final RestaurantEntity restaurant;
+/// Displays the full image
+class FullImagePage extends StatefulWidget {
   final PhotoEntity photo;
-  const FullImage({
-    Key key,
-    @required this.token,
-    @required this.restaurant,
-    @required this.photo,
-    @required this.foodprint,
-  }) : super(key: key);
+  final RestaurantEntity restaurant;
+  const FullImagePage({Key key, this.photo, this.restaurant}) : super(key: key);
 
-  // TODO: Try parallax
+  @override
+  _FullImagePageState createState() => _FullImagePageState();
+}
+
+class _FullImagePageState extends State<FullImagePage> {
+  ScrollController _scrollController;
+  ScrollPosition _position;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()
+      ..addListener(
+          () => setState(() => _position = _scrollController.position));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onVerticalDragEnd: (details) {
-        final double dy = details.velocity.pixelsPerSecond.dy;
-        if (dy > 0) {
-          // swipe down
-          Navigator.pop(context);
-        } else if (dy < 0) {
-          // swipe up
-          showModalBottomSheet(
-              backgroundColor: Colors.transparent,
-              context: context,
-              builder: (_) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(
-                            value: context.bloc<PhotoActionsBloc>()),
-                        BlocProvider.value(value: context.bloc<FoodprintBloc>())
-                      ],
-                      child: PhotoInfoSheet(
-                        token: token,
-                        photo: photo,
-                        restaurant: restaurant,
-                        foodprint: foodprint,
-                      )));
-        }
-      },
-      child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Center(
-            child: Hero(
-                tag: photo.timestamp.getOrCrash(),
-                child: Image.network(photo.url.getOrCrash())),
-          )),
+    if (_position != null) _handleScroll();
+
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: CustomScrollView(controller: _scrollController, slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate([
+            Container(
+              height: MediaQuery.of(context).size.height,
+              color: Colors.black,
+              child: Center(
+                child: Hero(
+                  tag: widget.photo.timestamp.getOrCrash(),
+                  child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Image.network(widget.photo.url.getOrCrash())),
+                ),
+              ),
+            ),
+            PhotoInfoSheet(
+              photo: widget.photo,
+              restaurant: widget.restaurant,
+            )
+          ]),
+        )
+      ]),
     );
+  }
+
+  /// Snaps to the vertical edges of the screen depending on the user's scroll direction 
+  void _handleScroll() {
+    // Move to the bottom
+    if (_position.userScrollDirection == ScrollDirection.reverse) {
+      _scrollController.animateTo(_position.maxScrollExtent,
+          curve: Curves.easeOut, duration: const Duration(milliseconds: 50));
+    }
+    if (_position.userScrollDirection == ScrollDirection.forward) {
+      _scrollController.animateTo(_position.minScrollExtent,
+          curve: Curves.easeOut, duration: const Duration(milliseconds: 50));
+    }
   }
 }

@@ -16,13 +16,12 @@ import 'package:transparent_image/transparent_image.dart';
 class Gallery extends StatelessWidget {
   final JWT token;
   final List<Tuple2<PhotoEntity, RestaurantEntity>> photos;
-  const Gallery({Key key, @required this.token, @required this.photos}) : super(key: key);
+  const Gallery({Key key, @required this.token, @required this.photos})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final foodprint = InheritedUser.of(context).foodprint;
-
-    
 
     // Build photos lazily
     return GridView.builder(
@@ -110,11 +109,13 @@ class Gallery extends StatelessWidget {
                     value: context.bloc<FoodprintBloc>(),
                   )
                 ],
-                child: FullImage(
+                child: InheritedUser(
                   token: token,
                   foodprint: foodprint,
-                  photo: photo,
-                  restaurant: restaurant,
+                  child: FullImagePage(
+                    photo: photo,
+                    restaurant: restaurant,
+                  ),
                 ))));
   }
 }

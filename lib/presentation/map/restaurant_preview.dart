@@ -39,7 +39,7 @@ class RestaurantPreview extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: Row(
             children: [
-              recentPhoto(),
+              _buildRecentPhoto(),
               const SizedBox(
                 width: 5.0,
               ),
@@ -94,18 +94,21 @@ class RestaurantPreview extends StatelessWidget {
     );
   }
 
-  Widget recentPhoto() => ClipRRect(
+  Widget _buildRecentPhoto() => ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
           color: Colors.black,
           height: double.infinity,
           width: 125,
-          child: FittedBox(
-            fit: BoxFit.fitWidth,
-            child: FadeInImage.memoryNetwork(
-                fadeInDuration: const Duration(milliseconds: 200),
-                placeholder: kTransparentImage,
-                image: photos[0].url.getOrCrash()),
+          child: Hero(
+            tag: photos[0].url.getOrCrash(),
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: FadeInImage.memoryNetwork(
+                  fadeInDuration: const Duration(milliseconds: 200),
+                  placeholder: kTransparentImage,
+                  image: photos[0].url.getOrCrash()),
+            ),
           ),
         ),
       );

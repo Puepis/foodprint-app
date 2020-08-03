@@ -36,26 +36,26 @@ class PortraitPhoto extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   RichText(
                     text: TextSpan(
-                        text: '${photo.photoDetail.name.getOrCrash()}\n',
+                        text: '${photo.details.name.getOrCrash()}\n',
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
                         children: [
                           TextSpan(
                             text: formatter
-                                .format(photo.photoDetail.price.getOrCrash()),
+                                .format(photo.details.price.getOrCrash()),
                             style: TextStyle(
                                 height: 1.3,
                                 color: Colors.green.shade500,
-                                fontSize: 20.0,
+                                fontSize: 18.0,
                                 fontWeight: FontWeight.bold),
                           )
                         ]),

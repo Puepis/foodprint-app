@@ -15,7 +15,7 @@ class SpendingModel extends FoodprintModel {
           photos.fold(
               0,
               (previous, photo) =>
-                  previous + photo.photoDetail.price.getOrCrash()));
+                  previous + photo.details.price.getOrCrash()));
 
   /// Maps the categories to their respective colors
   Map<String, Color> get categoryColors => {
@@ -62,8 +62,8 @@ class SpendingModel extends FoodprintModel {
     return result;
   }
 
-   List<Color> get hiddenColors =>
-       [hideCafeColor, hideBarColor, hideBakeryColor, hideRestaurantColor];
+  List<Color> get hiddenColors =>
+      [hideCafeColor, hideBarColor, hideBakeryColor, hideRestaurantColor];
 
   /// Retrieves the categorical totals (money spent)
   Map<String, double> get categoryTotals {
@@ -76,8 +76,8 @@ class SpendingModel extends FoodprintModel {
     for (final restaurant in restaurants) {
       // Calculate the total spent at [restaurant]
       final List<PhotoEntity> photos = foodprint.restaurantPhotos[restaurant];
-      final double restaurantTotal = photos.fold(
-          0, (prev, cur) => prev + cur.photoDetail.price.getOrCrash());
+      final double restaurantTotal =
+          photos.fold(0, (prev, cur) => prev + cur.details.price.getOrCrash());
 
       final types = restaurant.types.getOrCrash();
       // Check restaurant type and update accordingly

@@ -203,8 +203,8 @@ class BreakdownDetails extends StatelessWidget {
             itemBuilder: (context, index) {
               final restaurant = restaurants[index];
               final numPhotos = breakdown[restaurant].length;
-              final totalPrice = breakdown[restaurant].fold(0,
-                  (prev, photo) => prev + photo.photoDetail.price.getOrCrash());
+              final totalPrice = breakdown[restaurant].fold(
+                  0, (prev, photo) => prev + photo.details.price.getOrCrash());
 
               return ListTile(
                 title: Row(

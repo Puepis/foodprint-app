@@ -57,7 +57,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     // Construct new photo
     return PhotoEntity(
         storagePath: StoragePath(imgPath),
-        photoDetail: PhotoDetailEntity(
+        details: PhotoDetailEntity(
             name: PhotoName(itemName),
             price: PhotoPrice(double.parse(price)),
             comments: PhotoComments(comments)),
@@ -103,7 +103,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
         comments: PhotoComments(newComments));
     final result = await _client.updatePhotoDetails(
         oldPhoto: oldPhoto,
-        photoDetail: newDetails,
+        details: newDetails,
         restaurant: restaurant,
         oldFoodprint: foodprint,
         isFavourite: isFavourite);

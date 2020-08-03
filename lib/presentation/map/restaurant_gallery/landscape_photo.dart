@@ -42,14 +42,14 @@ class LandscapePhoto extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(photo.photoDetail.name.getOrCrash(),
+                    Text(photo.details.name.getOrCrash(),
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                         )),
                     Text(
-                      formatter.format(photo.photoDetail.price.getOrCrash()),
+                      formatter.format(photo.details.price.getOrCrash()),
                       style: TextStyle(
                           color: Colors.green.shade500,
                           fontSize: 20.0,
@@ -75,7 +75,7 @@ class LandscapePhoto extends StatelessWidget {
                                 height: 10, thickness: 2, color: primaryColor),
                           ),
                           Text(
-                            photo.photoDetail.comments.getOrCrash(),
+                            photo.details.comments.getOrCrash(),
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14.0,

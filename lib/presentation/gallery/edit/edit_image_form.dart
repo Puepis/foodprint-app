@@ -121,7 +121,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 title: "Item Name", iconData: Icons.restaurant_menu),
             _sectionHeadingSpace,
             TextFormField(
-              initialValue: widget.photo.photoDetail.name.getOrCrash(),
+              initialValue: widget.photo.details.name.getOrCrash(),
               cursorColor: primaryColor,
               maxLength: 50,
               decoration: InputDecoration(
@@ -144,8 +144,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 iconColor: Colors.green),
             _sectionHeadingSpace,
             TextFormField(
-              initialValue:
-                  widget.photo.photoDetail.price.getOrCrash().toString(),
+              initialValue: widget.photo.details.price.getOrCrash().toString(),
               cursorColor: primaryColor,
               maxLength: 8,
               keyboardType: TextInputType.number,
@@ -181,7 +180,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 iconColor: foodprintPrimaryColorSwatch[600]),
             _sectionHeadingSpace,
             TextFormField(
-                initialValue: widget.photo.photoDetail.comments.getOrCrash(),
+                initialValue: widget.photo.details.comments.getOrCrash(),
                 cursorColor: primaryColor,
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,

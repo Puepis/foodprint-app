@@ -19,6 +19,7 @@ import 'package:foodprint/presentation/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 enum SortBy { latest, oldest, favourites, highestPrice, lowestPrice }
+enum SelectedPage { home, gallery }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -27,7 +28,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedTab = 0;
+  SelectedPage _page = SelectedPage.home;
   SortBy _selectedSort = SortBy.latest;
 
   /// Each entry in the list contains a photo paired with its corresponding location
@@ -53,10 +54,10 @@ class _HomePageState extends State<HomePage> {
           }
 
           return Scaffold(
-            appBar: appBar(context),
+            appBar: _buildAppBar(context),
             drawerEnableOpenDragGesture: false,
             drawer: AppDrawer(token: token, foodprint: foodprint),
-            body: _selectedTab == 0
+            body: _page == SelectedPage.home
                 ? Stack(children: [mapScreen, _buildMapDrawerButton()])
                 : Gallery(
                     token: token,
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                       icon: const Icon(Icons.location_on),
                       onPressed: () {
                         setState(() {
-                          _selectedTab = 0;
+                          _page = SelectedPage.home;
                         });
                       },
                     ),
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                       icon: const Icon(Icons.collections),
                       onPressed: () {
                         setState(() {
-                          _selectedTab = 1;
+                          _page = SelectedPage.gallery;
                         });
                       },
                     )
@@ -137,14 +138,14 @@ class _HomePageState extends State<HomePage> {
         assocPhotos.retainWhere((element) => element.value1.isFavourite);
         break;
       case SortBy.highestPrice:
-        assocPhotos.sort((a, b) => b.value1.photoDetail.price
+        assocPhotos.sort((a, b) => b.value1.details.price
             .getOrCrash()
-            .compareTo(a.value1.photoDetail.price.getOrCrash()));
+            .compareTo(a.value1.details.price.getOrCrash()));
         break;
       case SortBy.lowestPrice:
-        assocPhotos.sort((a, b) => a.value1.photoDetail.price
+        assocPhotos.sort((a, b) => a.value1.details.price
             .getOrCrash()
-            .compareTo(b.value1.photoDetail.price.getOrCrash()));
+            .compareTo(b.value1.details.price.getOrCrash()));
         break;
     }
   }
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ));
 
-  // Animate transition to camera
+  /// Animate transition to camera
   void _toCamera(
       BuildContext cxt, LatLng location, JWT token, FoodprintEntity foodprint) {
     Navigator.of(cxt).push(SlideUpEnterRoute(
@@ -185,55 +186,51 @@ class _HomePageState extends State<HomePage> {
     )));
   }
 
-  PreferredSizeWidget appBar(BuildContext context) {
-    // Don't display app bar on map page
-    if (_selectedTab == 0) {
-      return null;
-    }
-
-    // Display appbar on gallery page
-    return AppBar(
-      centerTitle: true,
-      automaticallyImplyLeading: false,
-      title: const Text(
-        'Gallery',
-      ),
-      leading: Builder(
-          builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              )),
-      actions: [
-        PopupMenuButton<SortBy>(
-          initialValue: _selectedSort,
-          tooltip: "Sort photos",
-          onSelected: (result) => setState(() => _selectedSort = result),
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<SortBy>>[
-            const PopupMenuItem<SortBy>(
-              value: SortBy.latest,
-              child: Text('Latest'),
-            ),
-            const PopupMenuItem<SortBy>(
-              value: SortBy.oldest,
-              child: Text('Oldest'),
-            ),
-            const PopupMenuItem<SortBy>(
-              value: SortBy.highestPrice,
-              child: Text('Price (high to low)'),
-            ),
-            const PopupMenuItem<SortBy>(
-              value: SortBy.lowestPrice,
-              child: Text('Price (low to high)'),
-            ),
-            const PopupMenuItem<SortBy>(
-              value: SortBy.favourites,
-              child: Text('Favourites'),
-            ),
+  /// The app bar is only shown in the gallery page
+  PreferredSizeWidget _buildAppBar(BuildContext context) => _page ==
+          SelectedPage.home
+      ? null
+      : AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: const Text(
+            'Gallery',
+          ),
+          leading: Builder(
+              builder: (context) => IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  )),
+          actions: [
+            PopupMenuButton<SortBy>(
+              initialValue: _selectedSort,
+              tooltip: "Sort photos",
+              onSelected: (result) => setState(() => _selectedSort = result),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<SortBy>>[
+                const PopupMenuItem<SortBy>(
+                  value: SortBy.latest,
+                  child: Text('Latest'),
+                ),
+                const PopupMenuItem<SortBy>(
+                  value: SortBy.oldest,
+                  child: Text('Oldest'),
+                ),
+                const PopupMenuItem<SortBy>(
+                  value: SortBy.highestPrice,
+                  child: Text('Price (high to low)'),
+                ),
+                const PopupMenuItem<SortBy>(
+                  value: SortBy.lowestPrice,
+                  child: Text('Price (low to high)'),
+                ),
+                const PopupMenuItem<SortBy>(
+                  value: SortBy.favourites,
+                  child: Text('Favourites'),
+                ),
+              ],
+            )
           ],
-        )
-      ],
-    );
-  }
+        );
 }

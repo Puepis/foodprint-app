@@ -10,29 +10,26 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 
 // Interface
 abstract class IPhotoRepository {
-  
   // Save a new photo and return the updated foodprint
   Future<Either<PhotoFailure, FoodprintEntity>> saveNewPhoto({
     @required UserID userID,
     @required PhotoData data,
     @required PhotoEntity photo,
     @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint, 
+    @required FoodprintEntity oldFoodprint,
   });
 
   // Edit an existing photo and return the updated foodprint
-  Future<Either<PhotoFailure, FoodprintEntity>> updatePhotoDetails({
-    @required PhotoEntity oldPhoto,
-    @required PhotoDetailEntity photoDetail,
-    @required bool isFavourite,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint
-  });
+  Future<Either<PhotoFailure, FoodprintEntity>> updatePhotoDetails(
+      {@required PhotoEntity oldPhoto,
+      @required PhotoDetailEntity details,
+      @required bool isFavourite,
+      @required RestaurantEntity restaurant,
+      @required FoodprintEntity oldFoodprint});
 
   // Delete an existing photo and return the updated foodprint
-  Future<Either<PhotoFailure, FoodprintEntity>> deletePhoto({
-    @required PhotoEntity photo,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity oldFoodprint
-  });
+  Future<Either<PhotoFailure, FoodprintEntity>> deletePhoto(
+      {@required PhotoEntity photo,
+      @required RestaurantEntity restaurant,
+      @required FoodprintEntity oldFoodprint});
 }

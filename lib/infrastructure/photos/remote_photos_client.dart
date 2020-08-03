@@ -30,11 +30,11 @@ class RemotePhotosClient implements IPhotoRepository {
       "image": {
         "path": photo.storagePath.getOrCrash(),
         "data": imageData.getOrCrash().toString(),
-        "favourite": photo.isFavourite ? 'true': 'false', 
+        "favourite": photo.isFavourite ? 'true' : 'false',
         "details": {
-          "name": photo.photoDetail.name.getOrCrash(),
-          "price": photo.photoDetail.price.getOrCrash().toString(),
-          "comments": photo.photoDetail.comments.getOrCrash(),
+          "name": photo.details.name.getOrCrash(),
+          "price": photo.details.price.getOrCrash().toString(),
+          "comments": photo.details.comments.getOrCrash(),
           "timestamp": photo.timestamp.getOrCrash(),
         },
         "location": {
@@ -68,10 +68,9 @@ class RemotePhotosClient implements IPhotoRepository {
       final PhotoEntity newPhoto = PhotoEntity(
           storagePath: photo.storagePath,
           url: URL(url),
-          photoDetail: photo.photoDetail,
+          details: photo.details,
           timestamp: photo.timestamp,
-          isFavourite: photo.isFavourite
-          );
+          isFavourite: photo.isFavourite);
 
       // Update local foodprint
       final FoodprintEntity newFoodprint =
@@ -91,26 +90,25 @@ class RemotePhotosClient implements IPhotoRepository {
   @override
   Future<Either<PhotoFailure, FoodprintEntity>> updatePhotoDetails(
       {@required PhotoEntity oldPhoto,
-      @required PhotoDetailEntity photoDetail,
+      @required PhotoDetailEntity details,
       @required bool isFavourite,
       @required RestaurantEntity restaurant,
       @required FoodprintEntity oldFoodprint}) async {
     final res = await http.put("$serverIP/api/photos", body: {
       "path": oldPhoto.storagePath.getOrCrash(),
-      "photo_name": photoDetail.name.getOrCrash(),
-      "price": photoDetail.price.getOrCrash().toString(),
-      "comments": photoDetail.comments.getOrCrash(),
+      "photo_name": details.name.getOrCrash(),
+      "price": details.price.getOrCrash().toString(),
+      "comments": details.comments.getOrCrash(),
       "favourite": isFavourite ? 'true' : 'false'
     });
 
     if (res.statusCode == 200) {
       final PhotoEntity newPhoto = PhotoEntity(
-        storagePath: oldPhoto.storagePath,
-        url: oldPhoto.url,
-        photoDetail: photoDetail,
-        timestamp: oldPhoto.timestamp,
-        isFavourite: isFavourite
-      );
+          storagePath: oldPhoto.storagePath,
+          url: oldPhoto.url,
+          details: details,
+          timestamp: oldPhoto.timestamp,
+          isFavourite: isFavourite);
 
       final FoodprintEntity newFoodprint =
           _localFoodprintClient.editPhotoInFoodprint(
