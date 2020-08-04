@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/display_models/summary_model.dart';
+import 'package:foodprint/presentation/profile_page_models/summary_model.dart';
 
 /// Display a summary of the user's foodprint
 class SummarySection extends StatelessWidget {

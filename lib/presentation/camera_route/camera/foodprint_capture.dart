@@ -24,9 +24,7 @@ class _FoodprintCaptureState extends State<FoodprintCapture> {
 
   @override
   Widget build(BuildContext context) {
-    if (_imageFile == null) {
-      _takePhoto(ImageSource.camera, context);
-    }
+    if (_imageFile == null) _takePhoto(ImageSource.camera, context);
 
     return Scaffold(
         body: (_imageFile == null)

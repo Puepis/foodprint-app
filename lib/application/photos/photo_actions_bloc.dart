@@ -33,13 +33,15 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   // Formats the datetime
   static String get currentTimestamp {
     final DateTime now = DateTime.now();
+    final String offset = now.timeZoneOffset.toString().split(":").first;
     final String y = now.year.toString();
     final String m = _formatZero(now.month);
     final String d = _formatZero(now.day);
     final String h = _formatZero(now.hour);
     final String min = _formatZero(now.minute);
     final String second = _formatZero(now.second);
-    return "$y-$m-$d $h:$min:$second-04"; // TODO: handle timezone
+    final String zone = now.timeZoneOffset.isNegative ? offset : "+$offset";
+    return "$y-$m-$d $h:$min:$second$zone";
   }
 
   /// Determines whether to add a zero in front of a numeric value

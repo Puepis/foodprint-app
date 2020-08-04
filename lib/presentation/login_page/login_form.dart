@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The user login form.
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
 

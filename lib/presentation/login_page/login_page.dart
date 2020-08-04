@@ -8,6 +8,7 @@ import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 
+/// The user login page that contains the [LoginForm].
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
   static const routeOnRegisterSuccess = "/login_on_register_success";
@@ -32,7 +33,7 @@ class LoginPage extends StatelessWidget {
                   height: 75,
                   width: 75,
                 ),
-                Text("Welcome back!", style: title1),
+                Text("Welcome back!", style: titleTextStyle),
                 const SizedBox(
                   height: 2.5,
                 ),

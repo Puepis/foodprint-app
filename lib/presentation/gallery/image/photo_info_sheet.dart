@@ -24,30 +24,6 @@ class PhotoInfoSheet extends StatelessWidget {
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
 
-  @override
-  Widget build(BuildContext context) {
-    final JWT token = InheritedUser.of(context).token;
-    final FoodprintEntity foodprint = InheritedUser.of(context).foodprint;
-
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10.0),
-          topRight: Radius.circular(10.0),
-        ),
-        color: Color(0xFF1e1c1c),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Stack(
-        children: [
-          _buildDetails(context),
-          _buildEditButton(context, token, foodprint)
-        ],
-      ),
-    );
-  }
-
   TextStyle get _sectionTitleStyle => TextStyle(
       color: Colors.grey.shade400,
       fontSize: 12.0,
@@ -65,96 +41,118 @@ class PhotoInfoSheet extends StatelessWidget {
         height: 25,
       );
 
-  Widget _createSection(String title, String body) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: _sectionTitleStyle,
-        ),
-        _sectionTitleDivider,
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          body,
-          style: _sectionBodyStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDetails(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     // Currency formatter
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: TextSpan(
-              text: "${photo.details.name.getOrCrash()}\n",
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-              children: [
-                TextSpan(
-                    text: formatter.format(photo.details.price.getOrCrash()),
-                    style: TextStyle(
-                        height: 1.5,
-                        color: Colors.green.shade500,
-                        fontSize: 20))
-              ]),
+
+    final JWT token = InheritedUser.of(context).token;
+    final FoodprintEntity foodprint = InheritedUser.of(context).foodprint;
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.6,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
         ),
-        const Divider(
-          color: Colors.grey,
-          height: 30,
-          thickness: 1,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        _createSection('COMMENTS', photo.details.comments.getOrCrash()),
-        _sectionSpace,
-        _createSection('TIMESTAMP', photo.timestamp.toReadable()),
-        _sectionSpace,
-        Text("LOCATION", style: _sectionTitleStyle),
-        _sectionTitleDivider,
-        const SizedBox(
-          height: 5,
-        ),
-        Text(restaurant.restaurantName.getOrCrash(),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: _sectionBodyStyle),
-        const SizedBox(
-          height: 5.0,
-        ),
-        Row(
-          children: [
-            Icon(
-              Icons.star,
-              color: Theme.of(context).primaryColor,
-              size: 18,
+        color: Color(0xFF1e1c1c),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Stack(
+        children: [
+          _buildDetails(context, formatter),
+          _buildEditButton(context, token, foodprint)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetails(BuildContext context, NumberFormat formatter) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+                text: "${photo.details.name.getOrCrash()}\n",
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22),
+                children: [
+                  TextSpan(
+                      text: formatter.format(photo.details.price.getOrCrash()),
+                      style: TextStyle(
+                          height: 1.5,
+                          color: Colors.green.shade500,
+                          fontSize: 20))
+                ]),
+          ),
+          const Divider(
+            color: Colors.grey,
+            height: 30,
+            thickness: 1,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          _buildBody(context),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Icon(
+              photo.isFavourite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+              size: 30,
             ),
-            const SizedBox(
-              width: 7.5,
-            ),
-            Text(
-              restaurant.restaurantRating.getOrCrash().toString(),
-              style: _sectionBodyStyle,
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 7.5,
-        ),
-        Text(
-            "${restaurant.latitude.getOrCrash().toStringAsFixed(3)}, ${restaurant.longitude.getOrCrash().toStringAsFixed(3)}",
-            style: _sectionBodyStyle.copyWith(fontSize: 12))
-      ],
+          )
+        ],
+      );
+
+  Expanded _buildBody(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _createSection('COMMENTS', photo.details.comments.getOrCrash()),
+          _sectionSpace,
+          _createSection('TIMESTAMP', photo.timestamp.toReadable()),
+          _sectionSpace,
+          Text("LOCATION", style: _sectionTitleStyle),
+          _sectionTitleDivider,
+          const SizedBox(
+            height: 5,
+          ),
+          Text(restaurant.restaurantName.getOrCrash(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: _sectionBodyStyle),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.star,
+                color: Theme.of(context).primaryColor,
+                size: 18,
+              ),
+              const SizedBox(
+                width: 7.5,
+              ),
+              Text(
+                restaurant.restaurantRating.getOrCrash().toString(),
+                style: _sectionBodyStyle,
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 7.5,
+          ),
+          Text(
+              "${restaurant.latitude.getOrCrash().toStringAsFixed(3)}, ${restaurant.longitude.getOrCrash().toStringAsFixed(3)}",
+              style: _sectionBodyStyle.copyWith(fontSize: 12)),
+        ],
+      ),
     );
   }
 
@@ -184,5 +182,23 @@ class PhotoInfoSheet extends StatelessWidget {
             )));
           },
         ),
+      );
+
+  Widget _createSection(String title, String body) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: _sectionTitleStyle,
+          ),
+          _sectionTitleDivider,
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            body,
+            style: _sectionBodyStyle,
+          ),
+        ],
       );
 }

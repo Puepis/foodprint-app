@@ -167,63 +167,66 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 validator: (String value) {
                   return null;
                 }),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
-                child: FloatingActionButton.extended(
-                  backgroundColor: primaryColor,
-                  label: const Text(
-                    'SAVE PHOTO',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  icon: (state is ActionInProgress)
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.0),
-                          child: SpinKitRing(
-                            lineWidth: 3,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        )
-                      : const Icon(
-                          Icons.save_alt,
-                          color: Colors.white,
-                        ),
-                  onPressed: () {
-                    if (_formKey.currentState.validate()) {
-                      // Get user id
-                      final id = UserID(int.parse(JWT
-                          .getDecodedPayload(widget.token.getOrCrash())['sub']
-                          .toString()));
-
-                      // Save fields
-                      _formKey.currentState.save();
-
-                      // Fire off save event
-                      photoBloc.add(PhotoActionsEvent.saved(
-                          userID: id,
-                          imageFile: widget.imageFile,
-                          itemName: _itemName,
-                          price: _price,
-                          comments: _comments,
-                          restaurant: widget.restaurant,
-                          foodprint: widget.oldFoodprint));
-
-                      // Reset manual search state
-                      context.bloc<ManualSearchBloc>().add(ResetManualSearch());
-                    }
-                  },
-                ),
-              ),
-            )
+            _buildSaveButton(state, photoBloc, context)
           ],
         ),
       );
     });
   }
+
+  Align _buildSaveButton(PhotoActionsState state, PhotoActionsBloc photoBloc,
+          BuildContext context) =>
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
+          child: FloatingActionButton.extended(
+            backgroundColor: primaryColor,
+            label: const Text(
+              'SAVE PHOTO',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500),
+            ),
+            icon: (state is ActionInProgress)
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.0),
+                    child: SpinKitRing(
+                      lineWidth: 3,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  )
+                : const Icon(
+                    Icons.save_alt,
+                    color: Colors.white,
+                  ),
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                // Get user id
+                final id = UserID(int.parse(JWT
+                    .getDecodedPayload(widget.token.getOrCrash())['sub']
+                    .toString()));
+
+                // Save fields
+                _formKey.currentState.save();
+
+                // Fire off save event
+                photoBloc.add(PhotoActionsEvent.saved(
+                    userID: id,
+                    imageFile: widget.imageFile,
+                    itemName: _itemName,
+                    price: _price,
+                    comments: _comments,
+                    restaurant: widget.restaurant,
+                    foodprint: widget.oldFoodprint));
+
+                // Reset manual search state
+                context.bloc<ManualSearchBloc>().add(ResetManualSearch());
+              }
+            },
+          ),
+        ),
+      );
 }

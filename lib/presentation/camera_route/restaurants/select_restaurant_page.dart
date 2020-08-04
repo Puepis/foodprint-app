@@ -93,7 +93,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     });
   }
 
-  /// Builds the scaffold body based on the [ManualBlocState]  
+  /// Builds the scaffold body based on the [ManualBlocState]
   Widget _buildBody(
       ManualSearchState state, ManualSearchBloc bloc, BuildContext context) {
     if (state is PlaceDetailSearchLoading) {
@@ -120,14 +120,17 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
               color: Colors.green,
               size: 100,
             ),
-            const SizedBox(height: 5,),
-            const Text(
-              "Restaurant Selected!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 40, fontWeight: FontWeight.bold),
+            const SizedBox(
+              height: 5,
             ),
-            const SizedBox(height: 40,),
+            const Text(
+              "Location Selected!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             _buildActions(state, bloc),
           ],
         ),
@@ -140,8 +143,8 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           children: [
             Text(
               widget.restaurants.isEmpty
-                  ? "We couldn't find any restaurants near you"
-                  : "Here's what we found near you",
+                  ? "We couldn't find any places near you"
+                  : "Choose your location!",
               style: TextStyle(
                   fontSize: 35.0,
                   fontWeight: FontWeight.bold,
@@ -157,6 +160,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     }
   }
 
+  /// Displayed after the user has selected a manually-searched restaurant
   Widget _buildActions(PlaceDetailSearchSuccess state, ManualSearchBloc bloc) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -199,7 +203,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: context.bloc<FoodprintBloc>())
         ],
-        child: PhotoDetailsPage(
+        child: SaveDetailsPage(
           oldFoodprint: widget.currentFoodprint,
           token: widget.token,
           imageFile: widget.imageFile,
@@ -222,18 +226,18 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
 
   Widget _buildButton(int index) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)
-      ),
+      shadowColor: foodprintPrimaryColorSwatch[400],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
-      color: foodprintPrimaryColorSwatch[200],
+      color: foodprintPrimaryColorSwatch[100],
       child: ListTile(
+          dense: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
           title: Text(widget.restaurants[index].restaurantName.getOrCrash(),
               overflow: TextOverflow.ellipsis,
               style:
-                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
           subtitle: Container(
             margin: const EdgeInsets.only(top: 5),
             child: Row(
@@ -258,6 +262,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           trailing: const Icon(
             Icons.arrow_forward_ios,
             color: Colors.black,
+            size: 20,
           ),
           onTap: _toDetails(widget.restaurants[index])),
     );

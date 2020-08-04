@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/display_models/spending_model.dart';
+import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_breakdown_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';

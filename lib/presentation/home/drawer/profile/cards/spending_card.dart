@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/display_models/spending_model.dart';
+import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_card_chart.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';

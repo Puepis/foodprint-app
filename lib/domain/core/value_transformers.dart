@@ -33,7 +33,6 @@ extension TimestampParser on Timestamp {
   };
 
   String toReadable() {
-    // ignore: unnecessary_this
     final String value = this.getOrCrash();
     final String date = _dateToReadable(value.substring(0, 10));
     final String time = _timeToReadable(value.substring(11, 19));

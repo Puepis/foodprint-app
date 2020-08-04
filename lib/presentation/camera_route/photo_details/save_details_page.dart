@@ -9,12 +9,13 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
-class PhotoDetailsPage extends StatelessWidget {
+/// The page where users fill in the details about their photo.
+class SaveDetailsPage extends StatelessWidget {
   final RestaurantEntity restaurant;
   final File imageFile;
   final FoodprintEntity oldFoodprint;
   final JWT token;
-  const PhotoDetailsPage(
+  const SaveDetailsPage(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,

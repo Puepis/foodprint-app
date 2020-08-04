@@ -12,6 +12,7 @@ import 'package:foodprint/presentation/router/route_generator.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// The entry point for the Foodprint application.
 class FoodprintApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

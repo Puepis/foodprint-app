@@ -10,6 +10,8 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 
+/// The page that displays the captured photo and searches for nearby restaurants
+/// in the background.
 class DisplayPhoto extends StatefulWidget {
   const DisplayPhoto({
     Key key,
@@ -33,7 +35,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
       onWillPop: () async => false,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black,
+            color: Colors.black,
             image: DecorationImage(fit: BoxFit.contain, image: loadedImage)),
         child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
             listener: (context, state) {
@@ -94,6 +96,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     );
   }
 
+  /// Display a confirmation dialog when user cancels the action.
   Future<bool> _willCancel() async {
     return (await showDialog(
             context: context,

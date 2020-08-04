@@ -55,7 +55,7 @@ class _EditImageScreenState extends State<EditImageScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     EditImageForm(
                         token: widget.token,

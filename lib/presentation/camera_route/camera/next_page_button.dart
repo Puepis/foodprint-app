@@ -9,6 +9,9 @@ import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
+/// The button that brings the user to the restaurant selection page.
+///
+/// Passes the list of [restaurants] to the next page.
 class NextPageButton extends StatelessWidget {
   const NextPageButton({
     Key key,

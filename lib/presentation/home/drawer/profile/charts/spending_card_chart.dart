@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/display_models/spending_model.dart';
+import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 
 /// The chart that is displayed in the profile spending card

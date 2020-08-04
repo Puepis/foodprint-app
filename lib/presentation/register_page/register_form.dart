@@ -6,6 +6,7 @@ import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
+/// The user registration form.
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
 

@@ -4,6 +4,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
 import 'package:foodprint/domain/manual_search/autocomplete_result_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The delegate where users can search for a location 
 class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
   final double longitude;
@@ -46,7 +47,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    // leading icon on the left of app bar
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
@@ -58,7 +58,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  /// Shows results based on the selection
+  /// Not used
   @override
   Widget buildResults(BuildContext context) {
     return Container();
@@ -77,7 +77,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   /// Builds the suggestion body as the user types
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Fire event
     context.bloc<ManualSearchBloc>()
       ..add(AutocompleteSearched(
           latitude: latitude, longitude: longitude, input: query));

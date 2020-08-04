@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/display_models/spending_model.dart';
+import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 
 class BreakdownChart extends StatelessWidget {
   final SpendingModel spending;

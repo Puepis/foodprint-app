@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_form.dart';
 
+/// The user registration page that contains the [RegisterForm].
 class RegisterPage extends StatelessWidget {
   static const routeName = "/register";
   const RegisterPage({Key key}) : super(key: key);
@@ -29,7 +30,7 @@ class RegisterPage extends StatelessWidget {
               ),
               Text(
                 "Create an account",
-                style: title1,
+                style: titleTextStyle,
               ),
               const SizedBox(
                 height: 2.5,

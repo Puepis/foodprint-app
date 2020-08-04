@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/presentation/display_models/summary_model.dart';
+import 'package:foodprint/presentation/profile_page_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
 import 'package:foodprint/presentation/router/edit_profile_args.dart';

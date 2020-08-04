@@ -31,6 +31,9 @@ class MonthlyVisitsChart extends StatelessWidget {
     );
   }
 
+  List<String> get monthAxis =>
+      ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+
   LineChartData mainData() {
     return LineChartData(
       gridData: FlGridData(
@@ -55,9 +58,7 @@ class MonthlyVisitsChart extends StatelessWidget {
           showTitles: true,
           reservedSize: 20,
           textStyle: TextStyle(
-              color: axisTitleColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+              color: axisTitleColor, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (double value) {
             switch (value.toInt()) {
               case 1:
@@ -97,7 +98,9 @@ class MonthlyVisitsChart extends StatelessWidget {
       ),
       borderData: FlBorderData(
           show: true,
-          border: Border.all(color: const Color(0xff37434d),)),
+          border: Border.all(
+            color: const Color(0xff37434d),
+          )),
       minX: 0,
       maxX: 11,
       minY: 0,
