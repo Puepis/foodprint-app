@@ -25,7 +25,6 @@ class NextPageButton extends StatelessWidget {
     final latitude = InheritedLocation.of(context).latitude;
     final longitude = InheritedLocation.of(context).longitude;
     final token = InheritedUser.of(context).token;
-    final oldFoodprint = InheritedUser.of(context).foodprint;
     final imageFile = InheritedImage.of(context).imageFile;
 
     return Container(
@@ -51,7 +50,6 @@ class NextPageButton extends StatelessWidget {
                   child: SelectRestaurantPage(
                       latitude: latitude,
                       longitude: longitude,
-                      currentFoodprint: oldFoodprint,
                       token: token,
                       imageFile: imageFile,
                       restaurants: restaurants),

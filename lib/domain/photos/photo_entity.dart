@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
@@ -13,7 +11,7 @@ abstract class PhotoEntity implements _$PhotoEntity {
 
   const factory PhotoEntity({
     @required StoragePath storagePath,
-    URL url,
+    final URL url,
     @required PhotoDetailEntity details,
     @required Timestamp timestamp,
     @required bool isFavourite,

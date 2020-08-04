@@ -4,8 +4,6 @@ part of 'photo_actions_bloc.dart';
 abstract class PhotoActionsEvent with _$PhotoActionsEvent {
   const factory PhotoActionsEvent.deleted({
     @required PhotoEntity photo,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity foodprint
   }) = Deleted;
 
   const factory PhotoActionsEvent.edited({
@@ -14,8 +12,6 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
     @required String newPrice,
     @required String newComments,
     @required bool isFavourite,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity foodprint 
   }) = Edited;
   
   const factory PhotoActionsEvent.saved({
@@ -24,7 +20,6 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
     @required String itemName,
     @required String price,
     @required String comments,
-    @required RestaurantEntity restaurant,
-    @required FoodprintEntity foodprint
+    @required RestaurantID placeID,
   }) = Saved;
 }

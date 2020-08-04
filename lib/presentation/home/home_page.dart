@@ -173,7 +173,6 @@ class _HomePageState extends State<HomePage> {
       BuildContext cxt, LatLng location, JWT token, FoodprintEntity foodprint) {
     Navigator.of(cxt).push(SlideUpEnterRoute(
         newPage: InheritedUser(
-      foodprint: foodprint,
       token: token,
       child: InheritedLocation(
         latitude: location.latitude,

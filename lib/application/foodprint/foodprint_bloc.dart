@@ -15,7 +15,7 @@ part 'foodprint_state.dart';
 part 'foodprint_bloc.freezed.dart';
 
 /// The BLoC that is reponsible for retrieving the user's foodprint (data)
-/// 
+///
 /// Maps incoming [FoodprintEvent] to [FoodprintState]
 @injectable
 class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
@@ -35,7 +35,7 @@ class FoodprintBloc extends Bloc<FoodprintEvent, FoodprintState> {
     final Either<FoodprintFailure, FoodprintEntity> result =
         await _remoteClient.getFoodprint(token: token);
     yield result.fold(
-        (f) => FoodprintState.fetchFoodprintFailure(f),
+        (failure) => FoodprintState.fetchFoodprintFailure(failure),
         (foodprint) =>
             FoodprintState.fetchFoodprintSuccess(foodprint: foodprint));
   }

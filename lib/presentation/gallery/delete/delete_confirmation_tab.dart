@@ -7,7 +7,7 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 
-/// The dialog that shows to confirm the deletion of [photo] 
+/// The dialog that shows to confirm the deletion of [photo]
 class DeleteConfirmationTab extends StatelessWidget {
   const DeleteConfirmationTab({
     Key key,
@@ -57,9 +57,8 @@ class DeleteConfirmationTab extends StatelessWidget {
               onTap: () {
                 // Delete photo
                 photoBloc.add(PhotoActionsEvent.deleted(
-                    photo: photo,
-                    restaurant: restaurant,
-                    foodprint: foodprint));
+                  photo: photo,
+                ));
               },
             )
           ],

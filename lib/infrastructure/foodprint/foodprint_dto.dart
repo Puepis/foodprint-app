@@ -30,27 +30,5 @@ abstract class FoodprintDTO implements _$FoodprintDTO {
         MapEntry(key.toEntity(), value.map((e) => e.toEntity()).toList())) 
     );
   }
-
-
-  factory FoodprintDTO.fromJSON(Map<String, dynamic> json) {
-    return FoodprintDTO(
-        restaurantPhotos: parseFoodprint(json['foodprint'] as List)
-    );
-  }
-
-  // Each foodprint response is a list of restaurants with a .photos field
-  static Map<RestaurantDTO, List<PhotoDTO>> parseFoodprint(List restaurants){
-    final Map<RestaurantDTO, List<PhotoDTO>> result = {};
-    for (final restaurant in restaurants) {
-      final key = RestaurantDTO.fromFoodprintAPI(restaurant as Map<String, dynamic>);
-      final List<PhotoDTO> photos = parsePhotos(restaurant['photos'] as List);
-      result[key] = photos;
-    }
-    return result;
-  }
-
-  static List<PhotoDTO> parsePhotos(List photos){
-    return photos.map((i) => PhotoDTO.fromJSON(i as Map<String, dynamic>)).toList();
-  }
 }
 

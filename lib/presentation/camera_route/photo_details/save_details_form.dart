@@ -8,7 +8,6 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
@@ -17,12 +16,10 @@ class SaveDetailsForm extends StatefulWidget {
   final JWT token;
   final RestaurantEntity restaurant;
   final File imageFile;
-  final FoodprintEntity oldFoodprint;
   const SaveDetailsForm(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
-      @required this.oldFoodprint,
       @required this.token})
       : super(key: key);
   @override
@@ -214,13 +211,13 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
 
                 // Fire off save event
                 photoBloc.add(PhotoActionsEvent.saved(
-                    userID: id,
-                    imageFile: widget.imageFile,
-                    itemName: _itemName,
-                    price: _price,
-                    comments: _comments,
-                    restaurant: widget.restaurant,
-                    foodprint: widget.oldFoodprint));
+                  userID: id,
+                  imageFile: widget.imageFile,
+                  itemName: _itemName,
+                  price: _price,
+                  comments: _comments,
+                  placeID: widget.restaurant.id,
+                ));
 
                 // Reset manual search state
                 context.bloc<ManualSearchBloc>().add(ResetManualSearch());

@@ -4,13 +4,12 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
 import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/photos/photo_failure.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/domain/restaurants/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -20,7 +19,7 @@ part 'photo_actions_event.dart';
 part 'photo_actions_state.dart';
 part 'photo_actions_bloc.freezed.dart';
 
-// This is the business logic component for handling photo actions (edit, save, delete)
+/// This is the business logic component for handling photo actions (edit, save, delete)
 @injectable
 class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   final IPhotoRepository _client;
@@ -63,7 +62,7 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
             name: PhotoName(itemName),
             price: PhotoPrice(double.parse(price)),
             comments: PhotoComments(comments)),
-        timestamp: Timestamp(time.substring(0, time.length - 3)),
+        timestamp: Timestamp(time),
         isFavourite: false);
   }
 
@@ -73,65 +72,58 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   ) async* {
     yield const PhotoActionsState.actionInProgress();
     yield* event.map(deleted: (e) async* {
-      yield* _mapDeletedToState(e.photo, e.restaurant, e.foodprint);
+      yield* _mapDeletedToState(e.photo);
     }, edited: (e) async* {
-      yield* _mapEditedToState(e.newName, e.newPrice, e.newComments,
-          e.isFavourite, e.oldPhoto, e.restaurant, e.foodprint);
+      yield* _mapEditedToState(
+          e.newName, e.newPrice, e.newComments, e.isFavourite, e.oldPhoto);
     }, saved: (e) async* {
-      yield* _mapSavedToState(e.userID, e.imageFile, e.itemName, e.price,
-          e.comments, e.restaurant, e.foodprint);
+      yield* _mapSavedToState(
+          e.userID, e.imageFile, e.itemName, e.price, e.comments, e.placeID);
     });
   }
 
-  Stream<PhotoActionsState> _mapDeletedToState(PhotoEntity photo,
-      RestaurantEntity restaurant, FoodprintEntity foodprint) async* {
-    final result = await _client.deletePhoto(
-        photo: photo, restaurant: restaurant, oldFoodprint: foodprint);
+  Stream<PhotoActionsState> _mapDeletedToState(PhotoEntity photo) async* {
+    final result = await _client.deletePhoto(photo: photo);
     yield result.fold((failure) => PhotoActionsState.deleteFailure(failure),
-        (newFoodprint) => PhotoActionsState.deleteSuccess(newFoodprint));
+        (_) => const PhotoActionsState.deleteSuccess());
   }
 
   Stream<PhotoActionsState> _mapEditedToState(
-      String newName,
-      String newPrice,
-      String newComments,
-      bool isFavourite,
-      PhotoEntity oldPhoto,
-      RestaurantEntity restaurant,
-      FoodprintEntity foodprint) async* {
+    String newName,
+    String newPrice,
+    String newComments,
+    bool isFavourite,
+    PhotoEntity oldPhoto,
+  ) async* {
     final newDetails = PhotoDetailEntity(
         name: PhotoName(newName),
         price: PhotoPrice(double.parse(newPrice)),
         comments: PhotoComments(newComments));
     final result = await _client.updatePhotoDetails(
-        oldPhoto: oldPhoto,
-        details: newDetails,
-        restaurant: restaurant,
-        oldFoodprint: foodprint,
-        isFavourite: isFavourite);
+        oldPhoto: oldPhoto, details: newDetails, isFavourite: isFavourite);
     yield result.fold(
       (failure) => PhotoActionsState.editFailure(failure),
-      (newFoodprint) => PhotoActionsState.editSuccess(newFoodprint),
+      (_) => const PhotoActionsState.editSuccess(),
     );
   }
 
   Stream<PhotoActionsState> _mapSavedToState(
-      UserID userID,
-      File imageFile,
-      String itemName,
-      String price,
-      String comments,
-      RestaurantEntity restaurant,
-      FoodprintEntity foodprint) async* {
+    UserID userID,
+    File imageFile,
+    String itemName,
+    String price,
+    String comments,
+    RestaurantID id,
+  ) async* {
     final newPhoto = _generateNewPhoto(
         userID.getOrCrash(), imageFile, itemName, price, comments);
     final result = await _client.saveNewPhoto(
-        userID: userID,
-        data: PhotoData(imageFile.readAsBytesSync().toList()), // Image data
-        photo: newPhoto,
-        restaurant: restaurant,
-        oldFoodprint: foodprint);
+      userID: userID,
+      data: PhotoData(imageFile.readAsBytesSync().toList()), // Image data
+      photo: newPhoto,
+      placeID: id,
+    );
     yield result.fold((l) => PhotoActionsState.saveFailure(l),
-        (r) => PhotoActionsState.saveSuccess(r));
+        (_) => const PhotoActionsState.saveSuccess());
   }
 }

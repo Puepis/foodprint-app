@@ -7,7 +7,6 @@ import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
@@ -20,7 +19,6 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 /// If the list doesn't contain the desired restaurant, the user can use the
 /// [ManualSearchPage] to find the correct one.
 class SelectRestaurantPage extends StatefulWidget {
-  final FoodprintEntity currentFoodprint;
   final File imageFile;
   final List<RestaurantEntity> restaurants;
   final JWT token;
@@ -30,7 +28,6 @@ class SelectRestaurantPage extends StatefulWidget {
       {Key key,
       @required this.imageFile,
       @required this.restaurants,
-      @required this.currentFoodprint,
       @required this.latitude,
       @required this.longitude,
       @required this.token})
@@ -204,7 +201,6 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           BlocProvider.value(value: context.bloc<FoodprintBloc>())
         ],
         child: SaveDetailsPage(
-          oldFoodprint: widget.currentFoodprint,
           token: widget.token,
           imageFile: widget.imageFile,
           restaurant: restaurant,

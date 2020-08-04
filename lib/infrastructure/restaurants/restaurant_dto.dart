@@ -57,16 +57,6 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
     );
   }
 
-  factory RestaurantDTO.fromFoodprintAPI(Map<String, dynamic> json) {
-    return RestaurantDTO(
-        placeId: json['restaurant_id'] as String,
-        name: json['restaurant_name'] as String,
-        rating: double.parse(json['restaurant_rating'].toString()),
-        latitude: double.parse(json['restaurant_lat'].toString()),
-        longitude: double.parse(json['restaurant_lng'].toString()),
-        types: _parseTypesFromAPI(json['restaurant_types'] as List));
-  }
-
   static List<String> _parseTypesFromPlaceSearches(List types) {
     // Only keep one of [bar, bakery, cafe, restaurant]
     final List<String> result = List<String>.from(types);
@@ -80,9 +70,5 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
       return ["cafe"];
     }
     return ["restaurant"];
-  }
-
-  static List<String> _parseTypesFromAPI(List types) {
-    return types.map((e) => e['type'] as String).toList();
   }
 }

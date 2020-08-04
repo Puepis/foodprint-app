@@ -228,13 +228,12 @@ class _EditImageFormState extends State<EditImageForm> {
 
                         // Edit photo
                         photoBloc.add(PhotoActionsEvent.edited(
-                            oldPhoto: widget.photo,
-                            newName: _itemName,
-                            newPrice: _price,
-                            newComments: _comments,
-                            isFavourite: _isFavourite,
-                            restaurant: widget.restaurant,
-                            foodprint: widget.foodprint));
+                          oldPhoto: widget.photo,
+                          newName: _itemName,
+                          newPrice: _price,
+                          newComments: _comments,
+                          isFavourite: _isFavourite,
+                        ));
                       }
                     }),
               ),
