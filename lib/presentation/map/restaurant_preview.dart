@@ -50,7 +50,7 @@ class RestaurantPreview extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        restaurant.restaurantName.getOrCrash(),
+                        restaurant.name.getOrCrash(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -79,7 +79,7 @@ class RestaurantPreview extends StatelessWidget {
                             width: 3.0,
                           ),
                           Text(
-                            restaurant.restaurantRating.getOrCrash().toString(),
+                            restaurant.rating.getOrCrash().toString(),
                             style: const TextStyle(
                                 fontSize: 16, color: Colors.black),
                           )

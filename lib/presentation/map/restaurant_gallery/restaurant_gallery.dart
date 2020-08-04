@@ -26,7 +26,7 @@ class RestaurantGallery extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 5),
             child: Text(
-              restaurant.restaurantName.getOrCrash(),
+              restaurant.name.getOrCrash(),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

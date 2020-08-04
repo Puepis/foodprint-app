@@ -13,16 +13,16 @@ class _$RestaurantEntityTearOff {
   const _$RestaurantEntityTearOff();
 
   _RestaurantEntity call(
-      {@required RestaurantID restaurantID,
-      @required RestaurantName restaurantName,
-      @required RestaurantRating restaurantRating,
+      {@required RestaurantID id,
+      @required RestaurantName name,
+      @required RestaurantRating rating,
       @required Latitude latitude,
       @required Longitude longitude,
       @required RestaurantTypes types}) {
     return _RestaurantEntity(
-      restaurantID: restaurantID,
-      restaurantName: restaurantName,
-      restaurantRating: restaurantRating,
+      id: id,
+      name: name,
+      rating: rating,
       latitude: latitude,
       longitude: longitude,
       types: types,
@@ -34,9 +34,9 @@ class _$RestaurantEntityTearOff {
 const $RestaurantEntity = _$RestaurantEntityTearOff();
 
 mixin _$RestaurantEntity {
-  RestaurantID get restaurantID;
-  RestaurantName get restaurantName;
-  RestaurantRating get restaurantRating;
+  RestaurantID get id;
+  RestaurantName get name;
+  RestaurantRating get rating;
   Latitude get latitude;
   Longitude get longitude;
   RestaurantTypes get types;
@@ -49,9 +49,9 @@ abstract class $RestaurantEntityCopyWith<$Res> {
           RestaurantEntity value, $Res Function(RestaurantEntity) then) =
       _$RestaurantEntityCopyWithImpl<$Res>;
   $Res call(
-      {RestaurantID restaurantID,
-      RestaurantName restaurantName,
-      RestaurantRating restaurantRating,
+      {RestaurantID id,
+      RestaurantName name,
+      RestaurantRating rating,
       Latitude latitude,
       Longitude longitude,
       RestaurantTypes types});
@@ -67,23 +67,17 @@ class _$RestaurantEntityCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object restaurantID = freezed,
-    Object restaurantName = freezed,
-    Object restaurantRating = freezed,
+    Object id = freezed,
+    Object name = freezed,
+    Object rating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
     Object types = freezed,
   }) {
     return _then(_value.copyWith(
-      restaurantID: restaurantID == freezed
-          ? _value.restaurantID
-          : restaurantID as RestaurantID,
-      restaurantName: restaurantName == freezed
-          ? _value.restaurantName
-          : restaurantName as RestaurantName,
-      restaurantRating: restaurantRating == freezed
-          ? _value.restaurantRating
-          : restaurantRating as RestaurantRating,
+      id: id == freezed ? _value.id : id as RestaurantID,
+      name: name == freezed ? _value.name : name as RestaurantName,
+      rating: rating == freezed ? _value.rating : rating as RestaurantRating,
       latitude: latitude == freezed ? _value.latitude : latitude as Latitude,
       longitude:
           longitude == freezed ? _value.longitude : longitude as Longitude,
@@ -99,9 +93,9 @@ abstract class _$RestaurantEntityCopyWith<$Res>
       __$RestaurantEntityCopyWithImpl<$Res>;
   @override
   $Res call(
-      {RestaurantID restaurantID,
-      RestaurantName restaurantName,
-      RestaurantRating restaurantRating,
+      {RestaurantID id,
+      RestaurantName name,
+      RestaurantRating rating,
       Latitude latitude,
       Longitude longitude,
       RestaurantTypes types});
@@ -119,23 +113,17 @@ class __$RestaurantEntityCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object restaurantID = freezed,
-    Object restaurantName = freezed,
-    Object restaurantRating = freezed,
+    Object id = freezed,
+    Object name = freezed,
+    Object rating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
     Object types = freezed,
   }) {
     return _then(_RestaurantEntity(
-      restaurantID: restaurantID == freezed
-          ? _value.restaurantID
-          : restaurantID as RestaurantID,
-      restaurantName: restaurantName == freezed
-          ? _value.restaurantName
-          : restaurantName as RestaurantName,
-      restaurantRating: restaurantRating == freezed
-          ? _value.restaurantRating
-          : restaurantRating as RestaurantRating,
+      id: id == freezed ? _value.id : id as RestaurantID,
+      name: name == freezed ? _value.name : name as RestaurantName,
+      rating: rating == freezed ? _value.rating : rating as RestaurantRating,
       latitude: latitude == freezed ? _value.latitude : latitude as Latitude,
       longitude:
           longitude == freezed ? _value.longitude : longitude as Longitude,
@@ -146,26 +134,26 @@ class __$RestaurantEntityCopyWithImpl<$Res>
 
 class _$_RestaurantEntity extends _RestaurantEntity {
   const _$_RestaurantEntity(
-      {@required this.restaurantID,
-      @required this.restaurantName,
-      @required this.restaurantRating,
+      {@required this.id,
+      @required this.name,
+      @required this.rating,
       @required this.latitude,
       @required this.longitude,
       @required this.types})
-      : assert(restaurantID != null),
-        assert(restaurantName != null),
-        assert(restaurantRating != null),
+      : assert(id != null),
+        assert(name != null),
+        assert(rating != null),
         assert(latitude != null),
         assert(longitude != null),
         assert(types != null),
         super._();
 
   @override
-  final RestaurantID restaurantID;
+  final RestaurantID id;
   @override
-  final RestaurantName restaurantName;
+  final RestaurantName name;
   @override
-  final RestaurantRating restaurantRating;
+  final RestaurantRating rating;
   @override
   final Latitude latitude;
   @override
@@ -175,22 +163,19 @@ class _$_RestaurantEntity extends _RestaurantEntity {
 
   @override
   String toString() {
-    return 'RestaurantEntity(restaurantID: $restaurantID, restaurantName: $restaurantName, restaurantRating: $restaurantRating, latitude: $latitude, longitude: $longitude, types: $types)';
+    return 'RestaurantEntity(id: $id, name: $name, rating: $rating, latitude: $latitude, longitude: $longitude, types: $types)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _RestaurantEntity &&
-            (identical(other.restaurantID, restaurantID) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantID, restaurantID)) &&
-            (identical(other.restaurantName, restaurantName) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantName, restaurantName)) &&
-            (identical(other.restaurantRating, restaurantRating) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantRating, restaurantRating)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.rating, rating) ||
+                const DeepCollectionEquality().equals(other.rating, rating)) &&
             (identical(other.latitude, latitude) ||
                 const DeepCollectionEquality()
                     .equals(other.latitude, latitude)) &&
@@ -204,9 +189,9 @@ class _$_RestaurantEntity extends _RestaurantEntity {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(restaurantID) ^
-      const DeepCollectionEquality().hash(restaurantName) ^
-      const DeepCollectionEquality().hash(restaurantRating) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(rating) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude) ^
       const DeepCollectionEquality().hash(types);
@@ -219,19 +204,19 @@ class _$_RestaurantEntity extends _RestaurantEntity {
 abstract class _RestaurantEntity extends RestaurantEntity {
   const _RestaurantEntity._() : super._();
   const factory _RestaurantEntity(
-      {@required RestaurantID restaurantID,
-      @required RestaurantName restaurantName,
-      @required RestaurantRating restaurantRating,
+      {@required RestaurantID id,
+      @required RestaurantName name,
+      @required RestaurantRating rating,
       @required Latitude latitude,
       @required Longitude longitude,
       @required RestaurantTypes types}) = _$_RestaurantEntity;
 
   @override
-  RestaurantID get restaurantID;
+  RestaurantID get id;
   @override
-  RestaurantName get restaurantName;
+  RestaurantName get name;
   @override
-  RestaurantRating get restaurantRating;
+  RestaurantRating get rating;
   @override
   Latitude get latitude;
   @override

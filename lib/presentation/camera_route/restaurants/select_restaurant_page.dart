@@ -234,7 +234,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           dense: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-          title: Text(widget.restaurants[index].restaurantName.getOrCrash(),
+          title: Text(widget.restaurants[index].name.getOrCrash(),
               overflow: TextOverflow.ellipsis,
               style:
                   const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
@@ -250,10 +250,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
                 const SizedBox(
                   width: 5.0,
                 ),
-                Text(
-                    widget.restaurants[index].restaurantRating
-                        .getOrCrash()
-                        .toString(),
+                Text(widget.restaurants[index].rating.getOrCrash().toString(),
                     style: const TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w500)),
               ],

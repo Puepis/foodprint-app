@@ -121,7 +121,7 @@ class _FoodMapState extends State<FoodMap> {
       final marker = Marker(
           icon:
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-          markerId: MarkerId(restaurant.restaurantID.getOrCrash()),
+          markerId: MarkerId(restaurant.id.getOrCrash()),
           position: LatLng(restaurant.latitude.getOrCrash(),
               restaurant.longitude.getOrCrash()),
           onTap: () {
@@ -134,7 +134,7 @@ class _FoodMapState extends State<FoodMap> {
                       photos: photos,
                     ));
           });
-      result[restaurant.restaurantID.getOrCrash()] = marker;
+      result[restaurant.id.getOrCrash()] = marker;
     });
     return result;
   }

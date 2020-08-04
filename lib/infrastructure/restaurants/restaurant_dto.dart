@@ -12,7 +12,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
 
   const factory RestaurantDTO({
     @required String placeId,
-    @required String restaurantName,
+    @required String name,
     @required double rating,
     @required double latitude,
     @required double longitude,
@@ -22,9 +22,9 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   // Convert entity to DTO
   factory RestaurantDTO.fromEntity(RestaurantEntity restaurant) {
     return RestaurantDTO(
-      placeId: restaurant.restaurantID.getOrCrash(),
-      restaurantName: restaurant.restaurantName.getOrCrash(),
-      rating: restaurant.restaurantRating.getOrCrash(),
+      placeId: restaurant.id.getOrCrash(),
+      name: restaurant.name.getOrCrash(),
+      rating: restaurant.rating.getOrCrash(),
       latitude: restaurant.latitude.getOrCrash(),
       longitude: restaurant.longitude.getOrCrash(),
       types: restaurant.types.getOrCrash(),
@@ -34,9 +34,9 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   // Convert DTO to entity
   RestaurantEntity toEntity() {
     return RestaurantEntity(
-      restaurantID: RestaurantID(placeId),
-      restaurantName: RestaurantName(restaurantName),
-      restaurantRating: RestaurantRating(rating),
+      id: RestaurantID(placeId),
+      name: RestaurantName(name),
+      rating: RestaurantRating(rating),
       latitude: Latitude(latitude),
       longitude: Longitude(longitude),
       types: RestaurantTypes(types),
@@ -47,7 +47,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromPlaceSearches(Map<String, dynamic> json) {
     return RestaurantDTO(
       placeId: json['place_id'] as String,
-      restaurantName: json['name'] as String,
+      name: json['name'] as String,
       rating: json['rating'] == null
           ? 0.01
           : double.parse(json['rating'].toString()),
@@ -60,7 +60,7 @@ abstract class RestaurantDTO implements _$RestaurantDTO {
   factory RestaurantDTO.fromFoodprintAPI(Map<String, dynamic> json) {
     return RestaurantDTO(
         placeId: json['restaurant_id'] as String,
-        restaurantName: json['restaurant_name'] as String,
+        name: json['restaurant_name'] as String,
         rating: double.parse(json['restaurant_rating'].toString()),
         latitude: double.parse(json['restaurant_lat'].toString()),
         longitude: double.parse(json['restaurant_lng'].toString()),

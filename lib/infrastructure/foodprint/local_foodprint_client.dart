@@ -19,8 +19,7 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
 
     // Check if key already exists
     for (final key in restaurantPhotos.keys) {
-      if (key.restaurantID.getOrCrash() ==
-          restaurant.restaurantID.getOrCrash()) {
+      if (key.id.getOrCrash() == restaurant.id.getOrCrash()) {
         _keyExists = true;
         restaurantPhotos[key].insert(0, newPhoto);
       }
@@ -43,8 +42,7 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
 
     restaurantPhotos.forEach((key, photos) {
       // Match the restaurant
-      if (key.restaurantID.getOrCrash() ==
-          restaurant.restaurantID.getOrCrash()) {
+      if (key.id.getOrCrash() == restaurant.id.getOrCrash()) {
         photos.removeWhere((e) =>
             e.storagePath.getOrCrash() == photo.storagePath.getOrCrash());
         if (photos.isEmpty) {
@@ -66,10 +64,8 @@ class LocalFoodprintClient implements ILocalFoodprintRepository {
       @required FoodprintEntity oldFoodprint}) {
     final restaurantPhotos = oldFoodprint.restaurantPhotos;
     restaurantPhotos.forEach((key, photos) {
-
       // Match restaurant key
-      if (key.restaurantID.getOrCrash() ==
-          restaurant.restaurantID.getOrCrash()) {
+      if (key.id.getOrCrash() == restaurant.id.getOrCrash()) {
         for (final p in photos) {
           if (p.storagePath.getOrCrash() == photo.storagePath.getOrCrash()) {
             final index = photos.indexOf(p);

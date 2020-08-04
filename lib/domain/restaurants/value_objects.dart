@@ -21,9 +21,9 @@ class RestaurantName extends ValueObject<String> {
   @override
   final Either<ValueFailure<String>, String> value;
 
-  factory RestaurantName(String restaurantName) {
-    assert(restaurantName != null);
-    return RestaurantName._(validateStringNotEmpty(restaurantName));
+  factory RestaurantName(String name) {
+    assert(name != null);
+    return RestaurantName._(validateStringNotEmpty(name));
   }
 
   const RestaurantName._(this.value);

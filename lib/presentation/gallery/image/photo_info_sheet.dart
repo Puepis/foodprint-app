@@ -122,7 +122,7 @@ class PhotoInfoSheet extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          Text(restaurant.restaurantName.getOrCrash(),
+          Text(restaurant.name.getOrCrash(),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: _sectionBodyStyle),
@@ -140,7 +140,7 @@ class PhotoInfoSheet extends StatelessWidget {
                 width: 7.5,
               ),
               Text(
-                restaurant.restaurantRating.getOrCrash().toString(),
+                restaurant.rating.getOrCrash().toString(),
                 style: _sectionBodyStyle,
               )
             ],

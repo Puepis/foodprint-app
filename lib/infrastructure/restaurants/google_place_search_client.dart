@@ -14,7 +14,7 @@ import 'package:foodprint/infrastructure/restaurants/place_detail_search_respons
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
-// This class is responsible for searching for nearby restaurants and converting the response data into entities
+/// This class is responsible for searching for nearby restaurants and converting the response data into entities
 @LazySingleton(as: IRestaurantSearchRepository)
 class GooglePlaceSearchClient implements IRestaurantSearchRepository {
   static const String nearbySearchBaseUrl =

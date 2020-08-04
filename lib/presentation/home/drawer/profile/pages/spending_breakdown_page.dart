@@ -209,8 +209,7 @@ class BreakdownDetails extends StatelessWidget {
               return ListTile(
                 title: Row(
                   children: [
-                    Expanded(
-                        child: Text(restaurant.restaurantName.getOrCrash())),
+                    Expanded(child: Text(restaurant.name.getOrCrash())),
                     Text(formatter.format(totalPrice)),
                   ],
                 ),
