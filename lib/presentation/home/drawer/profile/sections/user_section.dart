@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
@@ -164,9 +165,20 @@ class _UserSectionState extends State<UserSection> {
       final ImageSource source =
           (result == 0) ? ImageSource.camera : ImageSource.gallery;
 
-      final PickedFile image =
-          await _picker.getImage(source: source, imageQuality: 70);
+      PickedFile image;
+      try {
+        image = await _picker.getImage(source: source, imageQuality: 70);
+      } on PlatformException catch (e) {
+        Scaffold.of(context)..hideCurrentSnackBar();
+        FlushbarHelper.createError(
+                message: e.code.contains('camera')
+                    ? 'Camera permission required'
+                    : 'Gallery permission required')
+            .show(context);
+        return;
+      }
 
+      // Image selected
       if (image != null) {
         final File _imageFile = File(image.path);
 

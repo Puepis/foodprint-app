@@ -22,6 +22,9 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentUsername =
+        JWT.getDecodedPayload(widget.token.getOrCrash())['username'] as String;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -81,6 +84,8 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
                         return 'Please enter a username';
                       } else if (value.length > 20) {
                         return 'Username must not be longer than 20 characters';
+                      } else if (value == currentUsername) {
+                        return 'Please choose a different username';
                       }
                       return null;
                     },

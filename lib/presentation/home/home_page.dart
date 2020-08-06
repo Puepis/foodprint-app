@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart' show Tuple2;
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
@@ -7,10 +8,12 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
@@ -42,7 +45,17 @@ class _HomePageState extends State<HomePage> {
 
     return WillPopScope(
       onWillPop: () async => false,
-      child: BlocBuilder<LocationBloc, LocationState>(
+      child: BlocConsumer<LocationBloc, LocationState>(
+        listener: (context, state) {
+          if (state is GetLocationFailure) {
+            Scaffold.of(context)..hideCurrentSnackBar();
+            FlushbarHelper.createError(
+                message: state.failure.map(
+                    permissionDenied: (_) => 'Location permission denied',
+                    locationServiceDisabled: (_) => 'Location service disabled',
+                    unexpected: (_) => 'Unexpected error')).show(context);
+          }
+        },
         builder: (context, state) {
           // Loading screen
           Widget mapScreen = const Center(child: CircularProgressIndicator());
@@ -51,6 +64,10 @@ class _HomePageState extends State<HomePage> {
             mapScreen = FoodMap(
               foodprint: foodprint,
             );
+          }
+
+          if (state is GetLocationFailure) {
+            mapScreen = Container();
           }
 
           return Scaffold(
@@ -102,7 +119,9 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () => (state is GetLocationSuccess)
                       ? _toCamera(context, state.latlng, token,
                           foodprint) // take picture
-                      : null,
+                      : FlushbarHelper.createError(
+                              message: 'Location permission required')
+                          .show(context),
                   child: const Icon(
                     Icons.add,
                     color: Colors.white,
