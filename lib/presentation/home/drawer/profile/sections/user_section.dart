@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
@@ -106,13 +107,12 @@ class _UserSectionState extends State<UserSection> {
                     width: 120,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        child: FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(milliseconds: 200),
-                            placeholder: kTransparentImage,
-                            image: url),
-                      ),
+                      child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          fadeInDuration: const Duration(milliseconds: 150),
+                          placeholder: (context, url) =>
+                              Image.memory(kTransparentImage),
+                          imageUrl: url),
                     ),
                   ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
@@ -102,13 +103,12 @@ class RestaurantPreview extends StatelessWidget {
           width: 125,
           child: Hero(
             tag: photos[0].url.getOrCrash(),
-            child: FittedBox(
-              fit: BoxFit.fitWidth,
-              child: FadeInImage.memoryNetwork(
-                  fadeInDuration: const Duration(milliseconds: 200),
-                  placeholder: kTransparentImage,
-                  image: photos[0].url.getOrCrash()),
-            ),
+            child: CachedNetworkImage(
+                fit: BoxFit.fitWidth,
+                fadeInDuration: const Duration(milliseconds: 150),
+                placeholder: (context, url) =>
+                    Image.memory(kTransparentImage),
+                imageUrl: photos[0].url.getOrCrash()),
           ),
         ),
       );

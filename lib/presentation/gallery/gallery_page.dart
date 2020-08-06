@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,6 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
@@ -47,15 +47,13 @@ class Gallery extends StatelessWidget {
                 clipBehavior: Clip.antiAlias,
                 child: Hero(
                   tag: photo.timestamp.getOrCrash(),
-                  child: ClipRRect(
-                    child: FittedBox(
+                  child: CachedNetworkImage(
                       fit: BoxFit.fitWidth,
-                      child: FadeInImage.memoryNetwork(
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          placeholder: kTransparentImage,
-                          image: photo.url.getOrCrash()),
-                    ),
-                  ),
+                      fadeInDuration: const Duration(milliseconds: 150),
+                      placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                      imageUrl: photo.url.getOrCrash()),
                 ),
               ),
             ),

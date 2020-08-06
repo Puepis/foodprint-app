@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -47,9 +48,13 @@ class _FullImagePageState extends State<FullImagePage> {
               child: Center(
                 child: Hero(
                   tag: widget.photo.timestamp.getOrCrash(),
-                  child: FittedBox(
+                  child: CachedNetworkImage(
                       fit: BoxFit.fitWidth,
-                      child: Image.network(widget.photo.url.getOrCrash())),
+                      fadeInDuration: const Duration(milliseconds: 150),
+                      placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                      imageUrl: widget.photo.url.getOrCrash()),
                 ),
               ),
             ),
@@ -63,7 +68,7 @@ class _FullImagePageState extends State<FullImagePage> {
     );
   }
 
-  /// Snaps to the vertical edges of the screen depending on the user's scroll direction 
+  /// Snaps to the vertical edges of the screen depending on the user's scroll direction
   void _handleScroll() {
     // Move to the bottom
     if (_position.userScrollDirection == ScrollDirection.reverse) {

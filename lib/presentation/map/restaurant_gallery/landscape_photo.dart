@@ -28,13 +28,12 @@ class LandscapePhoto extends StatelessWidget {
               height: constraints.maxHeight * 0.90,
               width: constraints.maxWidth * 0.6,
               color: Colors.black,
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: FadeInImage.memoryNetwork(
-                    fadeInDuration: const Duration(milliseconds: 200),
-                    placeholder: kTransparentImage,
-                    image: photo.url.getOrCrash()),
-              ),
+              child: CachedNetworkImage(
+                  fit: BoxFit.fitWidth,
+                  fadeInDuration: const Duration(milliseconds: 150),
+                  placeholder: (context, url) =>
+                      Image.memory(kTransparentImage),
+                  imageUrl: photo.url.getOrCrash()),
             ),
             Expanded(
               child: Padding(
