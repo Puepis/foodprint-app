@@ -56,56 +56,54 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
         },
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    "New Username",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Text(
+                  "New Username",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
-                    onSaved: (value) => newUsername = value,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter a username';
-                      } else if (value.length > 20) {
-                        return 'Username must not be longer than 20 characters';
-                      } else if (value == currentUsername) {
-                        return 'Please choose a different username';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  AuthIdleButton(
-                    title: "Save",
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                  onSaved: (value) => newUsername = value,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter a username';
+                    } else if (value.length > 20) {
+                      return 'Username must not be longer than 20 characters';
+                    } else if (value == currentUsername) {
+                      return 'Please choose a different username';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                AuthIdleButton(
+                  title: "Save",
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
 
-                        context.bloc<AccountBloc>().add(AccountUsernameChanged(
-                            token: widget.token, newUsername: newUsername));
-                      }
-                    },
-                  )
-                ],
-              ),
+                      context.bloc<AccountBloc>().add(AccountUsernameChanged(
+                          token: widget.token, newUsername: newUsername));
+                    }
+                  },
+                )
+              ],
             ),
           ),
         ),

@@ -83,6 +83,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),

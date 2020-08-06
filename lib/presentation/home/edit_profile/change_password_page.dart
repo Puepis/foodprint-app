@@ -56,140 +56,138 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         },
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    "Old Password",
-                    style: ChangePasswordPage._sectionTitleStyle,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    obscureText: !_showOldPassword,
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showOldPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: primaryColorDark,
-                        ),
-                        onPressed: () => setState(() {
-                          _showOldPassword = !_showOldPassword;
-                        }),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Text(
+                  "Old Password",
+                  style: ChangePasswordPage._sectionTitleStyle,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  obscureText: !_showOldPassword,
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _showOldPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: primaryColorDark,
                       ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
+                      onPressed: () => setState(() {
+                        _showOldPassword = !_showOldPassword;
+                      }),
                     ),
-                    onSaved: (value) => oldPassword = value,
-                    validator: (value) {
-                      if (value.length < 6 || value.length > 32) {
-                        return 'Invalid password';
-                      }
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
+                  ),
+                  onSaved: (value) => oldPassword = value,
+                  validator: (value) {
+                    if (value.length < 6 || value.length > 32) {
+                      return 'Invalid password';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  "New Password",
+                  style: ChangePasswordPage._sectionTitleStyle,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  obscureText: !_showNewPassword,
+                  enableInteractiveSelection: false,
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _showNewPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: primaryColorDark,
+                      ),
+                      onPressed: () => setState(() {
+                        _showNewPassword = !_showNewPassword;
+                      }),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
+                  ),
+                  onChanged: (value) => newPassword = value,
+                  onSaved: (value) => newPassword = value,
+                  validator: (value) {
+                    if (value.length < 6) {
+                      return 'Please enter a longer password';
+                    } else if (value.length > 32) {
+                      return 'Password must not be longer than 32 characters';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  "Confirm Password",
+                  style: ChangePasswordPage._sectionTitleStyle,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  obscureText: !_showConfirmPassword,
+                  enableInteractiveSelection: false,
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _showConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: primaryColorDark,
+                      ),
+                      onPressed: () => setState(() {
+                        _showConfirmPassword = !_showConfirmPassword;
+                      }),
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
+                  ),
+                  onSaved: (value) => confirmPassword = value,
+                  validator: (value) {
+                    if (value == newPassword) {
                       return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
-                    "New Password",
-                    style: ChangePasswordPage._sectionTitleStyle,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    obscureText: !_showNewPassword,
-                    enableInteractiveSelection: false,
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showNewPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: primaryColorDark,
-                        ),
-                        onPressed: () => setState(() {
-                          _showNewPassword = !_showNewPassword;
-                        }),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
-                    onChanged: (value) => newPassword = value,
-                    onSaved: (value) => newPassword = value,
-                    validator: (value) {
-                      if (value.length < 6) {
-                        return 'Please enter a longer password';
-                      } else if (value.length > 32) {
-                        return 'Password must not be longer than 32 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
-                    "Confirm Password",
-                    style: ChangePasswordPage._sectionTitleStyle,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    obscureText: !_showConfirmPassword,
-                    enableInteractiveSelection: false,
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _showConfirmPassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: primaryColorDark,
-                        ),
-                        onPressed: () => setState(() {
-                          _showConfirmPassword = !_showConfirmPassword;
-                        }),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
-                    onSaved: (value) => confirmPassword = value,
-                    validator: (value) {
-                      if (value == newPassword) {
-                        return null;
-                      }
-                      return 'Passwords must match';
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  AuthIdleButton(
-                    title: "Save and Relog",
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                    }
+                    return 'Passwords must match';
+                  },
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                AuthIdleButton(
+                  title: "Save and Relog",
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
 
-                        context.bloc<AccountBloc>().add(AccountPasswordChanged(
-                            token: widget.token,
-                            oldPassword: oldPassword,
-                            newPassword: newPassword));
-                      }
-                    },
-                  )
-                ],
-              ),
+                      context.bloc<AccountBloc>().add(AccountPasswordChanged(
+                          token: widget.token,
+                          oldPassword: oldPassword,
+                          newPassword: newPassword));
+                    }
+                  },
+                )
+              ],
             ),
           ),
         ),

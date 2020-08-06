@@ -51,6 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
       return Form(
         autovalidate: state.showErrorMessages,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             AuthFormField(

@@ -96,14 +96,9 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     if (state is PlaceDetailSearchLoading) {
       // Loading indicator
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SpinKitRing(
-              color: primaryColor,
-              size: 100,
-            ),
-          ],
+        child: SpinKitRing(
+          color: primaryColor,
+          size: 100,
         ),
       );
     } else if (state is PlaceDetailSearchSuccess) {
@@ -134,25 +129,23 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
       );
     } else {
       // Error or initial state
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.restaurants.isEmpty
-                  ? "We couldn't find any places near you"
-                  : "Choose your location!",
-              style: TextStyle(
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _buildRestaurantButtons(context),
-          ],
-        ),
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          Text(
+            widget.restaurants.isEmpty
+                ? "We couldn't find any places near you"
+                : "Select your location!",
+            style: TextStyle(
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
+                color: primaryColor),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          _buildRestaurantButtons(context),
+        ],
       );
     }
   }

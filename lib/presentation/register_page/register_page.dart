@@ -21,16 +21,19 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Container(
-        padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+        padding: const EdgeInsets.all(25),
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              Image.asset(
-                'assets/images/logo.png',
-                height: 75,
-                width: 75,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 75,
+                  width: 75,
+                ),
               ),
               Text(
                 "Create an account",

@@ -80,9 +80,10 @@ dev_dependencies:
   lint: ^1.2.0
 
 flutter_icons:
-  android: "launcher_icon"
+  android: true 
   ios: true
   image_path: "assets/icons/inverted_logo.png"
+  adaptive_icon_background: "#F6B26B"
 
 flutter:
   # Use Material Icons class

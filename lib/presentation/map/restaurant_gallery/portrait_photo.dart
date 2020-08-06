@@ -16,9 +16,25 @@ class PortraitPhoto extends StatelessWidget {
   final NumberFormat formatter;
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: [
-          Container(
+  Widget build(BuildContext context) {
+    /// Get image dimensions to determine background color
+    final image = Image.network(photo.url.getOrCrash());
+    final completer = Completer<ui.Image>();
+    image.image.resolve(const ImageConfiguration()).addListener(
+        ImageStreamListener((info, _) => completer.complete(info.image)));
+
+    return FutureBuilder<ui.Image>(
+        future: completer.future,
+        builder: (context, snapshot) {
+          Color bgColor = Colors.transparent;
+
+          // Check if image is portrait or landscape
+          if (snapshot.hasData) {
+            bgColor = snapshot.data.width > snapshot.data.height
+                ? Colors.black
+                : Colors.transparent;
+          }
+          return Container(
             margin: const EdgeInsets.all(10),
             padding: EdgeInsets.only(
               top: topPadding,
@@ -26,15 +42,18 @@ class PortraitPhoto extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: constraints.maxWidth,
-                  color: Colors.black,
-                  child: CachedNetworkImage(
-                      fit: BoxFit.fitWidth,
-                      fadeInDuration: const Duration(milliseconds: 150),
-                      placeholder: (context, url) =>
-                          Image.memory(kTransparentImage),
-                      imageUrl: photo.url.getOrCrash()),
+                Expanded(
+                  child: Container(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    color: bgColor,
+                    child: CachedNetworkImage(
+                        fit: BoxFit.scaleDown,
+                        fadeInDuration: const Duration(milliseconds: 150),
+                        placeholder: (context, url) =>
+                            Image.memory(kTransparentImage),
+                        imageUrl: photo.url.getOrCrash()),
+                  ),
                 ),
                 Container(
                   width: constraints.maxWidth,
@@ -80,7 +99,7 @@ class PortraitPhoto extends StatelessWidget {
                 )
               ],
             ),
-          ),
-        ],
-      );
+          );
+        });
+  }
 }

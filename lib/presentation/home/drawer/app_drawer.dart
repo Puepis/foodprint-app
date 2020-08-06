@@ -39,7 +39,7 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   _createDrawerItem(
                       icon: Icons.person,
-                      text: 'My profile',
+                      text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
                           context, ProfilePage.routeName,
                           arguments: ProfilePageArgs(
@@ -52,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   _createDrawerItem(
                       icon: Icons.exit_to_app,
-                      text: 'Sign Out',
+                      text: 'Sign out',
                       onTap: () => context
                           .bloc<AuthBloc>()
                           .add(const AuthEvent.loggedOut())),

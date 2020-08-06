@@ -30,7 +30,7 @@ class SaveDetailsPage extends StatelessWidget {
           elevation: 0,
           backgroundColor: backgroundColor,
         ),
-        body: Container(
+        body: Padding(
             padding: const EdgeInsets.all(20),
             child: MultiBlocProvider(
               providers: [
@@ -39,27 +39,25 @@ class SaveDetailsPage extends StatelessWidget {
                   value: context.bloc<FoodprintBloc>(),
                 )
               ],
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Fill in the details!",
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    SaveDetailsForm(
-                      imageFile: imageFile,
-                      restaurant: restaurant,
-                      token: token,
-                    ),
-                  ],
-                ),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    "Fill in the details!",
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  SaveDetailsForm(
+                    imageFile: imageFile,
+                    restaurant: restaurant,
+                    token: token,
+                  ),
+                ],
               ),
             )));
   }

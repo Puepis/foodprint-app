@@ -63,6 +63,7 @@ class _LoginFormState extends State<LoginForm> {
         return Form(
           autovalidate: state.showErrorMessages,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               AuthFormField(
