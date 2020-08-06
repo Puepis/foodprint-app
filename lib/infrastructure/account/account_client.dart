@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -20,12 +21,17 @@ class AccountClient implements IAccountRepository {
       {@required UserID id,
       @required PhotoData data,
       @required String fileName}) async {
-    final res =
-        await http.post("${DotEnv().env['SERVER_IP']}/api/users/avatar", body: {
-      "id": id.getOrCrash().toString(),
-      "avatar_data": data.getOrCrash().toString(),
-      "file_name": fileName
-    });
+    http.Response res;
+    try {
+      res = await http
+          .post("${DotEnv().env['SERVER_IP']}/api/users/avatar", body: {
+        "id": id.getOrCrash().toString(),
+        "avatar_data": data.getOrCrash().toString(),
+        "file_name": fileName
+      });
+    } on SocketException {
+      return left(const AccountFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       final JWT token = JWT(token: res.body);
@@ -43,14 +49,19 @@ class AccountClient implements IAccountRepository {
       {@required UserID id,
       @required Password oldPassword,
       @required Password newPassword}) async {
-    final res = await http.post(
-      "${DotEnv().env['SERVER_IP']}/api/users/change/password",
-      body: {
-        "id": id.getOrCrash().toString(),
-        "old_password": oldPassword.getOrCrash(),
-        "new_password": newPassword.getOrCrash()
-      },
-    );
+    http.Response res;
+    try {
+      res = await http.post(
+        "${DotEnv().env['SERVER_IP']}/api/users/change/password",
+        body: {
+          "id": id.getOrCrash().toString(),
+          "old_password": oldPassword.getOrCrash(),
+          "new_password": newPassword.getOrCrash()
+        },
+      );
+    } on SocketException {
+      return left(const AccountFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       return right(unit);
@@ -64,13 +75,18 @@ class AccountClient implements IAccountRepository {
   @override
   Future<Either<AccountFailure, JWT>> changeUsername(
       {@required UserID id, @required Username newUsername}) async {
-    final res = await http.post(
-      "${DotEnv().env['SERVER_IP']}/api/users/change/username",
-      body: {
-        "id": id.getOrCrash().toString(),
-        "new_username": newUsername.getOrCrash()
-      },
-    );
+    http.Response res;
+    try {
+      res = await http.post(
+        "${DotEnv().env['SERVER_IP']}/api/users/change/username",
+        body: {
+          "id": id.getOrCrash().toString(),
+          "new_username": newUsername.getOrCrash()
+        },
+      );
+    } on SocketException {
+      return left(const AccountFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       final JWT token = JWT(token: res.body);
@@ -85,12 +101,17 @@ class AccountClient implements IAccountRepository {
   @override
   Future<Either<AccountFailure, Unit>> deleteAccount(
       {@required UserID id}) async {
-    final res = await http.delete(
-      "${DotEnv().env['SERVER_IP']}/api/users/delete",
-      headers: {
-        "id": id.getOrCrash().toString(),
-      },
-    );
+    http.Response res;
+    try {
+      res = await http.delete(
+        "${DotEnv().env['SERVER_IP']}/api/users/delete",
+        headers: {
+          "id": id.getOrCrash().toString(),
+        },
+      );
+    } on SocketException {
+      return left(const AccountFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       return right(unit);

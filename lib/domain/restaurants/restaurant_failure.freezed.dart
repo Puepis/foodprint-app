@@ -31,6 +31,10 @@ class _$RestaurantFailureTearOff {
   _NotFound notFound() {
     return const _NotFound();
   }
+
+  _NoInternet noInternet() {
+    return const _NoInternet();
+  }
 }
 
 // ignore: unused_element
@@ -44,6 +48,7 @@ mixin _$RestaurantFailure {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -52,6 +57,7 @@ mixin _$RestaurantFailure {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -61,6 +67,7 @@ mixin _$RestaurantFailure {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -69,6 +76,7 @@ mixin _$RestaurantFailure {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   });
 }
@@ -130,12 +138,14 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return unexpectedSearchFailure();
   }
 
@@ -147,6 +157,7 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -164,12 +175,14 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return unexpectedSearchFailure(this);
   }
 
@@ -181,6 +194,7 @@ class _$_UnexpectedSearchFailure implements _UnexpectedSearchFailure {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -236,12 +250,14 @@ class _$_RequestDenied implements _RequestDenied {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return requestDenied();
   }
 
@@ -253,6 +269,7 @@ class _$_RequestDenied implements _RequestDenied {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -270,12 +287,14 @@ class _$_RequestDenied implements _RequestDenied {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return requestDenied(this);
   }
 
@@ -287,6 +306,7 @@ class _$_RequestDenied implements _RequestDenied {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -342,12 +362,14 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return overQueryLimit();
   }
 
@@ -359,6 +381,7 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -376,12 +399,14 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return overQueryLimit(this);
   }
 
@@ -393,6 +418,7 @@ class _$_OverQueryLimit implements _OverQueryLimit {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -448,12 +474,14 @@ class _$_InvalidRequest implements _InvalidRequest {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return invalidRequest();
   }
 
@@ -465,6 +493,7 @@ class _$_InvalidRequest implements _InvalidRequest {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -482,12 +511,14 @@ class _$_InvalidRequest implements _InvalidRequest {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return invalidRequest(this);
   }
 
@@ -499,6 +530,7 @@ class _$_InvalidRequest implements _InvalidRequest {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -552,12 +584,14 @@ class _$_NotFound implements _NotFound {
     @required Result overQueryLimit(),
     @required Result invalidRequest(),
     @required Result notFound(),
+    @required Result noInternet(),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return notFound();
   }
 
@@ -569,6 +603,7 @@ class _$_NotFound implements _NotFound {
     Result overQueryLimit(),
     Result invalidRequest(),
     Result notFound(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -586,12 +621,14 @@ class _$_NotFound implements _NotFound {
     @required Result overQueryLimit(_OverQueryLimit value),
     @required Result invalidRequest(_InvalidRequest value),
     @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(unexpectedSearchFailure != null);
     assert(requestDenied != null);
     assert(overQueryLimit != null);
     assert(invalidRequest != null);
     assert(notFound != null);
+    assert(noInternet != null);
     return notFound(this);
   }
 
@@ -603,6 +640,7 @@ class _$_NotFound implements _NotFound {
     Result overQueryLimit(_OverQueryLimit value),
     Result invalidRequest(_InvalidRequest value),
     Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -615,4 +653,116 @@ class _$_NotFound implements _NotFound {
 
 abstract class _NotFound implements RestaurantFailure {
   const factory _NotFound() = _$_NotFound;
+}
+
+abstract class _$NoInternetCopyWith<$Res> {
+  factory _$NoInternetCopyWith(
+          _NoInternet value, $Res Function(_NoInternet) then) =
+      __$NoInternetCopyWithImpl<$Res>;
+}
+
+class __$NoInternetCopyWithImpl<$Res>
+    extends _$RestaurantFailureCopyWithImpl<$Res>
+    implements _$NoInternetCopyWith<$Res> {
+  __$NoInternetCopyWithImpl(
+      _NoInternet _value, $Res Function(_NoInternet) _then)
+      : super(_value, (v) => _then(v as _NoInternet));
+
+  @override
+  _NoInternet get _value => super._value as _NoInternet;
+}
+
+class _$_NoInternet implements _NoInternet {
+  const _$_NoInternet();
+
+  @override
+  String toString() {
+    return 'RestaurantFailure.noInternet()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _NoInternet);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result unexpectedSearchFailure(),
+    @required Result requestDenied(),
+    @required Result overQueryLimit(),
+    @required Result invalidRequest(),
+    @required Result notFound(),
+    @required Result noInternet(),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    assert(notFound != null);
+    assert(noInternet != null);
+    return noInternet();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result unexpectedSearchFailure(),
+    Result requestDenied(),
+    Result overQueryLimit(),
+    Result invalidRequest(),
+    Result notFound(),
+    Result noInternet(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    @required Result requestDenied(_RequestDenied value),
+    @required Result overQueryLimit(_OverQueryLimit value),
+    @required Result invalidRequest(_InvalidRequest value),
+    @required Result notFound(_NotFound value),
+    @required Result noInternet(_NoInternet value),
+  }) {
+    assert(unexpectedSearchFailure != null);
+    assert(requestDenied != null);
+    assert(overQueryLimit != null);
+    assert(invalidRequest != null);
+    assert(notFound != null);
+    assert(noInternet != null);
+    return noInternet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result unexpectedSearchFailure(_UnexpectedSearchFailure value),
+    Result requestDenied(_RequestDenied value),
+    Result overQueryLimit(_OverQueryLimit value),
+    Result invalidRequest(_InvalidRequest value),
+    Result notFound(_NotFound value),
+    Result noInternet(_NoInternet value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NoInternet implements RestaurantFailure {
+  const factory _NoInternet() = _$_NoInternet;
 }

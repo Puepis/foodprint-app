@@ -51,7 +51,7 @@ class PhotoInfoSheet extends StatelessWidget {
     final FoodprintEntity foodprint = InheritedUser.of(context).foodprint;
 
     return Container(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: MediaQuery.of(context).size.height * 0.66,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0),
@@ -60,34 +60,37 @@ class PhotoInfoSheet extends StatelessWidget {
         color: Color(0xFF1e1c1c),
       ),
       padding: const EdgeInsets.all(20),
-      child: Stack(
-        children: [
-          _buildDetails(context, formatter),
-          _buildEditButton(context, token, foodprint)
-        ],
-      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
+          children: [
+            _buildDetails(context, formatter, constraints),
+            _buildEditButton(context, token, foodprint)
+          ],
+        );
+      }),
     );
   }
 
-  Widget _buildDetails(BuildContext context, NumberFormat formatter) => Column(
+  Widget _buildDetails(BuildContext context, NumberFormat formatter,
+          BoxConstraints constraints) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          RichText(
-            text: TextSpan(
-                text: "${photo.details.name.getOrCrash()}\n",
+          Padding(
+            padding: EdgeInsets.only(right: constraints.maxWidth * 0.2),
+            child: Text(photo.details.name.getOrCrash(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 22),
-                children: [
-                  TextSpan(
-                      text: formatter.format(photo.details.price.getOrCrash()),
-                      style: TextStyle(
-                          height: 1.5,
-                          color: Colors.green.shade500,
-                          fontSize: 20))
-                ]),
+                    fontSize: 22)),
           ),
+          const SizedBox(
+            height: 5,
+          ),
+          Text(formatter.format(photo.details.price.getOrCrash()),
+              style: TextStyle(color: Colors.green.shade500, fontSize: 20)),
           const Divider(
             color: Colors.grey,
             height: 30,

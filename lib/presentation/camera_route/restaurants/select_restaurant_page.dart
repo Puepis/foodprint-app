@@ -45,15 +45,15 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     final bloc = context.bloc<ManualSearchBloc>();
 
     return BlocConsumer<ManualSearchBloc, ManualSearchState>(
-        listener: (_, state) {
+        listener: (context, state) {
       if (state is SearchStateError) {
-        Scaffold.of(context)..hideCurrentSnackBar();
         FlushbarHelper.createError(
           message: state.failure.map(
             requestDenied: (_) => 'Request denied',
             unexpectedSearchFailure: (_) => 'Unexpected search failure',
             overQueryLimit: (_) => 'Over query limit',
             invalidRequest: (_) => 'Invalid request',
+            noInternet: (_) => 'No Internet Connection',
             notFound: (_) => 'Place not found',
           ),
         ).show(context);

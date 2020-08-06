@@ -29,85 +29,85 @@ class RestaurantPreview extends StatelessWidget {
                   photos: photos, restaurant: restaurant));
         }
       },
-      child: Container(
-          height: 200,
-          decoration: BoxDecoration(
-            color: foodprintPrimaryColorSwatch[50],
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              _buildRecentPhoto(),
-              const SizedBox(
-                width: 5.0,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        restaurant.name.getOrCrash(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 16.0,
-                        thickness: 2.0,
-                        endIndent: 175,
-                      ),
-                      Expanded(
-                        child: Text(photos.length == 1
-                            ? "You've taken one photo here!"
-                            : "You've taken ${photos.length} photos here!"),
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(
-                            width: 3.0,
-                          ),
-                          Text(
-                            restaurant.rating.getOrCrash().toString(),
-                            style: const TextStyle(
-                                fontSize: 16, color: Colors.black),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: foodprintPrimaryColorSwatch[50],
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0)),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                _buildRecentPhoto(constraints),
+                const SizedBox(
+                  width: 5.0,
                 ),
-              )
-            ],
-          )),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          restaurant.name.getOrCrash(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        Divider(
+                          color: Theme.of(context).primaryColor,
+                          height: 16.0,
+                          thickness: 2.0,
+                        ),
+                        Expanded(
+                          child: Text(photos.length == 1
+                              ? "You've taken one photo here!"
+                              : "You've taken ${photos.length} photos here!"),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(
+                              width: 3.0,
+                            ),
+                            Text(
+                              restaurant.rating.getOrCrash().toString(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ));
+      }),
     );
   }
 
-  Widget _buildRecentPhoto() => ClipRRect(
+  Widget _buildRecentPhoto(BoxConstraints constraints) => ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
           color: Colors.black,
           height: double.infinity,
-          width: 125,
+          width: constraints.maxWidth * 0.3,
           child: Hero(
             tag: photos[0].url.getOrCrash(),
             child: CachedNetworkImage(
                 fit: BoxFit.fitWidth,
                 fadeInDuration: const Duration(milliseconds: 150),
-                placeholder: (context, url) =>
-                    Image.memory(kTransparentImage),
+                placeholder: (context, url) => Image.memory(kTransparentImage),
                 imageUrl: photos[0].url.getOrCrash()),
           ),
         ),

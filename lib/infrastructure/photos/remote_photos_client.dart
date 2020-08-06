@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
@@ -60,8 +61,13 @@ class RemotePhotosClient implements IPhotoRepository {
     final String requestBody =
         _createSaveRequestBody(userID, photo, placeID, data);
 
-    final res = await http.post("${DotEnv().env['SERVER_IP']}/api/photos/",
-        headers: {"Content-Type": 'application/json'}, body: requestBody);
+    http.Response res;
+    try {
+      res = await http.post("${DotEnv().env['SERVER_IP']}/api/photos/",
+          headers: {"Content-Type": 'application/json'}, body: requestBody);
+    } on SocketException {
+      return left(const PhotoFailure.noInternet());
+    }
 
     return _handleResponse(res);
   }
@@ -73,14 +79,18 @@ class RemotePhotosClient implements IPhotoRepository {
     @required PhotoDetailEntity details,
     @required bool isFavourite,
   }) async {
-    final res =
-        await http.put("${DotEnv().env['SERVER_IP']}/api/photos", body: {
-      "path": oldPhoto.storagePath.getOrCrash(),
-      "photo_name": details.name.getOrCrash(),
-      "price": details.price.getOrCrash().toString(),
-      "comments": details.comments.getOrCrash(),
-      "favourite": isFavourite.toString()
-    });
+    http.Response res;
+    try {
+      res = await http.put("${DotEnv().env['SERVER_IP']}/api/photos", body: {
+        "path": oldPhoto.storagePath.getOrCrash(),
+        "photo_name": details.name.getOrCrash(),
+        "price": details.price.getOrCrash().toString(),
+        "comments": details.comments.getOrCrash(),
+        "favourite": isFavourite.toString()
+      });
+    } on SocketException {
+      return left(const PhotoFailure.noInternet());
+    }
 
     return _handleResponse(res);
   }
@@ -90,8 +100,13 @@ class RemotePhotosClient implements IPhotoRepository {
   Future<Either<PhotoFailure, Unit>> deletePhoto({
     @required PhotoEntity photo,
   }) async {
-    final res = await http.delete("${DotEnv().env['SERVER_IP']}/api/photos/",
-        headers: {"photo_path": photo.storagePath.getOrCrash()});
+    http.Response res;
+    try {
+      res = await http.delete("${DotEnv().env['SERVER_IP']}/api/photos/",
+          headers: {"photo_path": photo.storagePath.getOrCrash()});
+    } on SocketException {
+      return left(const PhotoFailure.noInternet());
+    }
 
     return _handleResponse(res);
   }

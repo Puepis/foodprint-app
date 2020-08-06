@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
@@ -25,9 +26,13 @@ class RemoteFoodprintClient implements IFoodprintRepository {
   @override
   Future<Either<FoodprintFailure, FoodprintEntity>> getFoodprint(
       {@required JWT token}) async {
-    final res = await http.get(
-        '${DotEnv().env['SERVER_IP']}/api/users/foodprint',
-        headers: {"authorization": "Bearer ${token.getOrCrash()}"});
+    http.Response res;
+    try {
+      res = await http.get('${DotEnv().env['SERVER_IP']}/api/users/foodprint',
+          headers: {"authorization": "Bearer ${token.getOrCrash()}"});
+    } on SocketException {
+      return left(const FoodprintFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       final FoodprintEntity foodprint =

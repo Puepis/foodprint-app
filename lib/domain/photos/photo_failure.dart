@@ -6,4 +6,5 @@ part 'photo_failure.freezed.dart';
 abstract class PhotoFailure with _$PhotoFailure {
   const factory PhotoFailure.serverError() = _ServerError;
   const factory PhotoFailure.invalidPhoto() = _InvalidPhoto;
+  const factory PhotoFailure.noInternet() = _NoInternet;
 }

@@ -19,6 +19,10 @@ class _$PhotoFailureTearOff {
   _InvalidPhoto invalidPhoto() {
     return const _InvalidPhoto();
   }
+
+  _NoInternet noInternet() {
+    return const _NoInternet();
+  }
 }
 
 // ignore: unused_element
@@ -29,22 +33,26 @@ mixin _$PhotoFailure {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidPhoto(),
+    @required Result noInternet(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidPhoto(),
+    Result noInternet(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(_ServerError value),
     @required Result invalidPhoto(_InvalidPhoto value),
+    @required Result noInternet(_NoInternet value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(_ServerError value),
     Result invalidPhoto(_InvalidPhoto value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   });
 }
@@ -100,9 +108,11 @@ class _$_ServerError implements _ServerError {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidPhoto(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(invalidPhoto != null);
+    assert(noInternet != null);
     return serverError();
   }
 
@@ -111,6 +121,7 @@ class _$_ServerError implements _ServerError {
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidPhoto(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -125,9 +136,11 @@ class _$_ServerError implements _ServerError {
   Result map<Result extends Object>({
     @required Result serverError(_ServerError value),
     @required Result invalidPhoto(_InvalidPhoto value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(serverError != null);
     assert(invalidPhoto != null);
+    assert(noInternet != null);
     return serverError(this);
   }
 
@@ -136,6 +149,7 @@ class _$_ServerError implements _ServerError {
   Result maybeMap<Result extends Object>({
     Result serverError(_ServerError value),
     Result invalidPhoto(_InvalidPhoto value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -187,9 +201,11 @@ class _$_InvalidPhoto implements _InvalidPhoto {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidPhoto(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(invalidPhoto != null);
+    assert(noInternet != null);
     return invalidPhoto();
   }
 
@@ -198,6 +214,7 @@ class _$_InvalidPhoto implements _InvalidPhoto {
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidPhoto(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -212,9 +229,11 @@ class _$_InvalidPhoto implements _InvalidPhoto {
   Result map<Result extends Object>({
     @required Result serverError(_ServerError value),
     @required Result invalidPhoto(_InvalidPhoto value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(serverError != null);
     assert(invalidPhoto != null);
+    assert(noInternet != null);
     return invalidPhoto(this);
   }
 
@@ -223,6 +242,7 @@ class _$_InvalidPhoto implements _InvalidPhoto {
   Result maybeMap<Result extends Object>({
     Result serverError(_ServerError value),
     Result invalidPhoto(_InvalidPhoto value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -235,4 +255,97 @@ class _$_InvalidPhoto implements _InvalidPhoto {
 
 abstract class _InvalidPhoto implements PhotoFailure {
   const factory _InvalidPhoto() = _$_InvalidPhoto;
+}
+
+abstract class _$NoInternetCopyWith<$Res> {
+  factory _$NoInternetCopyWith(
+          _NoInternet value, $Res Function(_NoInternet) then) =
+      __$NoInternetCopyWithImpl<$Res>;
+}
+
+class __$NoInternetCopyWithImpl<$Res> extends _$PhotoFailureCopyWithImpl<$Res>
+    implements _$NoInternetCopyWith<$Res> {
+  __$NoInternetCopyWithImpl(
+      _NoInternet _value, $Res Function(_NoInternet) _then)
+      : super(_value, (v) => _then(v as _NoInternet));
+
+  @override
+  _NoInternet get _value => super._value as _NoInternet;
+}
+
+class _$_NoInternet implements _NoInternet {
+  const _$_NoInternet();
+
+  @override
+  String toString() {
+    return 'PhotoFailure.noInternet()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _NoInternet);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result serverError(),
+    @required Result invalidPhoto(),
+    @required Result noInternet(),
+  }) {
+    assert(serverError != null);
+    assert(invalidPhoto != null);
+    assert(noInternet != null);
+    return noInternet();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result serverError(),
+    Result invalidPhoto(),
+    Result noInternet(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result serverError(_ServerError value),
+    @required Result invalidPhoto(_InvalidPhoto value),
+    @required Result noInternet(_NoInternet value),
+  }) {
+    assert(serverError != null);
+    assert(invalidPhoto != null);
+    assert(noInternet != null);
+    return noInternet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result serverError(_ServerError value),
+    Result invalidPhoto(_InvalidPhoto value),
+    Result noInternet(_NoInternet value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NoInternet implements PhotoFailure {
+  const factory _NoInternet() = _$_NoInternet;
 }

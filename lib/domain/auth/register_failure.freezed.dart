@@ -23,6 +23,10 @@ class _$RegisterFailureTearOff {
   InvalidRegisterCombination invalidRegisterCombination() {
     return const InvalidRegisterCombination();
   }
+
+  NoInternet noInternet() {
+    return const NoInternet();
+  }
 }
 
 // ignore: unused_element
@@ -34,12 +38,14 @@ mixin _$RegisterFailure {
     @required Result serverError(),
     @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
+    @required Result noInternet(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result userAlreadyExists(),
     Result invalidRegisterCombination(),
+    Result noInternet(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -48,12 +54,14 @@ mixin _$RegisterFailure {
     @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
+    @required Result noInternet(NoInternet value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
     Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   });
 }
@@ -112,10 +120,12 @@ class _$ServerError implements ServerError {
     @required Result serverError(),
     @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return serverError();
   }
 
@@ -125,6 +135,7 @@ class _$ServerError implements ServerError {
     Result serverError(),
     Result userAlreadyExists(),
     Result invalidRegisterCombination(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -141,10 +152,12 @@ class _$ServerError implements ServerError {
     @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
+    @required Result noInternet(NoInternet value),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return serverError(this);
   }
 
@@ -154,6 +167,7 @@ class _$ServerError implements ServerError {
     Result serverError(ServerError value),
     Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -207,10 +221,12 @@ class _$UserAlreadyExists implements UserAlreadyExists {
     @required Result serverError(),
     @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return userAlreadyExists();
   }
 
@@ -220,6 +236,7 @@ class _$UserAlreadyExists implements UserAlreadyExists {
     Result serverError(),
     Result userAlreadyExists(),
     Result invalidRegisterCombination(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -236,10 +253,12 @@ class _$UserAlreadyExists implements UserAlreadyExists {
     @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
+    @required Result noInternet(NoInternet value),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return userAlreadyExists(this);
   }
 
@@ -249,6 +268,7 @@ class _$UserAlreadyExists implements UserAlreadyExists {
     Result serverError(ServerError value),
     Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -303,10 +323,12 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
     @required Result serverError(),
     @required Result userAlreadyExists(),
     @required Result invalidRegisterCombination(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return invalidRegisterCombination();
   }
 
@@ -316,6 +338,7 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
     Result serverError(),
     Result userAlreadyExists(),
     Result invalidRegisterCombination(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -332,10 +355,12 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
     @required Result userAlreadyExists(UserAlreadyExists value),
     @required
         Result invalidRegisterCombination(InvalidRegisterCombination value),
+    @required Result noInternet(NoInternet value),
   }) {
     assert(serverError != null);
     assert(userAlreadyExists != null);
     assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
     return invalidRegisterCombination(this);
   }
 
@@ -345,6 +370,7 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
     Result serverError(ServerError value),
     Result userAlreadyExists(UserAlreadyExists value),
     Result invalidRegisterCombination(InvalidRegisterCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -357,4 +383,103 @@ class _$InvalidRegisterCombination implements InvalidRegisterCombination {
 
 abstract class InvalidRegisterCombination implements RegisterFailure {
   const factory InvalidRegisterCombination() = _$InvalidRegisterCombination;
+}
+
+abstract class $NoInternetCopyWith<$Res> {
+  factory $NoInternetCopyWith(
+          NoInternet value, $Res Function(NoInternet) then) =
+      _$NoInternetCopyWithImpl<$Res>;
+}
+
+class _$NoInternetCopyWithImpl<$Res> extends _$RegisterFailureCopyWithImpl<$Res>
+    implements $NoInternetCopyWith<$Res> {
+  _$NoInternetCopyWithImpl(NoInternet _value, $Res Function(NoInternet) _then)
+      : super(_value, (v) => _then(v as NoInternet));
+
+  @override
+  NoInternet get _value => super._value as NoInternet;
+}
+
+class _$NoInternet implements NoInternet {
+  const _$NoInternet();
+
+  @override
+  String toString() {
+    return 'RegisterFailure.noInternet()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is NoInternet);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result serverError(),
+    @required Result userAlreadyExists(),
+    @required Result invalidRegisterCombination(),
+    @required Result noInternet(),
+  }) {
+    assert(serverError != null);
+    assert(userAlreadyExists != null);
+    assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
+    return noInternet();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result serverError(),
+    Result userAlreadyExists(),
+    Result invalidRegisterCombination(),
+    Result noInternet(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result serverError(ServerError value),
+    @required Result userAlreadyExists(UserAlreadyExists value),
+    @required
+        Result invalidRegisterCombination(InvalidRegisterCombination value),
+    @required Result noInternet(NoInternet value),
+  }) {
+    assert(serverError != null);
+    assert(userAlreadyExists != null);
+    assert(invalidRegisterCombination != null);
+    assert(noInternet != null);
+    return noInternet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result serverError(ServerError value),
+    Result userAlreadyExists(UserAlreadyExists value),
+    Result invalidRegisterCombination(InvalidRegisterCombination value),
+    Result noInternet(NoInternet value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoInternet implements RegisterFailure {
+  const factory NoInternet() = _$NoInternet;
 }

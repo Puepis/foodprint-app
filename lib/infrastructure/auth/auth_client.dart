@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -24,9 +26,13 @@ class AuthClient implements IAuthRepository {
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash();
 
-    final res = await http.post(
-        "${DotEnv().env['SERVER_IP']}/api/users/register",
-        body: {"username": usernameStr, "password": passwordStr});
+    http.Response res;
+    try {
+      res = await http.post("${DotEnv().env['SERVER_IP']}/api/users/register",
+          body: {"username": usernameStr, "password": passwordStr});
+    } on SocketException {
+      return left(const RegisterFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       return right(unit);
@@ -44,8 +50,14 @@ class AuthClient implements IAuthRepository {
       {@required Username username, @required Password password}) async {
     final usernameStr = username.getOrCrash();
     final passwordStr = password.getOrCrash();
-    final res = await http.post("${DotEnv().env['SERVER_IP']}/api/users/login",
-        body: {"username": usernameStr, "password": passwordStr});
+
+    http.Response res;
+    try {
+      res = await http.post("${DotEnv().env['SERVER_IP']}/api/users/login",
+          body: {"username": usernameStr, "password": passwordStr});
+    } on SocketException {
+      return left(const LoginFailure.noInternet());
+    }
 
     if (res.statusCode == 200) {
       final JWT jwt = JWT(token: res.body);

@@ -14,9 +14,6 @@ class StatsSection extends StatelessWidget {
           SpendingCard(
             spending: SpendingModel(foodprint),
           ),
-          MonthlyVisitsCard(
-            foodprint: foodprint,
-          ),
         ],
       );
 }

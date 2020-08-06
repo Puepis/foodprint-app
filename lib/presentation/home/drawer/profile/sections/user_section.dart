@@ -39,6 +39,7 @@ class _UserSectionState extends State<UserSection> {
           FlushbarHelper.createError(
             message: state.failure.maybeMap(
                 serverError: (_) => 'Server Error',
+                noInternet: (_) => 'No Internet Connection',
                 orElse: () => 'Unexpected error'),
           ).show(context);
         }

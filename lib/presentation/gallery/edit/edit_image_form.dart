@@ -76,7 +76,8 @@ class _EditImageFormState extends State<EditImageForm> {
         FlushbarHelper.createError(
           message: state.failure.map(
               invalidPhoto: (_) => 'Invalid Photo',
-              serverError: (_) => 'Server Error'),
+              serverError: (_) => 'Server Error',
+              noInternet: (_) => 'No internet connection'),
         ).show(context);
       }
       if (state is EditSuccess) {
@@ -222,20 +223,22 @@ class _EditImageFormState extends State<EditImageForm> {
                             Icons.save_alt,
                             color: Colors.white,
                           ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                    onPressed: (state is ActionInProgress)
+                        ? null
+                        : () {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
 
-                        // Edit photo
-                        photoBloc.add(PhotoActionsEvent.edited(
-                          oldPhoto: widget.photo,
-                          newName: _itemName,
-                          newPrice: _price,
-                          newComments: _comments,
-                          isFavourite: _isFavourite,
-                        ));
-                      }
-                    }),
+                              // Edit photo
+                              photoBloc.add(PhotoActionsEvent.edited(
+                                oldPhoto: widget.photo,
+                                newName: _itemName,
+                                newPrice: _price,
+                                newComments: _comments,
+                                isFavourite: _isFavourite,
+                              ));
+                            }
+                          }),
               ),
             )
           ],

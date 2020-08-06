@@ -22,44 +22,54 @@ class RestaurantGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: foodprintPrimaryColorSwatch[50],
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 50, 20, 5),
-            child: Text(
-              restaurant.name.getOrCrash(),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
+      body: LayoutBuilder(builder: (context, constraints) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  restaurant.name.getOrCrash(),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: constraints.maxWidth * 0.3,
+                child: Divider(
+                  color: Theme.of(context).primaryColor,
+                  height: 20,
+                  thickness: 2.0,
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.83,
+                child: PhotoCarousel(
+                  constraints: constraints,
+                  photos: photos,
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            width: 100,
-            child: Divider(
-              color: Theme.of(context).primaryColor,
-              height: 20,
-              thickness: 2.0,
-            ),
-          ),
-          Expanded(
-            child: PhotoCarousel(
-              photos: photos,
-            ),
-          )
-        ],
-      ),
+        );
+      }),
     );
   }
 }
 
 class PhotoCarousel extends StatefulWidget {
   final List<PhotoEntity> photos;
-  const PhotoCarousel({Key key, this.photos}) : super(key: key);
+  final BoxConstraints constraints;
+  const PhotoCarousel({Key key, this.photos, this.constraints})
+      : super(key: key);
 
   @override
   _PhotoCarouselState createState() => _PhotoCarouselState();
@@ -106,18 +116,10 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
 
     final photo = widget.photos[index];
 
-    return LayoutBuilder(
-      builder: (context, constraints) => constraints.maxWidth < 600
-          ? PortraitPhoto(
-              photo: photo,
-              topPadding: topPadding,
-              constraints: constraints,
-              formatter: formatter)
-          : LandscapePhoto(
-              photo: photo,
-              topPadding: topPadding,
-              constraints: constraints,
-              formatter: formatter),
-    );
+    return PortraitPhoto(
+        photo: photo,
+        topPadding: topPadding,
+        constraints: widget.constraints,
+        formatter: formatter);
   }
 }

@@ -38,6 +38,7 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
             FlushbarHelper.createError(
               message: state.failure.maybeMap(
                   usernameTaken: (_) => 'Username already taken',
+                  noInternet: (_) => 'No Internet Connection',
                   serverError: (_) => 'Server Error',
                   orElse: () => 'Unexpected error'),
             ).show(context);

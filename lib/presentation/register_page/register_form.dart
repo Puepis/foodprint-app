@@ -39,6 +39,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     serverError: (_) => 'Server error',
                     userAlreadyExists: (_) =>
                         'Email or username already in use',
+                    noInternet: (_) => 'No Internet Connection',
                     invalidRegisterCombination: (_) =>
                         'Invalid register combination',
                   ),
@@ -139,11 +140,13 @@ class _RegisterFormState extends State<RegisterForm> {
             else
               AuthIdleButton(
                   title: "Register",
-                  onPressed: () {
-                    context
-                        .bloc<RegisterFormBloc>()
-                        .add(const RegisterFormEvent.registerPressed());
-                  })
+                  onPressed: state.isSubmitting
+                      ? null
+                      : () {
+                          context
+                              .bloc<RegisterFormBloc>()
+                              .add(const RegisterFormEvent.registerPressed());
+                        })
           ],
         ),
       );

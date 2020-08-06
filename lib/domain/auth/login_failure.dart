@@ -8,4 +8,5 @@ abstract class LoginFailure with _$LoginFailure {
   const factory LoginFailure.serverError() = ServerError;
   const factory LoginFailure.invalidLoginCombination() =
       InvalidLoginCombination;
+  const factory LoginFailure.noInternet() = NoInternet;
 }

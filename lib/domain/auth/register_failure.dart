@@ -9,4 +9,5 @@ abstract class RegisterFailure with _$RegisterFailure {
   const factory RegisterFailure.userAlreadyExists() = UserAlreadyExists;
   const factory RegisterFailure.invalidRegisterCombination() =
       InvalidRegisterCombination;
+  const factory RegisterFailure.noInternet() = NoInternet;
 }

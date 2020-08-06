@@ -37,6 +37,7 @@ class EditProfilePage extends StatelessWidget {
               FlushbarHelper.createError(
                 message: state.failure.maybeMap(
                     serverError: (_) => 'Server Error',
+                    noInternet: (_) => 'No Internet Connection',
                     orElse: () => 'Unexpected error'),
               ).show(context);
             }

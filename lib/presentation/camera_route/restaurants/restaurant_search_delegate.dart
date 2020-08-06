@@ -114,7 +114,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
           searchBody = ListView.builder(
               itemCount: predictions.length,
               itemBuilder: (context, index) {
-                return buildSearchSuggestion(
+                return _buildSearchResult(
                     context, predictions[index], searchedStr);
               });
         }
@@ -126,9 +126,9 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-             Align(
-                 alignment: Alignment.bottomRight,
-                 child: PoweredByGoogleImage()),
+            Align(
+                alignment: Alignment.bottomRight,
+                child: PoweredByGoogleImage()),
             searchBody ?? Container(),
           ],
         ),
@@ -137,7 +137,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   }
 
   /// One entry in the suggestion list
-  Widget buildSearchSuggestion(
+  Widget _buildSearchResult(
       BuildContext context, AutocompleteResultEntity prediction, String input) {
     final id = prediction.id.getOrCrash();
     final name = prediction.name.getOrCrash();

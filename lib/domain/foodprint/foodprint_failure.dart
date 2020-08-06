@@ -8,4 +8,5 @@ part 'foodprint_failure.freezed.dart';
 abstract class FoodprintFailure with _$FoodprintFailure {
   const factory FoodprintFailure.unauthorizedToken() = _UnauthorizedToken;
   const factory FoodprintFailure.serverError() = _ServerError;
+  const factory FoodprintFailure.noInternet() = _NoInternet;
 }

@@ -12,7 +12,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   // TODO: Remove after taking screenshots
-  await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  //await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
   // Add font licenses
   LicenseRegistry.addLicense(() async* {

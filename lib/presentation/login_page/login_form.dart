@@ -45,6 +45,7 @@ class _LoginFormState extends State<LoginForm> {
                   FlushbarHelper.createError(
                     message: failure.map(
                       serverError: (_) => 'Server error',
+                      noInternet: (_) => 'No Internet Connection',
                       invalidLoginCombination: (_) =>
                           'Invalid login combination',
                     ),
@@ -138,11 +139,13 @@ class _LoginFormState extends State<LoginForm> {
               else
                 AuthIdleButton(
                     title: "Login",
-                    onPressed: () {
-                      context
-                          .bloc<LoginFormBloc>()
-                          .add(const LoginFormEvent.loginPressed());
-                    })
+                    onPressed: state.isSubmitting
+                        ? null
+                        : () {
+                            context
+                                .bloc<LoginFormBloc>()
+                                .add(const LoginFormEvent.loginPressed());
+                          })
             ],
           ),
         );

@@ -45,6 +45,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               message: state.failure.maybeMap(
                   wrongPassword: (_) => 'Wrong password',
                   serverError: (_) => 'Server Error',
+                  noInternet: (_) => 'No Internet Connection',
                   orElse: () => 'Unexpected error'),
             ).show(context);
           }

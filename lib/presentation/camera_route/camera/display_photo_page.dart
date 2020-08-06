@@ -41,17 +41,19 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
             listener: (context, state) {
           // Error searching for restaurants
           if (state is SearchStateError) {
-            Scaffold.of(context)..hideCurrentSnackBar();
             FlushbarHelper.createError(
               message: state.failure.map(
                 requestDenied: (_) => 'Request denied',
                 unexpectedSearchFailure: (_) => 'Unexpected search failure',
                 overQueryLimit: (_) => 'Over query limit',
                 invalidRequest: (_) => 'Invalid request',
+                noInternet: (_) => 'No Internet Connection',
                 notFound: (_) => 'Place not found',
               ),
             ).show(context);
           }
+        }, buildWhen: (previous, current) {
+          return previous is! SearchStateError;
         }, builder: (_, state) {
           // Only search once
           if (state is SearchStateEmpty) {
@@ -71,11 +73,10 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   onPressed: () async {
                     final bool pop = await _willCancel();
                     if (pop) {
-                      Navigator.pop(context);
-
                       // Reset search states
                       nearbySearchBloc.add(ResetNearbySearch());
                       manualSearchBloc.add(ResetManualSearch());
+                      Navigator.pop(context);
                     }
                   },
                 )),
@@ -86,10 +87,12 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                     ? NextPageButton(
                         restaurants: state.restaurants,
                       )
-                    : SpinKitRing(
-                        color: Theme.of(context).primaryColor,
-                        size: 40.0,
-                      )),
+                    : (state is SearchStateError)
+                        ? const Icon(Icons.error, color: Colors.red, size: 50)
+                        : SpinKitRing(
+                            color: Theme.of(context).primaryColor,
+                            size: 40.0,
+                          )),
           ]);
         }),
       ),

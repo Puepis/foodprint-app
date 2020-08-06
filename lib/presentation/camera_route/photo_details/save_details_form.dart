@@ -70,7 +70,8 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         FlushbarHelper.createError(
           message: state.failure.map(
               invalidPhoto: (_) => 'Invalid Photo',
-              serverError: (_) => 'Server Error'),
+              serverError: (_) => 'Server Error',
+              noInternet: (_) => 'No internet connection'),
         ).show(context);
       }
       if (state is SaveSuccess) {
@@ -199,30 +200,32 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                     Icons.save_alt,
                     color: Colors.white,
                   ),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                // Get user id
-                final id = UserID(int.parse(JWT
-                    .getDecodedPayload(widget.token.getOrCrash())['sub']
-                    .toString()));
+            onPressed: (state is ActionInProgress)
+                ? null
+                : () {
+                    if (_formKey.currentState.validate()) {
+                      // Get user id
+                      final id = UserID(int.parse(JWT
+                          .getDecodedPayload(widget.token.getOrCrash())['sub']
+                          .toString()));
 
-                // Save fields
-                _formKey.currentState.save();
+                      // Save fields
+                      _formKey.currentState.save();
 
-                // Fire off save event
-                photoBloc.add(PhotoActionsEvent.saved(
-                  userID: id,
-                  imageFile: widget.imageFile,
-                  itemName: _itemName,
-                  price: _price,
-                  comments: _comments,
-                  placeID: widget.restaurant.id,
-                ));
+                      // Fire off save event
+                      photoBloc.add(PhotoActionsEvent.saved(
+                        userID: id,
+                        imageFile: widget.imageFile,
+                        itemName: _itemName,
+                        price: _price,
+                        comments: _comments,
+                        placeID: widget.restaurant.id,
+                      ));
 
-                // Reset manual search state
-                context.bloc<ManualSearchBloc>().add(ResetManualSearch());
-              }
-            },
+                      // Reset manual search state
+                      context.bloc<ManualSearchBloc>().add(ResetManualSearch());
+                    }
+                  },
           ),
         ),
       );
