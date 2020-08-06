@@ -7,7 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'foodprint_dto.freezed.dart';
 
-// Foodprint model
+/// Foodprint data-transfer-object (intermediary between JSON and classes). 
 @freezed
 abstract class FoodprintDTO implements _$FoodprintDTO {
   const FoodprintDTO._();

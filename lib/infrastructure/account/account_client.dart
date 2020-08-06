@@ -2,25 +2,26 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/account/account_failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/account/i_account_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
-import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
+/// Communicates with the foodprint-backend to perform account-related actions.
 @LazySingleton(as: IAccountRepository)
 class AccountClient implements IAccountRepository {
-  /// Makes a request to the server to change the avatar and handles the reponse
   @override
   Future<Either<AccountFailure, JWT>> changeAvatar(
       {@required UserID id,
       @required PhotoData data,
       @required String fileName}) async {
-    final res = await http.post("$serverIP/api/users/avatar", body: {
+    final res =
+        await http.post("${DotEnv().env['SERVER_IP']}/api/users/avatar", body: {
       "id": id.getOrCrash().toString(),
       "avatar_data": data.getOrCrash().toString(),
       "file_name": fileName
@@ -43,7 +44,7 @@ class AccountClient implements IAccountRepository {
       @required Password oldPassword,
       @required Password newPassword}) async {
     final res = await http.post(
-      "$serverIP/api/users/change/password",
+      "${DotEnv().env['SERVER_IP']}/api/users/change/password",
       body: {
         "id": id.getOrCrash().toString(),
         "old_password": oldPassword.getOrCrash(),
@@ -64,7 +65,7 @@ class AccountClient implements IAccountRepository {
   Future<Either<AccountFailure, JWT>> changeUsername(
       {@required UserID id, @required Username newUsername}) async {
     final res = await http.post(
-      "$serverIP/api/users/change/username",
+      "${DotEnv().env['SERVER_IP']}/api/users/change/username",
       body: {
         "id": id.getOrCrash().toString(),
         "new_username": newUsername.getOrCrash()
@@ -85,7 +86,7 @@ class AccountClient implements IAccountRepository {
   Future<Either<AccountFailure, Unit>> deleteAccount(
       {@required UserID id}) async {
     final res = await http.delete(
-      "$serverIP/api/users/delete",
+      "${DotEnv().env['SERVER_IP']}/api/users/delete",
       headers: {
         "id": id.getOrCrash().toString(),
       },

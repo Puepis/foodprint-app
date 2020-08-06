@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
@@ -9,7 +10,6 @@ import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_failure.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
-import 'package:foodprint/infrastructure/core/tokens.dart';
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
@@ -60,7 +60,7 @@ class RemotePhotosClient implements IPhotoRepository {
     final String requestBody =
         _createSaveRequestBody(userID, photo, placeID, data);
 
-    final res = await http.post("$serverIP/api/photos/",
+    final res = await http.post("${DotEnv().env['SERVER_IP']}/api/photos/",
         headers: {"Content-Type": 'application/json'}, body: requestBody);
 
     return _handleResponse(res);
@@ -73,7 +73,8 @@ class RemotePhotosClient implements IPhotoRepository {
     @required PhotoDetailEntity details,
     @required bool isFavourite,
   }) async {
-    final res = await http.put("$serverIP/api/photos", body: {
+    final res =
+        await http.put("${DotEnv().env['SERVER_IP']}/api/photos", body: {
       "path": oldPhoto.storagePath.getOrCrash(),
       "photo_name": details.name.getOrCrash(),
       "price": details.price.getOrCrash().toString(),
@@ -89,7 +90,7 @@ class RemotePhotosClient implements IPhotoRepository {
   Future<Either<PhotoFailure, Unit>> deletePhoto({
     @required PhotoEntity photo,
   }) async {
-    final res = await http.delete("$serverIP/api/photos/",
+    final res = await http.delete("${DotEnv().env['SERVER_IP']}/api/photos/",
         headers: {"photo_path": photo.storagePath.getOrCrash()});
 
     return _handleResponse(res);

@@ -24,7 +24,7 @@ import 'package:foodprint/application/restaurants/nearby_search/restaurant_searc
 import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/infrastructure/foodprint/remote_foodprint_client.dart';
-import 'package:foodprint/domain/foodprint/i_remote_foodprint_repository.dart';
+import 'package:foodprint/domain/foodprint/i_foodprint_repository.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -47,10 +47,10 @@ void $initGetIt(GetIt g, {String environment}) {
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
   g.registerFactory<AccountBloc>(() => AccountBloc(g<IAccountRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
-  g.registerLazySingleton<IRemoteFoodprintRepository>(
+  g.registerLazySingleton<IFoodprintRepository>(
       () => RemoteFoodprintClient(g<IRestaurantSearchRepository>()));
   g.registerFactory<FoodprintBloc>(
-      () => FoodprintBloc(g<IRemoteFoodprintRepository>()));
+      () => FoodprintBloc(g<IFoodprintRepository>()));
 
   //Eager singletons must be registered in the right order
   g.registerSingleton<AutocompleteSearchCache>(AutocompleteSearchCache());

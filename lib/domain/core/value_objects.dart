@@ -5,7 +5,7 @@ import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_validators.dart';
 import 'package:uuid/uuid.dart';
 
-// Generic value class 
+/// Interface representing an object that contains a validated value.
 @immutable
 abstract class ValueObject<T> {
   const ValueObject();
@@ -13,11 +13,12 @@ abstract class ValueObject<T> {
 
   /// Throws [UnexpectedValueError] containing the [ValueFailure]
   T getOrCrash() {
-    // id = identity 
+    // id = identity
     return value.fold((f) => throw UnexpectedValueError(f), id);
   }
 
-  Either<ValueFailure<dynamic>, Unit> get failureOrNone { // discard the correct value
+  Either<ValueFailure<dynamic>, Unit> get failureOrNone {
+    // discard the correct value
     return value.fold((l) => left(l), (r) => right(unit));
   }
 
@@ -82,7 +83,7 @@ class Latitude extends ValueObject<double> {
   factory Latitude(double lat) {
     assert(lat != null);
     return Latitude._(
-      validateDoubleInRange(lat, min, max), 
+      validateDoubleInRange(lat, min, max),
     );
   }
 
@@ -98,7 +99,7 @@ class Longitude extends ValueObject<double> {
   factory Longitude(double lng) {
     assert(lng != null);
     return Longitude._(
-      validateDoubleInRange(lng, min, max), 
+      validateDoubleInRange(lng, min, max),
     );
   }
 

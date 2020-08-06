@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant_entity.freezed.dart';
 
-/// An interface representing a restaurant that the user has visited
+/// An interface representing a restaurant that the user has visited.
 @freezed
 abstract class RestaurantEntity implements _$RestaurantEntity {
   const RestaurantEntity._();

@@ -19,7 +19,9 @@ part 'photo_actions_event.dart';
 part 'photo_actions_state.dart';
 part 'photo_actions_bloc.freezed.dart';
 
-/// This is the business logic component for handling photo actions (edit, save, delete)
+/// The BLoC that is reponsible for handling photo actions (save, edit, delete).
+///
+/// Maps incoming [PhotoActionsEvent] to [PhotoActionsState].
 @injectable
 class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   final IPhotoRepository _client;

@@ -25,7 +25,7 @@ class SaveDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+        backgroundColor: backgroundColor,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: backgroundColor,

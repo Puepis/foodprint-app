@@ -1,16 +1,23 @@
-# foodprint
+# Foodprint
 
-A neat way to measure your foodprint
+A personal journal for foodies. Available on [Google Play]().
 
-## Getting Started
+<img src='./assets/readme_resources/feature.png'>
 
-This project is a starting point for a Flutter application.
+## Description
+Foodprint is a Flutter-based mobile application that allows users to capture and track their dining experiences around the world. 
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Features
+* A map that displays the user's visited locations.
+* A summary of the user's personal spending.
+* A bug reporting tool using the [bug_report](https://github.com/Puepis/bug_report) package.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Tools & Technologies
+* Express-based backend server that can be found [here](https://github.com/Puepis/foodprint-backend). 
+* Uses AWS S3 for image storage and Heroku Postgres for other data.
+* Both manual and nearby location search features using Places API
+* Custom user authentication and authorization using JWT.
+
+## Author
+Designed and developed by Philips Xu.

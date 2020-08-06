@@ -4,7 +4,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
 import 'package:foodprint/domain/manual_search/autocomplete_result_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
-/// The delegate where users can search for a location 
+/// The delegate where users can search for a location
 class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
   final double longitude;
@@ -126,10 +126,9 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            // TODO: Show powered by Google logo for release
-            // Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: PoweredByGoogleImage()),
+             Align(
+                 alignment: Alignment.bottomRight,
+                 child: PoweredByGoogleImage()),
             searchBody ?? Container(),
           ],
         ),

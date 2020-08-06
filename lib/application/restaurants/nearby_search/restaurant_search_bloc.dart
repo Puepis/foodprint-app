@@ -14,7 +14,7 @@ part 'restaurant_search_state.dart';
 
 /// BloC reponsible for the business logic behind the restaurant search process.
 ///
-/// Maps incoming [RestaurantSearchEvent] to [RestaurantSearchState]
+/// Maps incoming [RestaurantSearchEvent] to [RestaurantSearchState].
 @injectable
 class RestaurantSearchBloc
     extends Bloc<RestaurantSearchEvent, RestaurantSearchState> {

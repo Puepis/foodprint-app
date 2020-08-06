@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 part 'failures.freezed.dart';
 
-// ValueFailure union - group all failures from validated value objects
+/// The set of all possible invalid value failures.
 @freezed
 abstract class ValueFailure<T> with _$ValueFailure<T> {
   const factory ValueFailure.exceedingLength({

@@ -71,7 +71,7 @@ class LoginPage extends StatelessWidget {
                                 enterPage: const RegisterPage()));
                       },
                       child: Text(
-                        "Register",
+                        "Register.",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,

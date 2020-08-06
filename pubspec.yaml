@@ -60,6 +60,7 @@ dependencies:
   fl_chart: ^0.10.1
   transparent_image: ^1.0.0
   bug_report: ^0.0.1-dev.3
+  cached_network_image: ^2.2.0+1
 
   cupertino_icons: ^0.1.2
 

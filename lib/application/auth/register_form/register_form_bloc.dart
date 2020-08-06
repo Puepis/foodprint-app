@@ -14,6 +14,9 @@ part 'register_form_state.dart';
 
 part 'register_form_bloc.freezed.dart';
 
+/// The BLoC that is reponsible for handling the register form events.
+///
+/// Maps incoming [RegisterFormEvent] to [RegisterFormState].
 @injectable
 class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   final IAuthRepository _authClient;

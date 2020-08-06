@@ -6,7 +6,7 @@ import 'package:foodprint/domain/photos/value_objects.dart';
 
 import 'account_failure.dart';
 
-/// Interface class that defines the various user account actions
+/// Interface class that defines the various user account actions.
 abstract class IAccountRepository {
   Future<Either<AccountFailure, JWT>> changeUsername({
     @required UserID id,

@@ -5,7 +5,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant_dto.freezed.dart';
 
-// Data transfer object = model
 @freezed
 abstract class RestaurantDTO implements _$RestaurantDTO {
   const RestaurantDTO._();

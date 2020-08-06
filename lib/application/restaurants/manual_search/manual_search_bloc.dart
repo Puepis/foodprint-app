@@ -18,7 +18,7 @@ part 'manual_search_state.dart';
 
 /// BloC reponsible for the business logic behind the manual restaurant search process.
 ///
-/// Maps incoming [ManualSearchEvent] to [ManualSearchState]
+/// Maps incoming [ManualSearchEvent] to [ManualSearchState].
 @injectable
 class ManualSearchBloc extends Bloc<ManualSearchEvent, ManualSearchState> {
   /// Repository that handles the restaurant search

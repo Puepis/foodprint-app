@@ -5,6 +5,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -42,11 +43,6 @@ class AppDrawer extends StatelessWidget {
                           context, ProfilePage.routeName,
                           arguments: ProfilePageArgs(
                               token: token, foodprint: foodprint))),
-                  _createDrawerItem(
-                      icon: Icons.info,
-                      text: 'About Foodprint',
-                      onTap: () => Navigator.popAndPushNamed(
-                          context, AboutPage.routeName)),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',

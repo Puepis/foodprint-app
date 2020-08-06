@@ -7,7 +7,9 @@ class GooglePlaceDetailSearchResponse {
   final List<String> attributions;
   final RestaurantEntity restaurant;
   GooglePlaceDetailSearchResponse(
-      {@required this.status, @required this.attributions, @required this.restaurant});
+      {@required this.status,
+      @required this.attributions,
+      @required this.restaurant});
 
   factory GooglePlaceDetailSearchResponse.fromJson(Map<String, dynamic> json) {
     return GooglePlaceDetailSearchResponse(
