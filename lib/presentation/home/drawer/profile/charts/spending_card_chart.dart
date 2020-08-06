@@ -11,56 +11,55 @@ class SpendingPieChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 175,
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
-        child: Row(
-          children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: PieChart(PieChartData(
-                centerSpaceRadius: double.infinity,
-                borderData: FlBorderData(show: false),
-                sectionsSpace: 0,
-                sections: _buildChartSections(),
-              )),
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            _buildLegend(),
-          ],
+    return LayoutBuilder(builder: (context, constraints) {
+      return Container(
+        height: constraints.maxWidth * 0.50,
+        width: constraints.maxWidth,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(PieChartData(
+                  centerSpaceRadius: double.infinity,
+                  borderData: FlBorderData(show: false),
+                  sectionsSpace: 0,
+                  sections: _buildChartSections(constraints),
+                )),
+              ),
+              _buildLegend(constraints),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   /// Generates the chart's legend based on the displayed data
-  Expanded _buildLegend() {
+  Widget _buildLegend(BoxConstraints constraints) {
     final sections = spending.displaySections;
-    return Expanded(
-      child: Center(
-        child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: sections.length,
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 8,
-                ),
-            itemBuilder: (context, index) {
-              return Indicator(
-                color: spending.categoryColors[sections[index]],
-                text: spending.displayTitles[index],
-                isSquare: true,
-              );
-            }),
-      ),
+    return Container(
+      width: constraints.maxWidth * 0.40,
+      child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: sections.length,
+          separatorBuilder: (context, index) => const SizedBox(
+                height: 8,
+              ),
+          itemBuilder: (context, index) {
+            return Indicator(
+              color: spending.categoryColors[sections[index]],
+              text: spending.displayTitles[index],
+              isSquare: true,
+            );
+          }),
     );
   }
 
-  List<PieChartSectionData> _buildChartSections() {
-    const double radius = 30;
+  List<PieChartSectionData> _buildChartSections(BoxConstraints constraints) {
+    final radius = constraints.maxWidth * 0.08;
     final percentages = spending.percentages;
 
     // Default chart

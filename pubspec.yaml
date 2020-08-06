@@ -43,7 +43,7 @@ dependencies:
   # Service locator
   get_it: ^4.0.2
   # Contains annotations for freezed
-  freezed_annotation: ^0.7.1
+  freezed_annotation: ^0.11.0
   # Dependency injection
   injectable: ^0.4.0+1
   flushbar: ^1.10.4
@@ -63,6 +63,7 @@ dependencies:
   cached_network_image: ^2.2.0+1
 
   cupertino_icons: ^0.1.2
+  device_preview: ^0.4.7
 
 dev_dependencies:
   flutter_test:
@@ -72,7 +73,7 @@ dev_dependencies:
   # Create mocks
   mockito: ^4.1.0
   # Tool that runs code generators
-  build_runner:
+  build_runner: null
   # Code generator
   freezed: ^0.10.9
   injectable_generator: ^0.4.1
@@ -80,7 +81,7 @@ dev_dependencies:
   lint: ^1.2.0
 
 flutter_icons:
-  android: true 
+  android: true
   ios: true
   image_path: "assets/icons/inverted_logo.png"
   adaptive_icon_background: "#F6B26B"
