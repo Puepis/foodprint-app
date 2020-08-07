@@ -117,22 +117,6 @@ class _LoginFormState extends State<LoginForm> {
                               orElse: () => null),
                           (r) => null)),
               const SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () {},
-                  child: const Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              const SizedBox(
                 height: 30.0,
               ),
               if (_isSubmitting)

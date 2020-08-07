@@ -52,12 +52,12 @@ class _FoodMapState extends State<FoodMap> {
           markers: Set<Marker>.of(_markers.values),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 35, 16, 16),
+          padding: const EdgeInsets.only(left: 10, bottom: 32),
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+              children: [
                 FloatingActionButton(
                   heroTag: "map_type",
                   backgroundColor: Colors.white,
@@ -65,14 +65,19 @@ class _FoodMapState extends State<FoodMap> {
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   child: const Icon(Icons.map, size: 32.0),
                 ),
-                const SizedBox(height: 16.0),
                 if (_showRecenterButton)
-                  FloatingActionButton(
-                    heroTag: "recenter",
-                    backgroundColor: Colors.white,
-                    onPressed: _onRecenterButtonPressed,
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    child: const Icon(Icons.gps_fixed, size: 32.0),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
+                      FloatingActionButton(
+                        heroTag: "recenter",
+                        backgroundColor: Colors.white,
+                        onPressed: _onRecenterButtonPressed,
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                        child: const Icon(Icons.gps_fixed, size: 32.0),
+                      ),
+                    ],
                   ),
               ],
             ),

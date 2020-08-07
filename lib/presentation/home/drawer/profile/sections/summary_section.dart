@@ -9,6 +9,7 @@ class SummarySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildStatCard(
           title: summary.photos.length == 1 ? 'Photo' : 'Photos',
@@ -28,8 +29,8 @@ class SummarySection extends StatelessWidget {
 
   Expanded _buildStatCard({String count, String title}) => Expanded(
         child: Container(
-          margin: const EdgeInsets.all(8.0),
-          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.fromLTRB(6, 12, 6, 12),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
