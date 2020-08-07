@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart' hide DeviceOrientation;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +10,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  // TODO: Remove after taking screenshots
-  //await SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
   // Add font licenses
   LicenseRegistry.addLicense(() async* {
