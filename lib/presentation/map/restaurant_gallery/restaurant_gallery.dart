@@ -1,10 +1,16 @@
+import 'dart:async';
+import 'dart:ui' as ui;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+part 'landscape_photo.dart';
+part 'portrait_photo.dart';
 
 /// Displays all the photos taken at a particular restaurant in a carousel
 class RestaurantGallery extends StatelessWidget {
@@ -19,43 +25,54 @@ class RestaurantGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: foodprintPrimaryColorSwatch[50],
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              top: kToolbarHeight,
-            ),
-            child: Text(
-              restaurant.restaurantName.getOrCrash(),
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 34,
+      body: LayoutBuilder(builder: (context, constraints) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  restaurant.name.getOrCrash(),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                  ),
+                ),
               ),
-            ),
+              SizedBox(
+                width: constraints.maxWidth * 0.3,
+                child: Divider(
+                  color: Theme.of(context).primaryColor,
+                  height: 20,
+                  thickness: 2.0,
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.83,
+                child: PhotoCarousel(
+                  constraints: constraints,
+                  photos: photos,
+                ),
+              )
+            ],
           ),
-          SizedBox(
-            width: 100,
-            child: Divider(
-              color: Theme.of(context).primaryColor,
-              height: 20,
-              thickness: 2.0,
-            ),
-          ),
-          Expanded(
-            child: PhotoCarousel(
-              photos: photos,
-            ),
-          )
-        ],
-      ),
+        );
+      }),
     );
   }
 }
 
 class PhotoCarousel extends StatefulWidget {
   final List<PhotoEntity> photos;
-  const PhotoCarousel({Key key, this.photos}) : super(key: key);
+  final BoxConstraints constraints;
+  const PhotoCarousel({Key key, this.photos, this.constraints})
+      : super(key: key);
 
   @override
   _PhotoCarouselState createState() => _PhotoCarouselState();
@@ -102,55 +119,10 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
 
     final photo = widget.photos[index];
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12),
-      padding: EdgeInsets.only(
-        top: topPadding,
-      ),
-      child: Column(
-        children: [
-          FittedBox(
-            fit: BoxFit.cover,
-            child: FadeInImage.memoryNetwork(
-                fadeInDuration: const Duration(milliseconds: 200),
-                placeholder: kTransparentImage,
-                image: photo.url.getOrCrash()),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RichText(
-                  text: TextSpan(
-                      text: '${photo.photoDetail.name.getOrCrash()}\n',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: formatter
-                              .format(photo.photoDetail.price.getOrCrash()),
-                          style: TextStyle(
-                              height: 1.3,
-                              color: Colors.green.shade500,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
-                        )
-                      ]),
-                ),
-                Icon(
-                  photo.isFavourite ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                  size: 26,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+    return PortraitPhoto(
+        photo: photo,
+        topPadding: topPadding,
+        constraints: widget.constraints,
+        formatter: formatter);
   }
 }

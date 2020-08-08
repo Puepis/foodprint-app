@@ -7,7 +7,6 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_failure.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
 
-// Creates an abstraction between the infrastructure layer and the business logic (domain) layer
 abstract class IRestaurantSearchRepository {
   Future<Either<RestaurantFailure, List<RestaurantEntity>>>
       searchNearbyRestaurants({

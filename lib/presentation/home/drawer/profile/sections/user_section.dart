@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
@@ -28,6 +30,9 @@ class _UserSectionState extends State<UserSection> {
     final username =
         JWT.getDecodedPayload(widget.token.getOrCrash())['username'] as String;
 
+    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
+        as String;
+
     return BlocListener<AccountBloc, AccountState>(
       listener: (context, state) {
         if (state is AvatarChangeError) {
@@ -35,14 +40,15 @@ class _UserSectionState extends State<UserSection> {
           FlushbarHelper.createError(
             message: state.failure.maybeMap(
                 serverError: (_) => 'Server Error',
+                noInternet: (_) => 'No Internet Connection',
                 orElse: () => 'Unexpected error'),
           ).show(context);
         }
 
-        if (state is AccountActionLoading) {
+        if (state is AvatarChangeLoading) {
           Scaffold.of(context)..hideCurrentSnackBar();
           FlushbarHelper.createInformation(
-            message: 'Saving avatar...',
+            message: 'Saving changes...',
           ).show(context);
         }
 
@@ -55,7 +61,7 @@ class _UserSectionState extends State<UserSection> {
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            _buildProfilePicture(),
+            _buildAvatar(url),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, top: 35),
@@ -79,68 +85,61 @@ class _UserSectionState extends State<UserSection> {
     );
   }
 
-  /// Displays the profile picture based on the user's avatar
+  /// Displays the user's avatar
   ///
   /// The url is stored in the user's JWT and can be null
-  Widget _buildProfilePicture() {
-    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
-        as String;
-
-    return Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.zero,
-          child: (url == null)
-              ? Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      color: foodprintPrimaryColorSwatch[50],
-                      borderRadius: BorderRadius.circular(100)),
-                  child: const Icon(
-                    Icons.person_outline,
-                    size: 100,
-                  ),
-                )
-              : Container(
-                  height: 120,
-                  width: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: FadeInImage.memoryNetwork(
-                          fadeInDuration: const Duration(milliseconds: 200),
-                          placeholder: kTransparentImage,
-                          image: url),
+  Widget _buildAvatar(String url) => Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.zero,
+            child: (url == null)
+                ? Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                        color: foodprintPrimaryColorSwatch[50],
+                        borderRadius: BorderRadius.circular(100)),
+                    child: const Icon(
+                      Icons.person_outline,
+                      size: 100,
+                    ),
+                  )
+                : Container(
+                    height: 120,
+                    width: 120,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          fadeInDuration: const Duration(milliseconds: 150),
+                          placeholder: (context, url) =>
+                              Image.memory(kTransparentImage),
+                          imageUrl: url),
                     ),
                   ),
-                ),
-        ),
-        Positioned(
-          right: 0,
-          top: 0,
-          child: Container(
-              decoration: BoxDecoration(
-                  color: foodprintPrimaryColorSwatch[100],
-                  borderRadius: BorderRadius.circular(50)),
-              child: InkWell(
-                onTap: _onEditAvatar,
-                child: const Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.edit,
-                    size: 20.0,
+          ),
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Container(
+                decoration: BoxDecoration(
+                    color: foodprintPrimaryColorSwatch[100],
+                    borderRadius: BorderRadius.circular(50)),
+                child: InkWell(
+                  onTap: _onEditAvatar,
+                  child: const Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: Icon(
+                      Icons.edit,
+                      size: 20.0,
+                    ),
                   ),
-                ),
-              )),
-        ),
-      ],
-    );
-  }
+                )),
+          ),
+        ],
+      );
 
-  // ignore: avoid_void_async
-  void _onEditAvatar() async {
+  Future<void> _onEditAvatar() async {
     final result = await showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -166,9 +165,20 @@ class _UserSectionState extends State<UserSection> {
       final ImageSource source =
           (result == 0) ? ImageSource.camera : ImageSource.gallery;
 
-      final PickedFile image =
-          await _picker.getImage(source: source, imageQuality: 70);
+      PickedFile image;
+      try {
+        image = await _picker.getImage(source: source, imageQuality: 70);
+      } on PlatformException catch (e) {
+        Scaffold.of(context)..hideCurrentSnackBar();
+        FlushbarHelper.createError(
+                message: e.code.contains('camera')
+                    ? 'Camera permission required'
+                    : 'Gallery permission required')
+            .show(context);
+        return;
+      }
 
+      // Image selected
       if (image != null) {
         final File _imageFile = File(image.path);
 

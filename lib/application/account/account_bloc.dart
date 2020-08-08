@@ -28,18 +28,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> mapEventToState(
     AccountEvent event,
   ) async* {
-    yield AccountActionLoading();
     if (event is AvatarChanged) {
+      yield AvatarChangeLoading();
       yield* _mapAvatarChangedToState(event.token, event.newAvatarFile);
     }
     if (event is AccountUsernameChanged) {
+      yield UsernameChangeLoading();
       yield* _mapUsernameChangedToState(event.token, event.newUsername);
     }
     if (event is AccountPasswordChanged) {
+      yield PasswordChangeLoading();
       yield* _mapPasswordChangedToState(
           event.token, event.oldPassword, event.newPassword);
     }
     if (event is AccountDeleted) {
+      yield DeleteAccountLoading();
       yield* _mapAccountDeletedToState(event.token);
     }
   }

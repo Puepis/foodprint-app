@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/injection.dart';
@@ -24,9 +25,7 @@ class _FoodprintCaptureState extends State<FoodprintCapture> {
 
   @override
   Widget build(BuildContext context) {
-    if (_imageFile == null) {
-      _takePhoto(ImageSource.camera, context);
-    }
+    if (_imageFile == null) _takePhoto(ImageSource.camera, context);
 
     return Scaffold(
         body: (_imageFile == null)
@@ -43,11 +42,12 @@ class _FoodprintCaptureState extends State<FoodprintCapture> {
 
   Future<void> _takePhoto(ImageSource source, BuildContext context) async {
     final _picker = ImagePicker();
-    final PickedFile image =
-        await _picker.getImage(source: source, imageQuality: 70);
-    if (image == null) {
-      Navigator.pop(context); // back button pressed
-      return;
+    PickedFile image;
+    try {
+      image = await _picker.getImage(source: source, imageQuality: 70);
+      if (image == null) return Navigator.pop(context);
+    } on PlatformException {
+      return Navigator.pop(context);
     }
 
     final File imageFile = File(image.path);

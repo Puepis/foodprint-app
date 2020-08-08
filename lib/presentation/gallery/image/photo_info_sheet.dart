@@ -7,8 +7,9 @@ import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_screen.dart';
+import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 
@@ -16,16 +17,29 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 class PhotoInfoSheet extends StatelessWidget {
   const PhotoInfoSheet({
     Key key,
-    @required this.token,
     @required this.photo,
     @required this.restaurant,
-    @required this.foodprint,
   }) : super(key: key);
 
-  final JWT token;
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
-  final FoodprintEntity foodprint;
+
+  TextStyle get _sectionTitleStyle => TextStyle(
+      color: Colors.grey.shade400,
+      fontSize: 12.0,
+      fontWeight: FontWeight.normal);
+
+  TextStyle get _sectionBodyStyle => const TextStyle(
+      color: Colors.white, fontSize: 15.0, fontWeight: FontWeight.normal);
+
+  SizedBox get _sectionTitleDivider => SizedBox(
+        width: 25,
+        child: Divider(height: 10, thickness: 1, color: primaryColor),
+      );
+
+  SizedBox get _sectionSpace => const SizedBox(
+        height: 25,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -33,105 +47,161 @@ class PhotoInfoSheet extends StatelessWidget {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
 
+    final JWT token = InheritedUser.of(context).token;
+    final FoodprintEntity foodprint = InheritedUser.of(context).foodprint;
+
     return Container(
+      height: MediaQuery.of(context).size.height * 0.66,
       decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0),
-            topRight: Radius.circular(20.0),
-          ),
-          color: Colors.black87),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0),
+        ),
+        color: Color(0xFF1e1c1c),
+      ),
       padding: const EdgeInsets.all(20),
-      child: Stack(
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
+          children: [
+            _buildDetails(context, formatter, constraints),
+            _buildEditButton(context, token, foodprint)
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildDetails(BuildContext context, NumberFormat formatter,
+          BoxConstraints constraints) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(photo.photoDetail.name.getOrCrash(),
-                  style: itemNameTextStyle),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Text(formatter.format(photo.photoDetail.price.getOrCrash()),
-                  style: priceText),
-              const Divider(
-                color: Colors.grey,
-                height: 30,
-                thickness: 1,
-              ),
-              const Text(
-                "TIMESTAMP",
-                style: labelTextStyle,
-              ),
-              const SizedBox(height: 5.0),
-              Text(photo.timestamp.toReadable(), style: largeTextStyle),
-              const SizedBox(height: 20),
-              const Text(
-                "COMMENTS",
-                style: labelTextStyle,
-              ),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Text(photo.photoDetail.comments.getOrCrash(),
-                  style: largeTextStyle),
-              const SizedBox(height: 20.0),
-              const Text("LOCATION", style: labelTextStyle),
-              const SizedBox(height: 5.0),
-              Text(restaurant.restaurantName.getOrCrash(),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: restaurantName),
-              const SizedBox(
-                height: 5.0,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.star,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(
-                    width: 5.0,
-                  ),
-                  Text(
-                    restaurant.restaurantRating.getOrCrash().toString(),
-                    style: const TextStyle(fontSize: 18.0, color: Colors.grey),
-                  )
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Text(
-                  "${restaurant.latitude.getOrCrash()}, ${restaurant.longitude.getOrCrash()}",
-                  style: coordsTextStyle)
-            ],
+          Padding(
+            padding: EdgeInsets.only(right: constraints.maxWidth * 0.2),
+            child: Text(photo.details.name.getOrCrash(),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22)),
           ),
-          Positioned(
-            top: 5.0,
-            right: 5.0,
-            child: IconButton(
-              icon: const Icon(Icons.edit),
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                Navigator.of(context).push(SlideUpEnterRoute(
-                    newPage: MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                    BlocProvider.value(
-                      value: context.bloc<FoodprintBloc>(),
-                    )
-                  ],
-                  child: EditImageScreen(
-                    token: token,
-                    restaurant: restaurant,
-                    foodprint: foodprint,
-                    photo: photo,
-                  ),
-                )));
-              },
+          const SizedBox(
+            height: 5,
+          ),
+          Text(formatter.format(photo.details.price.getOrCrash()),
+              style: TextStyle(color: Colors.green.shade500, fontSize: 20)),
+          const Divider(
+            color: Colors.grey,
+            height: 30,
+            thickness: 1,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          _buildBody(context),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Icon(
+              photo.isFavourite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+              size: 30,
             ),
           )
+        ],
+      );
+
+  Expanded _buildBody(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _createSection('COMMENTS', photo.details.comments.getOrCrash()),
+          _sectionSpace,
+          _createSection('TIMESTAMP', photo.timestamp.toReadable()),
+          _sectionSpace,
+          Text("LOCATION", style: _sectionTitleStyle),
+          _sectionTitleDivider,
+          const SizedBox(
+            height: 5,
+          ),
+          Text(restaurant.name.getOrCrash(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: _sectionBodyStyle),
+          const SizedBox(
+            height: 5.0,
+          ),
+          Row(
+            children: [
+              Icon(
+                Icons.star,
+                color: Theme.of(context).primaryColor,
+                size: 18,
+              ),
+              const SizedBox(
+                width: 7.5,
+              ),
+              Text(
+                restaurant.rating.getOrCrash().toString(),
+                style: _sectionBodyStyle,
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 7.5,
+          ),
+          Text(
+              "${restaurant.latitude.getOrCrash().toStringAsFixed(3)}, ${restaurant.longitude.getOrCrash().toStringAsFixed(3)}",
+              style: _sectionBodyStyle.copyWith(fontSize: 12)),
         ],
       ),
     );
   }
+
+  Positioned _buildEditButton(
+          BuildContext context, JWT token, FoodprintEntity foodprint) =>
+      Positioned(
+        top: 5.0,
+        right: 5.0,
+        child: IconButton(
+          icon: const Icon(Icons.edit),
+          color: Theme.of(context).primaryColor,
+          onPressed: () {
+            Navigator.of(context).push(SlideUpEnterRoute(
+                newPage: MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                BlocProvider.value(
+                  value: context.bloc<FoodprintBloc>(),
+                )
+              ],
+              child: EditImageScreen(
+                token: token,
+                restaurant: restaurant,
+                foodprint: foodprint,
+                photo: photo,
+              ),
+            )));
+          },
+        ),
+      );
+
+  Widget _createSection(String title, String body) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: _sectionTitleStyle,
+          ),
+          _sectionTitleDivider,
+          const SizedBox(
+            height: 5,
+          ),
+          Text(
+            body,
+            style: _sectionBodyStyle,
+          ),
+        ],
+      );
 }

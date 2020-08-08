@@ -4,6 +4,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
 import 'package:foodprint/domain/manual_search/autocomplete_result_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The delegate where users can search for a location
 class RestaurantSearchDelegate extends SearchDelegate<String> {
   final double latitude;
   final double longitude;
@@ -46,7 +47,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildLeading(BuildContext context) {
-    // leading icon on the left of app bar
     return IconButton(
       icon: AnimatedIcon(
         icon: AnimatedIcons.menu_arrow,
@@ -58,7 +58,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  /// Shows results based on the selection
+  /// Not used
   @override
   Widget buildResults(BuildContext context) {
     return Container();
@@ -77,7 +77,6 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   /// Builds the suggestion body as the user types
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Fire event
     context.bloc<ManualSearchBloc>()
       ..add(AutocompleteSearched(
           latitude: latitude, longitude: longitude, input: query));
@@ -115,7 +114,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
           searchBody = ListView.builder(
               itemCount: predictions.length,
               itemBuilder: (context, index) {
-                return buildSearchSuggestion(
+                return _buildSearchResult(
                     context, predictions[index], searchedStr);
               });
         }
@@ -127,10 +126,9 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            // TODO: Show powered by Google logo for release
-            // Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: PoweredByGoogleImage()),
+            Align(
+                alignment: Alignment.bottomRight,
+                child: PoweredByGoogleImage()),
             searchBody ?? Container(),
           ],
         ),
@@ -139,7 +137,7 @@ class RestaurantSearchDelegate extends SearchDelegate<String> {
   }
 
   /// One entry in the suggestion list
-  Widget buildSearchSuggestion(
+  Widget _buildSearchResult(
       BuildContext context, AutocompleteResultEntity prediction, String input) {
     final id = prediction.id.getOrCrash();
     final name = prediction.name.getOrCrash();

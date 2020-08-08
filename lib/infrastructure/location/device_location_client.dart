@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:location/location.dart';
 
+/// Responsible for retrieving the device's location.
 @LazySingleton(as: ILocationRepository)
 class DeviceLocationClient implements ILocationRepository {
   final Location location = Location();

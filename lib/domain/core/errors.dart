@@ -1,8 +1,6 @@
-
-
 import 'package:foodprint/domain/core/failures.dart';
 
-// Errors, unlike exceptions, cause the app to crash 
+/// Errors, unlike exceptions, cause the app to crash
 class UnexpectedValueError extends Error {
   final ValueFailure valueFailure;
 
@@ -10,8 +8,8 @@ class UnexpectedValueError extends Error {
 
   @override
   String toString() {
-    const explanation = 
-      'Encountered a ValueFailure error at an unrecoverable point. Terminating.';
+    const explanation =
+        'Encountered a ValueFailure error at an unrecoverable point. Terminating.';
     return Error.safeToString('$explanation Failure was $valueFailure.');
   }
 }

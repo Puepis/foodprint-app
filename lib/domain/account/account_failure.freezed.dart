@@ -23,6 +23,10 @@ class _$AccountFailureTearOff {
   _ServerError serverError() {
     return const _ServerError();
   }
+
+  _NoInternet noInternet() {
+    return const _NoInternet();
+  }
 }
 
 // ignore: unused_element
@@ -34,12 +38,14 @@ mixin _$AccountFailure {
     @required Result wrongPassword(),
     @required Result usernameTaken(),
     @required Result serverError(),
+    @required Result noInternet(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result wrongPassword(),
     Result usernameTaken(),
     Result serverError(),
+    Result noInternet(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -47,12 +53,14 @@ mixin _$AccountFailure {
     @required Result wrongPassword(_WrongPassword value),
     @required Result usernameTaken(_UsernameTaken value),
     @required Result serverError(_ServerError value),
+    @required Result noInternet(_NoInternet value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result wrongPassword(_WrongPassword value),
     Result usernameTaken(_UsernameTaken value),
     Result serverError(_ServerError value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   });
 }
@@ -111,10 +119,12 @@ class _$_WrongPassword implements _WrongPassword {
     @required Result wrongPassword(),
     @required Result usernameTaken(),
     @required Result serverError(),
+    @required Result noInternet(),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return wrongPassword();
   }
 
@@ -124,6 +134,7 @@ class _$_WrongPassword implements _WrongPassword {
     Result wrongPassword(),
     Result usernameTaken(),
     Result serverError(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -139,10 +150,12 @@ class _$_WrongPassword implements _WrongPassword {
     @required Result wrongPassword(_WrongPassword value),
     @required Result usernameTaken(_UsernameTaken value),
     @required Result serverError(_ServerError value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return wrongPassword(this);
   }
 
@@ -152,6 +165,7 @@ class _$_WrongPassword implements _WrongPassword {
     Result wrongPassword(_WrongPassword value),
     Result usernameTaken(_UsernameTaken value),
     Result serverError(_ServerError value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -205,10 +219,12 @@ class _$_UsernameTaken implements _UsernameTaken {
     @required Result wrongPassword(),
     @required Result usernameTaken(),
     @required Result serverError(),
+    @required Result noInternet(),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return usernameTaken();
   }
 
@@ -218,6 +234,7 @@ class _$_UsernameTaken implements _UsernameTaken {
     Result wrongPassword(),
     Result usernameTaken(),
     Result serverError(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -233,10 +250,12 @@ class _$_UsernameTaken implements _UsernameTaken {
     @required Result wrongPassword(_WrongPassword value),
     @required Result usernameTaken(_UsernameTaken value),
     @required Result serverError(_ServerError value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return usernameTaken(this);
   }
 
@@ -246,6 +265,7 @@ class _$_UsernameTaken implements _UsernameTaken {
     Result wrongPassword(_WrongPassword value),
     Result usernameTaken(_UsernameTaken value),
     Result serverError(_ServerError value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -299,10 +319,12 @@ class _$_ServerError implements _ServerError {
     @required Result wrongPassword(),
     @required Result usernameTaken(),
     @required Result serverError(),
+    @required Result noInternet(),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return serverError();
   }
 
@@ -312,6 +334,7 @@ class _$_ServerError implements _ServerError {
     Result wrongPassword(),
     Result usernameTaken(),
     Result serverError(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -327,10 +350,12 @@ class _$_ServerError implements _ServerError {
     @required Result wrongPassword(_WrongPassword value),
     @required Result usernameTaken(_UsernameTaken value),
     @required Result serverError(_ServerError value),
+    @required Result noInternet(_NoInternet value),
   }) {
     assert(wrongPassword != null);
     assert(usernameTaken != null);
     assert(serverError != null);
+    assert(noInternet != null);
     return serverError(this);
   }
 
@@ -340,6 +365,7 @@ class _$_ServerError implements _ServerError {
     Result wrongPassword(_WrongPassword value),
     Result usernameTaken(_UsernameTaken value),
     Result serverError(_ServerError value),
+    Result noInternet(_NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -352,4 +378,103 @@ class _$_ServerError implements _ServerError {
 
 abstract class _ServerError implements AccountFailure {
   const factory _ServerError() = _$_ServerError;
+}
+
+abstract class _$NoInternetCopyWith<$Res> {
+  factory _$NoInternetCopyWith(
+          _NoInternet value, $Res Function(_NoInternet) then) =
+      __$NoInternetCopyWithImpl<$Res>;
+}
+
+class __$NoInternetCopyWithImpl<$Res> extends _$AccountFailureCopyWithImpl<$Res>
+    implements _$NoInternetCopyWith<$Res> {
+  __$NoInternetCopyWithImpl(
+      _NoInternet _value, $Res Function(_NoInternet) _then)
+      : super(_value, (v) => _then(v as _NoInternet));
+
+  @override
+  _NoInternet get _value => super._value as _NoInternet;
+}
+
+class _$_NoInternet implements _NoInternet {
+  const _$_NoInternet();
+
+  @override
+  String toString() {
+    return 'AccountFailure.noInternet()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is _NoInternet);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result wrongPassword(),
+    @required Result usernameTaken(),
+    @required Result serverError(),
+    @required Result noInternet(),
+  }) {
+    assert(wrongPassword != null);
+    assert(usernameTaken != null);
+    assert(serverError != null);
+    assert(noInternet != null);
+    return noInternet();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result wrongPassword(),
+    Result usernameTaken(),
+    Result serverError(),
+    Result noInternet(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result wrongPassword(_WrongPassword value),
+    @required Result usernameTaken(_UsernameTaken value),
+    @required Result serverError(_ServerError value),
+    @required Result noInternet(_NoInternet value),
+  }) {
+    assert(wrongPassword != null);
+    assert(usernameTaken != null);
+    assert(serverError != null);
+    assert(noInternet != null);
+    return noInternet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result wrongPassword(_WrongPassword value),
+    Result usernameTaken(_UsernameTaken value),
+    Result serverError(_ServerError value),
+    Result noInternet(_NoInternet value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _NoInternet implements AccountFailure {
+  const factory _NoInternet() = _$_NoInternet;
 }

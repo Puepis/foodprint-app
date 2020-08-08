@@ -5,7 +5,7 @@ import 'package:foodprint/domain/core/failures.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/core/value_validators.dart';
 
-// This is the JWT object that will be used in the app
+/// This is the JWT object that will be used throughout the app's UI layer.
 @immutable
 class JWT extends ValueObject<String> {
   @override

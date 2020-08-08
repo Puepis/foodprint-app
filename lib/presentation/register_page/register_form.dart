@@ -6,6 +6,7 @@ import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 
+/// The user registration form.
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
 
@@ -38,6 +39,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     serverError: (_) => 'Server error',
                     userAlreadyExists: (_) =>
                         'Email or username already in use',
+                    noInternet: (_) => 'No Internet Connection',
                     invalidRegisterCombination: (_) =>
                         'Invalid register combination',
                   ),
@@ -49,6 +51,7 @@ class _RegisterFormState extends State<RegisterForm> {
       return Form(
         autovalidate: state.showErrorMessages,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             AuthFormField(
@@ -138,11 +141,13 @@ class _RegisterFormState extends State<RegisterForm> {
             else
               AuthIdleButton(
                   title: "Register",
-                  onPressed: () {
-                    context
-                        .bloc<RegisterFormBloc>()
-                        .add(const RegisterFormEvent.registerPressed());
-                  })
+                  onPressed: state.isSubmitting
+                      ? null
+                      : () {
+                          context
+                              .bloc<RegisterFormBloc>()
+                              .add(const RegisterFormEvent.registerPressed());
+                        })
           ],
         ),
       );

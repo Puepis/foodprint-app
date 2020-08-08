@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -16,42 +15,39 @@ abstract class PhotoDTO implements _$PhotoDTO {
   const factory PhotoDTO({
     @required String storagePath,
     @required String url,
-    @required PhotoDetailDTO photoDetail,
-    @required String timestamp, 
+    @required PhotoDetailDTO details,
+    @required String timestamp,
     @required bool isFavourite,
   }) = _PhotoDTO;
 
   // Convert entity to DTO
   factory PhotoDTO.fromEntity(PhotoEntity photo) {
     return PhotoDTO(
-      storagePath: photo.storagePath.getOrCrash(), // unexpected errors
-      url: photo.url.getOrCrash(),
-      photoDetail: PhotoDetailDTO.fromEntity(photo.photoDetail),
-      timestamp: photo.timestamp.getOrCrash(),
-      isFavourite: photo.isFavourite
-    );
+        storagePath: photo.storagePath.getOrCrash(), // unexpected errors
+        url: photo.url.getOrCrash(),
+        details: PhotoDetailDTO.fromEntity(photo.details),
+        timestamp: photo.timestamp.getOrCrash(),
+        isFavourite: photo.isFavourite);
   }
 
   // Convert DTO to entity
   PhotoEntity toEntity() {
     return PhotoEntity(
-      storagePath: StoragePath(storagePath), 
-      url: URL(url),
-      photoDetail: photoDetail.toEntity(),
-      timestamp: Timestamp(timestamp),
-      isFavourite: isFavourite 
-    );
+        storagePath: StoragePath(storagePath),
+        url: URL(url),
+        details: details.toEntity(),
+        timestamp: Timestamp(timestamp),
+        isFavourite: isFavourite);
   }
 
   // JSON Deserializer
   factory PhotoDTO.fromJSON(Map<String, dynamic> json) {
     return PhotoDTO(
-      storagePath: json['path'].toString(),
-      url: json['url'].toString(),
-      timestamp: parseTimestamp(json['time_taken'].toString()), 
-      photoDetail: PhotoDetailDTO.fromJSON(json),
-      isFavourite: json['favourite'].toString().contains('t') 
-    );
+        storagePath: json['path'].toString(),
+        url: json['url'].toString(),
+        timestamp: parseTimestamp(json['time_taken'].toString()),
+        details: PhotoDetailDTO.fromJSON(json),
+        isFavourite: json['favourite'].toString().contains('t'));
   }
 
   static String parseTimestamp(String timestamp) {
@@ -72,21 +68,19 @@ abstract class PhotoDetailDTO implements _$PhotoDetailDTO {
     @required String comments,
   }) = _PhotoDetailDTO;
 
-  factory PhotoDetailDTO.fromEntity(PhotoDetailEntity photoDetail) {
+  factory PhotoDetailDTO.fromEntity(PhotoDetailEntity details) {
     return PhotoDetailDTO(
-      name: photoDetail.name.getOrCrash(),
-      price: photoDetail.price.getOrCrash(),
-      comments: photoDetail.comments.getOrCrash()
-    );
+        name: details.name.getOrCrash(),
+        price: details.price.getOrCrash(),
+        comments: details.comments.getOrCrash());
   }
 
   // Convert DTO to entity (domain layer)
   PhotoDetailEntity toEntity() {
     return PhotoDetailEntity(
-      name: PhotoName(name),
-      price: PhotoPrice(price),
-      comments: PhotoComments(comments)
-    );
+        name: PhotoName(name),
+        price: PhotoPrice(price),
+        comments: PhotoComments(comments));
   }
 
   factory PhotoDetailDTO.fromJSON(Map<String, dynamic> json) {
@@ -95,5 +89,5 @@ abstract class PhotoDetailDTO implements _$PhotoDetailDTO {
       price: double.parse(json['price'].toString()),
       comments: json['comments'].toString(),
     );
-  } 
+  }
 }

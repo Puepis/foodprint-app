@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/display_models/spending_model.dart';
+import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_breakdown_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -203,14 +203,13 @@ class BreakdownDetails extends StatelessWidget {
             itemBuilder: (context, index) {
               final restaurant = restaurants[index];
               final numPhotos = breakdown[restaurant].length;
-              final totalPrice = breakdown[restaurant].fold(0,
-                  (prev, photo) => prev + photo.photoDetail.price.getOrCrash());
+              final totalPrice = breakdown[restaurant].fold(
+                  0, (prev, photo) => prev + photo.details.price.getOrCrash());
 
               return ListTile(
                 title: Row(
                   children: [
-                    Expanded(
-                        child: Text(restaurant.restaurantName.getOrCrash())),
+                    Expanded(child: Text(restaurant.name.getOrCrash())),
                     Text(formatter.format(totalPrice)),
                   ],
                 ),

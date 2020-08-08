@@ -7,7 +7,6 @@ import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
@@ -20,7 +19,6 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 /// If the list doesn't contain the desired restaurant, the user can use the
 /// [ManualSearchPage] to find the correct one.
 class SelectRestaurantPage extends StatefulWidget {
-  final FoodprintEntity currentFoodprint;
   final File imageFile;
   final List<RestaurantEntity> restaurants;
   final JWT token;
@@ -30,7 +28,6 @@ class SelectRestaurantPage extends StatefulWidget {
       {Key key,
       @required this.imageFile,
       @required this.restaurants,
-      @required this.currentFoodprint,
       @required this.latitude,
       @required this.longitude,
       @required this.token})
@@ -48,15 +45,15 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     final bloc = context.bloc<ManualSearchBloc>();
 
     return BlocConsumer<ManualSearchBloc, ManualSearchState>(
-        listener: (_, state) {
+        listener: (context, state) {
       if (state is SearchStateError) {
-        Scaffold.of(context)..hideCurrentSnackBar();
         FlushbarHelper.createError(
           message: state.failure.map(
             requestDenied: (_) => 'Request denied',
             unexpectedSearchFailure: (_) => 'Unexpected search failure',
             overQueryLimit: (_) => 'Over query limit',
             invalidRequest: (_) => 'Invalid request',
+            noInternet: (_) => 'No Internet Connection',
             notFound: (_) => 'Place not found',
           ),
         ).show(context);
@@ -93,20 +90,15 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     });
   }
 
-  /// Builds the scaffold body based on the [ManualBlocState]  
+  /// Builds the scaffold body based on the [ManualBlocState]
   Widget _buildBody(
       ManualSearchState state, ManualSearchBloc bloc, BuildContext context) {
     if (state is PlaceDetailSearchLoading) {
       // Loading indicator
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SpinKitRing(
-              color: primaryColor,
-              size: 100,
-            ),
-          ],
+        child: SpinKitRing(
+          color: primaryColor,
+          size: 100,
         ),
       );
     } else if (state is PlaceDetailSearchSuccess) {
@@ -120,43 +112,45 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
               color: Colors.green,
               size: 100,
             ),
-            const SizedBox(height: 5,),
-            const Text(
-              "Restaurant Selected!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 40, fontWeight: FontWeight.bold),
+            const SizedBox(
+              height: 5,
             ),
-            const SizedBox(height: 40,),
+            const Text(
+              "Location Selected!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             _buildActions(state, bloc),
           ],
         ),
       );
     } else {
       // Error or initial state
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.restaurants.isEmpty
-                  ? "We couldn't find any restaurants near you"
-                  : "Here's what we found near you",
-              style: TextStyle(
-                  fontSize: 35.0,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _buildRestaurantButtons(context),
-          ],
-        ),
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          Text(
+            widget.restaurants.isEmpty
+                ? "We couldn't find any places near you"
+                : "Select your location!",
+            style: TextStyle(
+                fontSize: 35.0,
+                fontWeight: FontWeight.bold,
+                color: primaryColor),
+          ),
+          const SizedBox(
+            height: 40,
+          ),
+          _buildRestaurantButtons(context),
+        ],
       );
     }
   }
 
+  /// Displayed after the user has selected a manually-searched restaurant
   Widget _buildActions(PlaceDetailSearchSuccess state, ManualSearchBloc bloc) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -199,8 +193,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: context.bloc<FoodprintBloc>())
         ],
-        child: PhotoDetailsPage(
-          oldFoodprint: widget.currentFoodprint,
+        child: SaveDetailsPage(
           token: widget.token,
           imageFile: widget.imageFile,
           restaurant: restaurant,
@@ -222,18 +215,18 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
 
   Widget _buildButton(int index) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0)
-      ),
+      shadowColor: foodprintPrimaryColorSwatch[400],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
-      color: foodprintPrimaryColorSwatch[200],
+      color: foodprintPrimaryColorSwatch[100],
       child: ListTile(
+          dense: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-          title: Text(widget.restaurants[index].restaurantName.getOrCrash(),
+          title: Text(widget.restaurants[index].name.getOrCrash(),
               overflow: TextOverflow.ellipsis,
               style:
-                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500)),
+                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
           subtitle: Container(
             margin: const EdgeInsets.only(top: 5),
             child: Row(
@@ -246,10 +239,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
                 const SizedBox(
                   width: 5.0,
                 ),
-                Text(
-                    widget.restaurants[index].restaurantRating
-                        .getOrCrash()
-                        .toString(),
+                Text(widget.restaurants[index].rating.getOrCrash().toString(),
                     style: const TextStyle(
                         fontSize: 16.0, fontWeight: FontWeight.w500)),
               ],
@@ -258,6 +248,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           trailing: const Icon(
             Icons.arrow_forward_ios,
             color: Colors.black,
+            size: 20,
           ),
           onTap: _toDetails(widget.restaurants[index])),
     );

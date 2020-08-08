@@ -10,6 +10,9 @@ import 'package:injectable/injectable.dart';
 part 'location_event.dart';
 part 'location_state.dart';
 
+/// The BLoC that is reponsible for handling location requests.
+///
+/// Maps incoming [LocationEvent] to [LocationState].
 @injectable
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   final ILocationRepository _locationClient;

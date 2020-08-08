@@ -37,6 +37,7 @@ class EditProfilePage extends StatelessWidget {
               FlushbarHelper.createError(
                 message: state.failure.maybeMap(
                     serverError: (_) => 'Server Error',
+                    noInternet: (_) => 'No Internet Connection',
                     orElse: () => 'Unexpected error'),
               ).show(context);
             }
@@ -48,84 +49,82 @@ class EditProfilePage extends StatelessWidget {
           },
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text("Username", style: _fieldTitleStyle),
-                  const SizedBox(
-                    height: 10,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Text("Username", style: _fieldTitleStyle),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  onTap: () => Navigator.pushNamed(
+                      context, ChangeUsernamePage.routeName,
+                      arguments: ChangeUsernameArgs(token)),
+                  enabled: true,
+                  initialValue: username,
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
                   ),
-                  TextFormField(
-                    onTap: () => Navigator.pushNamed(
-                        context, ChangeUsernamePage.routeName,
-                        arguments: ChangeUsernameArgs(token)),
-                    enabled: true,
-                    initialValue: username,
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text("Password", style: _fieldTitleStyle),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextFormField(
+                  enabled: true,
+                  initialValue: '********',
+                  cursorColor: primaryColor,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(7.0)),
                   ),
-                  const SizedBox(
-                    height: 30,
+                  onTap: () => Navigator.pushNamed(
+                      context, ChangePasswordPage.routeName,
+                      arguments: ChangePasswordArgs(token)),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                AuthIdleButton(
+                    title: "Sign Out",
+                    onPressed: () =>
+                        context.bloc<AuthBloc>().add(const LoggedOut())),
+                const SizedBox(
+                  height: 15,
+                ),
+                FlatButton(
+                  onPressed: () async {
+                    final bool confirmed = await _confirmDeletion(context);
+                    if (confirmed) {
+                      context
+                          .bloc<AccountBloc>()
+                          .add(AccountDeleted(token: token));
+                    }
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(
+                        Icons.delete,
+                        color: Colors.grey,
+                        size: 22,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Delete Account",
+                        style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                      ),
+                    ],
                   ),
-                  const Text("Password", style: _fieldTitleStyle),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    enabled: true,
-                    initialValue: '********',
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
-                    ),
-                    onTap: () => Navigator.pushNamed(
-                        context, ChangePasswordPage.routeName,
-                        arguments: ChangePasswordArgs(token)),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  AuthIdleButton(
-                      title: "Sign Out",
-                      onPressed: () =>
-                          context.bloc<AuthBloc>().add(const LoggedOut())),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      final bool confirmed = await _confirmDeletion(context);
-                      if (confirmed) {
-                        context
-                            .bloc<AccountBloc>()
-                            .add(AccountDeleted(token: token));
-                      }
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(
-                          Icons.delete,
-                          color: Colors.grey,
-                          size: 22,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Delete Account",
-                          style: TextStyle(color: Colors.grey, fontSize: 14.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ));
@@ -163,7 +162,7 @@ class EditProfilePage extends StatelessWidget {
                             style:
                                 TextStyle(color: Colors.black, fontSize: 16.0),
                           ),
-                        ),
+                      ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

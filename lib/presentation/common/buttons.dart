@@ -19,7 +19,7 @@ class AuthIdleButton extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(7)),
           ),
           onPressed: onPressed,
-          child: Text(title, style: buttonText)),
+          child: Text(title, style: buttonTextStyle)),
     );
   }
 }
@@ -44,7 +44,7 @@ class AuthLoadingButton extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(title, style: buttonText),
+                  Text(title, style: buttonTextStyle),
                 ],
               ),
               const SizedBox(

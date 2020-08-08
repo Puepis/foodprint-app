@@ -7,6 +7,10 @@ import 'package:foodprint/presentation/core/app_widget.dart';
 import 'package:injectable/injectable.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   // Add font licenses
   LicenseRegistry.addLicense(() async* {
     final rubik_license =

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/restaurants/value_objects.dart';
 
+/// The result of a Google autocomplete search.
 class AutocompleteResultEntity {
   final RestaurantID id;
   final RestaurantName name;

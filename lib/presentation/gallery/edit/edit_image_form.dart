@@ -69,6 +69,12 @@ class _EditImageFormState extends State<EditImageForm> {
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
 
+    // Current valuesjk
+    final String currentName = widget.photo.details.name.getOrCrash();
+    final String currentPrice =
+        widget.photo.details.price.getOrCrash().toString();
+    final String currentComments = widget.photo.details.comments.getOrCrash();
+
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
       if (state is EditFailure) {
@@ -76,7 +82,8 @@ class _EditImageFormState extends State<EditImageForm> {
         FlushbarHelper.createError(
           message: state.failure.map(
               invalidPhoto: (_) => 'Invalid Photo',
-              serverError: (_) => 'Server Error'),
+              serverError: (_) => 'Server Error',
+              noInternet: (_) => 'No internet connection'),
         ).show(context);
       }
       if (state is EditSuccess) {
@@ -87,6 +94,7 @@ class _EditImageFormState extends State<EditImageForm> {
       return Form(
         key: _formKey,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Align(
@@ -121,7 +129,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 title: "Item Name", iconData: Icons.restaurant_menu),
             _sectionHeadingSpace,
             TextFormField(
-              initialValue: widget.photo.photoDetail.name.getOrCrash(),
+              initialValue: currentName,
               cursorColor: primaryColor,
               maxLength: 50,
               decoration: InputDecoration(
@@ -131,11 +139,8 @@ class _EditImageFormState extends State<EditImageForm> {
               onSaved: (String value) {
                 _itemName = value.trim();
               },
-              validator: (String value) {
-                return value.isEmpty
-                    ? 'Please enter the name of the item'
-                    : null;
-              },
+              validator: (String value) =>
+                  value.isEmpty ? 'Please enter the name of the item' : null,
             ),
             _sectionSpace,
             _buildSectionTitle(
@@ -144,8 +149,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 iconColor: Colors.green),
             _sectionHeadingSpace,
             TextFormField(
-              initialValue:
-                  widget.photo.photoDetail.price.getOrCrash().toString(),
+              initialValue: currentPrice,
               cursorColor: primaryColor,
               maxLength: 8,
               keyboardType: TextInputType.number,
@@ -156,7 +160,7 @@ class _EditImageFormState extends State<EditImageForm> {
               onSaved: (String value) {
                 _price = value.trim();
               },
-              validator: (String value) {
+              validator: (value) {
                 if (value.isEmpty) {
                   return 'Please enter a price';
                 }
@@ -181,7 +185,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 iconColor: foodprintPrimaryColorSwatch[600]),
             _sectionHeadingSpace,
             TextFormField(
-                initialValue: widget.photo.photoDetail.comments.getOrCrash(),
+                initialValue: currentComments,
                 cursorColor: primaryColor,
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
@@ -193,9 +197,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 onSaved: (String value) {
                   _comments = value.trim();
                 },
-                validator: (String value) {
-                  return null;
-                }),
+                validator: (value) => null),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -223,21 +225,22 @@ class _EditImageFormState extends State<EditImageForm> {
                             Icons.save_alt,
                             color: Colors.white,
                           ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                    onPressed: (state is ActionInProgress)
+                        ? null
+                        : () {
+                            if (_formKey.currentState.validate()) {
+                              _formKey.currentState.save();
 
-                        // Edit photo
-                        photoBloc.add(PhotoActionsEvent.edited(
-                            oldPhoto: widget.photo,
-                            newName: _itemName,
-                            newPrice: _price,
-                            newComments: _comments,
-                            isFavourite: _isFavourite,
-                            restaurant: widget.restaurant,
-                            foodprint: widget.foodprint));
-                      }
-                    }),
+                              // Edit photo
+                              photoBloc.add(PhotoActionsEvent.edited(
+                                oldPhoto: widget.photo,
+                                newName: _itemName,
+                                newPrice: _price,
+                                newComments: _comments,
+                                isFavourite: _isFavourite,
+                              ));
+                            }
+                          }),
               ),
             )
           ],

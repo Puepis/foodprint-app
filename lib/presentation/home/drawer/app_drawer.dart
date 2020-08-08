@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -37,16 +39,11 @@ class AppDrawer extends StatelessWidget {
                 children: [
                   _createDrawerItem(
                       icon: Icons.person,
-                      text: 'My profile',
+                      text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
                           context, ProfilePage.routeName,
                           arguments: ProfilePageArgs(
                               token: token, foodprint: foodprint))),
-                  _createDrawerItem(
-                      icon: Icons.info,
-                      text: 'About Foodprint',
-                      onTap: () => Navigator.popAndPushNamed(
-                          context, AboutPage.routeName)),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
@@ -55,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   _createDrawerItem(
                       icon: Icons.exit_to_app,
-                      text: 'Sign Out',
+                      text: 'Sign out',
                       onTap: () => context
                           .bloc<AuthBloc>()
                           .add(const AuthEvent.loggedOut())),
@@ -105,13 +102,12 @@ class AppDrawer extends StatelessWidget {
                     width: 65,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        child: FadeInImage.memoryNetwork(
-                            fadeInDuration: const Duration(milliseconds: 200),
-                            placeholder: kTransparentImage,
-                            image: url),
-                      ),
+                      child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          fadeInDuration: const Duration(milliseconds: 150),
+                          placeholder: (context, url) =>
+                              Image.memory(kTransparentImage),
+                          imageUrl: url),
                     ),
                   ),
                 const SizedBox(

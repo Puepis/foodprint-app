@@ -17,10 +17,9 @@ part 'login_form_state.dart';
 
 part 'login_form_bloc.freezed.dart';
 
-// This is the business logic component (BLoC) for the login page
-
-// In this application layer we decide how the data flows: in this case we redirect the
-// login data to the authFacade
+/// The BLoC that is reponsible for handling the login form events.
+///
+/// Maps incoming [LoginFormEvent] to [LoginFormState].
 @injectable
 class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   final IAuthRepository _authClient;

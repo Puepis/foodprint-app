@@ -7,7 +7,9 @@ class GoogleNearbySearchResponse {
   final List<String> attributions;
   final List<RestaurantEntity> results;
   GoogleNearbySearchResponse(
-      {@required this.status, @required this.attributions, @required this.results});
+      {@required this.status,
+      @required this.attributions,
+      @required this.results});
 
   factory GoogleNearbySearchResponse.fromJson(Map<String, dynamic> json) {
     return GoogleNearbySearchResponse(

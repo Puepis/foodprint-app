@@ -22,5 +22,3 @@ SnackBar loadingSnackbar({String text}) {
     ),
   );
 }
-
-

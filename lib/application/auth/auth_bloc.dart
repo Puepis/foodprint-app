@@ -13,7 +13,7 @@ part 'auth_bloc.freezed.dart';
 
 /// BloC responsible for handling user authencation state.
 /// 
-/// Maps incoming [AuthEvent] to [AuthState]
+/// Maps incoming [AuthEvent] to [AuthState].
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthRepository _authClient;

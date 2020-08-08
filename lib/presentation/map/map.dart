@@ -11,6 +11,7 @@ import 'package:foodprint/presentation/map/restaurant_preview.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+/// The map displaying the user's visited locations.
 class FoodMap extends StatefulWidget {
   final FoodprintEntity foodprint;
   const FoodMap({Key key, @required this.foodprint}) : super(key: key);
@@ -51,12 +52,12 @@ class _FoodMapState extends State<FoodMap> {
           markers: Set<Marker>.of(_markers.values),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 35, 16, 16),
+          padding: const EdgeInsets.only(left: 10, bottom: 32),
           child: Align(
             alignment: Alignment.bottomLeft,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+              children: [
                 FloatingActionButton(
                   heroTag: "map_type",
                   backgroundColor: Colors.white,
@@ -64,14 +65,19 @@ class _FoodMapState extends State<FoodMap> {
                   materialTapTargetSize: MaterialTapTargetSize.padded,
                   child: const Icon(Icons.map, size: 32.0),
                 ),
-                const SizedBox(height: 16.0),
                 if (_showRecenterButton)
-                  FloatingActionButton(
-                    heroTag: "recenter",
-                    backgroundColor: Colors.white,
-                    onPressed: _onRecenterButtonPressed,
-                    materialTapTargetSize: MaterialTapTargetSize.padded,
-                    child: const Icon(Icons.gps_fixed, size: 32.0),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 10),
+                      FloatingActionButton(
+                        heroTag: "recenter",
+                        backgroundColor: Colors.white,
+                        onPressed: _onRecenterButtonPressed,
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                        child: const Icon(Icons.gps_fixed, size: 32.0),
+                      ),
+                    ],
                   ),
               ],
             ),
@@ -93,6 +99,7 @@ class _FoodMapState extends State<FoodMap> {
     }
   }
 
+  /// Change map type
   void _onMapTypeButtonPressed() {
     setState(() {
       _currentMapType = _currentMapType == MapType.normal
@@ -101,6 +108,7 @@ class _FoodMapState extends State<FoodMap> {
     });
   }
 
+  /// Recenter the map
   Future<void> _onRecenterButtonPressed() async {
     if (_mapController != null) {
       final GoogleMapController controller = await _mapController.future;
@@ -121,7 +129,7 @@ class _FoodMapState extends State<FoodMap> {
       final marker = Marker(
           icon:
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-          markerId: MarkerId(restaurant.restaurantID.getOrCrash()),
+          markerId: MarkerId(restaurant.id.getOrCrash()),
           position: LatLng(restaurant.latitude.getOrCrash(),
               restaurant.longitude.getOrCrash()),
           onTap: () {
@@ -134,7 +142,7 @@ class _FoodMapState extends State<FoodMap> {
                       photos: photos,
                     ));
           });
-      result[restaurant.restaurantID.getOrCrash()] = marker;
+      result[restaurant.id.getOrCrash()] = marker;
     });
     return result;
   }
@@ -142,9 +150,6 @@ class _FoodMapState extends State<FoodMap> {
   bool _isInitial(LatLng pos) {
     final double latDiff = (pos.latitude - _initialPos.latitude).abs();
     final double lngDiff = (pos.longitude - _initialPos.longitude).abs();
-    if (latDiff < 0.001 && lngDiff < 0.001) {
-      return true;
-    }
-    return false;
+    return latDiff < 0.001 && lngDiff < 0.001;
   }
 }

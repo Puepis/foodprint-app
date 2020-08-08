@@ -4,11 +4,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'foodprint_entity.freezed.dart';
 
+/// The interface representing the user's foodprint.
 @freezed
 abstract class FoodprintEntity implements _$FoodprintEntity {
   const FoodprintEntity._();
 
-  const factory FoodprintEntity({
-    @required Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos 
-  }) = _FoodprintEntity;
+  const factory FoodprintEntity(
+          {@required
+              Map<RestaurantEntity, List<PhotoEntity>> restaurantPhotos}) =
+      _FoodprintEntity;
 }

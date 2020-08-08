@@ -10,6 +10,8 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 
+/// The page that displays the captured photo and searches for nearby restaurants
+/// in the background.
 class DisplayPhoto extends StatefulWidget {
   const DisplayPhoto({
     Key key,
@@ -33,23 +35,25 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
       onWillPop: () async => false,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.black,
+            color: Colors.black,
             image: DecorationImage(fit: BoxFit.contain, image: loadedImage)),
         child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
             listener: (context, state) {
           // Error searching for restaurants
           if (state is SearchStateError) {
-            Scaffold.of(context)..hideCurrentSnackBar();
             FlushbarHelper.createError(
               message: state.failure.map(
                 requestDenied: (_) => 'Request denied',
                 unexpectedSearchFailure: (_) => 'Unexpected search failure',
                 overQueryLimit: (_) => 'Over query limit',
                 invalidRequest: (_) => 'Invalid request',
+                noInternet: (_) => 'No Internet Connection',
                 notFound: (_) => 'Place not found',
               ),
             ).show(context);
           }
+        }, buildWhen: (previous, current) {
+          return previous is! SearchStateError;
         }, builder: (_, state) {
           // Only search once
           if (state is SearchStateEmpty) {
@@ -69,11 +73,10 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   onPressed: () async {
                     final bool pop = await _willCancel();
                     if (pop) {
-                      Navigator.pop(context);
-
                       // Reset search states
                       nearbySearchBloc.add(ResetNearbySearch());
                       manualSearchBloc.add(ResetManualSearch());
+                      Navigator.pop(context);
                     }
                   },
                 )),
@@ -84,16 +87,19 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                     ? NextPageButton(
                         restaurants: state.restaurants,
                       )
-                    : SpinKitRing(
-                        color: Theme.of(context).primaryColor,
-                        size: 40.0,
-                      )),
+                    : (state is SearchStateError)
+                        ? const Icon(Icons.error, color: Colors.red, size: 50)
+                        : SpinKitRing(
+                            color: Theme.of(context).primaryColor,
+                            size: 40.0,
+                          )),
           ]);
         }),
       ),
     );
   }
 
+  /// Display a confirmation dialog when user cancels the action.
   Future<bool> _willCancel() async {
     return (await showDialog(
             context: context,

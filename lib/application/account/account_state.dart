@@ -9,7 +9,10 @@ abstract class AccountState extends Equatable {
 
 class AccountInitial extends AccountState {}
 
-class AccountActionLoading extends AccountState {}
+class AvatarChangeLoading extends AccountState {}
+class UsernameChangeLoading extends AccountState {}
+class PasswordChangeLoading extends AccountState {}
+class DeleteAccountLoading extends AccountState {}
 
 /// Contains new JWT with the updated username
 class UsernameChangeSuccess extends AccountState {

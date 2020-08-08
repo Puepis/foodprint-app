@@ -8,7 +8,6 @@ import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
@@ -17,12 +16,10 @@ class SaveDetailsForm extends StatefulWidget {
   final JWT token;
   final RestaurantEntity restaurant;
   final File imageFile;
-  final FoodprintEntity oldFoodprint;
   const SaveDetailsForm(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
-      @required this.oldFoodprint,
       @required this.token})
       : super(key: key);
   @override
@@ -73,7 +70,8 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         FlushbarHelper.createError(
           message: state.failure.map(
               invalidPhoto: (_) => 'Invalid Photo',
-              serverError: (_) => 'Server Error'),
+              serverError: (_) => 'Server Error',
+              noInternet: (_) => 'No internet connection'),
         ).show(context);
       }
       if (state is SaveSuccess) {
@@ -85,6 +83,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),
@@ -167,34 +166,44 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 validator: (String value) {
                   return null;
                 }),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
-                child: FloatingActionButton.extended(
-                  backgroundColor: primaryColor,
-                  label: const Text(
-                    'SAVE PHOTO',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500),
+            _buildSaveButton(state, photoBloc, context)
+          ],
+        ),
+      );
+    });
+  }
+
+  Align _buildSaveButton(PhotoActionsState state, PhotoActionsBloc photoBloc,
+          BuildContext context) =>
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
+          child: FloatingActionButton.extended(
+            backgroundColor: primaryColor,
+            label: const Text(
+              'SAVE PHOTO',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500),
+            ),
+            icon: (state is ActionInProgress)
+                ? const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 3.0),
+                    child: SpinKitRing(
+                      lineWidth: 3,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  )
+                : const Icon(
+                    Icons.save_alt,
+                    color: Colors.white,
                   ),
-                  icon: (state is ActionInProgress)
-                      ? const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 3.0),
-                          child: SpinKitRing(
-                            lineWidth: 3,
-                            color: Colors.white,
-                            size: 18,
-                          ),
-                        )
-                      : const Icon(
-                          Icons.save_alt,
-                          color: Colors.white,
-                        ),
-                  onPressed: () {
+            onPressed: (state is ActionInProgress)
+                ? null
+                : () {
                     if (_formKey.currentState.validate()) {
                       // Get user id
                       final id = UserID(int.parse(JWT
@@ -206,24 +215,19 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
 
                       // Fire off save event
                       photoBloc.add(PhotoActionsEvent.saved(
-                          userID: id,
-                          imageFile: widget.imageFile,
-                          itemName: _itemName,
-                          price: _price,
-                          comments: _comments,
-                          restaurant: widget.restaurant,
-                          foodprint: widget.oldFoodprint));
+                        userID: id,
+                        imageFile: widget.imageFile,
+                        itemName: _itemName,
+                        price: _price,
+                        comments: _comments,
+                        placeID: widget.restaurant.id,
+                      ));
 
                       // Reset manual search state
                       context.bloc<ManualSearchBloc>().add(ResetManualSearch());
                     }
                   },
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       );
-    });
-  }
 }

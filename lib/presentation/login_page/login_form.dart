@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
+/// The user login form.
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
 
@@ -44,6 +45,7 @@ class _LoginFormState extends State<LoginForm> {
                   FlushbarHelper.createError(
                     message: failure.map(
                       serverError: (_) => 'Server error',
+                      noInternet: (_) => 'No Internet Connection',
                       invalidLoginCombination: (_) =>
                           'Invalid login combination',
                     ),
@@ -61,6 +63,7 @@ class _LoginFormState extends State<LoginForm> {
         return Form(
           autovalidate: state.showErrorMessages,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               AuthFormField(
@@ -114,22 +117,6 @@ class _LoginFormState extends State<LoginForm> {
                               orElse: () => null),
                           (r) => null)),
               const SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: InkWell(
-                  onTap: () {},
-                  child: const Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              const SizedBox(
                 height: 30.0,
               ),
               if (_isSubmitting)
@@ -137,11 +124,13 @@ class _LoginFormState extends State<LoginForm> {
               else
                 AuthIdleButton(
                     title: "Login",
-                    onPressed: () {
-                      context
-                          .bloc<LoginFormBloc>()
-                          .add(const LoginFormEvent.loginPressed());
-                    })
+                    onPressed: state.isSubmitting
+                        ? null
+                        : () {
+                            context
+                                .bloc<LoginFormBloc>()
+                                .add(const LoginFormEvent.loginPressed());
+                          })
             ],
           ),
         );

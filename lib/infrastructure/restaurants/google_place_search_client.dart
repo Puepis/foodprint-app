@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
@@ -14,7 +15,7 @@ import 'package:foodprint/infrastructure/restaurants/place_detail_search_respons
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
-// This class is responsible for searching for nearby restaurants and converting the response data into entities
+/// This class is responsible for searching for nearby restaurants and converting the response data into entities
 @LazySingleton(as: IRestaurantSearchRepository)
 class GooglePlaceSearchClient implements IRestaurantSearchRepository {
   static const String nearbySearchBaseUrl =
@@ -40,33 +41,35 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
     final String url =
         '$nearbySearchBaseUrl?key=${DotEnv().env['GOOGLE_API_KEY']}&location=$lat,$lng&rankby=distance&type=restaurant';
 
+    http.Response res;
     try {
-      final response = await http.get(url);
-      final data = json.decode(response.body);
-      final status = data['status'];
+      res = await http.get(url);
+    } on SocketException {
+      return left(const RestaurantFailure.noInternet());
+    }
 
-      if (status == "OK") {
-        var restaurants =
-            GoogleNearbySearchResponse.parseResults(data['results'] as List);
+    final data = json.decode(res.body);
+    final status = data['status'];
 
-        // Limit to 5 restaurants
-        if (restaurants.length > 5) {
-          restaurants = restaurants.sublist(0, 5);
-        }
-        return right(restaurants); // success
+    if (status == "OK") {
+      var restaurants =
+          GoogleNearbySearchResponse.parseResults(data['results'] as List);
 
-      } else if (status == "ZERO_RESULTS") {
-        return right([]);
-      } else if (status == "REQUEST_DENIED") {
-        return left(const RestaurantFailure.requestDenied());
-      } else if (status == "INVALID_REQUEST") {
-        return left(const RestaurantFailure.invalidRequest());
-      } else if (status == "OVER_QUERY_LIMIT") {
-        return left(const RestaurantFailure.overQueryLimit());
-      } else {
-        return left(const RestaurantFailure.unexpectedSearchFailure());
+      // Limit to 5 restaurants
+      if (restaurants.length > 5) {
+        restaurants = restaurants.sublist(0, 5);
       }
-    } catch (e) {
+      return right(restaurants); // success
+
+    } else if (status == "ZERO_RESULTS") {
+      return right([]);
+    } else if (status == "REQUEST_DENIED") {
+      return left(const RestaurantFailure.requestDenied());
+    } else if (status == "INVALID_REQUEST") {
+      return left(const RestaurantFailure.invalidRequest());
+    } else if (status == "OVER_QUERY_LIMIT") {
+      return left(const RestaurantFailure.overQueryLimit());
+    } else {
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }
@@ -78,28 +81,30 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
     final String url =
         "$autocompleteSearchBaseUrl?key=${DotEnv().env['GOOGLE_API_KEY']}&input=$input&types=establishment&location=${latitude.getOrCrash()},${longitude.getOrCrash()}&radius=20000&strictbounds";
 
+    http.Response res;
     try {
-      final response = await http.get(url);
-      final data = json.decode(response.body);
-      final status = data['status'];
+      res = await http.get(url);
+    } on SocketException {
+      return left(const RestaurantFailure.noInternet());
+    }
 
-      if (status == "OK") {
-        final result = GoogleAutocompleteSearchResponse.fromJson(
-            data as Map<String, dynamic>);
-        return right(result.predictions); // success
+    final data = json.decode(res.body);
+    final status = data['status'];
 
-      } else if (status == "ZERO_RESULTS") {
-        return right([]);
-      } else if (status == "REQUEST_DENIED") {
-        return left(const RestaurantFailure.requestDenied());
-      } else if (status == "INVALID_REQUEST") {
-        return left(const RestaurantFailure.invalidRequest());
-      } else if (status == "OVER_QUERY_LIMIT") {
-        return left(const RestaurantFailure.overQueryLimit());
-      } else {
-        return left(const RestaurantFailure.unexpectedSearchFailure());
-      }
-    } catch (e) {
+    if (status == "OK") {
+      final result = GoogleAutocompleteSearchResponse.fromJson(
+          data as Map<String, dynamic>);
+      return right(result.predictions); // success
+
+    } else if (status == "ZERO_RESULTS") {
+      return right([]);
+    } else if (status == "REQUEST_DENIED") {
+      return left(const RestaurantFailure.requestDenied());
+    } else if (status == "INVALID_REQUEST") {
+      return left(const RestaurantFailure.invalidRequest());
+    } else if (status == "OVER_QUERY_LIMIT") {
+      return left(const RestaurantFailure.overQueryLimit());
+    } else {
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }
@@ -110,29 +115,31 @@ class GooglePlaceSearchClient implements IRestaurantSearchRepository {
     final String url =
         "$placeDetailsBaseUrl?place_id=${id.getOrCrash()}&fields=place_id,name,geometry,rating,type&key=${DotEnv().env['GOOGLE_API_KEY']}";
 
+    http.Response res;
     try {
-      final response = await http.get(url);
-      final data = json.decode(response.body);
-      final status = data['status'];
+      res = await http.get(url);
+    } on SocketException {
+      return left(const RestaurantFailure.noInternet());
+    }
 
-      if (status == "OK") {
-        final result = GooglePlaceDetailSearchResponse.fromJson(
-            data as Map<String, dynamic>);
-        return right(result.restaurant); // success
+    final data = json.decode(res.body);
+    final status = data['status'];
 
-      } else if (status == "ZERO_RESULTS" || status == "NOT_FOUND") {
-        // location was valid before but not now
-        return left(const RestaurantFailure.notFound());
-      } else if (status == "REQUEST_DENIED") {
-        return left(const RestaurantFailure.requestDenied());
-      } else if (status == "INVALID_REQUEST") {
-        return left(const RestaurantFailure.invalidRequest());
-      } else if (status == "OVER_QUERY_LIMIT") {
-        return left(const RestaurantFailure.overQueryLimit());
-      } else {
-        return left(const RestaurantFailure.unexpectedSearchFailure());
-      }
-    } catch (e) {
+    if (status == "OK") {
+      final result = GooglePlaceDetailSearchResponse.fromJson(
+          data as Map<String, dynamic>);
+      return right(result.restaurant); // success
+
+    } else if (status == "ZERO_RESULTS" || status == "NOT_FOUND") {
+      // location was valid before but not now
+      return left(const RestaurantFailure.notFound());
+    } else if (status == "REQUEST_DENIED") {
+      return left(const RestaurantFailure.requestDenied());
+    } else if (status == "INVALID_REQUEST") {
+      return left(const RestaurantFailure.invalidRequest());
+    } else if (status == "OVER_QUERY_LIMIT") {
+      return left(const RestaurantFailure.overQueryLimit());
+    } else {
       return left(const RestaurantFailure.unexpectedSearchFailure());
     }
   }

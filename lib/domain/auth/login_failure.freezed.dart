@@ -19,6 +19,10 @@ class _$LoginFailureTearOff {
   InvalidLoginCombination invalidLoginCombination() {
     return const InvalidLoginCombination();
   }
+
+  NoInternet noInternet() {
+    return const NoInternet();
+  }
 }
 
 // ignore: unused_element
@@ -29,22 +33,26 @@ mixin _$LoginFailure {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidLoginCombination(),
+    @required Result noInternet(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidLoginCombination(),
+    Result noInternet(),
     @required Result orElse(),
   });
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
     @required Result invalidLoginCombination(InvalidLoginCombination value),
+    @required Result noInternet(NoInternet value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
     Result invalidLoginCombination(InvalidLoginCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   });
 }
@@ -100,9 +108,11 @@ class _$ServerError implements ServerError {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidLoginCombination(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(invalidLoginCombination != null);
+    assert(noInternet != null);
     return serverError();
   }
 
@@ -111,6 +121,7 @@ class _$ServerError implements ServerError {
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidLoginCombination(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -125,9 +136,11 @@ class _$ServerError implements ServerError {
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
     @required Result invalidLoginCombination(InvalidLoginCombination value),
+    @required Result noInternet(NoInternet value),
   }) {
     assert(serverError != null);
     assert(invalidLoginCombination != null);
+    assert(noInternet != null);
     return serverError(this);
   }
 
@@ -136,6 +149,7 @@ class _$ServerError implements ServerError {
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
     Result invalidLoginCombination(InvalidLoginCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -188,9 +202,11 @@ class _$InvalidLoginCombination implements InvalidLoginCombination {
   Result when<Result extends Object>({
     @required Result serverError(),
     @required Result invalidLoginCombination(),
+    @required Result noInternet(),
   }) {
     assert(serverError != null);
     assert(invalidLoginCombination != null);
+    assert(noInternet != null);
     return invalidLoginCombination();
   }
 
@@ -199,6 +215,7 @@ class _$InvalidLoginCombination implements InvalidLoginCombination {
   Result maybeWhen<Result extends Object>({
     Result serverError(),
     Result invalidLoginCombination(),
+    Result noInternet(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -213,9 +230,11 @@ class _$InvalidLoginCombination implements InvalidLoginCombination {
   Result map<Result extends Object>({
     @required Result serverError(ServerError value),
     @required Result invalidLoginCombination(InvalidLoginCombination value),
+    @required Result noInternet(NoInternet value),
   }) {
     assert(serverError != null);
     assert(invalidLoginCombination != null);
+    assert(noInternet != null);
     return invalidLoginCombination(this);
   }
 
@@ -224,6 +243,7 @@ class _$InvalidLoginCombination implements InvalidLoginCombination {
   Result maybeMap<Result extends Object>({
     Result serverError(ServerError value),
     Result invalidLoginCombination(InvalidLoginCombination value),
+    Result noInternet(NoInternet value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -236,4 +256,96 @@ class _$InvalidLoginCombination implements InvalidLoginCombination {
 
 abstract class InvalidLoginCombination implements LoginFailure {
   const factory InvalidLoginCombination() = _$InvalidLoginCombination;
+}
+
+abstract class $NoInternetCopyWith<$Res> {
+  factory $NoInternetCopyWith(
+          NoInternet value, $Res Function(NoInternet) then) =
+      _$NoInternetCopyWithImpl<$Res>;
+}
+
+class _$NoInternetCopyWithImpl<$Res> extends _$LoginFailureCopyWithImpl<$Res>
+    implements $NoInternetCopyWith<$Res> {
+  _$NoInternetCopyWithImpl(NoInternet _value, $Res Function(NoInternet) _then)
+      : super(_value, (v) => _then(v as NoInternet));
+
+  @override
+  NoInternet get _value => super._value as NoInternet;
+}
+
+class _$NoInternet implements NoInternet {
+  const _$NoInternet();
+
+  @override
+  String toString() {
+    return 'LoginFailure.noInternet()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is NoInternet);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result serverError(),
+    @required Result invalidLoginCombination(),
+    @required Result noInternet(),
+  }) {
+    assert(serverError != null);
+    assert(invalidLoginCombination != null);
+    assert(noInternet != null);
+    return noInternet();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result serverError(),
+    Result invalidLoginCombination(),
+    Result noInternet(),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result serverError(ServerError value),
+    @required Result invalidLoginCombination(InvalidLoginCombination value),
+    @required Result noInternet(NoInternet value),
+  }) {
+    assert(serverError != null);
+    assert(invalidLoginCombination != null);
+    assert(noInternet != null);
+    return noInternet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result serverError(ServerError value),
+    Result invalidLoginCombination(InvalidLoginCombination value),
+    Result noInternet(NoInternet value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (noInternet != null) {
+      return noInternet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoInternet implements LoginFailure {
+  const factory NoInternet() = _$NoInternet;
 }

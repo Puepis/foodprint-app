@@ -9,6 +9,9 @@ import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
 import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
 
+/// The button that brings the user to the restaurant selection page.
+///
+/// Passes the list of [restaurants] to the next page.
 class NextPageButton extends StatelessWidget {
   const NextPageButton({
     Key key,
@@ -22,7 +25,6 @@ class NextPageButton extends StatelessWidget {
     final latitude = InheritedLocation.of(context).latitude;
     final longitude = InheritedLocation.of(context).longitude;
     final token = InheritedUser.of(context).token;
-    final oldFoodprint = InheritedUser.of(context).foodprint;
     final imageFile = InheritedImage.of(context).imageFile;
 
     return Container(
@@ -48,7 +50,6 @@ class NextPageButton extends StatelessWidget {
                   child: SelectRestaurantPage(
                       latitude: latitude,
                       longitude: longitude,
-                      currentFoodprint: oldFoodprint,
                       token: token,
                       imageFile: imageFile,
                       restaurants: restaurants),

@@ -14,14 +14,14 @@ class _$RestaurantDTOTearOff {
 
   _RestaurantDTO call(
       {@required String placeId,
-      @required String restaurantName,
+      @required String name,
       @required double rating,
       @required double latitude,
       @required double longitude,
       @required List<String> types}) {
     return _RestaurantDTO(
       placeId: placeId,
-      restaurantName: restaurantName,
+      name: name,
       rating: rating,
       latitude: latitude,
       longitude: longitude,
@@ -35,7 +35,7 @@ const $RestaurantDTO = _$RestaurantDTOTearOff();
 
 mixin _$RestaurantDTO {
   String get placeId;
-  String get restaurantName;
+  String get name;
   double get rating;
   double get latitude;
   double get longitude;
@@ -50,7 +50,7 @@ abstract class $RestaurantDTOCopyWith<$Res> {
       _$RestaurantDTOCopyWithImpl<$Res>;
   $Res call(
       {String placeId,
-      String restaurantName,
+      String name,
       double rating,
       double latitude,
       double longitude,
@@ -68,7 +68,7 @@ class _$RestaurantDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object placeId = freezed,
-    Object restaurantName = freezed,
+    Object name = freezed,
     Object rating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
@@ -76,9 +76,7 @@ class _$RestaurantDTOCopyWithImpl<$Res>
   }) {
     return _then(_value.copyWith(
       placeId: placeId == freezed ? _value.placeId : placeId as String,
-      restaurantName: restaurantName == freezed
-          ? _value.restaurantName
-          : restaurantName as String,
+      name: name == freezed ? _value.name : name as String,
       rating: rating == freezed ? _value.rating : rating as double,
       latitude: latitude == freezed ? _value.latitude : latitude as double,
       longitude: longitude == freezed ? _value.longitude : longitude as double,
@@ -95,7 +93,7 @@ abstract class _$RestaurantDTOCopyWith<$Res>
   @override
   $Res call(
       {String placeId,
-      String restaurantName,
+      String name,
       double rating,
       double latitude,
       double longitude,
@@ -115,7 +113,7 @@ class __$RestaurantDTOCopyWithImpl<$Res>
   @override
   $Res call({
     Object placeId = freezed,
-    Object restaurantName = freezed,
+    Object name = freezed,
     Object rating = freezed,
     Object latitude = freezed,
     Object longitude = freezed,
@@ -123,9 +121,7 @@ class __$RestaurantDTOCopyWithImpl<$Res>
   }) {
     return _then(_RestaurantDTO(
       placeId: placeId == freezed ? _value.placeId : placeId as String,
-      restaurantName: restaurantName == freezed
-          ? _value.restaurantName
-          : restaurantName as String,
+      name: name == freezed ? _value.name : name as String,
       rating: rating == freezed ? _value.rating : rating as double,
       latitude: latitude == freezed ? _value.latitude : latitude as double,
       longitude: longitude == freezed ? _value.longitude : longitude as double,
@@ -137,13 +133,13 @@ class __$RestaurantDTOCopyWithImpl<$Res>
 class _$_RestaurantDTO extends _RestaurantDTO {
   const _$_RestaurantDTO(
       {@required this.placeId,
-      @required this.restaurantName,
+      @required this.name,
       @required this.rating,
       @required this.latitude,
       @required this.longitude,
       @required this.types})
       : assert(placeId != null),
-        assert(restaurantName != null),
+        assert(name != null),
         assert(rating != null),
         assert(latitude != null),
         assert(longitude != null),
@@ -153,7 +149,7 @@ class _$_RestaurantDTO extends _RestaurantDTO {
   @override
   final String placeId;
   @override
-  final String restaurantName;
+  final String name;
   @override
   final double rating;
   @override
@@ -165,7 +161,7 @@ class _$_RestaurantDTO extends _RestaurantDTO {
 
   @override
   String toString() {
-    return 'RestaurantDTO(placeId: $placeId, restaurantName: $restaurantName, rating: $rating, latitude: $latitude, longitude: $longitude, types: $types)';
+    return 'RestaurantDTO(placeId: $placeId, name: $name, rating: $rating, latitude: $latitude, longitude: $longitude, types: $types)';
   }
 
   @override
@@ -175,9 +171,8 @@ class _$_RestaurantDTO extends _RestaurantDTO {
             (identical(other.placeId, placeId) ||
                 const DeepCollectionEquality()
                     .equals(other.placeId, placeId)) &&
-            (identical(other.restaurantName, restaurantName) ||
-                const DeepCollectionEquality()
-                    .equals(other.restaurantName, restaurantName)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.rating, rating) ||
                 const DeepCollectionEquality().equals(other.rating, rating)) &&
             (identical(other.latitude, latitude) ||
@@ -194,7 +189,7 @@ class _$_RestaurantDTO extends _RestaurantDTO {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(placeId) ^
-      const DeepCollectionEquality().hash(restaurantName) ^
+      const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(rating) ^
       const DeepCollectionEquality().hash(latitude) ^
       const DeepCollectionEquality().hash(longitude) ^
@@ -209,7 +204,7 @@ abstract class _RestaurantDTO extends RestaurantDTO {
   const _RestaurantDTO._() : super._();
   const factory _RestaurantDTO(
       {@required String placeId,
-      @required String restaurantName,
+      @required String name,
       @required double rating,
       @required double latitude,
       @required double longitude,
@@ -218,7 +213,7 @@ abstract class _RestaurantDTO extends RestaurantDTO {
   @override
   String get placeId;
   @override
-  String get restaurantName;
+  String get name;
   @override
   double get rating;
   @override

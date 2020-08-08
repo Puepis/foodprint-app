@@ -36,34 +36,32 @@ class _EditImageScreenState extends State<EditImageScreen> {
           elevation: 0.0,
           backgroundColor: backgroundColor,
         ),
-        body: Container(
+        body: Padding(
             padding: const EdgeInsets.all(20),
             child: MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
                 BlocProvider.value(value: context.bloc<FoodprintBloc>())
               ],
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Edit the details!",
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    EditImageForm(
-                        token: widget.token,
-                        foodprint: widget.foodprint,
-                        photo: widget.photo,
-                        restaurant: widget.restaurant),
-                  ],
-                ),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    "Edit the details!",
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  EditImageForm(
+                      token: widget.token,
+                      foodprint: widget.foodprint,
+                      photo: widget.photo,
+                      restaurant: widget.restaurant),
+                ],
               ),
             )));
   }
