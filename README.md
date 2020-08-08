@@ -14,7 +14,10 @@ Foodprint is a Flutter-based mobile application that allows users to capture and
 * Uses custom authentication and JWT authorization.
 
 ## Author
-Designed and built by Philips Xu.
+Designed and built by Philips Xu. 
+
+## Credits
+Special thanks to [Kevin Pierce](https://github.com/enigma-01) for designing the app logo and building Foodprint web (currently WIP).
 
 ## Contact 
 You can contact me at philips.xu1@gmail.com if you have any questions or concerns. To submit a bug within the app, please use the feedback form embedded within the application.
