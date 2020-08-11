@@ -17,13 +17,13 @@ import 'package:provider/provider.dart';
 class DisplayPhoto extends StatefulWidget {
   final File imageFile;
   final FileImage loadedImage;
-  final VoidCallback onSave;
+  final VoidCallback onSaveOrAbort;
   const DisplayPhoto({
     Key key,
     @required this.imageFile,
-    @required this.onSave,
+    @required this.onSaveOrAbort,
     @required this.loadedImage,
-  })  : assert(onSave != null),
+  })  : assert(onSaveOrAbort != null),
         super(key: key);
 
   @override
@@ -84,7 +84,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                       // Reset search states
                       nearbySearchBloc.add(ResetNearbySearch());
                       manualSearchBloc.add(ResetManualSearch());
-                      Navigator.pop(context);
+                      widget.onSaveOrAbort(); // abort
                     }
                   },
                 )),
@@ -93,7 +93,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 right: 20,
                 child: (state is NearbySearchStateSuccess)
                     ? NextPageButton(
-                        onSave: widget.onSave,
+                        onSave: widget.onSaveOrAbort,
                         restaurants: state.restaurants,
                         imageFile: widget.imageFile,
                       )

@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 
 class ProfilePageArgs {
-  final JWT token;
-  final FoodprintEntity foodprint;
-  ProfilePageArgs({@required this.token, @required this.foodprint});
+  UserData userData;
+  ProfilePageArgs({@required this.userData});
 }

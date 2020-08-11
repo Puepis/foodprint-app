@@ -6,7 +6,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 
 class UserData extends ChangeNotifier {
   final FoodprintEntity foodprint;
-  final JWT token;
+  JWT token;
   UserData({this.foodprint, this.token});
 
   dynamic getKey(RestaurantEntity restaurant) {
@@ -42,6 +42,11 @@ class UserData extends ChangeNotifier {
     } else {
       foodprint.restaurantPhotos[restaurant] = [photo];
     }
+    notifyListeners();
+  }
+
+  void updateToken(JWT newToken) {
+    token = newToken;
     notifyListeners();
   }
 }

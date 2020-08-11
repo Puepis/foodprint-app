@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 
 class EditProfileArgs {
-  final JWT token;
-  EditProfileArgs({@required this.token});
+  final UserData userData;
+  EditProfileArgs({@required this.userData});
 }

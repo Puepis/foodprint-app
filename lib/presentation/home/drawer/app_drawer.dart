@@ -20,7 +20,6 @@ class AppDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
     final token = userData.token;
-    final foodprint = userData.foodprint;
 
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
@@ -42,8 +41,7 @@ class AppDrawer extends StatelessWidget {
                       text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
                           context, ProfilePage.routeName,
-                          arguments: ProfilePageArgs(
-                              token: token, foodprint: foodprint))),
+                          arguments: ProfilePageArgs(userData: userData))),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',

@@ -8,7 +8,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/gallery/edit/edit_image_screen.dart';
+import 'package:foodprint/presentation/gallery/edit/edit_image_page.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:intl/intl.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
@@ -212,7 +212,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
                   value: context.bloc<FoodprintBloc>(),
                 )
               ],
-              child: EditImageScreen(
+              child: EditImagePage(
                   restaurant: widget.restaurant,
                   photo: widget.photo,
                   onEdit: widget.onEdit),

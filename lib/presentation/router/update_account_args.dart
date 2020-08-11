@@ -1,11 +1,11 @@
-import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 
 class ChangeUsernameArgs {
-  final JWT token;
-  ChangeUsernameArgs(this.token);
+  final UserData userData;
+  ChangeUsernameArgs(this.userData);
 }
 
 class ChangePasswordArgs {
-  final JWT token;
-  ChangePasswordArgs(this.token);
+  final UserData userData;
+  ChangePasswordArgs(this.userData);
 }

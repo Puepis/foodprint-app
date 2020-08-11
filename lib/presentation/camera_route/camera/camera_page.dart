@@ -62,7 +62,7 @@ class _FoodprintCaptureState extends State<FoodprintCapture> {
                 child: DisplayPhoto(
                     loadedImage: loadedImage,
                     imageFile: _imageFile,
-                    onSave: widget.onSave),
+                    onSaveOrAbort: widget.onSave),
               ));
   }
 

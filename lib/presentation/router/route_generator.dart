@@ -24,10 +24,7 @@ class RouteGenerator {
       case ProfilePage.routeName:
         if (args is ProfilePageArgs) {
           return MaterialPageRoute(
-            builder: (_) => ProfilePage(
-              token: args.token,
-              foodprint: args.foodprint,
-            ),
+            builder: (_) => ProfilePage(userData: args.userData),
           );
         }
         return _errorRoute();
@@ -66,14 +63,14 @@ class RouteGenerator {
         return _errorRoute();
       case EditProfilePage.routeName:
         if (args is EditProfileArgs) {
-          return FadeRoute(newPage: EditProfilePage(token: args.token));
+          return FadeRoute(newPage: EditProfilePage(userData: args.userData));
         }
         return _errorRoute();
       case ChangeUsernamePage.routeName:
         if (args is ChangeUsernameArgs) {
           return FadeRoute(
               newPage: ChangeUsernamePage(
-            token: args.token,
+            userData: args.userData,
           ));
         }
         return _errorRoute();
@@ -81,7 +78,7 @@ class RouteGenerator {
         if (args is ChangePasswordArgs) {
           return FadeRoute(
               newPage: ChangePasswordPage(
-            token: args.token,
+            userData: args.userData,
           ));
         }
         return _errorRoute();

@@ -6,20 +6,22 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/router/update_account_args.dart';
 
 import 'edit_profile.dart';
 
 /// The page that allows users to edit their profile and delete their account.
 class EditProfilePage extends StatelessWidget {
-  final JWT token;
+  final UserData userData;
   static const String routeName = "/edit_profile";
-  const EditProfilePage({Key key, @required this.token})
-      : assert(token != null),
+  const EditProfilePage({Key key, @required this.userData})
+      : assert(userData != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final token = userData.token;
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
 
@@ -56,16 +58,20 @@ class EditProfilePage extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
+                GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, ChangeUsernamePage.routeName,
-                      arguments: ChangeUsernameArgs(token)),
-                  enabled: true,
-                  initialValue: username,
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7.0)),
+                      arguments: ChangeUsernameArgs(userData)),
+                  child: TextFormField(
+                    initialValue: username,
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -75,17 +81,21 @@ class EditProfilePage extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                TextFormField(
-                  enabled: true,
-                  initialValue: '********',
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7.0)),
-                  ),
+                GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, ChangePasswordPage.routeName,
-                      arguments: ChangePasswordArgs(token)),
+                      arguments: ChangePasswordArgs(userData)),
+                  child: TextFormField(
+                    initialValue: '********',
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 30,
@@ -162,7 +172,7 @@ class EditProfilePage extends StatelessWidget {
                             style:
                                 TextStyle(color: Colors.black, fontSize: 16.0),
                           ),
-                      ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

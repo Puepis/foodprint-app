@@ -24,41 +24,44 @@ class SaveDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          elevation: 0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
           backgroundColor: backgroundColor,
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                BlocProvider.value(
-                  value: context.bloc<FoodprintBloc>(),
-                )
-              ],
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    "Fill in the details!",
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SaveDetailsForm(
-                    imageFile: imageFile,
-                    restaurant: restaurant,
-                    onSave: onSave,
-                  ),
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: backgroundColor,
+          ),
+          body: Padding(
+              padding: const EdgeInsets.all(20),
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                  BlocProvider.value(
+                    value: context.bloc<FoodprintBloc>(),
+                  )
                 ],
-              ),
-            )));
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Text(
+                      "Fill in the details!",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    SaveDetailsForm(
+                      imageFile: imageFile,
+                      restaurant: restaurant,
+                      onSave: onSave,
+                    ),
+                  ],
+                ),
+              ))),
+    );
   }
 }

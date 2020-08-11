@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/profile_page_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
@@ -10,14 +9,16 @@ import 'package:foodprint/presentation/router/edit_profile_args.dart';
 /// Displays the user's stats in a visually appealing and organized manner.
 class ProfilePage extends StatelessWidget {
   static const String routeName = "/profile";
-  final JWT token;
-  final FoodprintEntity foodprint;
-  const ProfilePage({Key key, this.token, this.foodprint}) : super(key: key);
+  final UserData userData;
+  const ProfilePage({Key key, this.userData}) : super(key: key);
 
   Color get backgroundColor => foodprintPrimaryColorSwatch[300];
 
   @override
   Widget build(BuildContext context) {
+    final token = userData.token;
+    final foodprint = userData.foodprint;
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -27,7 +28,7 @@ class ProfilePage extends StatelessWidget {
               icon: const Icon(Icons.settings),
               onPressed: () => Navigator.pushNamed(
                   context, EditProfilePage.routeName,
-                  arguments: EditProfileArgs(token: token)),
+                  arguments: EditProfileArgs(userData: userData)),
             )
           ],
         ),
