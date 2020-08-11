@@ -49,6 +49,14 @@ class _$PhotoActionsEventTearOff {
       placeID: placeID,
     );
   }
+
+  FavouriteChanged favouriteChanged(
+      {@required PhotoEntity photo, @required bool newFavourite}) {
+    return FavouriteChanged(
+      photo: photo,
+      newFavourite: newFavourite,
+    );
+  }
 }
 
 // ignore: unused_element
@@ -64,6 +72,7 @@ mixin _$PhotoActionsEvent {
     @required
         Result saved(UserID userID, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
+    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -72,6 +81,7 @@ mixin _$PhotoActionsEvent {
         String newComments, bool isFavourite),
     Result saved(UserID userID, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
+    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -79,12 +89,14 @@ mixin _$PhotoActionsEvent {
     @required Result deleted(Deleted value),
     @required Result edited(Edited value),
     @required Result saved(Saved value),
+    @required Result favouriteChanged(FavouriteChanged value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result deleted(Deleted value),
     Result edited(Edited value),
     Result saved(Saved value),
+    Result favouriteChanged(FavouriteChanged value),
     @required Result orElse(),
   });
 }
@@ -177,10 +189,12 @@ class _$Deleted implements Deleted {
     @required
         Result saved(UserID userID, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
+    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return deleted(photo);
   }
 
@@ -192,6 +206,7 @@ class _$Deleted implements Deleted {
         String newComments, bool isFavourite),
     Result saved(UserID userID, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
+    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -207,10 +222,12 @@ class _$Deleted implements Deleted {
     @required Result deleted(Deleted value),
     @required Result edited(Edited value),
     @required Result saved(Saved value),
+    @required Result favouriteChanged(FavouriteChanged value),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return deleted(this);
   }
 
@@ -220,6 +237,7 @@ class _$Deleted implements Deleted {
     Result deleted(Deleted value),
     Result edited(Edited value),
     Result saved(Saved value),
+    Result favouriteChanged(FavouriteChanged value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -361,10 +379,12 @@ class _$Edited implements Edited {
     @required
         Result saved(UserID userID, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
+    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return edited(oldPhoto, newName, newPrice, newComments, isFavourite);
   }
 
@@ -376,6 +396,7 @@ class _$Edited implements Edited {
         String newComments, bool isFavourite),
     Result saved(UserID userID, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
+    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -391,10 +412,12 @@ class _$Edited implements Edited {
     @required Result deleted(Deleted value),
     @required Result edited(Edited value),
     @required Result saved(Saved value),
+    @required Result favouriteChanged(FavouriteChanged value),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return edited(this);
   }
 
@@ -404,6 +427,7 @@ class _$Edited implements Edited {
     Result deleted(Deleted value),
     Result edited(Edited value),
     Result saved(Saved value),
+    Result favouriteChanged(FavouriteChanged value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -548,10 +572,12 @@ class _$Saved implements Saved {
     @required
         Result saved(UserID userID, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
+    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return saved(userID, imageFile, itemName, price, comments, placeID);
   }
 
@@ -563,6 +589,7 @@ class _$Saved implements Saved {
         String newComments, bool isFavourite),
     Result saved(UserID userID, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
+    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -578,10 +605,12 @@ class _$Saved implements Saved {
     @required Result deleted(Deleted value),
     @required Result edited(Edited value),
     @required Result saved(Saved value),
+    @required Result favouriteChanged(FavouriteChanged value),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
+    assert(favouriteChanged != null);
     return saved(this);
   }
 
@@ -591,6 +620,7 @@ class _$Saved implements Saved {
     Result deleted(Deleted value),
     Result edited(Edited value),
     Result saved(Saved value),
+    Result favouriteChanged(FavouriteChanged value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -617,6 +647,163 @@ abstract class Saved implements PhotoActionsEvent {
   String get comments;
   RestaurantID get placeID;
   $SavedCopyWith<Saved> get copyWith;
+}
+
+abstract class $FavouriteChangedCopyWith<$Res> {
+  factory $FavouriteChangedCopyWith(
+          FavouriteChanged value, $Res Function(FavouriteChanged) then) =
+      _$FavouriteChangedCopyWithImpl<$Res>;
+  $Res call({PhotoEntity photo, bool newFavourite});
+
+  $PhotoEntityCopyWith<$Res> get photo;
+}
+
+class _$FavouriteChangedCopyWithImpl<$Res>
+    extends _$PhotoActionsEventCopyWithImpl<$Res>
+    implements $FavouriteChangedCopyWith<$Res> {
+  _$FavouriteChangedCopyWithImpl(
+      FavouriteChanged _value, $Res Function(FavouriteChanged) _then)
+      : super(_value, (v) => _then(v as FavouriteChanged));
+
+  @override
+  FavouriteChanged get _value => super._value as FavouriteChanged;
+
+  @override
+  $Res call({
+    Object photo = freezed,
+    Object newFavourite = freezed,
+  }) {
+    return _then(FavouriteChanged(
+      photo: photo == freezed ? _value.photo : photo as PhotoEntity,
+      newFavourite:
+          newFavourite == freezed ? _value.newFavourite : newFavourite as bool,
+    ));
+  }
+
+  @override
+  $PhotoEntityCopyWith<$Res> get photo {
+    if (_value.photo == null) {
+      return null;
+    }
+    return $PhotoEntityCopyWith<$Res>(_value.photo, (value) {
+      return _then(_value.copyWith(photo: value));
+    });
+  }
+}
+
+class _$FavouriteChanged implements FavouriteChanged {
+  const _$FavouriteChanged({@required this.photo, @required this.newFavourite})
+      : assert(photo != null),
+        assert(newFavourite != null);
+
+  @override
+  final PhotoEntity photo;
+  @override
+  final bool newFavourite;
+
+  @override
+  String toString() {
+    return 'PhotoActionsEvent.favouriteChanged(photo: $photo, newFavourite: $newFavourite)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is FavouriteChanged &&
+            (identical(other.photo, photo) ||
+                const DeepCollectionEquality().equals(other.photo, photo)) &&
+            (identical(other.newFavourite, newFavourite) ||
+                const DeepCollectionEquality()
+                    .equals(other.newFavourite, newFavourite)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(photo) ^
+      const DeepCollectionEquality().hash(newFavourite);
+
+  @override
+  $FavouriteChangedCopyWith<FavouriteChanged> get copyWith =>
+      _$FavouriteChangedCopyWithImpl<FavouriteChanged>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result deleted(PhotoEntity photo),
+    @required
+        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
+            String newComments, bool isFavourite),
+    @required
+        Result saved(UserID userID, File imageFile, String itemName,
+            String price, String comments, RestaurantID placeID),
+    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+  }) {
+    assert(deleted != null);
+    assert(edited != null);
+    assert(saved != null);
+    assert(favouriteChanged != null);
+    return favouriteChanged(photo, newFavourite);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result deleted(PhotoEntity photo),
+    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
+        String newComments, bool isFavourite),
+    Result saved(UserID userID, File imageFile, String itemName, String price,
+        String comments, RestaurantID placeID),
+    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (favouriteChanged != null) {
+      return favouriteChanged(photo, newFavourite);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result deleted(Deleted value),
+    @required Result edited(Edited value),
+    @required Result saved(Saved value),
+    @required Result favouriteChanged(FavouriteChanged value),
+  }) {
+    assert(deleted != null);
+    assert(edited != null);
+    assert(saved != null);
+    assert(favouriteChanged != null);
+    return favouriteChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result deleted(Deleted value),
+    Result edited(Edited value),
+    Result saved(Saved value),
+    Result favouriteChanged(FavouriteChanged value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (favouriteChanged != null) {
+      return favouriteChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FavouriteChanged implements PhotoActionsEvent {
+  const factory FavouriteChanged(
+      {@required PhotoEntity photo,
+      @required bool newFavourite}) = _$FavouriteChanged;
+
+  PhotoEntity get photo;
+  bool get newFavourite;
+  $FavouriteChangedCopyWith<FavouriteChanged> get copyWith;
 }
 
 class _$PhotoActionsStateTearOff {
@@ -646,8 +833,10 @@ class _$PhotoActionsStateTearOff {
     );
   }
 
-  EditSuccess editSuccess() {
-    return const EditSuccess();
+  EditSuccess editSuccess(PhotoEntity newPhoto) {
+    return EditSuccess(
+      newPhoto,
+    );
   }
 
   SaveFailure saveFailure(PhotoFailure failure) {
@@ -656,8 +845,22 @@ class _$PhotoActionsStateTearOff {
     );
   }
 
-  SaveSuccess saveSuccess() {
-    return const SaveSuccess();
+  SaveSuccess saveSuccess(PhotoEntity newPhoto) {
+    return SaveSuccess(
+      newPhoto,
+    );
+  }
+
+  ChangeFavouriteFailure changeFavouriteFailure(PhotoFailure failure) {
+    return ChangeFavouriteFailure(
+      failure,
+    );
+  }
+
+  ChangeFavouriteSuccess changeFavouriteSuccess({bool isFavourite}) {
+    return ChangeFavouriteSuccess(
+      isFavourite: isFavourite,
+    );
   }
 }
 
@@ -672,9 +875,11 @@ mixin _$PhotoActionsState {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
@@ -683,9 +888,11 @@ mixin _$PhotoActionsState {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -698,6 +905,8 @@ mixin _$PhotoActionsState {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
@@ -709,6 +918,8 @@ mixin _$PhotoActionsState {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   });
 }
@@ -766,9 +977,11 @@ class _$Initial implements Initial {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -778,6 +991,8 @@ class _$Initial implements Initial {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return initial();
   }
 
@@ -789,9 +1004,11 @@ class _$Initial implements Initial {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -812,6 +1029,8 @@ class _$Initial implements Initial {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -821,6 +1040,8 @@ class _$Initial implements Initial {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return initial(this);
   }
 
@@ -835,6 +1056,8 @@ class _$Initial implements Initial {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -890,9 +1113,11 @@ class _$ActionInProgress implements ActionInProgress {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -902,6 +1127,8 @@ class _$ActionInProgress implements ActionInProgress {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return actionInProgress();
   }
 
@@ -913,9 +1140,11 @@ class _$ActionInProgress implements ActionInProgress {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -936,6 +1165,8 @@ class _$ActionInProgress implements ActionInProgress {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -945,6 +1176,8 @@ class _$ActionInProgress implements ActionInProgress {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return actionInProgress(this);
   }
 
@@ -959,6 +1192,8 @@ class _$ActionInProgress implements ActionInProgress {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1047,9 +1282,11 @@ class _$DeleteFailure implements DeleteFailure {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1059,6 +1296,8 @@ class _$DeleteFailure implements DeleteFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return deleteFailure(failure);
   }
 
@@ -1070,9 +1309,11 @@ class _$DeleteFailure implements DeleteFailure {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1093,6 +1334,8 @@ class _$DeleteFailure implements DeleteFailure {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1102,6 +1345,8 @@ class _$DeleteFailure implements DeleteFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return deleteFailure(this);
   }
 
@@ -1116,6 +1361,8 @@ class _$DeleteFailure implements DeleteFailure {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1174,9 +1421,11 @@ class _$DeleteSuccess implements DeleteSuccess {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1186,6 +1435,8 @@ class _$DeleteSuccess implements DeleteSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return deleteSuccess();
   }
 
@@ -1197,9 +1448,11 @@ class _$DeleteSuccess implements DeleteSuccess {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1220,6 +1473,8 @@ class _$DeleteSuccess implements DeleteSuccess {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1229,6 +1484,8 @@ class _$DeleteSuccess implements DeleteSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return deleteSuccess(this);
   }
 
@@ -1243,6 +1500,8 @@ class _$DeleteSuccess implements DeleteSuccess {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1331,9 +1590,11 @@ class _$EditFailure implements EditFailure {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1343,6 +1604,8 @@ class _$EditFailure implements EditFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return editFailure(failure);
   }
 
@@ -1354,9 +1617,11 @@ class _$EditFailure implements EditFailure {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1377,6 +1642,8 @@ class _$EditFailure implements EditFailure {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1386,6 +1653,8 @@ class _$EditFailure implements EditFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return editFailure(this);
   }
 
@@ -1400,6 +1669,8 @@ class _$EditFailure implements EditFailure {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1421,6 +1692,9 @@ abstract class $EditSuccessCopyWith<$Res> {
   factory $EditSuccessCopyWith(
           EditSuccess value, $Res Function(EditSuccess) then) =
       _$EditSuccessCopyWithImpl<$Res>;
+  $Res call({PhotoEntity newPhoto});
+
+  $PhotoEntityCopyWith<$Res> get newPhoto;
 }
 
 class _$EditSuccessCopyWithImpl<$Res>
@@ -1432,23 +1706,54 @@ class _$EditSuccessCopyWithImpl<$Res>
 
   @override
   EditSuccess get _value => super._value as EditSuccess;
+
+  @override
+  $Res call({
+    Object newPhoto = freezed,
+  }) {
+    return _then(EditSuccess(
+      newPhoto == freezed ? _value.newPhoto : newPhoto as PhotoEntity,
+    ));
+  }
+
+  @override
+  $PhotoEntityCopyWith<$Res> get newPhoto {
+    if (_value.newPhoto == null) {
+      return null;
+    }
+    return $PhotoEntityCopyWith<$Res>(_value.newPhoto, (value) {
+      return _then(_value.copyWith(newPhoto: value));
+    });
+  }
 }
 
 class _$EditSuccess implements EditSuccess {
-  const _$EditSuccess();
+  const _$EditSuccess(this.newPhoto) : assert(newPhoto != null);
+
+  @override
+  final PhotoEntity newPhoto;
 
   @override
   String toString() {
-    return 'PhotoActionsState.editSuccess()';
+    return 'PhotoActionsState.editSuccess(newPhoto: $newPhoto)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is EditSuccess);
+    return identical(this, other) ||
+        (other is EditSuccess &&
+            (identical(other.newPhoto, newPhoto) ||
+                const DeepCollectionEquality()
+                    .equals(other.newPhoto, newPhoto)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newPhoto);
+
+  @override
+  $EditSuccessCopyWith<EditSuccess> get copyWith =>
+      _$EditSuccessCopyWithImpl<EditSuccess>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1458,9 +1763,11 @@ class _$EditSuccess implements EditSuccess {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1470,7 +1777,9 @@ class _$EditSuccess implements EditSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return editSuccess();
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return editSuccess(newPhoto);
   }
 
   @override
@@ -1481,14 +1790,16 @@ class _$EditSuccess implements EditSuccess {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (editSuccess != null) {
-      return editSuccess();
+      return editSuccess(newPhoto);
     }
     return orElse();
   }
@@ -1504,6 +1815,8 @@ class _$EditSuccess implements EditSuccess {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1513,6 +1826,8 @@ class _$EditSuccess implements EditSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return editSuccess(this);
   }
 
@@ -1527,6 +1842,8 @@ class _$EditSuccess implements EditSuccess {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1538,7 +1855,10 @@ class _$EditSuccess implements EditSuccess {
 }
 
 abstract class EditSuccess implements PhotoActionsState {
-  const factory EditSuccess() = _$EditSuccess;
+  const factory EditSuccess(PhotoEntity newPhoto) = _$EditSuccess;
+
+  PhotoEntity get newPhoto;
+  $EditSuccessCopyWith<EditSuccess> get copyWith;
 }
 
 abstract class $SaveFailureCopyWith<$Res> {
@@ -1615,9 +1935,11 @@ class _$SaveFailure implements SaveFailure {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1627,6 +1949,8 @@ class _$SaveFailure implements SaveFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return saveFailure(failure);
   }
 
@@ -1638,9 +1962,11 @@ class _$SaveFailure implements SaveFailure {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1661,6 +1987,8 @@ class _$SaveFailure implements SaveFailure {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1670,6 +1998,8 @@ class _$SaveFailure implements SaveFailure {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return saveFailure(this);
   }
 
@@ -1684,6 +2014,8 @@ class _$SaveFailure implements SaveFailure {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1705,6 +2037,9 @@ abstract class $SaveSuccessCopyWith<$Res> {
   factory $SaveSuccessCopyWith(
           SaveSuccess value, $Res Function(SaveSuccess) then) =
       _$SaveSuccessCopyWithImpl<$Res>;
+  $Res call({PhotoEntity newPhoto});
+
+  $PhotoEntityCopyWith<$Res> get newPhoto;
 }
 
 class _$SaveSuccessCopyWithImpl<$Res>
@@ -1716,23 +2051,54 @@ class _$SaveSuccessCopyWithImpl<$Res>
 
   @override
   SaveSuccess get _value => super._value as SaveSuccess;
+
+  @override
+  $Res call({
+    Object newPhoto = freezed,
+  }) {
+    return _then(SaveSuccess(
+      newPhoto == freezed ? _value.newPhoto : newPhoto as PhotoEntity,
+    ));
+  }
+
+  @override
+  $PhotoEntityCopyWith<$Res> get newPhoto {
+    if (_value.newPhoto == null) {
+      return null;
+    }
+    return $PhotoEntityCopyWith<$Res>(_value.newPhoto, (value) {
+      return _then(_value.copyWith(newPhoto: value));
+    });
+  }
 }
 
 class _$SaveSuccess implements SaveSuccess {
-  const _$SaveSuccess();
+  const _$SaveSuccess(this.newPhoto) : assert(newPhoto != null);
+
+  @override
+  final PhotoEntity newPhoto;
 
   @override
   String toString() {
-    return 'PhotoActionsState.saveSuccess()';
+    return 'PhotoActionsState.saveSuccess(newPhoto: $newPhoto)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is SaveSuccess);
+    return identical(this, other) ||
+        (other is SaveSuccess &&
+            (identical(other.newPhoto, newPhoto) ||
+                const DeepCollectionEquality()
+                    .equals(other.newPhoto, newPhoto)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(newPhoto);
+
+  @override
+  $SaveSuccessCopyWith<SaveSuccess> get copyWith =>
+      _$SaveSuccessCopyWithImpl<SaveSuccess>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1742,9 +2108,11 @@ class _$SaveSuccess implements SaveSuccess {
     @required Result deleteFailure(PhotoFailure failure),
     @required Result deleteSuccess(),
     @required Result editFailure(PhotoFailure failure),
-    @required Result editSuccess(),
+    @required Result editSuccess(PhotoEntity newPhoto),
     @required Result saveFailure(PhotoFailure failure),
-    @required Result saveSuccess(),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1754,7 +2122,9 @@ class _$SaveSuccess implements SaveSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
-    return saveSuccess();
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return saveSuccess(newPhoto);
   }
 
   @override
@@ -1765,14 +2135,16 @@ class _$SaveSuccess implements SaveSuccess {
     Result deleteFailure(PhotoFailure failure),
     Result deleteSuccess(),
     Result editFailure(PhotoFailure failure),
-    Result editSuccess(),
+    Result editSuccess(PhotoEntity newPhoto),
     Result saveFailure(PhotoFailure failure),
-    Result saveSuccess(),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (saveSuccess != null) {
-      return saveSuccess();
+      return saveSuccess(newPhoto);
     }
     return orElse();
   }
@@ -1788,6 +2160,8 @@ class _$SaveSuccess implements SaveSuccess {
     @required Result editSuccess(EditSuccess value),
     @required Result saveFailure(SaveFailure value),
     @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
   }) {
     assert(initial != null);
     assert(actionInProgress != null);
@@ -1797,6 +2171,8 @@ class _$SaveSuccess implements SaveSuccess {
     assert(editSuccess != null);
     assert(saveFailure != null);
     assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
     return saveSuccess(this);
   }
 
@@ -1811,6 +2187,8 @@ class _$SaveSuccess implements SaveSuccess {
     Result editSuccess(EditSuccess value),
     Result saveFailure(SaveFailure value),
     Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
     @required Result orElse(),
   }) {
     assert(orElse != null);
@@ -1822,5 +2200,346 @@ class _$SaveSuccess implements SaveSuccess {
 }
 
 abstract class SaveSuccess implements PhotoActionsState {
-  const factory SaveSuccess() = _$SaveSuccess;
+  const factory SaveSuccess(PhotoEntity newPhoto) = _$SaveSuccess;
+
+  PhotoEntity get newPhoto;
+  $SaveSuccessCopyWith<SaveSuccess> get copyWith;
+}
+
+abstract class $ChangeFavouriteFailureCopyWith<$Res> {
+  factory $ChangeFavouriteFailureCopyWith(ChangeFavouriteFailure value,
+          $Res Function(ChangeFavouriteFailure) then) =
+      _$ChangeFavouriteFailureCopyWithImpl<$Res>;
+  $Res call({PhotoFailure failure});
+
+  $PhotoFailureCopyWith<$Res> get failure;
+}
+
+class _$ChangeFavouriteFailureCopyWithImpl<$Res>
+    extends _$PhotoActionsStateCopyWithImpl<$Res>
+    implements $ChangeFavouriteFailureCopyWith<$Res> {
+  _$ChangeFavouriteFailureCopyWithImpl(ChangeFavouriteFailure _value,
+      $Res Function(ChangeFavouriteFailure) _then)
+      : super(_value, (v) => _then(v as ChangeFavouriteFailure));
+
+  @override
+  ChangeFavouriteFailure get _value => super._value as ChangeFavouriteFailure;
+
+  @override
+  $Res call({
+    Object failure = freezed,
+  }) {
+    return _then(ChangeFavouriteFailure(
+      failure == freezed ? _value.failure : failure as PhotoFailure,
+    ));
+  }
+
+  @override
+  $PhotoFailureCopyWith<$Res> get failure {
+    if (_value.failure == null) {
+      return null;
+    }
+    return $PhotoFailureCopyWith<$Res>(_value.failure, (value) {
+      return _then(_value.copyWith(failure: value));
+    });
+  }
+}
+
+class _$ChangeFavouriteFailure implements ChangeFavouriteFailure {
+  const _$ChangeFavouriteFailure(this.failure) : assert(failure != null);
+
+  @override
+  final PhotoFailure failure;
+
+  @override
+  String toString() {
+    return 'PhotoActionsState.changeFavouriteFailure(failure: $failure)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ChangeFavouriteFailure &&
+            (identical(other.failure, failure) ||
+                const DeepCollectionEquality().equals(other.failure, failure)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(failure);
+
+  @override
+  $ChangeFavouriteFailureCopyWith<ChangeFavouriteFailure> get copyWith =>
+      _$ChangeFavouriteFailureCopyWithImpl<ChangeFavouriteFailure>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result initial(),
+    @required Result actionInProgress(),
+    @required Result deleteFailure(PhotoFailure failure),
+    @required Result deleteSuccess(),
+    @required Result editFailure(PhotoFailure failure),
+    @required Result editSuccess(PhotoEntity newPhoto),
+    @required Result saveFailure(PhotoFailure failure),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
+  }) {
+    assert(initial != null);
+    assert(actionInProgress != null);
+    assert(deleteFailure != null);
+    assert(deleteSuccess != null);
+    assert(editFailure != null);
+    assert(editSuccess != null);
+    assert(saveFailure != null);
+    assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return changeFavouriteFailure(failure);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result initial(),
+    Result actionInProgress(),
+    Result deleteFailure(PhotoFailure failure),
+    Result deleteSuccess(),
+    Result editFailure(PhotoFailure failure),
+    Result editSuccess(PhotoEntity newPhoto),
+    Result saveFailure(PhotoFailure failure),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFavouriteFailure != null) {
+      return changeFavouriteFailure(failure);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result initial(Initial value),
+    @required Result actionInProgress(ActionInProgress value),
+    @required Result deleteFailure(DeleteFailure value),
+    @required Result deleteSuccess(DeleteSuccess value),
+    @required Result editFailure(EditFailure value),
+    @required Result editSuccess(EditSuccess value),
+    @required Result saveFailure(SaveFailure value),
+    @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
+  }) {
+    assert(initial != null);
+    assert(actionInProgress != null);
+    assert(deleteFailure != null);
+    assert(deleteSuccess != null);
+    assert(editFailure != null);
+    assert(editSuccess != null);
+    assert(saveFailure != null);
+    assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return changeFavouriteFailure(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result initial(Initial value),
+    Result actionInProgress(ActionInProgress value),
+    Result deleteFailure(DeleteFailure value),
+    Result deleteSuccess(DeleteSuccess value),
+    Result editFailure(EditFailure value),
+    Result editSuccess(EditSuccess value),
+    Result saveFailure(SaveFailure value),
+    Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFavouriteFailure != null) {
+      return changeFavouriteFailure(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChangeFavouriteFailure implements PhotoActionsState {
+  const factory ChangeFavouriteFailure(PhotoFailure failure) =
+      _$ChangeFavouriteFailure;
+
+  PhotoFailure get failure;
+  $ChangeFavouriteFailureCopyWith<ChangeFavouriteFailure> get copyWith;
+}
+
+abstract class $ChangeFavouriteSuccessCopyWith<$Res> {
+  factory $ChangeFavouriteSuccessCopyWith(ChangeFavouriteSuccess value,
+          $Res Function(ChangeFavouriteSuccess) then) =
+      _$ChangeFavouriteSuccessCopyWithImpl<$Res>;
+  $Res call({bool isFavourite});
+}
+
+class _$ChangeFavouriteSuccessCopyWithImpl<$Res>
+    extends _$PhotoActionsStateCopyWithImpl<$Res>
+    implements $ChangeFavouriteSuccessCopyWith<$Res> {
+  _$ChangeFavouriteSuccessCopyWithImpl(ChangeFavouriteSuccess _value,
+      $Res Function(ChangeFavouriteSuccess) _then)
+      : super(_value, (v) => _then(v as ChangeFavouriteSuccess));
+
+  @override
+  ChangeFavouriteSuccess get _value => super._value as ChangeFavouriteSuccess;
+
+  @override
+  $Res call({
+    Object isFavourite = freezed,
+  }) {
+    return _then(ChangeFavouriteSuccess(
+      isFavourite:
+          isFavourite == freezed ? _value.isFavourite : isFavourite as bool,
+    ));
+  }
+}
+
+class _$ChangeFavouriteSuccess implements ChangeFavouriteSuccess {
+  const _$ChangeFavouriteSuccess({this.isFavourite});
+
+  @override
+  final bool isFavourite;
+
+  @override
+  String toString() {
+    return 'PhotoActionsState.changeFavouriteSuccess(isFavourite: $isFavourite)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is ChangeFavouriteSuccess &&
+            (identical(other.isFavourite, isFavourite) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFavourite, isFavourite)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(isFavourite);
+
+  @override
+  $ChangeFavouriteSuccessCopyWith<ChangeFavouriteSuccess> get copyWith =>
+      _$ChangeFavouriteSuccessCopyWithImpl<ChangeFavouriteSuccess>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result initial(),
+    @required Result actionInProgress(),
+    @required Result deleteFailure(PhotoFailure failure),
+    @required Result deleteSuccess(),
+    @required Result editFailure(PhotoFailure failure),
+    @required Result editSuccess(PhotoEntity newPhoto),
+    @required Result saveFailure(PhotoFailure failure),
+    @required Result saveSuccess(PhotoEntity newPhoto),
+    @required Result changeFavouriteFailure(PhotoFailure failure),
+    @required Result changeFavouriteSuccess(bool isFavourite),
+  }) {
+    assert(initial != null);
+    assert(actionInProgress != null);
+    assert(deleteFailure != null);
+    assert(deleteSuccess != null);
+    assert(editFailure != null);
+    assert(editSuccess != null);
+    assert(saveFailure != null);
+    assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return changeFavouriteSuccess(isFavourite);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result initial(),
+    Result actionInProgress(),
+    Result deleteFailure(PhotoFailure failure),
+    Result deleteSuccess(),
+    Result editFailure(PhotoFailure failure),
+    Result editSuccess(PhotoEntity newPhoto),
+    Result saveFailure(PhotoFailure failure),
+    Result saveSuccess(PhotoEntity newPhoto),
+    Result changeFavouriteFailure(PhotoFailure failure),
+    Result changeFavouriteSuccess(bool isFavourite),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFavouriteSuccess != null) {
+      return changeFavouriteSuccess(isFavourite);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result initial(Initial value),
+    @required Result actionInProgress(ActionInProgress value),
+    @required Result deleteFailure(DeleteFailure value),
+    @required Result deleteSuccess(DeleteSuccess value),
+    @required Result editFailure(EditFailure value),
+    @required Result editSuccess(EditSuccess value),
+    @required Result saveFailure(SaveFailure value),
+    @required Result saveSuccess(SaveSuccess value),
+    @required Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    @required Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
+  }) {
+    assert(initial != null);
+    assert(actionInProgress != null);
+    assert(deleteFailure != null);
+    assert(deleteSuccess != null);
+    assert(editFailure != null);
+    assert(editSuccess != null);
+    assert(saveFailure != null);
+    assert(saveSuccess != null);
+    assert(changeFavouriteFailure != null);
+    assert(changeFavouriteSuccess != null);
+    return changeFavouriteSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result initial(Initial value),
+    Result actionInProgress(ActionInProgress value),
+    Result deleteFailure(DeleteFailure value),
+    Result deleteSuccess(DeleteSuccess value),
+    Result editFailure(EditFailure value),
+    Result editSuccess(EditSuccess value),
+    Result saveFailure(SaveFailure value),
+    Result saveSuccess(SaveSuccess value),
+    Result changeFavouriteFailure(ChangeFavouriteFailure value),
+    Result changeFavouriteSuccess(ChangeFavouriteSuccess value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (changeFavouriteSuccess != null) {
+      return changeFavouriteSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChangeFavouriteSuccess implements PhotoActionsState {
+  const factory ChangeFavouriteSuccess({bool isFavourite}) =
+      _$ChangeFavouriteSuccess;
+
+  bool get isFavourite;
+  $ChangeFavouriteSuccessCopyWith<ChangeFavouriteSuccess> get copyWith;
 }

@@ -2,12 +2,17 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'landscape_photo.dart';
 part 'portrait_photo.dart';
@@ -56,6 +61,7 @@ class RestaurantGallery extends StatelessWidget {
               Container(
                 height: MediaQuery.of(context).size.height * 0.83,
                 child: PhotoCarousel(
+                  restaurant: restaurant,
                   constraints: constraints,
                   photos: photos,
                 ),
@@ -69,9 +75,10 @@ class RestaurantGallery extends StatelessWidget {
 }
 
 class PhotoCarousel extends StatefulWidget {
+  final RestaurantEntity restaurant;
   final List<PhotoEntity> photos;
   final BoxConstraints constraints;
-  const PhotoCarousel({Key key, this.photos, this.constraints})
+  const PhotoCarousel({Key key, this.restaurant, this.photos, this.constraints})
       : super(key: key);
 
   @override
@@ -120,9 +127,11 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
     final photo = widget.photos[index];
 
     return PortraitPhoto(
-        photo: photo,
-        topPadding: topPadding,
-        constraints: widget.constraints,
-        formatter: formatter);
+      photo: photo,
+      topPadding: topPadding,
+      constraints: widget.constraints,
+      formatter: formatter,
+      restaurant: widget.restaurant,
+    );
   }
 }

@@ -14,6 +14,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'photo_actions_event.dart';
 part 'photo_actions_state.dart';
@@ -69,6 +70,22 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   }
 
   @override
+  Stream<Transition<PhotoActionsEvent, PhotoActionsState>> transformEvents(
+      Stream<PhotoActionsEvent> events,
+      TransitionFunction<PhotoActionsEvent, PhotoActionsState> transitionFn) {
+    // No delay
+    final nonDebounceStream =
+        events.where((event) => event is! FavouriteChanged);
+
+    final debounceStream = events
+        .where((event) => event is FavouriteChanged)
+        .debounceTime(const Duration(milliseconds: 300));
+
+    return super.transformEvents(
+        nonDebounceStream.mergeWith([debounceStream]), transitionFn);
+  }
+
+  @override
   Stream<PhotoActionsState> mapEventToState(
     PhotoActionsEvent event,
   ) async* {
@@ -81,6 +98,8 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     }, saved: (e) async* {
       yield* _mapSavedToState(
           e.userID, e.imageFile, e.itemName, e.price, e.comments, e.placeID);
+    }, favouriteChanged: (e) async* {
+      yield* _mapFavouriteChangedToState(e.photo, e.newFavourite);
     });
   }
 
@@ -101,11 +120,13 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
         name: PhotoName(newName),
         price: PhotoPrice(double.parse(newPrice)),
         comments: PhotoComments(newComments));
-    final result = await _client.updatePhotoDetails(
-        oldPhoto: oldPhoto, details: newDetails, isFavourite: isFavourite);
+
+    final newPhoto =
+        oldPhoto.copyWith(details: newDetails, isFavourite: isFavourite);
+    final result = await _client.updatePhoto(newPhoto: newPhoto);
     yield result.fold(
       (failure) => PhotoActionsState.editFailure(failure),
-      (_) => const PhotoActionsState.editSuccess(),
+      (_) => PhotoActionsState.editSuccess(newPhoto),
     );
   }
 
@@ -126,6 +147,16 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
       placeID: id,
     );
     yield result.fold((l) => PhotoActionsState.saveFailure(l),
-        (_) => const PhotoActionsState.saveSuccess());
+        (photo) => PhotoActionsState.saveSuccess(photo));
+  }
+
+  Stream<PhotoActionsState> _mapFavouriteChangedToState(
+      PhotoEntity photo, bool favourite) async* {
+    final newPhoto = photo.copyWith(isFavourite: favourite);
+    final result = await _client.updateFavourite(updatedPhoto: newPhoto);
+    yield result.fold(
+        (failure) => PhotoActionsState.changeFavouriteFailure(failure),
+        (_) =>
+            PhotoActionsState.changeFavouriteSuccess(isFavourite: favourite));
   }
 }

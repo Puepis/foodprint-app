@@ -6,12 +6,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:provider/provider.dart';
 
 /// The page that displays a list of nearby [restaurants] for the user to
 /// select.
@@ -19,9 +20,9 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 /// If the list doesn't contain the desired restaurant, the user can use the
 /// [ManualSearchPage] to find the correct one.
 class SelectRestaurantPage extends StatefulWidget {
+  final VoidCallback onSave;
   final File imageFile;
   final List<RestaurantEntity> restaurants;
-  final JWT token;
   final double latitude;
   final double longitude;
   const SelectRestaurantPage(
@@ -30,8 +31,9 @@ class SelectRestaurantPage extends StatefulWidget {
       @required this.restaurants,
       @required this.latitude,
       @required this.longitude,
-      @required this.token})
-      : super(key: key);
+      @required this.onSave})
+      : assert(onSave != null),
+        super(key: key);
 
   @override
   _SelectRestaurantPageState createState() => _SelectRestaurantPageState();
@@ -59,7 +61,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
         ).show(context);
       }
     }, builder: (_, state) {
-      final Widget body = _buildBody(state, bloc, context);
+      final Widget body = _buildBody(state, bloc);
 
       return Scaffold(
           backgroundColor: backgroundColor,
@@ -91,8 +93,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   }
 
   /// Builds the scaffold body based on the [ManualBlocState]
-  Widget _buildBody(
-      ManualSearchState state, ManualSearchBloc bloc, BuildContext context) {
+  Widget _buildBody(ManualSearchState state, ManualSearchBloc bloc) {
     if (state is PlaceDetailSearchLoading) {
       // Loading indicator
       return Center(
@@ -188,13 +189,14 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   void Function() _toDetails(RestaurantEntity restaurant) {
     return () {
       Navigator.of(context).push(SlideLeftRoute(
-          newPage: MultiBlocProvider(
+          newPage: MultiProvider(
         providers: [
+          ChangeNotifierProvider.value(value: context.read<UserData>()),
           BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: context.bloc<FoodprintBloc>())
         ],
         child: SaveDetailsPage(
-          token: widget.token,
+          onSave: widget.onSave,
           imageFile: widget.imageFile,
           restaurant: restaurant,
         ),

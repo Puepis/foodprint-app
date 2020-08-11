@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 
 /// The page where users fill in the details about their photo.
 class SaveDetailsPage extends StatelessWidget {
+  final VoidCallback onSave;
   final RestaurantEntity restaurant;
   final File imageFile;
-  final JWT token;
   const SaveDetailsPage(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
-      @required this.token})
-      : super(key: key);
+      @required this.onSave})
+      : assert(onSave != null),
+        super(key: key);
 
   Color get backgroundColor => foodprintPrimaryColorSwatch[50];
 
@@ -55,7 +55,7 @@ class SaveDetailsPage extends StatelessWidget {
                   SaveDetailsForm(
                     imageFile: imageFile,
                     restaurant: restaurant,
-                    token: token,
+                    onSave: onSave,
                   ),
                 ],
               ),

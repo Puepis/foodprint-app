@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,15 +9,22 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
+import 'package:foodprint/presentation/data/user_location.dart';
+import 'package:provider/provider.dart';
 
 /// The page that displays the captured photo and searches for nearby restaurants
 /// in the background.
 class DisplayPhoto extends StatefulWidget {
+  final File imageFile;
+  final FileImage loadedImage;
+  final VoidCallback onSave;
   const DisplayPhoto({
     Key key,
-  }) : super(key: key);
+    @required this.imageFile,
+    @required this.onSave,
+    @required this.loadedImage,
+  })  : assert(onSave != null),
+        super(key: key);
 
   @override
   _DisplayPhotoState createState() => _DisplayPhotoState();
@@ -24,9 +33,7 @@ class DisplayPhoto extends StatefulWidget {
 class _DisplayPhotoState extends State<DisplayPhoto> {
   @override
   Widget build(BuildContext context) {
-    final loadedImage = InheritedImage.of(context).loadedImage;
-    final latitude = InheritedLocation.of(context).latitude;
-    final longitude = InheritedLocation.of(context).longitude;
+    final location = context.watch<UserLocation>();
 
     final nearbySearchBloc = context.bloc<RestaurantSearchBloc>();
     final manualSearchBloc = context.bloc<ManualSearchBloc>();
@@ -36,7 +43,8 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
       child: Container(
         decoration: BoxDecoration(
             color: Colors.black,
-            image: DecorationImage(fit: BoxFit.contain, image: loadedImage)),
+            image: DecorationImage(
+                fit: BoxFit.contain, image: widget.loadedImage)),
         child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
             listener: (context, state) {
           // Error searching for restaurants
@@ -58,7 +66,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
           // Only search once
           if (state is SearchStateEmpty) {
             nearbySearchBloc.add(NearbyRestaurantsSearched(
-                latitude: latitude, longitude: longitude));
+                latitude: location.latitude, longitude: location.longitude));
           }
           return Stack(children: [
             Positioned(
@@ -85,7 +93,9 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 right: 20,
                 child: (state is NearbySearchStateSuccess)
                     ? NextPageButton(
+                        onSave: widget.onSave,
                         restaurants: state.restaurants,
+                        imageFile: widget.imageFile,
                       )
                     : (state is SearchStateError)
                         ? const Icon(Icons.error, color: Colors.red, size: 50)

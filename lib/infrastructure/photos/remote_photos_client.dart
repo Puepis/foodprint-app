@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
-import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_failure.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -52,7 +51,7 @@ class RemotePhotosClient implements IPhotoRepository {
 
   /// Save a new photo
   @override
-  Future<Either<PhotoFailure, Unit>> saveNewPhoto({
+  Future<Either<PhotoFailure, PhotoEntity>> saveNewPhoto({
     @required UserID userID,
     @required PhotoData data,
     @required PhotoEntity photo,
@@ -68,25 +67,28 @@ class RemotePhotosClient implements IPhotoRepository {
     } on SocketException {
       return left(const PhotoFailure.noInternet());
     }
-
-    return _handleResponse(res);
+    if (res.statusCode == 200) {
+      return right(photo.copyWith(url: URL(res.body)));
+    } else if (res.statusCode == 401) {
+      return left(const PhotoFailure.invalidPhoto());
+    } else {
+      return left(const PhotoFailure.serverError());
+    }
   }
 
   /// Edit a photo on the server side
   @override
-  Future<Either<PhotoFailure, Unit>> updatePhotoDetails({
-    @required PhotoEntity oldPhoto,
-    @required PhotoDetailEntity details,
-    @required bool isFavourite,
+  Future<Either<PhotoFailure, Unit>> updatePhoto({
+    @required PhotoEntity newPhoto,
   }) async {
     http.Response res;
     try {
       res = await http.put("${DotEnv().env['SERVER_IP']}/api/photos", body: {
-        "path": oldPhoto.storagePath.getOrCrash(),
-        "photo_name": details.name.getOrCrash(),
-        "price": details.price.getOrCrash().toString(),
-        "comments": details.comments.getOrCrash(),
-        "favourite": isFavourite.toString()
+        "path": newPhoto.storagePath.getOrCrash(),
+        "photo_name": newPhoto.details.name.getOrCrash(),
+        "price": newPhoto.details.price.getOrCrash().toString(),
+        "comments": newPhoto.details.comments.getOrCrash(),
+        "favourite": newPhoto.isFavourite.toString()
       });
     } on SocketException {
       return left(const PhotoFailure.noInternet());
@@ -104,6 +106,23 @@ class RemotePhotosClient implements IPhotoRepository {
     try {
       res = await http.delete("${DotEnv().env['SERVER_IP']}/api/photos/",
           headers: {"photo_path": photo.storagePath.getOrCrash()});
+    } on SocketException {
+      return left(const PhotoFailure.noInternet());
+    }
+
+    return _handleResponse(res);
+  }
+
+  @override
+  Future<Either<PhotoFailure, Unit>> updateFavourite(
+      {@required PhotoEntity updatedPhoto}) async {
+    http.Response res;
+    try {
+      res = await http
+          .put("${DotEnv().env['SERVER_IP']}/api/photos/favourite", body: {
+        "path": updatedPhoto.storagePath.getOrCrash(),
+        "favourite": updatedPhoto.isFavourite.toString()
+      });
     } on SocketException {
       return left(const PhotoFailure.noInternet());
     }

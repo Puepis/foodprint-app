@@ -5,21 +5,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/domain/location/location_failure.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/gallery_page.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 enum SortBy { latest, oldest, favourites, highestPrice, lowestPrice }
 enum SelectedPage { home, gallery }
@@ -39,8 +37,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final foodprint = InheritedUser.of(context).foodprint;
-    final token = InheritedUser.of(context).token;
+    final userData = context.watch<UserData>();
+    final foodprint = userData.foodprint;
     _sortFoodprint(foodprint);
 
     return WillPopScope(
@@ -57,27 +55,16 @@ class _HomePageState extends State<HomePage> {
           }
         },
         builder: (context, state) {
-          // Loading screen
-          Widget mapScreen = const Center(child: CircularProgressIndicator());
-
-          if (state is GetLocationSuccess) {
-            mapScreen = FoodMap(
-              foodprint: foodprint,
-            );
-          }
-
-          if (state is GetLocationFailure) {
-            mapScreen = Container();
-          }
+          final mapScreen =
+              state is GetLocationSuccess ? const FoodMap() : Container();
 
           return Scaffold(
             appBar: _buildAppBar(context),
             drawerEnableOpenDragGesture: false,
-            drawer: AppDrawer(token: token, foodprint: foodprint),
+            drawer: const AppDrawer(),
             body: _page == SelectedPage.home
                 ? Stack(children: [mapScreen, _buildMapDrawerButton()])
                 : Gallery(
-                    token: token,
                     photos: assocPhotos,
                   ),
             bottomNavigationBar: BottomAppBar(
@@ -91,18 +78,14 @@ class _HomePageState extends State<HomePage> {
                       iconSize: 30.0,
                       icon: const Icon(Icons.location_on),
                       onPressed: () {
-                        setState(() {
-                          _page = SelectedPage.home;
-                        });
+                        setState(() => _page = SelectedPage.home);
                       },
                     ),
                     IconButton(
                       iconSize: 30.0,
                       icon: const Icon(Icons.collections),
                       onPressed: () {
-                        setState(() {
-                          _page = SelectedPage.gallery;
-                        });
+                        setState(() => _page = SelectedPage.gallery);
                       },
                     )
                   ],
@@ -117,8 +100,8 @@ class _HomePageState extends State<HomePage> {
                   heroTag: "camera",
                   elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
-                      ? _toCamera(context, state.latlng, token,
-                          foodprint) // take picture
+                      ? _toCamera(
+                          context, state.latlng, userData) // take picture
                       : FlushbarHelper.createError(
                               message: 'Location permission required')
                           .show(context),
@@ -136,37 +119,6 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-  }
-
-  /// Generates an association list of photos and sorts by the selected option
-  /// in the gallery.
-  void _sortFoodprint(FoodprintEntity foodprint) {
-    assocPhotos = getPhotoAssocFromFoodprint(foodprint);
-    switch (_selectedSort) {
-      case SortBy.latest:
-        assocPhotos.sort((a, b) => b.value1.timestamp
-            .getOrCrash()
-            .compareTo(a.value1.timestamp.getOrCrash()));
-        break;
-      case SortBy.oldest:
-        assocPhotos.sort((a, b) => a.value1.timestamp
-            .getOrCrash()
-            .compareTo(b.value1.timestamp.getOrCrash()));
-        break;
-      case SortBy.favourites:
-        assocPhotos.retainWhere((element) => element.value1.isFavourite);
-        break;
-      case SortBy.highestPrice:
-        assocPhotos.sort((a, b) => b.value1.details.price
-            .getOrCrash()
-            .compareTo(a.value1.details.price.getOrCrash()));
-        break;
-      case SortBy.lowestPrice:
-        assocPhotos.sort((a, b) => a.value1.details.price
-            .getOrCrash()
-            .compareTo(b.value1.details.price.getOrCrash()));
-        break;
-    }
   }
 
   // Open drawer button on the map page
@@ -188,20 +140,19 @@ class _HomePageState extends State<HomePage> {
       ));
 
   /// Animate transition to camera
-  void _toCamera(
-      BuildContext cxt, LatLng location, JWT token, FoodprintEntity foodprint) {
-    Navigator.of(cxt).push(SlideUpEnterRoute(
-        newPage: InheritedUser(
-      token: token,
-      child: InheritedLocation(
-        latitude: location.latitude,
-        longitude: location.longitude,
-        child: MultiBlocProvider(providers: [
+  void _toCamera(BuildContext cxt, LatLng location, UserData data) {
+    Navigator.of(cxt).push(
+      SlideUpEnterRoute(
+        newPage: MultiProvider(providers: [
+          ChangeNotifierProvider(
+              create: (context) =>
+                  UserLocation(location.latitude, location.longitude)),
+          ChangeNotifierProvider.value(value: data),
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
-        ], child: const FoodprintCapture()),
+        ], child: const CameraPage()),
       ),
-    )));
+    );
   }
 
   /// The app bar is only shown in the gallery page
@@ -251,4 +202,35 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         );
+
+  /// Generates an association list of photos and sorts by the selected option
+  /// in the gallery.
+  void _sortFoodprint(FoodprintEntity foodprint) {
+    assocPhotos = getPhotoAssocFromFoodprint(foodprint);
+    switch (_selectedSort) {
+      case SortBy.latest:
+        assocPhotos.sort((a, b) => b.value1.timestamp
+            .getOrCrash()
+            .compareTo(a.value1.timestamp.getOrCrash()));
+        break;
+      case SortBy.oldest:
+        assocPhotos.sort((a, b) => a.value1.timestamp
+            .getOrCrash()
+            .compareTo(b.value1.timestamp.getOrCrash()));
+        break;
+      case SortBy.favourites:
+        assocPhotos.retainWhere((element) => element.value1.isFavourite);
+        break;
+      case SortBy.highestPrice:
+        assocPhotos.sort((a, b) => b.value1.details.price
+            .getOrCrash()
+            .compareTo(a.value1.details.price.getOrCrash()));
+        break;
+      case SortBy.lowestPrice:
+        assocPhotos.sort((a, b) => a.value1.details.price
+            .getOrCrash()
+            .compareTo(b.value1.details.price.getOrCrash()));
+        break;
+    }
+  }
 }

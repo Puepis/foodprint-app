@@ -13,7 +13,7 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
     @required String newComments,
     @required bool isFavourite,
   }) = Edited;
-  
+
   const factory PhotoActionsEvent.saved({
     @required UserID userID,
     @required File imageFile,
@@ -22,4 +22,9 @@ abstract class PhotoActionsEvent with _$PhotoActionsEvent {
     @required String comments,
     @required RestaurantID placeID,
   }) = Saved;
+
+  const factory PhotoActionsEvent.favouriteChanged({
+    @required PhotoEntity photo,
+    @required bool newFavourite,
+  }) = FavouriteChanged;
 }

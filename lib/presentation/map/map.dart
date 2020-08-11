@@ -4,17 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/map/restaurant_preview.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 /// The map displaying the user's visited locations.
 class FoodMap extends StatefulWidget {
-  final FoodprintEntity foodprint;
-  const FoodMap({Key key, @required this.foodprint}) : super(key: key);
+  const FoodMap({Key key}) : super(key: key);
   @override
   _FoodMapState createState() => _FoodMapState();
 }
@@ -31,13 +31,14 @@ class _FoodMapState extends State<FoodMap> {
 
   @override
   Widget build(BuildContext context) {
+    final userData = context.watch<UserData>();
     return BlocBuilder<LocationBloc, LocationState>(builder: (_, state) {
       if (state is GetLocationSuccess) {
         _initialPos = state.latlng;
         _currentPos = state.latlng;
       }
 
-      _markers = generateMarkers(widget.foodprint);
+      _markers = generateMarkers(userData);
 
       return Stack(children: [
         GoogleMap(
@@ -122,9 +123,9 @@ class _FoodMapState extends State<FoodMap> {
     }
   }
 
-  Map<String, Marker> generateMarkers(FoodprintEntity foodprint) {
+  Map<String, Marker> generateMarkers(UserData userData) {
     final Map<String, Marker> result = {};
-    foodprint.restaurantPhotos
+    userData.foodprint.restaurantPhotos
         .forEach((RestaurantEntity restaurant, List<PhotoEntity> photos) {
       final marker = Marker(
           icon:
@@ -135,12 +136,19 @@ class _FoodMapState extends State<FoodMap> {
           onTap: () {
             // Show restaurant info
             showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) => RestaurantPreview(
-                      restaurant: restaurant,
-                      photos: photos,
-                    ));
+              backgroundColor: Colors.transparent,
+              context: context,
+              builder: (_) => MultiProvider(
+                providers: [
+                  BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                  ChangeNotifierProvider.value(value: userData),
+                ],
+                child: RestaurantPreview(
+                  restaurant: restaurant,
+                  photos: photos,
+                ),
+              ),
+            );
           });
       result[restaurant.id.getOrCrash()] = marker;
     });

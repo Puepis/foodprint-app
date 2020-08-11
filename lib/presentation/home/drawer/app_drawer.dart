@@ -3,25 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 /// The main drawer displayed from the home page
 class AppDrawer extends StatelessWidget {
-  final JWT token;
-  final FoodprintEntity foodprint;
-  const AppDrawer({Key key, @required this.token, @required this.foodprint})
-      : assert(token != null),
-        assert(foodprint != null),
-        super(key: key);
+  const AppDrawer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final userData = context.watch<UserData>();
+    final token = userData.token;
+    final foodprint = userData.foodprint;
+
     final username =
         JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
     final url =

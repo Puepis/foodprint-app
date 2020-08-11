@@ -2,26 +2,20 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:provider/provider.dart';
 
-/// The form used to edit the details of [photo]
+/// The form used to edit the details of [photo].
 class EditImageForm extends StatefulWidget {
-  final JWT token;
   final PhotoEntity photo;
-  final FoodprintEntity foodprint;
   final RestaurantEntity restaurant;
+  final VoidCallback onEdit;
   const EditImageForm(
-      {Key key,
-      @required this.token,
-      @required this.photo,
-      @required this.foodprint,
-      @required this.restaurant})
+      {Key key, @required this.photo, @required this.restaurant, this.onEdit})
       : super(key: key);
 
   @override
@@ -87,8 +81,8 @@ class _EditImageFormState extends State<EditImageForm> {
         ).show(context);
       }
       if (state is EditSuccess) {
-        // Refresh the app
-        context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
+        context.read<UserData>().updatePhoto(widget.restaurant, state.newPhoto);
+        widget.onEdit();
       }
     }, builder: (context, state) {
       return Form(

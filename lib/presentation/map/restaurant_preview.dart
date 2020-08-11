@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery.dart';
-import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RestaurantPreview extends StatelessWidget {
   final RestaurantEntity restaurant;
@@ -24,9 +27,21 @@ class RestaurantPreview extends StatelessWidget {
         final double dy = details.velocity.pixelsPerSecond.dy;
         if (dy < 0) {
           // swipe up
-          Navigator.pushNamed(context, RestaurantGallery.routeName,
-              arguments: RestaurantGalleryArgs(
-                  photos: photos, restaurant: restaurant));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => MultiProvider(
+                  providers: [
+                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
+                    ChangeNotifierProvider.value(
+                        value: context.read<UserData>()),
+                  ],
+                  child: RestaurantGallery(
+                    photos: photos,
+                    restaurant: restaurant,
+                  ),
+                ),
+              ));
         }
       },
       child: LayoutBuilder(builder: (context, constraints) {

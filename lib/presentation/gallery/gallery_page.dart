@@ -4,24 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:provider/provider.dart';
 
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
-  final JWT token;
   final List<Tuple2<PhotoEntity, RestaurantEntity>> photos;
-  const Gallery({Key key, @required this.token, @required this.photos})
-      : super(key: key);
+  const Gallery({Key key, @required this.photos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final foodprint = InheritedUser.of(context).foodprint;
+    final userData = context.watch<UserData>();
 
     // Build photos lazily
     return GridView.builder(
@@ -39,7 +36,7 @@ class Gallery extends StatelessWidget {
 
         return Stack(children: [
           GestureDetector(
-            onTap: () => _showFullImage(context, photo, restaurant, foodprint),
+            onTap: () => _showFullImage(context, photo, restaurant, userData),
             child: SizedBox.expand(
               child: Card(
                 color: Colors.black,
@@ -66,7 +63,7 @@ class Gallery extends StatelessWidget {
               iconSize: 25.0,
               color: Colors.white,
               onPressed: () =>
-                  _onDeletePressed(context, photo, restaurant, foodprint),
+                  _onDeletePressed(context, photo, restaurant, userData),
             ),
           ),
         ]);
@@ -76,7 +73,7 @@ class Gallery extends StatelessWidget {
 
   /// Show delete confirmation dialog
   void _onDeletePressed(BuildContext context, PhotoEntity photo,
-      RestaurantEntity restaurant, FoodprintEntity foodprint) {
+      RestaurantEntity restaurant, UserData data) {
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -88,32 +85,31 @@ class Gallery extends StatelessWidget {
                   BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
                   BlocProvider.value(value: context.bloc<FoodprintBloc>()),
                 ],
-                child: DeleteConfirmationTab(
-                    token: token,
+                child: ChangeNotifierProvider.value(
+                  value: data,
+                  child: DeleteConfirmationTab(
                     photo: photo,
                     restaurant: restaurant,
-                    foodprint: foodprint)));
+                  ),
+                )));
   }
 
   /// Show the full image
   void _showFullImage(BuildContext context, PhotoEntity photo,
-      RestaurantEntity restaurant, FoodprintEntity foodprint) {
+      RestaurantEntity restaurant, UserData data) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => MultiBlocProvider(
+        builder: (_) => MultiProvider(
                 // expose values
                 providers: [
+                  ChangeNotifierProvider.value(value: data),
                   BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
                   BlocProvider.value(
                     value: context.bloc<FoodprintBloc>(),
                   )
                 ],
-                child: InheritedUser(
-                  token: token,
-                  foodprint: foodprint,
-                  child: FullImagePage(
-                    photo: photo,
-                    restaurant: restaurant,
-                  ),
+                child: FullImagePage(
+                  photo: photo,
+                  restaurant: restaurant,
                 ))));
   }
 }

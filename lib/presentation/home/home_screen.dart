@@ -7,11 +7,12 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/presentation/home/loading_page.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:provider/provider.dart';
 
 /// The entry point to the app that the user sees when authenticated.
-/// 
+///
 /// Here the user's location and foodprint are fetched, and the user is either
 /// redirected to the [HomePage] or the [LoginPage], if there is an error.
 class HomeScreen extends StatelessWidget {
@@ -26,7 +27,8 @@ class HomeScreen extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => getIt<LocationBloc>()..add(LocationRequested()),
+            create: (context) =>
+                getIt<LocationBloc>()..add(LocationRequested()),
           ),
           BlocProvider<FoodprintBloc>(
               create: (context) => getIt<FoodprintBloc>()
@@ -37,16 +39,17 @@ class HomeScreen extends StatelessWidget {
         ],
         child: BlocBuilder<FoodprintBloc, FoodprintState>(
           builder: (_, state) {
-
             // Something went wrong server-side
             if (state is FetchFoodprintFailure) {
               return const LoginPage();
             }
-            
+
             if (state is FetchFoodprintSuccess) {
-              return InheritedUser(
-                foodprint: state.foodprint,
-                token: token,
+              return ChangeNotifierProvider(
+                create: (context) => UserData(
+                  foodprint: state.foodprint,
+                  token: token,
+                ),
                 child: const HomePage(),
               );
             }
