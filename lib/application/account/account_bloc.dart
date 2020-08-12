@@ -3,18 +3,20 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/domain/account/account_failure.dart';
 import 'package:foodprint/domain/account/i_account_repository.dart';
+import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 
 part 'account_event.dart';
 part 'account_state.dart';
+part 'account_bloc.freezed.dart';
 
 /// BLoC responsible for the business logic behind the user's account actions.
 ///
@@ -22,28 +24,38 @@ part 'account_state.dart';
 @injectable
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final IAccountRepository _accountClient;
-  AccountBloc(this._accountClient) : super(AccountInitial());
+  final IAuthRepository _authClient;
+  AccountBloc(this._accountClient, this._authClient)
+      : super(const AccountState.initial());
 
   @override
   Stream<AccountState> mapEventToState(
     AccountEvent event,
   ) async* {
+    // Check if token has expired
+    JWT accessToken;
+    if (event.accessToken.isExpired) {
+      final result = await _authClient.getAccessToken();
+      accessToken = result.fold(() => null, (token) => token);
+    }
+    accessToken ??= event.accessToken;
+
     if (event is AvatarChanged) {
-      yield AvatarChangeLoading();
-      yield* _mapAvatarChangedToState(event.token, event.newAvatarFile);
+      yield const AvatarChangeLoading();
+      yield* _mapAvatarChangedToState(accessToken, event.newAvatarFile);
     }
     if (event is AccountUsernameChanged) {
-      yield UsernameChangeLoading();
-      yield* _mapUsernameChangedToState(event.token, event.newUsername);
+      yield const UsernameChangeLoading();
+      yield* _mapUsernameChangedToState(accessToken, event.newUsername);
     }
     if (event is AccountPasswordChanged) {
-      yield PasswordChangeLoading();
+      yield const PasswordChangeLoading();
       yield* _mapPasswordChangedToState(
-          event.token, event.oldPassword, event.newPassword);
+          accessToken, event.oldPassword, event.newPassword);
     }
     if (event is AccountDeleted) {
-      yield DeleteAccountLoading();
-      yield* _mapAccountDeletedToState(event.token);
+      yield const DeleteAccountLoading();
+      yield* _mapAccountDeletedToState(accessToken);
     }
   }
 
@@ -53,15 +65,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final List<int> data = (await newAvatarFile.readAsBytes()).toList();
     final PhotoData photoData = PhotoData(data);
 
-    // Get user id
-    final id = UserID(
-        int.parse(JWT.getDecodedPayload(token.getOrCrash())['sub'].toString()));
-
     final String fileName = basename(newAvatarFile.path);
 
     // Change avatar
     final Either<AccountFailure, JWT> result = await _accountClient
-        .changeAvatar(id: id, data: photoData, fileName: fileName);
+        .changeAvatar(accessToken: token, data: photoData, fileName: fileName);
 
     yield result.fold((l) => AvatarChangeError(failure: l),
         (r) => AvatarChangeSuccess(token: r));
@@ -71,11 +79,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       JWT token, String newUsername) async* {
     final Username username = Username(newUsername);
 
-    // Parse id
-    final id = UserID(
-        int.parse(JWT.getDecodedPayload(token.getOrCrash())['sub'].toString()));
-    final Either<AccountFailure, JWT> result =
-        await _accountClient.changeUsername(id: id, newUsername: username);
+    final Either<AccountFailure, JWT> result = await _accountClient
+        .changeUsername(accessToken: token, newUsername: username);
     yield result.fold((l) => UsernameChangeError(failure: l),
         (r) => UsernameChangeSuccess(token: r));
   }
@@ -85,22 +90,19 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     final Password password = Password(newPassword);
     final Password previousPassword = Password(oldPassword);
 
-    // Parse id
-    final id = UserID(
-        int.parse(JWT.getDecodedPayload(token.getOrCrash())['sub'].toString()));
     final Either<AccountFailure, Unit> result =
         await _accountClient.changePassword(
-            id: id, oldPassword: previousPassword, newPassword: password);
-    yield result.fold(
-        (l) => PasswordChangeError(failure: l), (r) => PasswordChangeSuccess());
+            accessToken: token,
+            oldPassword: previousPassword,
+            newPassword: password);
+    yield result.fold((l) => PasswordChangeError(failure: l),
+        (r) => const PasswordChangeSuccess());
   }
 
   Stream<AccountState> _mapAccountDeletedToState(JWT token) async* {
-    final id = UserID(
-        int.parse(JWT.getDecodedPayload(token.getOrCrash())['sub'].toString()));
     final Either<AccountFailure, Unit> result =
-        await _accountClient.deleteAccount(id: id);
-    yield result.fold(
-        (l) => DeleteAccountError(failure: l), (r) => DeleteAccountSuccess());
+        await _accountClient.deleteAccount(accessToken: token);
+    yield result.fold((l) => DeleteAccountError(failure: l),
+        (r) => const DeleteAccountSuccess());
   }
 }

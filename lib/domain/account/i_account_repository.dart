@@ -9,23 +9,23 @@ import 'account_failure.dart';
 /// Interface class that defines the various user account actions.
 abstract class IAccountRepository {
   Future<Either<AccountFailure, JWT>> changeUsername({
-    @required UserID id,
+    @required JWT accessToken,
     @required Username newUsername,
   });
 
   Future<Either<AccountFailure, Unit>> changePassword({
-    @required UserID id,
+    @required JWT accessToken,
     @required Password oldPassword,
     @required Password newPassword,
   });
 
   Future<Either<AccountFailure, JWT>> changeAvatar({
-    @required UserID id,
+    @required JWT accessToken,
     @required PhotoData data,
     @required String fileName,
   });
 
   Future<Either<AccountFailure, Unit>> deleteAccount({
-    @required UserID id,
+    @required JWT accessToken,
   });
 }

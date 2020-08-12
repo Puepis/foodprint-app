@@ -12,19 +12,22 @@ T _$identity<T>(T value) => value;
 class _$PhotoActionsEventTearOff {
   const _$PhotoActionsEventTearOff();
 
-  Deleted deleted({@required PhotoEntity photo}) {
+  Deleted deleted({@required JWT accessToken, @required PhotoEntity photo}) {
     return Deleted(
+      accessToken: accessToken,
       photo: photo,
     );
   }
 
   Edited edited(
-      {@required PhotoEntity oldPhoto,
+      {@required JWT accessToken,
+      @required PhotoEntity oldPhoto,
       @required String newName,
       @required String newPrice,
       @required String newComments,
       @required bool isFavourite}) {
     return Edited(
+      accessToken: accessToken,
       oldPhoto: oldPhoto,
       newName: newName,
       newPrice: newPrice,
@@ -34,14 +37,14 @@ class _$PhotoActionsEventTearOff {
   }
 
   Saved saved(
-      {@required UserID userID,
+      {@required JWT accessToken,
       @required File imageFile,
       @required String itemName,
       @required String price,
       @required String comments,
       @required RestaurantID placeID}) {
     return Saved(
-      userID: userID,
+      accessToken: accessToken,
       imageFile: imageFile,
       itemName: itemName,
       price: price,
@@ -51,8 +54,11 @@ class _$PhotoActionsEventTearOff {
   }
 
   FavouriteChanged favouriteChanged(
-      {@required PhotoEntity photo, @required bool newFavourite}) {
+      {@required JWT accessToken,
+      @required PhotoEntity photo,
+      @required bool newFavourite}) {
     return FavouriteChanged(
+      accessToken: accessToken,
       photo: photo,
       newFavourite: newFavourite,
     );
@@ -63,25 +69,30 @@ class _$PhotoActionsEventTearOff {
 const $PhotoActionsEvent = _$PhotoActionsEventTearOff();
 
 mixin _$PhotoActionsEvent {
+  JWT get accessToken;
+
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result deleted(PhotoEntity photo),
+    @required Result deleted(JWT accessToken, PhotoEntity photo),
     @required
-        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-            String newComments, bool isFavourite),
+        Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+            String newPrice, String newComments, bool isFavourite),
     @required
-        Result saved(UserID userID, File imageFile, String itemName,
+        Result saved(JWT accessToken, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
-    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required
+        Result favouriteChanged(
+            JWT accessToken, PhotoEntity photo, bool newFavourite),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result deleted(PhotoEntity photo),
-    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-        String newComments, bool isFavourite),
-    Result saved(UserID userID, File imageFile, String itemName, String price,
+    Result deleted(JWT accessToken, PhotoEntity photo),
+    Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+        String newPrice, String newComments, bool isFavourite),
+    Result saved(JWT accessToken, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
-    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    Result favouriteChanged(
+        JWT accessToken, PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -99,12 +110,15 @@ mixin _$PhotoActionsEvent {
     Result favouriteChanged(FavouriteChanged value),
     @required Result orElse(),
   });
+
+  $PhotoActionsEventCopyWith<PhotoActionsEvent> get copyWith;
 }
 
 abstract class $PhotoActionsEventCopyWith<$Res> {
   factory $PhotoActionsEventCopyWith(
           PhotoActionsEvent value, $Res Function(PhotoActionsEvent) then) =
       _$PhotoActionsEventCopyWithImpl<$Res>;
+  $Res call({JWT accessToken});
 }
 
 class _$PhotoActionsEventCopyWithImpl<$Res>
@@ -114,12 +128,24 @@ class _$PhotoActionsEventCopyWithImpl<$Res>
   final PhotoActionsEvent _value;
   // ignore: unused_field
   final $Res Function(PhotoActionsEvent) _then;
+
+  @override
+  $Res call({
+    Object accessToken = freezed,
+  }) {
+    return _then(_value.copyWith(
+      accessToken:
+          accessToken == freezed ? _value.accessToken : accessToken as JWT,
+    ));
+  }
 }
 
-abstract class $DeletedCopyWith<$Res> {
+abstract class $DeletedCopyWith<$Res>
+    implements $PhotoActionsEventCopyWith<$Res> {
   factory $DeletedCopyWith(Deleted value, $Res Function(Deleted) then) =
       _$DeletedCopyWithImpl<$Res>;
-  $Res call({PhotoEntity photo});
+  @override
+  $Res call({JWT accessToken, PhotoEntity photo});
 
   $PhotoEntityCopyWith<$Res> get photo;
 }
@@ -134,9 +160,12 @@ class _$DeletedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object accessToken = freezed,
     Object photo = freezed,
   }) {
     return _then(Deleted(
+      accessToken:
+          accessToken == freezed ? _value.accessToken : accessToken as JWT,
       photo: photo == freezed ? _value.photo : photo as PhotoEntity,
     ));
   }
@@ -153,27 +182,36 @@ class _$DeletedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 }
 
 class _$Deleted implements Deleted {
-  const _$Deleted({@required this.photo}) : assert(photo != null);
+  const _$Deleted({@required this.accessToken, @required this.photo})
+      : assert(accessToken != null),
+        assert(photo != null);
 
+  @override
+  final JWT accessToken;
   @override
   final PhotoEntity photo;
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.deleted(photo: $photo)';
+    return 'PhotoActionsEvent.deleted(accessToken: $accessToken, photo: $photo)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Deleted &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality()
+                    .equals(other.accessToken, accessToken)) &&
             (identical(other.photo, photo) ||
                 const DeepCollectionEquality().equals(other.photo, photo)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(photo);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(accessToken) ^
+      const DeepCollectionEquality().hash(photo);
 
   @override
   $DeletedCopyWith<Deleted> get copyWith =>
@@ -182,36 +220,39 @@ class _$Deleted implements Deleted {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result deleted(PhotoEntity photo),
+    @required Result deleted(JWT accessToken, PhotoEntity photo),
     @required
-        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-            String newComments, bool isFavourite),
+        Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+            String newPrice, String newComments, bool isFavourite),
     @required
-        Result saved(UserID userID, File imageFile, String itemName,
+        Result saved(JWT accessToken, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
-    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required
+        Result favouriteChanged(
+            JWT accessToken, PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
     assert(favouriteChanged != null);
-    return deleted(photo);
+    return deleted(accessToken, photo);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result deleted(PhotoEntity photo),
-    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-        String newComments, bool isFavourite),
-    Result saved(UserID userID, File imageFile, String itemName, String price,
+    Result deleted(JWT accessToken, PhotoEntity photo),
+    Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+        String newPrice, String newComments, bool isFavourite),
+    Result saved(JWT accessToken, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
-    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    Result favouriteChanged(
+        JWT accessToken, PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (deleted != null) {
-      return deleted(photo);
+      return deleted(accessToken, photo);
     }
     return orElse();
   }
@@ -249,17 +290,24 @@ class _$Deleted implements Deleted {
 }
 
 abstract class Deleted implements PhotoActionsEvent {
-  const factory Deleted({@required PhotoEntity photo}) = _$Deleted;
+  const factory Deleted(
+      {@required JWT accessToken, @required PhotoEntity photo}) = _$Deleted;
 
+  @override
+  JWT get accessToken;
   PhotoEntity get photo;
+  @override
   $DeletedCopyWith<Deleted> get copyWith;
 }
 
-abstract class $EditedCopyWith<$Res> {
+abstract class $EditedCopyWith<$Res>
+    implements $PhotoActionsEventCopyWith<$Res> {
   factory $EditedCopyWith(Edited value, $Res Function(Edited) then) =
       _$EditedCopyWithImpl<$Res>;
+  @override
   $Res call(
-      {PhotoEntity oldPhoto,
+      {JWT accessToken,
+      PhotoEntity oldPhoto,
       String newName,
       String newPrice,
       String newComments,
@@ -278,6 +326,7 @@ class _$EditedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object accessToken = freezed,
     Object oldPhoto = freezed,
     Object newName = freezed,
     Object newPrice = freezed,
@@ -285,6 +334,8 @@ class _$EditedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
     Object isFavourite = freezed,
   }) {
     return _then(Edited(
+      accessToken:
+          accessToken == freezed ? _value.accessToken : accessToken as JWT,
       oldPhoto: oldPhoto == freezed ? _value.oldPhoto : oldPhoto as PhotoEntity,
       newName: newName == freezed ? _value.newName : newName as String,
       newPrice: newPrice == freezed ? _value.newPrice : newPrice as String,
@@ -308,17 +359,21 @@ class _$EditedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
 class _$Edited implements Edited {
   const _$Edited(
-      {@required this.oldPhoto,
+      {@required this.accessToken,
+      @required this.oldPhoto,
       @required this.newName,
       @required this.newPrice,
       @required this.newComments,
       @required this.isFavourite})
-      : assert(oldPhoto != null),
+      : assert(accessToken != null),
+        assert(oldPhoto != null),
         assert(newName != null),
         assert(newPrice != null),
         assert(newComments != null),
         assert(isFavourite != null);
 
+  @override
+  final JWT accessToken;
   @override
   final PhotoEntity oldPhoto;
   @override
@@ -332,13 +387,16 @@ class _$Edited implements Edited {
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.edited(oldPhoto: $oldPhoto, newName: $newName, newPrice: $newPrice, newComments: $newComments, isFavourite: $isFavourite)';
+    return 'PhotoActionsEvent.edited(accessToken: $accessToken, oldPhoto: $oldPhoto, newName: $newName, newPrice: $newPrice, newComments: $newComments, isFavourite: $isFavourite)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Edited &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality()
+                    .equals(other.accessToken, accessToken)) &&
             (identical(other.oldPhoto, oldPhoto) ||
                 const DeepCollectionEquality()
                     .equals(other.oldPhoto, oldPhoto)) &&
@@ -359,6 +417,7 @@ class _$Edited implements Edited {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(accessToken) ^
       const DeepCollectionEquality().hash(oldPhoto) ^
       const DeepCollectionEquality().hash(newName) ^
       const DeepCollectionEquality().hash(newPrice) ^
@@ -372,36 +431,41 @@ class _$Edited implements Edited {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result deleted(PhotoEntity photo),
+    @required Result deleted(JWT accessToken, PhotoEntity photo),
     @required
-        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-            String newComments, bool isFavourite),
+        Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+            String newPrice, String newComments, bool isFavourite),
     @required
-        Result saved(UserID userID, File imageFile, String itemName,
+        Result saved(JWT accessToken, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
-    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required
+        Result favouriteChanged(
+            JWT accessToken, PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
     assert(favouriteChanged != null);
-    return edited(oldPhoto, newName, newPrice, newComments, isFavourite);
+    return edited(
+        accessToken, oldPhoto, newName, newPrice, newComments, isFavourite);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result deleted(PhotoEntity photo),
-    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-        String newComments, bool isFavourite),
-    Result saved(UserID userID, File imageFile, String itemName, String price,
+    Result deleted(JWT accessToken, PhotoEntity photo),
+    Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+        String newPrice, String newComments, bool isFavourite),
+    Result saved(JWT accessToken, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
-    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    Result favouriteChanged(
+        JWT accessToken, PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (edited != null) {
-      return edited(oldPhoto, newName, newPrice, newComments, isFavourite);
+      return edited(
+          accessToken, oldPhoto, newName, newPrice, newComments, isFavourite);
     }
     return orElse();
   }
@@ -440,25 +504,31 @@ class _$Edited implements Edited {
 
 abstract class Edited implements PhotoActionsEvent {
   const factory Edited(
-      {@required PhotoEntity oldPhoto,
+      {@required JWT accessToken,
+      @required PhotoEntity oldPhoto,
       @required String newName,
       @required String newPrice,
       @required String newComments,
       @required bool isFavourite}) = _$Edited;
 
+  @override
+  JWT get accessToken;
   PhotoEntity get oldPhoto;
   String get newName;
   String get newPrice;
   String get newComments;
   bool get isFavourite;
+  @override
   $EditedCopyWith<Edited> get copyWith;
 }
 
-abstract class $SavedCopyWith<$Res> {
+abstract class $SavedCopyWith<$Res>
+    implements $PhotoActionsEventCopyWith<$Res> {
   factory $SavedCopyWith(Saved value, $Res Function(Saved) then) =
       _$SavedCopyWithImpl<$Res>;
+  @override
   $Res call(
-      {UserID userID,
+      {JWT accessToken,
       File imageFile,
       String itemName,
       String price,
@@ -476,7 +546,7 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object userID = freezed,
+    Object accessToken = freezed,
     Object imageFile = freezed,
     Object itemName = freezed,
     Object price = freezed,
@@ -484,7 +554,8 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
     Object placeID = freezed,
   }) {
     return _then(Saved(
-      userID: userID == freezed ? _value.userID : userID as UserID,
+      accessToken:
+          accessToken == freezed ? _value.accessToken : accessToken as JWT,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
       itemName: itemName == freezed ? _value.itemName : itemName as String,
       price: price == freezed ? _value.price : price as String,
@@ -496,13 +567,13 @@ class _$SavedCopyWithImpl<$Res> extends _$PhotoActionsEventCopyWithImpl<$Res>
 
 class _$Saved implements Saved {
   const _$Saved(
-      {@required this.userID,
+      {@required this.accessToken,
       @required this.imageFile,
       @required this.itemName,
       @required this.price,
       @required this.comments,
       @required this.placeID})
-      : assert(userID != null),
+      : assert(accessToken != null),
         assert(imageFile != null),
         assert(itemName != null),
         assert(price != null),
@@ -510,7 +581,7 @@ class _$Saved implements Saved {
         assert(placeID != null);
 
   @override
-  final UserID userID;
+  final JWT accessToken;
   @override
   final File imageFile;
   @override
@@ -524,15 +595,16 @@ class _$Saved implements Saved {
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.saved(userID: $userID, imageFile: $imageFile, itemName: $itemName, price: $price, comments: $comments, placeID: $placeID)';
+    return 'PhotoActionsEvent.saved(accessToken: $accessToken, imageFile: $imageFile, itemName: $itemName, price: $price, comments: $comments, placeID: $placeID)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is Saved &&
-            (identical(other.userID, userID) ||
-                const DeepCollectionEquality().equals(other.userID, userID)) &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality()
+                    .equals(other.accessToken, accessToken)) &&
             (identical(other.imageFile, imageFile) ||
                 const DeepCollectionEquality()
                     .equals(other.imageFile, imageFile)) &&
@@ -551,7 +623,7 @@ class _$Saved implements Saved {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(userID) ^
+      const DeepCollectionEquality().hash(accessToken) ^
       const DeepCollectionEquality().hash(imageFile) ^
       const DeepCollectionEquality().hash(itemName) ^
       const DeepCollectionEquality().hash(price) ^
@@ -565,36 +637,39 @@ class _$Saved implements Saved {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result deleted(PhotoEntity photo),
+    @required Result deleted(JWT accessToken, PhotoEntity photo),
     @required
-        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-            String newComments, bool isFavourite),
+        Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+            String newPrice, String newComments, bool isFavourite),
     @required
-        Result saved(UserID userID, File imageFile, String itemName,
+        Result saved(JWT accessToken, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
-    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required
+        Result favouriteChanged(
+            JWT accessToken, PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
     assert(favouriteChanged != null);
-    return saved(userID, imageFile, itemName, price, comments, placeID);
+    return saved(accessToken, imageFile, itemName, price, comments, placeID);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result deleted(PhotoEntity photo),
-    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-        String newComments, bool isFavourite),
-    Result saved(UserID userID, File imageFile, String itemName, String price,
+    Result deleted(JWT accessToken, PhotoEntity photo),
+    Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+        String newPrice, String newComments, bool isFavourite),
+    Result saved(JWT accessToken, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
-    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    Result favouriteChanged(
+        JWT accessToken, PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (saved != null) {
-      return saved(userID, imageFile, itemName, price, comments, placeID);
+      return saved(accessToken, imageFile, itemName, price, comments, placeID);
     }
     return orElse();
   }
@@ -633,27 +708,31 @@ class _$Saved implements Saved {
 
 abstract class Saved implements PhotoActionsEvent {
   const factory Saved(
-      {@required UserID userID,
+      {@required JWT accessToken,
       @required File imageFile,
       @required String itemName,
       @required String price,
       @required String comments,
       @required RestaurantID placeID}) = _$Saved;
 
-  UserID get userID;
+  @override
+  JWT get accessToken;
   File get imageFile;
   String get itemName;
   String get price;
   String get comments;
   RestaurantID get placeID;
+  @override
   $SavedCopyWith<Saved> get copyWith;
 }
 
-abstract class $FavouriteChangedCopyWith<$Res> {
+abstract class $FavouriteChangedCopyWith<$Res>
+    implements $PhotoActionsEventCopyWith<$Res> {
   factory $FavouriteChangedCopyWith(
           FavouriteChanged value, $Res Function(FavouriteChanged) then) =
       _$FavouriteChangedCopyWithImpl<$Res>;
-  $Res call({PhotoEntity photo, bool newFavourite});
+  @override
+  $Res call({JWT accessToken, PhotoEntity photo, bool newFavourite});
 
   $PhotoEntityCopyWith<$Res> get photo;
 }
@@ -670,10 +749,13 @@ class _$FavouriteChangedCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object accessToken = freezed,
     Object photo = freezed,
     Object newFavourite = freezed,
   }) {
     return _then(FavouriteChanged(
+      accessToken:
+          accessToken == freezed ? _value.accessToken : accessToken as JWT,
       photo: photo == freezed ? _value.photo : photo as PhotoEntity,
       newFavourite:
           newFavourite == freezed ? _value.newFavourite : newFavourite as bool,
@@ -692,10 +774,16 @@ class _$FavouriteChangedCopyWithImpl<$Res>
 }
 
 class _$FavouriteChanged implements FavouriteChanged {
-  const _$FavouriteChanged({@required this.photo, @required this.newFavourite})
-      : assert(photo != null),
+  const _$FavouriteChanged(
+      {@required this.accessToken,
+      @required this.photo,
+      @required this.newFavourite})
+      : assert(accessToken != null),
+        assert(photo != null),
         assert(newFavourite != null);
 
+  @override
+  final JWT accessToken;
   @override
   final PhotoEntity photo;
   @override
@@ -703,13 +791,16 @@ class _$FavouriteChanged implements FavouriteChanged {
 
   @override
   String toString() {
-    return 'PhotoActionsEvent.favouriteChanged(photo: $photo, newFavourite: $newFavourite)';
+    return 'PhotoActionsEvent.favouriteChanged(accessToken: $accessToken, photo: $photo, newFavourite: $newFavourite)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is FavouriteChanged &&
+            (identical(other.accessToken, accessToken) ||
+                const DeepCollectionEquality()
+                    .equals(other.accessToken, accessToken)) &&
             (identical(other.photo, photo) ||
                 const DeepCollectionEquality().equals(other.photo, photo)) &&
             (identical(other.newFavourite, newFavourite) ||
@@ -720,6 +811,7 @@ class _$FavouriteChanged implements FavouriteChanged {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(accessToken) ^
       const DeepCollectionEquality().hash(photo) ^
       const DeepCollectionEquality().hash(newFavourite);
 
@@ -730,36 +822,39 @@ class _$FavouriteChanged implements FavouriteChanged {
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result deleted(PhotoEntity photo),
+    @required Result deleted(JWT accessToken, PhotoEntity photo),
     @required
-        Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-            String newComments, bool isFavourite),
+        Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+            String newPrice, String newComments, bool isFavourite),
     @required
-        Result saved(UserID userID, File imageFile, String itemName,
+        Result saved(JWT accessToken, File imageFile, String itemName,
             String price, String comments, RestaurantID placeID),
-    @required Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    @required
+        Result favouriteChanged(
+            JWT accessToken, PhotoEntity photo, bool newFavourite),
   }) {
     assert(deleted != null);
     assert(edited != null);
     assert(saved != null);
     assert(favouriteChanged != null);
-    return favouriteChanged(photo, newFavourite);
+    return favouriteChanged(accessToken, photo, newFavourite);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result deleted(PhotoEntity photo),
-    Result edited(PhotoEntity oldPhoto, String newName, String newPrice,
-        String newComments, bool isFavourite),
-    Result saved(UserID userID, File imageFile, String itemName, String price,
+    Result deleted(JWT accessToken, PhotoEntity photo),
+    Result edited(JWT accessToken, PhotoEntity oldPhoto, String newName,
+        String newPrice, String newComments, bool isFavourite),
+    Result saved(JWT accessToken, File imageFile, String itemName, String price,
         String comments, RestaurantID placeID),
-    Result favouriteChanged(PhotoEntity photo, bool newFavourite),
+    Result favouriteChanged(
+        JWT accessToken, PhotoEntity photo, bool newFavourite),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (favouriteChanged != null) {
-      return favouriteChanged(photo, newFavourite);
+      return favouriteChanged(accessToken, photo, newFavourite);
     }
     return orElse();
   }
@@ -798,11 +893,15 @@ class _$FavouriteChanged implements FavouriteChanged {
 
 abstract class FavouriteChanged implements PhotoActionsEvent {
   const factory FavouriteChanged(
-      {@required PhotoEntity photo,
+      {@required JWT accessToken,
+      @required PhotoEntity photo,
       @required bool newFavourite}) = _$FavouriteChanged;
 
+  @override
+  JWT get accessToken;
   PhotoEntity get photo;
   bool get newFavourite;
+  @override
   $FavouriteChangedCopyWith<FavouriteChanged> get copyWith;
 }
 

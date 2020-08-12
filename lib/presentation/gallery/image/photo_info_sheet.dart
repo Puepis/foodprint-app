@@ -132,7 +132,9 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
                 onTap: () {
                   setState(() => _isFavourite = !_isFavourite);
                   context.bloc<PhotoActionsBloc>().add(FavouriteChanged(
-                      photo: widget.photo, newFavourite: _isFavourite));
+                      photo: widget.photo,
+                      newFavourite: _isFavourite,
+                      accessToken: userData.token));
                 },
                 child: Icon(
                   _isFavourite ? Icons.favorite : Icons.favorite_border,

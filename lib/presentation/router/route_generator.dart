@@ -3,7 +3,6 @@ import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
-import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
@@ -11,9 +10,7 @@ import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
 import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
-import 'package:foodprint/presentation/router/edit_profile_args.dart';
 import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
-import 'package:foodprint/presentation/router/update_account_args.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -21,7 +18,7 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case ProfilePage.routeName:
+      case Profile.routeName:
         if (args is ProfilePageArgs) {
           return MaterialPageRoute(
             builder: (_) => ProfilePage(userData: args.userData),
@@ -58,27 +55,6 @@ class RouteGenerator {
           return FadeRoute(
               newPage: HomeScreen(
             token: args.token,
-          ));
-        }
-        return _errorRoute();
-      case EditProfilePage.routeName:
-        if (args is EditProfileArgs) {
-          return FadeRoute(newPage: EditProfilePage(userData: args.userData));
-        }
-        return _errorRoute();
-      case ChangeUsernamePage.routeName:
-        if (args is ChangeUsernameArgs) {
-          return FadeRoute(
-              newPage: ChangeUsernamePage(
-            userData: args.userData,
-          ));
-        }
-        return _errorRoute();
-      case ChangePasswordPage.routeName:
-        if (args is ChangePasswordArgs) {
-          return FadeRoute(
-              newPage: ChangePasswordPage(
-            userData: args.userData,
           ));
         }
         return _errorRoute();

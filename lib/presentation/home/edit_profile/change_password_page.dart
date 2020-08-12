@@ -184,10 +184,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
 
-                        context.bloc<AccountBloc>().add(AccountPasswordChanged(
-                            token: token,
-                            oldPassword: oldPassword,
-                            newPassword: newPassword));
+                        context.bloc<AccountBloc>().add(
+                            AccountEvent.passwordChanged(
+                                accessToken: token,
+                                oldPassword: oldPassword,
+                                newPassword: newPassword));
                       }
                     },
                   )

@@ -62,6 +62,7 @@ class _EditImageFormState extends State<EditImageForm> {
   @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
+    final userData = context.watch<UserData>();
 
     // Current valuesjk
     final String currentName = widget.photo.details.name.getOrCrash();
@@ -81,7 +82,7 @@ class _EditImageFormState extends State<EditImageForm> {
         ).show(context);
       }
       if (state is EditSuccess) {
-        context.read<UserData>().updatePhoto(widget.restaurant, state.newPhoto);
+        userData.updatePhoto(widget.restaurant, state.newPhoto);
         widget.onEdit();
       }
     }, builder: (context, state) {
@@ -227,6 +228,7 @@ class _EditImageFormState extends State<EditImageForm> {
 
                               // Edit photo
                               photoBloc.add(PhotoActionsEvent.edited(
+                                accessToken: userData.token,
                                 oldPhoto: widget.photo,
                                 newName: _itemName,
                                 newPrice: _price,

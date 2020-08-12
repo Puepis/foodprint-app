@@ -3,27 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
-import 'package:foodprint/presentation/router/update_account_args.dart';
 
 import 'edit_profile.dart';
 
 /// The page that allows users to edit their profile and delete their account.
 class EditProfilePage extends StatelessWidget {
   final UserData userData;
-  static const String routeName = "/edit_profile";
-  const EditProfilePage({Key key, @required this.userData})
+  final VoidCallback onUsernameChange;
+  const EditProfilePage(
+      {Key key, @required this.userData, @required this.onUsernameChange})
       : assert(userData != null),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final token = userData.token;
-    final username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
+    final username = token.username;
 
     const TextStyle _fieldTitleStyle = TextStyle(
         color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
@@ -45,7 +43,6 @@ class EditProfilePage extends StatelessWidget {
             }
 
             if (state is DeleteAccountSuccess) {
-              // Log out
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
@@ -59,9 +56,12 @@ class EditProfilePage extends StatelessWidget {
                   height: 10,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                      context, ChangeUsernamePage.routeName,
-                      arguments: ChangeUsernameArgs(userData)),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangeUsernamePage(
+                              userData: userData,
+                              onUsernameChange: onUsernameChange))),
                   child: TextFormField(
                     initialValue: username,
                     cursorColor: primaryColor,
@@ -82,9 +82,13 @@ class EditProfilePage extends StatelessWidget {
                   height: 10,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                      context, ChangePasswordPage.routeName,
-                      arguments: ChangePasswordArgs(userData)),
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChangePasswordPage(
+                          userData: userData,
+                        ),
+                      )),
                   child: TextFormField(
                     initialValue: '********',
                     cursorColor: primaryColor,
@@ -113,7 +117,7 @@ class EditProfilePage extends StatelessWidget {
                     if (confirmed) {
                       context
                           .bloc<AccountBloc>()
-                          .add(AccountDeleted(token: token));
+                          .add(AccountEvent.accountDeleted(accessToken: token));
                     }
                   },
                   child: Row(

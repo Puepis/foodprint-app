@@ -29,8 +29,10 @@ class UserData extends ChangeNotifier {
 
   void deletePhoto(RestaurantEntity restaurant, PhotoEntity photo) {
     final key = getKey(restaurant);
-    foodprint.restaurantPhotos[key].removeWhere((element) =>
+    final photos = foodprint.restaurantPhotos[key];
+    photos.removeWhere((element) =>
         element.storagePath.getOrCrash() == photo.storagePath.getOrCrash());
+    if (photos.isEmpty) foodprint.restaurantPhotos.remove(key);
     notifyListeners();
   }
 

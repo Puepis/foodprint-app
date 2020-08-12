@@ -20,11 +20,12 @@ class DeleteConfirmationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
+    final userData = context.watch<UserData>();
 
     return BlocListener<PhotoActionsBloc, PhotoActionsState>(
       listener: (context, state) {
         if (state is DeleteSuccess) {
-          context.read<UserData>().deletePhoto(restaurant, photo);
+          userData.deletePhoto(restaurant, photo);
           Navigator.pop(context);
         }
       },
@@ -52,6 +53,7 @@ class DeleteConfirmationTab extends StatelessWidget {
               onTap: () {
                 // Delete photo
                 photoBloc.add(PhotoActionsEvent.deleted(
+                  accessToken: userData.token,
                   photo: photo,
                 ));
               },

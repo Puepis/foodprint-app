@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/domain/auth/i_auth_repository.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/value_objects.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
 import 'package:foodprint/domain/photos/photo_detail_entity.dart';
@@ -25,9 +26,11 @@ part 'photo_actions_bloc.freezed.dart';
 /// Maps incoming [PhotoActionsEvent] to [PhotoActionsState].
 @injectable
 class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
-  final IPhotoRepository _client;
+  final IPhotoRepository _photoClient;
+  final IAuthRepository _authClient;
 
-  PhotoActionsBloc(this._client) : super(const PhotoActionsState.initial());
+  PhotoActionsBloc(this._photoClient, this._authClient)
+      : super(const PhotoActionsState.initial());
 
   static int get secondsSinceEpoch =>
       (DateTime.now().millisecondsSinceEpoch / 1000).round();
@@ -90,26 +93,38 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     PhotoActionsEvent event,
   ) async* {
     yield const PhotoActionsState.actionInProgress();
+
+    // Check if token has expired
+    JWT accessToken;
+    if (event.accessToken.isExpired) {
+      final result = await _authClient.getAccessToken();
+      accessToken = result.fold(() => null, (token) => token);
+    }
+    accessToken ??= event.accessToken;
+
     yield* event.map(deleted: (e) async* {
-      yield* _mapDeletedToState(e.photo);
+      yield* _mapDeletedToState(accessToken, e.photo);
     }, edited: (e) async* {
-      yield* _mapEditedToState(
-          e.newName, e.newPrice, e.newComments, e.isFavourite, e.oldPhoto);
+      yield* _mapEditedToState(accessToken, e.newName, e.newPrice,
+          e.newComments, e.isFavourite, e.oldPhoto);
     }, saved: (e) async* {
       yield* _mapSavedToState(
-          e.userID, e.imageFile, e.itemName, e.price, e.comments, e.placeID);
+          accessToken, e.imageFile, e.itemName, e.price, e.comments, e.placeID);
     }, favouriteChanged: (e) async* {
-      yield* _mapFavouriteChangedToState(e.photo, e.newFavourite);
+      yield* _mapFavouriteChangedToState(accessToken, e.photo, e.newFavourite);
     });
   }
 
-  Stream<PhotoActionsState> _mapDeletedToState(PhotoEntity photo) async* {
-    final result = await _client.deletePhoto(photo: photo);
+  Stream<PhotoActionsState> _mapDeletedToState(
+      JWT accessToken, PhotoEntity photo) async* {
+    final result =
+        await _photoClient.deletePhoto(accessToken: accessToken, photo: photo);
     yield result.fold((failure) => PhotoActionsState.deleteFailure(failure),
         (_) => const PhotoActionsState.deleteSuccess());
   }
 
   Stream<PhotoActionsState> _mapEditedToState(
+    JWT accessToken,
     String newName,
     String newPrice,
     String newComments,
@@ -123,7 +138,8 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
 
     final newPhoto =
         oldPhoto.copyWith(details: newDetails, isFavourite: isFavourite);
-    final result = await _client.updatePhoto(newPhoto: newPhoto);
+    final result = await _photoClient.updatePhoto(
+        accessToken: accessToken, newPhoto: newPhoto);
     yield result.fold(
       (failure) => PhotoActionsState.editFailure(failure),
       (_) => PhotoActionsState.editSuccess(newPhoto),
@@ -131,29 +147,31 @@ class PhotoActionsBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
   }
 
   Stream<PhotoActionsState> _mapSavedToState(
-    UserID userID,
+    JWT accessToken,
     File imageFile,
     String itemName,
     String price,
     String comments,
-    RestaurantID id,
+    RestaurantID placeId,
   ) async* {
-    final newPhoto = _generateNewPhoto(
-        userID.getOrCrash(), imageFile, itemName, price, comments);
-    final result = await _client.saveNewPhoto(
-      userID: userID,
+    final id = accessToken.id;
+    final newPhoto =
+        _generateNewPhoto(id, imageFile, itemName, price, comments);
+    final result = await _photoClient.saveNewPhoto(
+      accessToken: accessToken,
       data: PhotoData(imageFile.readAsBytesSync().toList()), // Image data
       photo: newPhoto,
-      placeID: id,
+      placeID: placeId,
     );
     yield result.fold((l) => PhotoActionsState.saveFailure(l),
         (photo) => PhotoActionsState.saveSuccess(photo));
   }
 
   Stream<PhotoActionsState> _mapFavouriteChangedToState(
-      PhotoEntity photo, bool favourite) async* {
+      JWT accessToken, PhotoEntity photo, bool favourite) async* {
     final newPhoto = photo.copyWith(isFavourite: favourite);
-    final result = await _client.updateFavourite(updatedPhoto: newPhoto);
+    final result = await _photoClient.updateFavourite(
+        accessToken: accessToken, updatedPhoto: newPhoto);
     yield result.fold(
         (failure) => PhotoActionsState.changeFavouriteFailure(failure),
         (_) =>

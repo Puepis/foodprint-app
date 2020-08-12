@@ -1,31 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/core/exceptions.dart';
-import 'package:foodprint/domain/local_storage/i_jwt_local_repository.dart';
+import 'package:foodprint/domain/local_storage/i_local_token_repository.dart';
 
-class JWTStorageClient implements JWTLocalRepository {
+class TokenStorageClient implements LocalTokenRepository {
   final FlutterSecureStorage storage;
 
-  JWTStorageClient({@required this.storage});
+  TokenStorageClient({@required this.storage});
 
   @override
-  Future<JWT> getUserToken() async {
-    final tokenString = await storage.read(key: "jwt");
+  Future<String> getRefreshToken() async {
+    final tokenString = await storage.read(key: "refresh_token");
     if (tokenString != null) {
-      return JWT(token: tokenString);
+      return tokenString;
     } else {
       throw TokenNotFoundException();
     }
   }
 
   @override
-  Future<void> storeUserToken(JWT token) async {
-    await storage.write(key: "jwt", value: token.getOrCrash());
+  Future<void> storeRefreshToken(String token) async {
+    await storage.write(key: "refresh_token", value: token);
   }
 
   @override
-  Future<void> deleteUserToken() async {
-    await storage.delete(key: "jwt");
+  Future<void> deleteRefreshToken() async {
+    await storage.delete(key: "refresh_token");
   }
 }

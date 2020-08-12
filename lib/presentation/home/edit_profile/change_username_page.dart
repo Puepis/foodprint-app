@@ -2,15 +2,16 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 
 class ChangeUsernamePage extends StatefulWidget {
   final UserData userData;
+  final VoidCallback onUsernameChange;
   static const routeName = "/change_username";
-  const ChangeUsernamePage({Key key, @required this.userData})
+  const ChangeUsernamePage(
+      {Key key, @required this.userData, @required this.onUsernameChange})
       : super(key: key);
 
   @override
@@ -24,8 +25,7 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
   @override
   Widget build(BuildContext context) {
     final token = widget.userData.token;
-    final currentUsername =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
+    final currentUsername = token.username;
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -52,12 +52,8 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
             }
 
             if (state is UsernameChangeSuccess) {
-              // Refresh the app
-              // context
-              //     .bloc<AuthBloc>()
-              //     .add(AuthEvent.refreshAccount(token: state.token));
-              // TODO: Nested navigator 
               widget.userData.updateToken(state.token);
+              widget.onUsernameChange();
             }
           },
           child: Padding(
@@ -104,8 +100,9 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
 
-                        context.bloc<AccountBloc>().add(AccountUsernameChanged(
-                            token: token, newUsername: newUsername));
+                        context.bloc<AccountBloc>().add(
+                            AccountEvent.usernameChanged(
+                                accessToken: token, newUsername: newUsername));
                       }
                     },
                   )

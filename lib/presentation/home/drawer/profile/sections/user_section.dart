@@ -6,9 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -17,8 +16,11 @@ import 'package:transparent_image/transparent_image.dart';
 /// Here the user can edit their avatar either by taking a picture or selecting
 /// from their device's gallery.
 class UserSection extends StatefulWidget {
-  final JWT token;
-  const UserSection({Key key, @required this.token}) : super(key: key);
+  final UserData userData;
+  final VoidCallback onAvatarChange;
+  const UserSection(
+      {Key key, @required this.userData, @required this.onAvatarChange})
+      : super(key: key);
 
   @override
   _UserSectionState createState() => _UserSectionState();
@@ -27,11 +29,8 @@ class UserSection extends StatefulWidget {
 class _UserSectionState extends State<UserSection> {
   @override
   Widget build(BuildContext context) {
-    final username =
-        JWT.getDecodedPayload(widget.token.getOrCrash())['username'] as String;
-
-    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
-        as String;
+    final username = widget.userData.token.username;
+    final url = widget.userData.token.avatar_url;
 
     return BlocListener<AccountBloc, AccountState>(
       listener: (context, state) {
@@ -53,8 +52,8 @@ class _UserSectionState extends State<UserSection> {
         }
 
         if (state is AvatarChangeSuccess) {
-          // Refresh the app with new token
-          context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: state.token));
+          widget.userData.updateToken(state.token);
+          widget.onAvatarChange();
         }
       },
       child: Container(
@@ -182,9 +181,8 @@ class _UserSectionState extends State<UserSection> {
       if (image != null) {
         final File _imageFile = File(image.path);
 
-        context
-            .bloc<AccountBloc>()
-            .add(AvatarChanged(newAvatarFile: _imageFile, token: widget.token));
+        context.bloc<AccountBloc>().add(AccountEvent.avatarChanged(
+            newAvatarFile: _imageFile, accessToken: widget.userData.token));
       }
     }
   }

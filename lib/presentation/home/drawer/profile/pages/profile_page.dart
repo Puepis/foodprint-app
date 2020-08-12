@@ -4,19 +4,52 @@ import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/profile_page_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
-import 'package:foodprint/presentation/router/edit_profile_args.dart';
+
+class ProfilePage extends StatelessWidget {
+  final UserData userData;
+  static const routeName = "/profile_page";
+  const ProfilePage({Key key, @required this.userData}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Navigator(
+      initialRoute: Profile.routeName,
+      onGenerateRoute: (settings) {
+        WidgetBuilder builder;
+        switch (settings.name) {
+          case Profile.routeName:
+            builder = (_) => Profile(
+                  userData: userData,
+                  onUsernameChange: () => Navigator.pop(context),
+                  onAvatarChange: () => Navigator.pop(context),
+                );
+            break;
+          default:
+            throw Exception('Invalid route: ${settings.name}');
+        }
+        return MaterialPageRoute(builder: builder, settings: settings);
+      },
+    );
+  }
+}
 
 /// Displays the user's stats in a visually appealing and organized manner.
-class ProfilePage extends StatelessWidget {
-  static const String routeName = "/profile";
+class Profile extends StatelessWidget {
+  static const String routeName = "profile/";
   final UserData userData;
-  const ProfilePage({Key key, this.userData}) : super(key: key);
+  final VoidCallback onUsernameChange;
+  final VoidCallback onAvatarChange;
+  const Profile(
+      {Key key,
+      @required this.userData,
+      @required this.onUsernameChange,
+      @required this.onAvatarChange})
+      : super(key: key);
 
   Color get backgroundColor => foodprintPrimaryColorSwatch[300];
 
   @override
   Widget build(BuildContext context) {
-    final token = userData.token;
     final foodprint = userData.foodprint;
 
     return Scaffold(
@@ -26,9 +59,14 @@ class ProfilePage extends StatelessWidget {
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
-              onPressed: () => Navigator.pushNamed(
-                  context, EditProfilePage.routeName,
-                  arguments: EditProfileArgs(userData: userData)),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(
+                      userData: userData,
+                      onUsernameChange: onUsernameChange,
+                    ),
+                  )),
             )
           ],
         ),
@@ -41,7 +79,8 @@ class ProfilePage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 sliver: SliverToBoxAdapter(
                   child: UserSection(
-                    token: token,
+                    userData: userData,
+                    onAvatarChange: onAvatarChange,
                   ),
                 ),
               ),

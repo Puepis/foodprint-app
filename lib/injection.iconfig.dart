@@ -40,12 +40,13 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<ManualSearchBloc>(() => ManualSearchBloc(
       g<IRestaurantSearchRepository>(), g<AutocompleteSearchCache>()));
   g.registerFactory<PhotoActionsBloc>(
-      () => PhotoActionsBloc(g<IPhotoRepository>()));
+      () => PhotoActionsBloc(g<IPhotoRepository>(), g<IAuthRepository>()));
   g.registerFactory<RegisterFormBloc>(
       () => RegisterFormBloc(g<IAuthRepository>()));
   g.registerFactory<RestaurantSearchBloc>(
       () => RestaurantSearchBloc(g<IRestaurantSearchRepository>()));
-  g.registerFactory<AccountBloc>(() => AccountBloc(g<IAccountRepository>()));
+  g.registerFactory<AccountBloc>(
+      () => AccountBloc(g<IAccountRepository>(), g<IAuthRepository>()));
   g.registerFactory<AuthBloc>(() => AuthBloc(g<IAuthRepository>()));
   g.registerLazySingleton<IFoodprintRepository>(
       () => RemoteFoodprintClient(g<IRestaurantSearchRepository>()));

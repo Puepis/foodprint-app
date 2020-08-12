@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -208,17 +206,12 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 ? null
                 : () {
                     if (_formKey.currentState.validate()) {
-                      // Get user id
-                      final id = UserID(int.parse(JWT
-                          .getDecodedPayload(userData.token.getOrCrash())['sub']
-                          .toString()));
-
                       // Save fields
                       _formKey.currentState.save();
 
                       // Fire off save event
                       photoBloc.add(PhotoActionsEvent.saved(
-                        userID: id,
+                        accessToken: userData.token,
                         imageFile: widget.imageFile,
                         itemName: _itemName,
                         price: _price,

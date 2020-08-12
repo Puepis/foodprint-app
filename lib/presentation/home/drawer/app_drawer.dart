@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -21,10 +20,8 @@ class AppDrawer extends StatelessWidget {
     final userData = context.watch<UserData>();
     final token = userData.token;
 
-    final username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
-    final url =
-        JWT.getDecodedPayload(token.getOrCrash())['avatar_url'] as String;
+    final username = token.username;
+    final url = token.avatar_url;
 
     return Drawer(
       child: Column(
@@ -40,7 +37,7 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.person,
                       text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
-                          context, ProfilePage.routeName,
+                          context, Profile.routeName,
                           arguments: ProfilePageArgs(userData: userData))),
                   _createDrawerItem(
                     icon: Icons.bug_report,

@@ -38,6 +38,8 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
     image.image.resolve(const ImageConfiguration()).addListener(
         ImageStreamListener((info, _) => completer.complete(info.image)));
 
+    final userData = context.watch<UserData>();
+
     return FutureBuilder<ui.Image>(
         future: completer.future,
         builder: (context, snapshot) {
@@ -60,7 +62,7 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
 
               if (state is ChangeFavouriteSuccess) {
                 // Update foodprint
-                context.read<UserData>().updatePhoto(widget.restaurant,
+                userData.updatePhoto(widget.restaurant,
                     widget.photo.copyWith(isFavourite: state.isFavourite));
               }
             },
@@ -130,7 +132,8 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
                               context.bloc<PhotoActionsBloc>().add(
                                   FavouriteChanged(
                                       photo: widget.photo,
-                                      newFavourite: _isFavourite));
+                                      newFavourite: _isFavourite,
+                                      accessToken: userData.token));
                             })
                       ],
                     ),
