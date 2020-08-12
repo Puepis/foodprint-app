@@ -19,10 +19,7 @@ class ProfilePage extends StatelessWidget {
         switch (settings.name) {
           case Profile.routeName:
             builder = (_) => Profile(
-                  userData: userData,
-                  onUsernameChange: () => Navigator.pop(context),
-                  onAvatarChange: () => Navigator.pop(context),
-                );
+                userData: userData, onFinished: () => Navigator.pop(context));
             break;
           default:
             throw Exception('Invalid route: ${settings.name}');
@@ -37,13 +34,8 @@ class ProfilePage extends StatelessWidget {
 class Profile extends StatelessWidget {
   static const String routeName = "profile/";
   final UserData userData;
-  final VoidCallback onUsernameChange;
-  final VoidCallback onAvatarChange;
-  const Profile(
-      {Key key,
-      @required this.userData,
-      @required this.onUsernameChange,
-      @required this.onAvatarChange})
+  final VoidCallback onFinished;
+  const Profile({Key key, @required this.userData, @required this.onFinished})
       : super(key: key);
 
   Color get backgroundColor => foodprintPrimaryColorSwatch[300];
@@ -56,6 +48,10 @@ class Profile extends StatelessWidget {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: backgroundColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: onFinished,
+          ),
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
@@ -64,7 +60,7 @@ class Profile extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => EditProfilePage(
                       userData: userData,
-                      onUsernameChange: onUsernameChange,
+                      onUsernameChange: onFinished,
                     ),
                   )),
             )
@@ -80,7 +76,7 @@ class Profile extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: UserSection(
                     userData: userData,
-                    onAvatarChange: onAvatarChange,
+                    onAvatarChange: onFinished,
                   ),
                 ),
               ),

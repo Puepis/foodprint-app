@@ -67,75 +67,81 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
               }
             },
             child: Container(
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               padding: EdgeInsets.only(
                 top: widget.topPadding,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Container(
+                    height: widget.constraints.maxHeight * 0.71,
+                    width: widget.constraints.maxWidth,
+                    color: bgColor,
+                    child: CachedNetworkImage(
+                        fit: BoxFit.scaleDown,
+                        fadeInDuration: const Duration(milliseconds: 150),
+                        placeholder: (context, url) =>
+                            Image.memory(kTransparentImage),
+                        imageUrl: widget.photo.url.getOrCrash()),
+                  ),
                   Expanded(
                     child: Container(
-                      height: widget.constraints.maxHeight,
                       width: widget.constraints.maxWidth,
-                      color: bgColor,
-                      child: CachedNetworkImage(
-                          fit: BoxFit.scaleDown,
-                          fadeInDuration: const Duration(milliseconds: 150),
-                          placeholder: (context, url) =>
-                              Image.memory(kTransparentImage),
-                          imageUrl: widget.photo.url.getOrCrash()),
-                    ),
-                  ),
-                  Container(
-                    width: widget.constraints.maxWidth,
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.photo.details.name.getOrCrash(),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                widget.formatter.format(
-                                    widget.photo.details.price.getOrCrash()),
-                                style: TextStyle(
-                                    height: 1.3,
-                                    color: Colors.green.shade500,
+                      padding: const EdgeInsets.only(top: 7.5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.photo.details.name.getOrCrash(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    color: Colors.black,
                                     fontSize: 18.0,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: widget.constraints.maxWidth * 0.05),
-                        IconButton(
-                            icon: Icon(
-                              _isFavourite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: Colors.red,
-                              size: 26,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  widget.formatter.format(widget
+                                      .photo.details.price
+                                      .getOrCrash()),
+                                  style: TextStyle(
+                                      height: 1.3,
+                                      color: Colors.green.shade500,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
                             ),
-                            onPressed: () {
-                              setState(() => _isFavourite = !_isFavourite);
-                              context.bloc<PhotoActionsBloc>().add(
-                                  FavouriteChanged(
-                                      photo: widget.photo,
-                                      newFavourite: _isFavourite,
-                                      accessToken: userData.token));
-                            })
-                      ],
+                          ),
+                          SizedBox(width: widget.constraints.maxWidth * 0.05),
+                          Column(
+                            children: [
+                              IconButton(
+                                  icon: Icon(
+                                    _isFavourite
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: Colors.red,
+                                    size: 26,
+                                  ),
+                                  onPressed: () {
+                                    setState(
+                                        () => _isFavourite = !_isFavourite);
+                                    context.bloc<PhotoActionsBloc>().add(
+                                        FavouriteChanged(
+                                            photo: widget.photo,
+                                            newFavourite: _isFavourite,
+                                            accessToken: userData.token));
+                                  }),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],

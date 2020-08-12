@@ -72,82 +72,110 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
         ),
         color: Color(0xFF1e1c1c),
       ),
-      padding: const EdgeInsets.all(20),
       child: LayoutBuilder(
           builder: (_, constraints) => Stack(
                 children: [
-                  _buildDetails(formatter, constraints, userData),
+                  BlocListener<PhotoActionsBloc, PhotoActionsState>(
+                      listener: (context, state) {
+                        if (state is ChangeFavouriteFailure) {
+                          FlushbarHelper.createError(
+                              message: state.failure.maybeMap(
+                                  noInternet: (_) => 'No internet connection',
+                                  orElse: () => 'Server error')).show(context);
+                        }
+
+                        if (state is ChangeFavouriteSuccess) {
+                          context.read<UserData>().updatePhoto(
+                              widget.restaurant,
+                              widget.photo
+                                  .copyWith(isFavourite: state.isFavourite));
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          _buildSwipeIndicator(constraints),
+                          _buildDetails(formatter, constraints, userData),
+                        ],
+                      )),
                   _buildEditButton(userData)
                 ],
               )),
     );
   }
 
+  Container _buildSwipeIndicator(BoxConstraints constraints) {
+    return Container(
+      decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))),
+      child: Center(
+        child: SizedBox(
+          width: constraints.maxWidth * 0.06,
+          child: const Divider(
+            color: Colors.grey,
+            thickness: 3,
+            height: 20,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildDetails(NumberFormat formatter, BoxConstraints constraints,
           UserData userData) =>
-      BlocListener<PhotoActionsBloc, PhotoActionsState>(
-        listener: (context, state) {
-          if (state is ChangeFavouriteFailure) {
-            FlushbarHelper.createError(
-                message: state.failure.maybeMap(
-                    noInternet: (_) => 'No internet connection',
-                    orElse: () => 'Server error')).show(context);
-          }
-
-          if (state is ChangeFavouriteSuccess) {
-            context.read<UserData>().updatePhoto(widget.restaurant,
-                widget.photo.copyWith(isFavourite: state.isFavourite));
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(right: constraints.maxWidth * 0.2),
-              child: Text(widget.photo.details.name.getOrCrash(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22)),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Text(formatter.format(widget.photo.details.price.getOrCrash()),
-                style: TextStyle(color: Colors.green.shade500, fontSize: 20)),
-            const Divider(
-              color: Colors.grey,
-              height: 30,
-              thickness: 1,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildBody(),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: InkWell(
-                onTap: () {
-                  setState(() => _isFavourite = !_isFavourite);
-                  context.bloc<PhotoActionsBloc>().add(FavouriteChanged(
-                      photo: widget.photo,
-                      newFavourite: _isFavourite,
-                      accessToken: userData.token));
-                },
-                child: Icon(
-                  _isFavourite ? Icons.favorite : Icons.favorite_border,
-                  color: Colors.red,
-                  size: 30,
-                ),
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: constraints.maxWidth * 0.2),
+                child: Text(widget.photo.details.name.getOrCrash(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22)),
               ),
-            )
-          ],
+              const SizedBox(
+                height: 5,
+              ),
+              Text(formatter.format(widget.photo.details.price.getOrCrash()),
+                  style: TextStyle(color: Colors.green.shade500, fontSize: 20)),
+              const Divider(
+                color: Colors.grey,
+                height: 30,
+                thickness: 1,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              _buildDetailsBody(),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: InkWell(
+                  onTap: () {
+                    setState(() => _isFavourite = !_isFavourite);
+                    context.bloc<PhotoActionsBloc>().add(FavouriteChanged(
+                        photo: widget.photo,
+                        newFavourite: _isFavourite,
+                        accessToken: userData.token));
+                  },
+                  child: Icon(
+                    _isFavourite ? Icons.favorite : Icons.favorite_border,
+                    color: Colors.red,
+                    size: 30,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
 
-  Expanded _buildBody() {
+  Expanded _buildDetailsBody() {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,8 +225,8 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
   }
 
   Widget _buildEditButton(UserData userData) => Positioned(
-        top: 5.0,
-        right: 5.0,
+        top: 25.0,
+        right: 15.0,
         child: IconButton(
           icon: const Icon(Icons.edit),
           color: Theme.of(context).primaryColor,

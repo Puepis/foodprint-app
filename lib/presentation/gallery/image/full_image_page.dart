@@ -70,35 +70,56 @@ class _FullImageState extends State<FullImage> {
   Widget build(BuildContext context) {
     if (_position != null) _handleScroll();
 
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: CustomScrollView(controller: _scrollController, slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate([
-            Container(
-              height: MediaQuery.of(context).size.height,
-              color: Colors.black,
-              child: Center(
-                child: Hero(
-                  tag: widget.photo.timestamp.getOrCrash(),
-                  child: CachedNetworkImage(
-                      fit: BoxFit.fitWidth,
-                      fadeInDuration: const Duration(milliseconds: 150),
-                      placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                      imageUrl: widget.photo.url.getOrCrash()),
+    return GestureDetector(
+      onVerticalDragEnd: (details) {
+        final dy = details.velocity.pixelsPerSecond.dy;
+        if (dy > 0) Navigator.pop(context);
+      },
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: CustomScrollView(controller: _scrollController, slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                height: MediaQuery.of(context).size.height,
+                color: Colors.black,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Hero(
+                        tag: widget.photo.timestamp.getOrCrash(),
+                        child: CachedNetworkImage(
+                            fit: BoxFit.fitWidth,
+                            fadeInDuration: const Duration(milliseconds: 150),
+                            placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                            imageUrl: widget.photo.url.getOrCrash()),
+                      ),
+                    ),
+                    if (_position != null)
+                      Align(
+                        alignment: const Alignment(0, 0.95),
+                        child: Icon(
+                          _position.pixels == _position.minScrollExtent
+                              ? Icons.keyboard_arrow_up
+                              : Icons.keyboard_arrow_down,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      )
+                  ],
                 ),
               ),
-            ),
-            PhotoInfoSheet(
-              photo: widget.photo,
-              restaurant: widget.restaurant,
-              onEdit: widget.onEdit,
-            )
-          ]),
-        )
-      ]),
+              PhotoInfoSheet(
+                photo: widget.photo,
+                restaurant: widget.restaurant,
+                onEdit: widget.onEdit,
+              )
+            ]),
+          )
+        ]),
+      ),
     );
   }
 
