@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class SpendingBreakdownPage extends StatefulWidget {
   final SpendingModel spending;
-  static const routeName = "/spending_breakdown";
+  static const routeName = "spending_breakdown/";
   const SpendingBreakdownPage({Key key, @required this.spending})
       : super(key: key);
 

@@ -40,7 +40,7 @@ class SelectRestaurantPage extends StatefulWidget {
 }
 
 class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
-  final Color backgroundColor = foodprintPrimaryColorSwatch[50];
+  final Color backgroundColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {

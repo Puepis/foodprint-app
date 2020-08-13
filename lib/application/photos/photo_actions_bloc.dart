@@ -14,7 +14,7 @@ import 'package:foodprint/domain/restaurants/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' show basename;
 import 'package:rxdart/rxdart.dart';
 
 part 'photo_actions_event.dart';

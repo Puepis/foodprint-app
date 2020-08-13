@@ -38,6 +38,7 @@ lib/generated_plugin_registrant.dart
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 **/main/AndroidManifest.xml
-**/key.jks
-**/key.jks.old
-**/key.properties
+AppDelegate.swift
+key.jks
+key.jks.old
+key.properties

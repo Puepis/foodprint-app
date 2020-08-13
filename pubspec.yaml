@@ -14,26 +14,16 @@ dependencies:
   # Location and google maps
   google_maps_flutter: ^0.5.25+3
   location: ^3.0.0
-  geolocator: ^5.3.1
   # Provider for exposing values (used to manage state)
   provider: ^4.1.0
   # Camera
-  camera: ^0.5.7+4
   image_picker: ^0.6.7
-  image_cropper: ^1.2.1
   # Files
   path: ^1.6.4
-  path_provider: ^1.6.5
-  # Toasts
-  fluttertoast: ^4.0.1
   # Remote API
   http: ^0.12.0+4
   # Local storage
   flutter_secure_storage: ^3.3.2
-  shared_preferences: ^0.5.7+3
-  permission_handler: ^5.0.0
-  # Image compression
-  flutter_image_compress: ^0.6.8
   # Custom spinners
   flutter_spinkit: ^4.1.2
   # Value/class equality

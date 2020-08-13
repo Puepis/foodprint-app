@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_card_chart.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
@@ -24,7 +23,7 @@ class SpendingCard extends StatelessWidget {
           : null,
       child: Card(
         elevation: 5.0,
-        color: foodprintPrimaryColorSwatch[50],
+        color: Colors.white,
         margin: const EdgeInsets.fromLTRB(8, 0, 8, 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Padding(

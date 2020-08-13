@@ -17,7 +17,7 @@ class EditImagePage extends StatefulWidget {
 }
 
 class _EditImagePageState extends State<EditImagePage> {
-  Color get backgroundColor => foodprintPrimaryColorSwatch[50];
+  Color get backgroundColor => Colors.white;
 
   @override
   Widget build(BuildContext context) {

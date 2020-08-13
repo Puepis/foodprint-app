@@ -20,7 +20,7 @@ class SaveDetailsPage extends StatelessWidget {
       : assert(onSave != null),
         super(key: key);
 
-  Color get backgroundColor => foodprintPrimaryColorSwatch[50];
+  Color get backgroundColor => Colors.white;
 
   @override
   Widget build(BuildContext context) {

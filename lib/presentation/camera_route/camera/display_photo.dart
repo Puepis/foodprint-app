@@ -114,7 +114,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: foodprintPrimaryColorSwatch[50],
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(

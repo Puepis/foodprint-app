@@ -12,7 +12,7 @@ import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' show basename;
 
 part 'account_event.dart';
 part 'account_state.dart';
