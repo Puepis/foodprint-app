@@ -1,14 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/select_restaurant_page.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
-import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/router/camera/select_restaurant_args.dart';
 import 'package:provider/provider.dart';
 
 /// The button that brings the user to the restaurant selection page.
@@ -45,21 +41,9 @@ class NextPageButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(1000.0),
               onTap: () {
                 // Move to "choose your restaurant" page
-                Navigator.of(context).push(SlideLeftRoute(
-                    newPage: MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(
-                        value: context.read<UserData>()),
-                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                    BlocProvider.value(value: context.bloc<FoodprintBloc>())
-                  ],
-                  child: SelectRestaurantPage(
-                      onSave: onSave,
-                      latitude: location.latitude,
-                      longitude: location.longitude,
-                      imageFile: imageFile,
-                      restaurants: restaurants),
-                )));
+                Navigator.of(context).pushNamed(SelectRestaurantPage.routeName,
+                    arguments: SelectRestaurantArgs(imageFile, restaurants,
+                        location.latitude, location.longitude));
               },
               child: const Icon(
                 Icons.navigate_next,

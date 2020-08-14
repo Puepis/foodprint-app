@@ -15,7 +15,10 @@ class EditImageForm extends StatefulWidget {
   final RestaurantEntity restaurant;
   final VoidCallback onEdit;
   const EditImageForm(
-      {Key key, @required this.photo, @required this.restaurant, this.onEdit})
+      {Key key,
+      @required this.photo,
+      @required this.restaurant,
+      @required this.onEdit})
       : super(key: key);
 
   @override
@@ -199,7 +202,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
                 child: FloatingActionButton.extended(
-                    backgroundColor: primaryColor,
+                    backgroundColor: primaryColorDark,
                     label: const Text(
                       'UPDATE',
                       style: TextStyle(

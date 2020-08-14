@@ -2,11 +2,9 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_page.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -19,12 +17,10 @@ class PhotoInfoSheet extends StatefulWidget {
     Key key,
     @required this.photo,
     @required this.restaurant,
-    @required this.onEdit,
   }) : super(key: key);
 
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
-  final VoidCallback onEdit;
 
   @override
   _PhotoInfoSheetState createState() => _PhotoInfoSheetState();
@@ -231,22 +227,8 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
           icon: const Icon(Icons.edit),
           color: Theme.of(context).primaryColor,
           onPressed: () {
-            Navigator.of(context).push(SlideUpEnterRoute(
-                newPage: MultiProvider(
-              providers: [
-                ChangeNotifierProvider.value(
-                  value: userData,
-                ),
-                BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                BlocProvider.value(
-                  value: context.bloc<FoodprintBloc>(),
-                )
-              ],
-              child: EditImagePage(
-                  restaurant: widget.restaurant,
-                  photo: widget.photo,
-                  onEdit: widget.onEdit),
-            )));
+            Navigator.of(context).pushNamed(EditImagePage.routeName,
+                arguments: widget.photo.copyWith(isFavourite: _isFavourite));
           },
         ),
       );

@@ -32,22 +32,16 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
 
   @override
   Widget build(BuildContext context) {
-    /// Get image dimensions to determine background color
-    final image = Image.network(widget.photo.url.getOrCrash());
-    final completer = Completer<ui.Image>();
-    image.image.resolve(const ImageConfiguration()).addListener(
-        ImageStreamListener((info, _) => completer.complete(info.image)));
-
     final userData = context.watch<UserData>();
 
-    return FutureBuilder<ui.Image>(
-        future: completer.future,
-        builder: (context, snapshot) {
+    return NetworkImageDimensionsBuilder(
+        imageUrl: widget.photo.url.getOrCrash(),
+        builder: (context, image) {
           Color bgColor = Colors.transparent;
 
           // Check if image is portrait or landscape
-          if (snapshot.hasData) {
-            bgColor = snapshot.data.width > snapshot.data.height
+          if (image.hasData) {
+            bgColor = image.data.width > image.data.height
                 ? Colors.black
                 : Colors.transparent;
           }
@@ -88,7 +82,8 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
                   Expanded(
                     child: Container(
                       width: widget.constraints.maxWidth,
-                      padding: const EdgeInsets.only(top: 7.5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 10),
                       child: Row(
                         children: [
                           Expanded(
@@ -106,9 +101,8 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
                                   ),
                                 ),
                                 Text(
-                                  widget.formatter.format(widget
-                                      .photo.details.price
-                                      .getOrCrash()),
+                                  widget.formatter.format(
+                                      widget.photo.details.price.getOrCrash()),
                                   style: TextStyle(
                                       height: 1.3,
                                       color: Colors.green.shade500,
@@ -119,26 +113,28 @@ class _PortraitPhotoState extends State<PortraitPhoto> {
                             ),
                           ),
                           SizedBox(width: widget.constraints.maxWidth * 0.05),
-                          Column(
-                            children: [
-                              IconButton(
-                                  icon: Icon(
-                                    _isFavourite
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: Colors.red,
-                                    size: 26,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                        () => _isFavourite = !_isFavourite);
-                                    context.bloc<PhotoActionsBloc>().add(
-                                        FavouriteChanged(
-                                            photo: widget.photo,
-                                            newFavourite: _isFavourite,
-                                            accessToken: userData.token));
-                                  }),
-                            ],
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: InkWell(
+                              onTap: () {
+                                setState(() => _isFavourite = !_isFavourite);
+                                context.bloc<PhotoActionsBloc>().add(
+                                    FavouriteChanged(
+                                        photo: widget.photo,
+                                        newFavourite: _isFavourite,
+                                        accessToken: userData.token));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  _isFavourite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Colors.red,
+                                  size: 26,
+                                ),
+                              ),
+                            ),
                           )
                         ],
                       ),

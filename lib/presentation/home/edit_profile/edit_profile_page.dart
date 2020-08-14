@@ -12,9 +12,8 @@ import 'edit_profile.dart';
 /// The page that allows users to edit their profile and delete their account.
 class EditProfilePage extends StatelessWidget {
   final UserData userData;
-  final VoidCallback onUsernameChange;
-  const EditProfilePage(
-      {Key key, @required this.userData, @required this.onUsernameChange})
+  static const routeName = "edit_profile/";
+  const EditProfilePage({Key key, @required this.userData})
       : assert(userData != null),
         super(key: key);
 
@@ -56,12 +55,8 @@ class EditProfilePage extends StatelessWidget {
                   height: 10,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangeUsernamePage(
-                              userData: userData,
-                              onUsernameChange: onUsernameChange))),
+                  onTap: () => Navigator.pushNamed(
+                      context, ChangeUsernamePage.routeName),
                   child: TextFormField(
                     initialValue: username,
                     cursorColor: primaryColor,
@@ -82,13 +77,8 @@ class EditProfilePage extends StatelessWidget {
                   height: 10,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangePasswordPage(
-                          userData: userData,
-                        ),
-                      )),
+                  onTap: () => Navigator.pushNamed(
+                      context, ChangePasswordPage.routeName),
                   child: TextFormField(
                     initialValue: '********',
                     cursorColor: primaryColor,
@@ -149,7 +139,7 @@ class EditProfilePage extends StatelessWidget {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: foodprintPrimaryColorSwatch[50],
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(

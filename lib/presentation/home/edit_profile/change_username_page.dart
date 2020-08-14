@@ -9,7 +9,7 @@ import 'package:foodprint/presentation/data/user_data.dart';
 class ChangeUsernamePage extends StatefulWidget {
   final UserData userData;
   final VoidCallback onUsernameChange;
-  static const routeName = "/change_username";
+  static const routeName = "change_username/";
   const ChangeUsernamePage(
       {Key key, @required this.userData, @required this.onUsernameChange})
       : super(key: key);

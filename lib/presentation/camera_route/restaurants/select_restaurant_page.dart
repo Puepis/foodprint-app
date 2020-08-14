@@ -3,16 +3,12 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/data/user_data.dart';
-import 'package:provider/provider.dart';
+import 'package:foodprint/presentation/router/camera/save_details_args.dart';
 
 /// The page that displays a list of nearby [restaurants] for the user to
 /// select.
@@ -20,20 +16,18 @@ import 'package:provider/provider.dart';
 /// If the list doesn't contain the desired restaurant, the user can use the
 /// [ManualSearchPage] to find the correct one.
 class SelectRestaurantPage extends StatefulWidget {
-  final VoidCallback onSave;
   final File imageFile;
   final List<RestaurantEntity> restaurants;
   final double latitude;
   final double longitude;
-  const SelectRestaurantPage(
-      {Key key,
-      @required this.imageFile,
-      @required this.restaurants,
-      @required this.latitude,
-      @required this.longitude,
-      @required this.onSave})
-      : assert(onSave != null),
-        super(key: key);
+  static const routeName = "restaurants/";
+  const SelectRestaurantPage({
+    Key key,
+    @required this.imageFile,
+    @required this.restaurants,
+    @required this.latitude,
+    @required this.longitude,
+  }) : super(key: key);
 
   @override
   _SelectRestaurantPageState createState() => _SelectRestaurantPageState();
@@ -66,6 +60,12 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
       return Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
+            leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () => Navigator.pop(context)),
             backgroundColor: backgroundColor,
             elevation: 0.0,
             centerTitle: true,
@@ -73,6 +73,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
               IconButton(
                   icon: const Icon(
                     Icons.search,
+                    color: Colors.black,
                   ),
                   onPressed: () async {
                     final String place_id = await showSearch(
@@ -140,7 +141,17 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
             style: TextStyle(
                 fontSize: 35.0,
                 fontWeight: FontWeight.bold,
-                color: primaryColor),
+                color: primaryColorDark),
+          ),
+          const SizedBox(
+            height: 2.5,
+          ),
+          const Text(
+            "Here's what we found near you",
+            style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey),
           ),
           const SizedBox(
             height: 40,
@@ -186,22 +197,9 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
       color: Colors.white, fontWeight: FontWeight.normal, fontSize: 20);
 
   /// Returns a callback to proceed to the next page based on the [restaurant]
-  void Function() _toDetails(RestaurantEntity restaurant) {
-    return () {
-      Navigator.of(context).push(SlideLeftRoute(
-          newPage: MultiProvider(
-        providers: [
-          ChangeNotifierProvider.value(value: context.read<UserData>()),
-          BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-          BlocProvider.value(value: context.bloc<FoodprintBloc>())
-        ],
-        child: SaveDetailsPage(
-          onSave: widget.onSave,
-          imageFile: widget.imageFile,
-          restaurant: restaurant,
-        ),
-      )));
-    };
+  VoidCallback _toDetails(RestaurantEntity restaurant) {
+    return () => Navigator.of(context).pushNamed(SaveDetailsPage.routeName,
+        arguments: SaveDetailsArgs(restaurant, widget.imageFile));
   }
 
   /// Returns the widget containing the restaurant buttons given the [context].
@@ -217,25 +215,27 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
 
   Widget _buildButton(int index) {
     return Card(
-      shadowColor: foodprintPrimaryColorSwatch[400],
+      elevation: 5.0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
-      color: foodprintPrimaryColorSwatch[100],
+      color: primaryColor,
       child: ListTile(
           dense: true,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
           title: Text(widget.restaurants[index].name.getOrCrash(),
               overflow: TextOverflow.ellipsis,
-              style:
-                  const TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500)),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600)),
           subtitle: Container(
             margin: const EdgeInsets.only(top: 5),
             child: Row(
               children: [
                 Icon(
                   Icons.star,
-                  color: foodprintPrimaryColorSwatch[600],
+                  color: foodprintPrimaryColorSwatch[700],
                   size: 20,
                 ),
                 const SizedBox(

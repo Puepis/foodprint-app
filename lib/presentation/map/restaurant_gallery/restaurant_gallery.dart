@@ -1,12 +1,10 @@
-import 'dart:async';
-import 'dart:ui' as ui;
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/common/image_dimensions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:intl/intl.dart';

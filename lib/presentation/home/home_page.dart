@@ -11,7 +11,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/gallery/gallery_page.dart';
+import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
@@ -38,8 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
-    final foodprint = userData.foodprint;
-    _sortFoodprint(foodprint);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -65,7 +63,7 @@ class _HomePageState extends State<HomePage> {
             body: _page == SelectedPage.home
                 ? Stack(children: [mapScreen, _buildMapDrawerButton()])
                 : Gallery(
-                    photos: assocPhotos,
+                    sortBy: _selectedSort,
                   ),
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
@@ -93,12 +91,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             floatingActionButton: Container(
-              height: 75,
-              width: 75,
+              height: 60,
+              width: 60,
               child: FittedBox(
                 child: FloatingActionButton(
                   heroTag: "camera",
-                  elevation: 20.0,
                   onPressed: () => (state is GetLocationSuccess)
                       ? _toCamera(
                           context, state.latlng, userData) // take picture
@@ -150,7 +147,7 @@ class _HomePageState extends State<HomePage> {
           ChangeNotifierProvider.value(value: data),
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
-        ], child: const CameraPage()),
+        ], child: CameraNavigator()),
       ),
     );
   }
@@ -202,35 +199,4 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         );
-
-  /// Generates an association list of photos and sorts by the selected option
-  /// in the gallery.
-  void _sortFoodprint(FoodprintEntity foodprint) {
-    assocPhotos = getPhotoAssocFromFoodprint(foodprint);
-    switch (_selectedSort) {
-      case SortBy.latest:
-        assocPhotos.sort((a, b) => b.value1.timestamp
-            .getOrCrash()
-            .compareTo(a.value1.timestamp.getOrCrash()));
-        break;
-      case SortBy.oldest:
-        assocPhotos.sort((a, b) => a.value1.timestamp
-            .getOrCrash()
-            .compareTo(b.value1.timestamp.getOrCrash()));
-        break;
-      case SortBy.favourites:
-        assocPhotos.retainWhere((element) => element.value1.isFavourite);
-        break;
-      case SortBy.highestPrice:
-        assocPhotos.sort((a, b) => b.value1.details.price
-            .getOrCrash()
-            .compareTo(a.value1.details.price.getOrCrash()));
-        break;
-      case SortBy.lowestPrice:
-        assocPhotos.sort((a, b) => a.value1.details.price
-            .getOrCrash()
-            .compareTo(b.value1.details.price.getOrCrash()));
-        break;
-    }
-  }
 }

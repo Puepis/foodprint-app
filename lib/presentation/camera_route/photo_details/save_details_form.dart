@@ -44,6 +44,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
     height: 10.0,
   );
 
+  final textfieldBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(7.0));
+
   Row _buildSectionTitle(
           {String title, IconData iconData, Color iconColor = Colors.black}) =>
       Row(
@@ -94,8 +97,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
               maxLength: 50,
               decoration: InputDecoration(
                 hintStyle: _hintStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0)),
+                border: textfieldBorder,
                 hintText: 'What are you eating/drinking?',
               ),
               onSaved: (String value) {
@@ -118,11 +120,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
               maxLength: 8,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "How much is it?",
-                hintStyle: _hintStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0)),
-              ),
+                  hintText: "How much is it?",
+                  hintStyle: _hintStyle,
+                  border: textfieldBorder),
               onSaved: (String value) {
                 _price = value.trim();
               },
@@ -158,8 +158,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 decoration: InputDecoration(
                   hintStyle: _hintStyle,
                   hintText: "Any thoughts?",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.0)),
+                  border: textfieldBorder,
                 ),
                 onSaved: (String value) {
                   _comments = value.trim();
@@ -181,7 +180,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
           child: FloatingActionButton.extended(
-            backgroundColor: primaryColor,
+            backgroundColor: primaryColorDark,
             label: const Text(
               'SAVE PHOTO',
               style: TextStyle(

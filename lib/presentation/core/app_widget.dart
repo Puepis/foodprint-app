@@ -36,7 +36,16 @@ class FoodprintApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Foodprint',
           theme: ThemeData(
-            brightness: Brightness.light,
+            appBarTheme: AppBarTheme(
+              iconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: Colors.white),
+              color: foodprintPrimaryColorSwatch[500],
+              textTheme: Theme.of(context).textTheme.copyWith(
+                  headline6: GoogleFonts.rubik(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500)),
+            ),
             primaryColor: primaryColor,
             primaryColorDark: primaryColorDark,
             primarySwatch: primarySwatch,
@@ -44,7 +53,7 @@ class FoodprintApp extends StatelessWidget {
             errorColor: errorColor,
             hintColor: hintColor,
             hoverColor: hoverColor,
-            backgroundColor: bgColor,
+            backgroundColor: Colors.white,
             textTheme: GoogleFonts.rubikTextTheme(textTheme),
           ),
           debugShowCheckedModeBanner: false,

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/core/styles/text_styles.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+TextStyle buttonTextStyle = GoogleFonts.rubik(
+  color: Colors.white,
+  fontSize: 26.0,
+  fontWeight: FontWeight.w500,
+);
 
 class AuthIdleButton extends StatelessWidget {
   final String title;

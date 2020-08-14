@@ -4,21 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
+import 'package:foodprint/domain/core/value_transformers.dart';
+import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:provider/provider.dart';
 
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
-  final List<Tuple2<PhotoEntity, RestaurantEntity>> photos;
-  const Gallery({Key key, @required this.photos}) : super(key: key);
+  final SortBy sortBy;
+  static const routeName = "gallery/";
+  const Gallery({Key key, @required this.sortBy}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
+    final foodprint = userData.foodprint;
+    final photos = _sortFoodprint(foodprint);
 
     // Build photos lazily
     return GridView.builder(
@@ -107,9 +113,42 @@ class Gallery extends StatelessWidget {
                     value: context.bloc<FoodprintBloc>(),
                   )
                 ],
-                child: FullImagePage(
+                child: FullImageNavigator(
                   photo: photo,
                   restaurant: restaurant,
                 ))));
+  }
+
+  /// Generates an association list of photos and sorts by the selected option
+  /// in the gallery.
+  List<Tuple2<PhotoEntity, RestaurantEntity>> _sortFoodprint(
+      FoodprintEntity foodprint) {
+    final assocPhotos = getPhotoAssocFromFoodprint(foodprint);
+    switch (sortBy) {
+      case SortBy.latest:
+        assocPhotos.sort((a, b) => b.value1.timestamp
+            .getOrCrash()
+            .compareTo(a.value1.timestamp.getOrCrash()));
+        break;
+      case SortBy.oldest:
+        assocPhotos.sort((a, b) => a.value1.timestamp
+            .getOrCrash()
+            .compareTo(b.value1.timestamp.getOrCrash()));
+        break;
+      case SortBy.favourites:
+        assocPhotos.retainWhere((element) => element.value1.isFavourite);
+        break;
+      case SortBy.highestPrice:
+        assocPhotos.sort((a, b) => b.value1.details.price
+            .getOrCrash()
+            .compareTo(a.value1.details.price.getOrCrash()));
+        break;
+      case SortBy.lowestPrice:
+        assocPhotos.sort((a, b) => a.value1.details.price
+            .getOrCrash()
+            .compareTo(b.value1.details.price.getOrCrash()));
+        break;
+    }
+    return assocPhotos;
   }
 }

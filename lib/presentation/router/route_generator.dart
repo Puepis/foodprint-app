@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/home/drawer/profile/navigator.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
@@ -18,10 +19,10 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case Profile.routeName:
-        if (args is ProfilePageArgs) {
+      case ProfilePage.routeName:
+        if (args is ProfileArgs) {
           return MaterialPageRoute(
-            builder: (_) => ProfilePage(userData: args.userData),
+            builder: (_) => ProfileNavigator(userData: args.userData),
           );
         }
         return _errorRoute();

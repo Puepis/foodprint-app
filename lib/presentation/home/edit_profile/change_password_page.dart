@@ -9,7 +9,7 @@ import 'package:foodprint/presentation/data/user_data.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   final UserData userData;
-  static const routeName = "/change_password";
+  static const routeName = "change_password/";
   const ChangePasswordPage({Key key, @required this.userData})
       : super(key: key);
 

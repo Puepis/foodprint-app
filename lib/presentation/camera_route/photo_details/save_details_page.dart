@@ -1,8 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
@@ -12,6 +9,7 @@ class SaveDetailsPage extends StatelessWidget {
   final VoidCallback onSave;
   final RestaurantEntity restaurant;
   final File imageFile;
+  static const routeName = "save_details/";
   const SaveDetailsPage(
       {Key key,
       @required this.imageFile,
@@ -29,38 +27,46 @@ class SaveDetailsPage extends StatelessWidget {
       child: Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
+            leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () => Navigator.pop(context)),
             elevation: 0,
             backgroundColor: backgroundColor,
           ),
           body: Padding(
               padding: const EdgeInsets.all(20),
-              child: MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                  BlocProvider.value(
-                    value: context.bloc<FoodprintBloc>(),
-                  )
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Text(
+                    "Fill in the details!",
+                    style: TextStyle(
+                        color: primaryColorDark,
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 2.5,
+                  ),
+                  const Text(
+                    "Record your dining experience",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  SaveDetailsForm(
+                    imageFile: imageFile,
+                    restaurant: restaurant,
+                    onSave: onSave,
+                  ),
                 ],
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Text(
-                      "Fill in the details!",
-                      style: TextStyle(
-                          color: primaryColor,
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    SaveDetailsForm(
-                      imageFile: imageFile,
-                      restaurant: restaurant,
-                      onSave: onSave,
-                    ),
-                  ],
-                ),
               ))),
     );
   }

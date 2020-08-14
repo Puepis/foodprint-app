@@ -9,11 +9,7 @@ TextStyle titleTextStyle = GoogleFonts.rubik(
   fontWeight: FontWeight.w500
 ); 
 
-TextStyle buttonTextStyle = GoogleFonts.rubik(
-  color: Colors.white,
-  fontSize: 26.0,
-  fontWeight: FontWeight.w500,
-);
+
 
 
 

@@ -37,8 +37,8 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.person,
                       text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
-                          context, Profile.routeName,
-                          arguments: ProfilePageArgs(userData: userData))),
+                          context, ProfilePage.routeName,
+                          arguments: ProfileArgs(userData: userData))),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
@@ -69,7 +69,7 @@ class AppDrawer extends StatelessWidget {
   Widget _buildHeader(String username, String url) => DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primaryColor),
+      decoration: BoxDecoration(color: primaryColorDark),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: Column(

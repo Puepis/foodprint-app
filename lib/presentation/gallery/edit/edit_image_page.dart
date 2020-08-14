@@ -5,7 +5,7 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_form.dart';
 
 class EditImagePage extends StatefulWidget {
-  static const routeName = "/edit_image";
+  static const routeName = "edit_image/";
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
   final VoidCallback onEdit;
@@ -28,6 +28,13 @@ class _EditImagePageState extends State<EditImagePage> {
           appBar: AppBar(
             elevation: 0.0,
             backgroundColor: backgroundColor,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () => Navigator.pop(context),
+            ),
           ),
           body: Padding(
               padding: const EdgeInsets.all(20),
@@ -37,7 +44,7 @@ class _EditImagePageState extends State<EditImagePage> {
                   Text(
                     "Edit the details!",
                     style: TextStyle(
-                        color: primaryColor,
+                        color: primaryColorDark,
                         fontSize: 35.0,
                         fontWeight: FontWeight.bold),
                   ),

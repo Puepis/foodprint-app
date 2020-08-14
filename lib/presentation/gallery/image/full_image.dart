@@ -3,45 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/gallery/image/photo_info_sheet.dart';
 
-class FullImagePage extends StatelessWidget {
-  final PhotoEntity photo;
-  final RestaurantEntity restaurant;
-  const FullImagePage({Key key, this.photo, this.restaurant}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // A nested navigator representing the "edit image" journey.
-    return Navigator(
-      initialRoute: FullImage.routeName,
-      onGenerateRoute: (settings) {
-        WidgetBuilder builder;
-        switch (settings.name) {
-          case FullImage.routeName:
-            builder = (_) => FullImage(
-                  restaurant: restaurant,
-                  photo: photo,
-                  onEdit: () => Navigator.pop(
-                      context), // if the image is edited, pop the entire route
-                );
-            break;
-          default:
-            throw Exception('Invalid route: ${settings.name}');
-        }
-        return MaterialPageRoute(builder: builder, settings: settings);
-      },
-    );
-  }
-}
+import 'image.dart';
 
 /// Displays the full image
 class FullImage extends StatefulWidget {
   static const routeName = "full_image/";
   final PhotoEntity photo;
   final RestaurantEntity restaurant;
-  final VoidCallback onEdit;
-  const FullImage({Key key, this.photo, this.restaurant, this.onEdit})
+  const FullImage({Key key, this.photo, this.restaurant})
       : super(key: key);
 
   @override
@@ -114,10 +84,9 @@ class _FullImageState extends State<FullImage> {
               PhotoInfoSheet(
                 photo: widget.photo,
                 restaurant: widget.restaurant,
-                onEdit: widget.onEdit,
               )
             ]),
-          )
+            )
         ]),
       ),
     );
