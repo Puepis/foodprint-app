@@ -49,7 +49,17 @@ class _EditImagePageState extends State<EditImagePage> {
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 2.5,
+                  ),
+                  const Text(
+                    "Feel free to make any changes",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.grey),
+                  ),
+                  const SizedBox(
+                    height: 40,
                   ),
                   EditImageForm(
                       onEdit: widget.onEdit,

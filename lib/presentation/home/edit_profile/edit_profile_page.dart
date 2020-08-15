@@ -96,8 +96,10 @@ class EditProfilePage extends StatelessWidget {
                 ),
                 AuthIdleButton(
                     title: "Sign Out",
-                    onPressed: () =>
-                        context.bloc<AuthBloc>().add(const LoggedOut())),
+                    onPressed: () {
+                      context.bloc<AuthBloc>().add(const LoggedOut());
+                      Navigator.of(context).pop();
+                    }),
                 const SizedBox(
                   height: 15,
                 ),

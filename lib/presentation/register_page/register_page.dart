@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_form.dart';
+import 'package:foodprint/presentation/splash/splash_page.dart';
 
 /// The user registration page that contains the [RegisterForm].
 class RegisterPage extends StatelessWidget {
@@ -18,13 +19,13 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SafeArea(
+    return WillPopScope(
+      onWillPop: exitApp,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: SafeArea(
               child: Padding(
             padding: const EdgeInsets.all(25),
             child: Center(

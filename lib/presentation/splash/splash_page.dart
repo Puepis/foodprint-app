@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
@@ -43,7 +44,15 @@ class SplashPage extends StatelessWidget {
       ],
       child: const Scaffold(
         backgroundColor: Colors.white,
+        body: Center(
+          child: Text("SPLASH PAGE"),
+        ),
       ),
     );
   }
+}
+
+Future<bool> exitApp() async {
+  SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+  return false;
 }

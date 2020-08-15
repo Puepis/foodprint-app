@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/core/value_transformers.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
@@ -39,82 +37,79 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: BlocConsumer<LocationBloc, LocationState>(
-        listener: (context, state) {
-          if (state is GetLocationFailure) {
-            Scaffold.of(context)..hideCurrentSnackBar();
-            FlushbarHelper.createError(
-                message: state.failure.map(
-                    permissionDenied: (_) => 'Location permission denied',
-                    locationServiceDisabled: (_) => 'Location service disabled',
-                    unexpected: (_) => 'Unexpected error')).show(context);
-          }
-        },
-        builder: (context, state) {
-          final mapScreen =
-              state is GetLocationSuccess ? const FoodMap() : Container();
+    return BlocConsumer<LocationBloc, LocationState>(
+      listener: (context, state) {
+        if (state is GetLocationFailure) {
+          Scaffold.of(context)..hideCurrentSnackBar();
+          FlushbarHelper.createError(
+              message: state.failure.map(
+                  permissionDenied: (_) => 'Location permission denied',
+                  locationServiceDisabled: (_) => 'Location service disabled',
+                  unexpected: (_) => 'Unexpected error')).show(context);
+        }
+      },
+      builder: (context, state) {
+        final mapScreen =
+            state is GetLocationSuccess ? const FoodMap() : Container();
 
-          return Scaffold(
-            appBar: _buildAppBar(context),
-            drawerEnableOpenDragGesture: false,
-            drawer: const AppDrawer(),
-            body: _page == SelectedPage.home
-                ? Stack(children: [mapScreen, _buildMapDrawerButton()])
-                : Gallery(
-                    sortBy: _selectedSort,
-                  ),
-            bottomNavigationBar: BottomAppBar(
-              shape: const CircularNotchedRectangle(),
-              child: Container(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      iconSize: 30.0,
-                      icon: const Icon(Icons.location_on),
-                      onPressed: () {
-                        setState(() => _page = SelectedPage.home);
-                      },
-                    ),
-                    IconButton(
-                      iconSize: 30.0,
-                      icon: const Icon(Icons.collections),
-                      onPressed: () {
-                        setState(() => _page = SelectedPage.gallery);
-                      },
-                    )
-                  ],
+        return Scaffold(
+          appBar: _buildAppBar(context),
+          drawerEnableOpenDragGesture: false,
+          drawer: const AppDrawer(),
+          body: _page == SelectedPage.home
+              ? Stack(children: [mapScreen, _buildMapDrawerButton()])
+              : Gallery(
+                  sortBy: _selectedSort,
                 ),
-              ),
-            ),
-            floatingActionButton: Container(
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            child: Container(
               height: 60,
-              width: 60,
-              child: FittedBox(
-                child: FloatingActionButton(
-                  heroTag: "camera",
-                  onPressed: () => (state is GetLocationSuccess)
-                      ? _toCamera(
-                          context, state.latlng, userData) // take picture
-                      : FlushbarHelper.createError(
-                              message: 'Location permission required')
-                          .show(context),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 35.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    iconSize: 30.0,
+                    icon: const Icon(Icons.location_on),
+                    onPressed: () {
+                      setState(() => _page = SelectedPage.home);
+                    },
                   ),
+                  IconButton(
+                    iconSize: 30.0,
+                    icon: const Icon(Icons.collections),
+                    onPressed: () {
+                      setState(() => _page = SelectedPage.gallery);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: Container(
+            height: 60,
+            width: 60,
+            child: FittedBox(
+              child: FloatingActionButton(
+                heroTag: "camera",
+                onPressed: () => (state is GetLocationSuccess)
+                    ? _toCamera(
+                        context, state.latlng, userData) // take picture
+                    : FlushbarHelper.createError(
+                            message: 'Location permission required')
+                        .show(context),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 35.0,
                 ),
               ),
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-          );
-        },
-      ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+        );
+      },
     );
   }
 

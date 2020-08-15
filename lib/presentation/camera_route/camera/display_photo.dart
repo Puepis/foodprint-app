@@ -90,10 +90,9 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
               right: 20,
               child: (state is NearbySearchStateSuccess)
                   ? NextPageButton(
-                      onSave: widget.onSaveOrAbort,
-                      restaurants: state.restaurants,
-                      imageFile: widget.imageFile,
-                    )
+                    restaurants: state.restaurants,
+                    imageFile: widget.imageFile,
+                  )
                   : (state is SearchStateError)
                       ? const Icon(Icons.error, color: Colors.red, size: 50)
                       : SpinKitRing(

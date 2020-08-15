@@ -12,14 +12,11 @@ import 'package:provider/provider.dart';
 /// Passes the list of [restaurants] to the next page.
 class NextPageButton extends StatelessWidget {
   final File imageFile;
-  final VoidCallback onSave;
   const NextPageButton({
     Key key,
     @required this.restaurants,
     @required this.imageFile,
-    @required this.onSave,
-  })  : assert(onSave != null),
-        super(key: key);
+  }) : super(key: key);
 
   final List<RestaurantEntity> restaurants;
 
@@ -39,12 +36,10 @@ class NextPageButton extends StatelessWidget {
             ),
             child: InkWell(
               borderRadius: BorderRadius.circular(1000.0),
-              onTap: () {
-                // Move to "choose your restaurant" page
-                Navigator.of(context).pushNamed(SelectRestaurantPage.routeName,
-                    arguments: SelectRestaurantArgs(imageFile, restaurants,
-                        location.latitude, location.longitude));
-              },
+              onTap: () => Navigator.of(context).pushNamed(
+                  SelectRestaurantPage.routeName,
+                  arguments: SelectRestaurantArgs(imageFile, restaurants,
+                      location.latitude, location.longitude)),
               child: const Icon(
                 Icons.navigate_next,
                 size: 50.0,

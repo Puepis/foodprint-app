@@ -57,7 +57,6 @@ class FoodprintApp extends StatelessWidget {
             textTheme: GoogleFonts.rubikTextTheme(textTheme),
           ),
           debugShowCheckedModeBanner: false,
-          home: const LoginPage(),
           initialRoute: SplashPage.routeName,
           routes: {
             SplashPage.routeName: (context) => SplashPage(),

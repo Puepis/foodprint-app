@@ -28,7 +28,6 @@ class EditImageForm extends StatefulWidget {
 class _EditImageFormState extends State<EditImageForm> {
   final _formKey = GlobalKey<FormState>();
   String _itemName, _price, _comments;
-  bool _isFavourite;
 
   final TextStyle _sectionTitleStyle = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
@@ -55,12 +54,6 @@ class _EditImageFormState extends State<EditImageForm> {
           Text(title, style: _sectionTitleStyle),
         ],
       );
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _isFavourite = widget.photo.isFavourite;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,34 +88,6 @@ class _EditImageFormState extends State<EditImageForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isFavourite = !_isFavourite;
-                        });
-                      },
-                      child: Icon(
-                        _isFavourite ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.red,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      "Favourite",
-                      style: _sectionTitleStyle,
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 30,
-            ),
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),
             _sectionHeadingSpace,
@@ -236,7 +201,7 @@ class _EditImageFormState extends State<EditImageForm> {
                                 newName: _itemName,
                                 newPrice: _price,
                                 newComments: _comments,
-                                isFavourite: _isFavourite,
+                                isFavourite: widget.photo.isFavourite,
                               ));
                             }
                           }),

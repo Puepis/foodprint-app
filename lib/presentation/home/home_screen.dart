@@ -9,6 +9,7 @@ import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/presentation/home/loading_page.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:provider/provider.dart';
 
 /// The entry point to the app that the user sees when authenticated.
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: exitApp,
       child: MultiBlocProvider(
         providers: [
           BlocProvider(

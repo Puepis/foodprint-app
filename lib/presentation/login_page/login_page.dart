@@ -7,6 +7,7 @@ import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
+import 'package:foodprint/presentation/splash/splash_page.dart';
 
 /// The user login page that contains the [LoginForm].
 class LoginPage extends StatelessWidget {
@@ -17,10 +18,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: WillPopScope(
-        onWillPop: () async => false,
+    return WillPopScope(
+      onWillPop: exitApp,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(

@@ -136,7 +136,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
         children: [
           Text(
             widget.restaurants.isEmpty
-                ? "We couldn't find any places near you"
+                ? "Try a manual search!"
                 : "Select your location!",
             style: TextStyle(
                 fontSize: 35.0,
@@ -147,7 +147,7 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
             height: 2.5,
           ),
           const Text(
-            "Here's what we found near you",
+            "We couldn't find any places near you",
             style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.normal,
