@@ -70,6 +70,7 @@ class _UserSectionState extends State<UserSection> {
                     Text(
                       username,
                       style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 38,
                         fontWeight: FontWeight.w600,
                       ),

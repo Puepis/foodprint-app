@@ -8,6 +8,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
     hide SearchStateError;
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:provider/provider.dart';
 
@@ -39,9 +40,9 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
 
     return Container(
       decoration: BoxDecoration(
-          color: Colors.black,
+          color: Colors.white,
           image:
-              DecorationImage(fit: BoxFit.contain, image: widget.loadedImage)),
+              DecorationImage(fit: BoxFit.cover, image: widget.loadedImage)),
       child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
           listener: (context, state) {
         // Error searching for restaurants
@@ -73,7 +74,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 iconSize: 50.0,
                 icon: Icon(
                   Icons.cancel,
-                  color: Colors.red.shade400,
+                  color: Colors.red.shade600,
                 ),
                 onPressed: () async {
                   final bool pop = await _willCancel();
@@ -86,17 +87,17 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                 },
               )),
           Positioned(
-              bottom: 30,
+              bottom: 20,
               right: 20,
               child: (state is NearbySearchStateSuccess)
                   ? NextPageButton(
-                    restaurants: state.restaurants,
-                    imageFile: widget.imageFile,
-                  )
+                      restaurants: state.restaurants,
+                      imageFile: widget.imageFile,
+                    )
                   : (state is SearchStateError)
                       ? const Icon(Icons.error, color: Colors.red, size: 50)
                       : SpinKitRing(
-                          color: Theme.of(context).primaryColor,
+                          color: primaryColor,
                           size: 40.0,
                         )),
         ]);
@@ -109,7 +110,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: Colors.white,
+                  backgroundColor: foodprintPrimaryColorSwatch[50],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(
@@ -138,10 +139,10 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                                 borderRadius: BorderRadius.circular(30.0)),
                             color: Colors.black87,
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text(
+                            child: Text(
                               "Confirm",
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: foodprintPrimaryColorSwatch[50],
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold),
                             ),

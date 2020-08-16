@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/profile_page_models/summary_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
@@ -14,36 +14,43 @@ class ProfilePage extends StatelessWidget {
       {Key key, @required this.userData, @required this.onFinished})
       : super(key: key);
 
-  Color get backgroundColor => foodprintPrimaryColorSwatch[500];
+  Color get backgroundColor => Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
     final foodprint = userData.foodprint;
 
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: backgroundColor,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: onFinished,
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditProfilePage(
-                      userData: userData,
-                    ),
-                  )),
-            )
-          ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: citrusGradient,
         ),
-        body: Container(
-          color: backgroundColor,
-          child: CustomScrollView(
+      ),
+      child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: AppBar(
+            elevation: 0.0,
+            backgroundColor: backgroundColor,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: onFinished,
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProfilePage(
+                        userData: userData,
+                      ),
+                    )),
+              )
+            ],
+          ),
+          body: CustomScrollView(
             physics: const ClampingScrollPhysics(),
             slivers: [
               SliverPadding(
@@ -72,7 +79,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ));
+          )),
+    );
   }
 }

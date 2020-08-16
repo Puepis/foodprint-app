@@ -36,3 +36,4 @@ Color hintColor = const Color(0xFFB0B0B0);
 Color hoverColor = const Color(0xFFE67B3A);
 Color bgColor = const Color(0xFFFFFFFF);
 Color axisTitleColor = const Color(0xff67727d);
+

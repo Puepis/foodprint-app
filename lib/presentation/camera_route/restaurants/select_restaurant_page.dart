@@ -8,6 +8,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/router/camera/save_details_args.dart';
 
 /// The page that displays a list of nearby [restaurants] for the user to
@@ -34,7 +35,7 @@ class SelectRestaurantPage extends StatefulWidget {
 }
 
 class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
-  final Color backgroundColor = Colors.white;
+  final Color backgroundColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
@@ -57,39 +58,47 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
     }, builder: (_, state) {
       final Widget body = _buildBody(state, bloc);
 
-      return Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: AppBar(
-            leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () => Navigator.pop(context)),
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: cloudsGradient),
+        ),
+        child: Scaffold(
             backgroundColor: backgroundColor,
-            elevation: 0.0,
-            centerTitle: true,
-            actions: [
-              IconButton(
+            appBar: AppBar(
+              leading: IconButton(
                   icon: const Icon(
-                    Icons.search,
+                    Icons.arrow_back,
                     color: Colors.black,
                   ),
-                  onPressed: () async {
-                    final String place_id = await showSearch(
-                        context: context,
-                        delegate: RestaurantSearchDelegate(
-                            widget.latitude, widget.longitude));
-                    if (place_id != null) {
-                      bloc.add(RestaurantDetailSearched(id: place_id));
-                    }
-                  })
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: body,
-          ));
+                  onPressed: () => Navigator.pop(context)),
+              backgroundColor: backgroundColor,
+              elevation: 0.0,
+              centerTitle: true,
+              actions: [
+                IconButton(
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.black,
+                    ),
+                    onPressed: () async {
+                      final String place_id = await showSearch(
+                          context: context,
+                          delegate: RestaurantSearchDelegate(
+                              widget.latitude, widget.longitude));
+                      if (place_id != null) {
+                        bloc.add(RestaurantDetailSearched(id: place_id));
+                      }
+                    })
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: body,
+            )),
+      );
     });
   }
 
@@ -146,9 +155,11 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           const SizedBox(
             height: 2.5,
           ),
-          const Text(
-            "We couldn't find any places near you",
-            style: TextStyle(
+          Text(
+            widget.restaurants.isEmpty
+                ? "We couldn't find any places near you"
+                : "Here's what we found near you",
+            style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.normal,
                 color: Colors.grey),

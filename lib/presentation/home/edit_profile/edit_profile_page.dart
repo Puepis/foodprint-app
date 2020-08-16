@@ -141,7 +141,7 @@ class EditProfilePage extends StatelessWidget {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: Colors.white,
+                  backgroundColor: foodprintPrimaryColorSwatch[50],
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(

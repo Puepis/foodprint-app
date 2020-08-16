@@ -7,7 +7,6 @@ import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/router/profile_page_args.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -112,10 +111,11 @@ class AppDrawer extends StatelessWidget {
                   child: Text(username.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: GoogleFonts.rubik(
-                          fontSize: 26.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600)),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                      )),
                 ),
               ],
             ),
