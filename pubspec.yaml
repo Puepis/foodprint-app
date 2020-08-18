@@ -1,7 +1,7 @@
 name: foodprint
 description: The app for foodies
 
-version: 1.0.0+1
+version: 2.0.0+2
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -49,7 +49,7 @@ dependencies:
   rxdart: ^0.24.1
   fl_chart: ^0.10.1
   transparent_image: ^1.0.0
-  bug_report: ^0.0.1-dev.3
+  bug_report: ^0.1.0
   cached_network_image: ^2.2.0+1
 
   cupertino_icons: ^0.1.2

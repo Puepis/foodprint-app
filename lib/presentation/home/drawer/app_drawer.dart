@@ -142,7 +142,7 @@ class AppDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0),
               ),
               Text(
-                'v1.1.0',
+                'v2.0.0',
                 style: TextStyle(
                     fontSize: 15.0,
                     color: hintColor,
