@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 
-class ProfileArgs {
+class ProfileNavigatorArgs {
   UserData userData;
-  ProfileArgs({@required this.userData});
+  ProfileNavigatorArgs({@required this.userData});
 }

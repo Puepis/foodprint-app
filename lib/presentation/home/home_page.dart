@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart' show Tuple2;
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
 import 'package:foodprint/application/location/location_bloc.dart';
@@ -9,12 +10,14 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:foodprint/presentation/map/map.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 
 enum SortBy { latest, oldest, favourites, highestPrice, lowestPrice }
@@ -26,12 +29,52 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   SelectedPage _page = SelectedPage.home;
   SortBy _selectedSort = SortBy.latest;
+  AnimationController _hide;
+  bool _showFAB = true;
 
   /// Each entry in the list contains a photo paired with its corresponding location
   List<Tuple2<PhotoEntity, RestaurantEntity>> assocPhotos;
+
+  @override
+  void initState() {
+    super.initState();
+    _hide = AnimationController(vsync: this, duration: kThemeAnimationDuration)
+      ..forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _hide.dispose();
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            setState(() {
+              _showFAB = true;
+            });
+            _hide.forward();
+            break;
+          case ScrollDirection.reverse:
+            setState(() {
+              _showFAB = false;
+            });
+            _hide.reverse();
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,62 +95,79 @@ class _HomePageState extends State<HomePage> {
         final mapScreen =
             state is GetLocationSuccess ? const FoodMap() : Container();
 
-        return Scaffold(
-          appBar: _buildAppBar(context),
-          drawerEnableOpenDragGesture: false,
-          drawer: const AppDrawer(),
-          body: _page == SelectedPage.home
-              ? Stack(children: [mapScreen, _buildMapDrawerButton()])
-              : Gallery(
-                  sortBy: _selectedSort,
-                ),
-          bottomNavigationBar: BottomAppBar(
-            shape: const CircularNotchedRectangle(),
-            child: Container(
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                    iconSize: 30.0,
-                    icon: const Icon(Icons.location_on),
-                    onPressed: () {
-                      setState(() => _page = SelectedPage.home);
-                    },
+        return NotificationListener<ScrollNotification>(
+          onNotification: _page == SelectedPage.home
+              ? (_) => null
+              : _handleScrollNotification,
+          child: Scaffold(
+            appBar: _buildAppBar(context),
+            drawerEnableOpenDragGesture: false,
+            drawer: const AppDrawer(),
+            body: _page == SelectedPage.home
+                ? Stack(children: [mapScreen, _buildMapDrawerButton()])
+                : Gallery(
+                    sortBy: _selectedSort,
                   ),
-                  IconButton(
-                    iconSize: 30.0,
-                    icon: const Icon(Icons.collections),
-                    onPressed: () {
-                      setState(() => _page = SelectedPage.gallery);
-                    },
-                  )
-                ],
+            bottomNavigationBar: ClipRect(
+              child: SizeTransition(
+                sizeFactor: _hide,
+                axisAlignment: -1,
+                child: BottomAppBar(
+                  shape: const CircularNotchedRectangle(),
+                  child: Container(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          iconSize: 30.0,
+                          icon: const Icon(Icons.location_on),
+                          onPressed: () {
+                            setState(() => _page = SelectedPage.home);
+                          },
+                        ),
+                        IconButton(
+                          iconSize: 30.0,
+                          icon: const Icon(Icons.collections),
+                          onPressed: () {
+                            setState(() => _page = SelectedPage.gallery);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          floatingActionButton: Container(
-            height: 60,
-            width: 60,
-            child: FittedBox(
+            floatingActionButton: Visibility(
+              visible: _showFAB,
               child: FloatingActionButton(
                 heroTag: "camera",
                 onPressed: () => (state is GetLocationSuccess)
-                    ? _toCamera(
-                        context, state.latlng, userData) // take picture
+                    ? _toCamera(context, state.latlng, userData) // take picture
                     : FlushbarHelper.createError(
                             message: 'Location permission required')
                         .show(context),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 35.0,
+                child: Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: sweetMorningGradient.reversed.toList())),
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 35.0,
+                  ),
                 ),
               ),
             ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
         );
       },
     );
@@ -148,50 +208,72 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// The app bar is only shown in the gallery page
-  PreferredSizeWidget _buildAppBar(BuildContext context) => _page ==
-          SelectedPage.home
-      ? null
-      : AppBar(
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          title: const Text(
-            'Gallery',
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return _page == SelectedPage.home
+        ? null
+        : GradientAppBar(
+            gradient: LinearGradient(
+              colors: sweetMorningGradient,
+            ),
+            centerTitle: true,
+            automaticallyImplyLeading: false,
+            title: const Text(
+              'Gallery',
+            ),
+            leading: Builder(
+                builder: (context) => IconButton(
+                      icon: const Icon(Icons.menu),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    )),
+            actions: [_buildSortMenu()],
+          );
+  }
+
+  /// The popup menu for sorting gallery photos.
+  PopupMenuButton<SortBy> _buildSortMenu() {
+    const menuTextStyle =
+        TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+    return PopupMenuButton<SortBy>(
+      initialValue: _selectedSort,
+      tooltip: "Sort photos",
+      onSelected: (result) => setState(() => _selectedSort = result),
+      itemBuilder: (BuildContext context) => [
+        _buildSortItem(
+            SortBy.latest, "Date Taken", menuTextStyle, Icons.arrow_downward),
+        _buildSortItem(
+            SortBy.oldest, "Date Taken", menuTextStyle, Icons.arrow_upward),
+        _buildSortItem(
+            SortBy.highestPrice, "Price", menuTextStyle, Icons.arrow_downward),
+        _buildSortItem(
+            SortBy.lowestPrice, "Price", menuTextStyle, Icons.arrow_upward),
+        const PopupMenuItem<SortBy>(
+          value: SortBy.favourites,
+          child: Text(
+            'Favourites',
+            style: menuTextStyle,
           ),
-          leading: Builder(
-              builder: (context) => IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  )),
-          actions: [
-            PopupMenuButton<SortBy>(
-              initialValue: _selectedSort,
-              tooltip: "Sort photos",
-              onSelected: (result) => setState(() => _selectedSort = result),
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<SortBy>>[
-                const PopupMenuItem<SortBy>(
-                  value: SortBy.latest,
-                  child: Text('Latest'),
-                ),
-                const PopupMenuItem<SortBy>(
-                  value: SortBy.oldest,
-                  child: Text('Oldest'),
-                ),
-                const PopupMenuItem<SortBy>(
-                  value: SortBy.highestPrice,
-                  child: Text('Price (high to low)'),
-                ),
-                const PopupMenuItem<SortBy>(
-                  value: SortBy.lowestPrice,
-                  child: Text('Price (low to high)'),
-                ),
-                const PopupMenuItem<SortBy>(
-                  value: SortBy.favourites,
-                  child: Text('Favourites'),
-                ),
-              ],
-            )
-          ],
-        );
+        ),
+      ],
+    );
+  }
+
+  PopupMenuItem<SortBy> _buildSortItem(
+      SortBy value, String text, TextStyle textStyle, IconData iconData) {
+    return PopupMenuItem<SortBy>(
+      value: value,
+      child: Row(
+        children: [
+          Text(text, style: textStyle),
+          const SizedBox(
+            width: 4.0,
+          ),
+          Icon(iconData,
+              size: 18,
+              color: _selectedSort == value ? Colors.black : Colors.grey),
+        ],
+      ),
+    );
+  }
 }

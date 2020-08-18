@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/select_restaurant_page.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:foodprint/presentation/router/camera/select_restaurant_args.dart';
 import 'package:provider/provider.dart';
@@ -32,8 +32,12 @@ class NextPageButton extends StatelessWidget {
           type: MaterialType.transparency,
           child: Ink(
             decoration: BoxDecoration(
-              color: primaryColorDark,
               shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: sweetMorningGradient
+              )
             ),
             child: InkWell(
               borderRadius: BorderRadius.circular(1000.0),

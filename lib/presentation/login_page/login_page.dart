@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/login_form/login_form_bloc.dart';
 import 'package:foodprint/injection.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/core/styles/text_styles.dart';
 import 'package:foodprint/presentation/login_page/login_form.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
@@ -13,8 +12,8 @@ import 'package:foodprint/presentation/splash/splash_page.dart';
 /// The user login page that contains the [LoginForm].
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
-  static const routeOnRegisterSuccess = "/login_on_register_success";
-  static const routeOnLogout = "/from_logout";
+  static const routeOnRegisterSuccess = "/on_register";
+  static const routeOnLogout = "/on_logout";
   const LoginPage({Key key}) : super(key: key);
 
   @override

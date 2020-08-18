@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/home/drawer/profile/navigator.dart';
-import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
-import 'package:foodprint/presentation/map/restaurant_gallery/restaurant_gallery.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
-import 'package:foodprint/presentation/router/profile_page_args.dart';
-import 'package:foodprint/presentation/router/restaurant_gallery_args.dart';
-import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
+import 'package:foodprint/presentation/router/profile/profile_navigator_args.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,8 +14,8 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case ProfilePage.routeName:
-        if (args is ProfileArgs) {
+      case ProfileNavigator.routeName:
+        if (args is ProfileNavigatorArgs) {
           return MaterialPageRoute(
             builder: (_) => ProfileNavigator(userData: args.userData),
           );
@@ -30,23 +25,6 @@ class RouteGenerator {
         return SlideUpEnterRoute(newPage: const TermsOfService());
       case PrivacyPolicy.routeName:
         return SlideUpEnterRoute(newPage: const PrivacyPolicy());
-      case SpendingBreakdownPage.routeName:
-        if (args is SpendingBreakdownPageArgs) {
-          return FadeRoute(
-              newPage: SpendingBreakdownPage(
-            spending: args.spending,
-          ));
-        }
-        return _errorRoute();
-      case RestaurantGallery.routeName:
-        if (args is RestaurantGalleryArgs) {
-          return SlideUpEnterRoute(
-              newPage: RestaurantGallery(
-            restaurant: args.restaurant,
-            photos: args.photos,
-          ));
-        }
-        return _errorRoute();
       case LoginPage.routeOnRegisterSuccess:
         return SlideLeftRoute(newPage: const LoginPage());
       case LoginPage.routeOnLogout:

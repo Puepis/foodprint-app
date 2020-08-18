@@ -22,12 +22,11 @@ class ProfilePage extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: citrusGradient,
-        ),
-      ),
+          gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        colors: sweetMorningGradient.reversed.toList(),
+      )),
       child: Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(

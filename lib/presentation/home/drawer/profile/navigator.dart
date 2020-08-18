@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
-import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
+import 'package:foodprint/presentation/router/profile/spending_breakdown_page_args.dart';
 
 import 'pages/profile_page.dart';
 import 'pages/spending_breakdown_page.dart';
@@ -44,7 +45,10 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
               break;
             case SpendingBreakdownPage.routeName:
               if (args is SpendingBreakdownPageArgs) {
-                builder = (_) => SpendingBreakdownPage(spending: args.spending);
+                return SlideLeftRoute(
+                    newPage: SpendingBreakdownPage(
+                  spending: args.spending,
+                ));
               } else {
                 throw Exception('Invalid arguments: $args');
               }

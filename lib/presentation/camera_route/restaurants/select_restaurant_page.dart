@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
@@ -106,11 +105,8 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   Widget _buildBody(ManualSearchState state, ManualSearchBloc bloc) {
     if (state is PlaceDetailSearchLoading) {
       // Loading indicator
-      return Center(
-        child: SpinKitRing(
-          color: primaryColor,
-          size: 100,
-        ),
+      return const Center(
+        child: CircularProgressIndicator(),
       );
     } else if (state is PlaceDetailSearchSuccess) {
       // Provide user with actions

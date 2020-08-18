@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 import 'legal.dart';
 
@@ -24,7 +26,9 @@ class PrivacyPolicy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
+        gradient: LinearGradient(colors: sweetMorningGradient),
+        centerTitle: true,
         title: const Text("Privacy Policy"),
       ),
       body: Padding(

@@ -8,12 +8,19 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
-import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:provider/provider.dart';
+
+class NoGlowBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
 
 /// Displays all of the user's photos
 class Gallery extends StatelessWidget {
@@ -29,59 +36,59 @@ class Gallery extends StatelessWidget {
 
     // Build photos lazily
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: cloudsGradient),
-        ),
-      child: GridView.builder(
-        itemCount: photos.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 5,
-          mainAxisSpacing: 5,
-        ),
-        padding: const EdgeInsets.all(10.0),
-        itemBuilder: (context, index) {
-          final Tuple2<PhotoEntity, RestaurantEntity> pair = photos[index];
-          final PhotoEntity photo = pair.value1;
-          final RestaurantEntity restaurant = pair.value2;
+      color: Colors.grey.shade100,
+      child: ScrollConfiguration(
+        behavior: NoGlowBehavior(),
+        child: GridView.builder(
+          physics: const ClampingScrollPhysics(),
+          itemCount: photos.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+          ),
+          padding: const EdgeInsets.all(10.0),
+          itemBuilder: (context, index) {
+            final Tuple2<PhotoEntity, RestaurantEntity> pair = photos[index];
+            final PhotoEntity photo = pair.value1;
+            final RestaurantEntity restaurant = pair.value2;
 
-          return Stack(children: [
-            GestureDetector(
-              onTap: () => _showFullImage(context, photo, restaurant, userData),
-              child: SizedBox.expand(
-                child: Card(
-                  color: Colors.black,
-                  elevation: 0.0,
-                  clipBehavior: Clip.antiAlias,
-                  child: Hero(
-                    tag: photo.timestamp.getOrCrash(),
-                    child: CachedNetworkImage(
-                        fit: BoxFit.fitWidth,
-                        fadeInDuration: const Duration(milliseconds: 150),
-                        placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                        imageUrl: photo.url.getOrCrash()),
+            return Stack(children: [
+              GestureDetector(
+                onTap: () =>
+                    _showFullImage(context, photo, restaurant, userData),
+                child: SizedBox.expand(
+                  child: Card(
+                    color: Colors.black,
+                    elevation: 0.0,
+                    clipBehavior: Clip.antiAlias,
+                    child: Hero(
+                      tag: photo.timestamp.getOrCrash(),
+                      child: CachedNetworkImage(
+                          fit: BoxFit.fitWidth,
+                          fadeInDuration: const Duration(milliseconds: 150),
+                          placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          imageUrl: photo.url.getOrCrash()),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 2.5,
-              right: 2.5,
-              child: IconButton(
-                icon: const Icon(Icons.delete),
-                iconSize: 25.0,
-                color: Colors.white,
-                onPressed: () =>
-                    _onDeletePressed(context, photo, restaurant, userData),
+              Positioned(
+                top: 2.5,
+                right: 2.5,
+                child: IconButton(
+                  icon: const Icon(Icons.delete),
+                  iconSize: 25.0,
+                  color: Colors.grey.shade200,
+                  onPressed: () =>
+                      _onDeletePressed(context, photo, restaurant, userData),
+                ),
               ),
-            ),
-          ]);
-        },
+            ]);
+          },
+        ),
       ),
     );
   }

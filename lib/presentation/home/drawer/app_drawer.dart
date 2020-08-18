@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
-import 'package:foodprint/presentation/router/profile_page_args.dart';
+import 'package:foodprint/presentation/router/profile/profile_navigator_args.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import 'profile/navigator.dart';
 
 /// The main drawer displayed from the home page
 class AppDrawer extends StatelessWidget {
@@ -36,8 +39,8 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.person,
                       text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
-                          context, ProfilePage.routeName,
-                          arguments: ProfileArgs(userData: userData))),
+                          context, ProfileNavigator.routeName,
+                          arguments: ProfileNavigatorArgs(userData: userData))),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
@@ -68,7 +71,11 @@ class AppDrawer extends StatelessWidget {
   Widget _buildHeader(String username, String url) => DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primaryColorDark),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: sweetMorningGradient.reversed.toList())),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -135,7 +142,7 @@ class AppDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0),
               ),
               Text(
-                'v1.0.0',
+                'v1.1.0',
                 style: TextStyle(
                     fontSize: 15.0,
                     color: hintColor,
@@ -155,11 +162,7 @@ class AppDrawer extends StatelessWidget {
       ListTile(
         title: Row(
           children: [
-            Icon(
-              icon,
-              size: 26.0,
-              color: primaryColorDark,
-            ),
+            Icon(icon, size: 26.0, color: foodprintPrimaryColorSwatch[400]),
             const SizedBox(
               width: 20,
             ),

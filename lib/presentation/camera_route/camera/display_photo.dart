@@ -3,12 +3,10 @@ import 'dart:io';
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart'
     hide SearchStateError;
 import 'package:foodprint/application/restaurants/nearby_search/restaurant_search_bloc.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:provider/provider.dart';
 
@@ -41,8 +39,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          image:
-              DecorationImage(fit: BoxFit.cover, image: widget.loadedImage)),
+          image: DecorationImage(fit: BoxFit.cover, image: widget.loadedImage)),
       child: BlocConsumer<RestaurantSearchBloc, RestaurantSearchState>(
           listener: (context, state) {
         // Error searching for restaurants
@@ -96,10 +93,12 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                     )
                   : (state is SearchStateError)
                       ? const Icon(Icons.error, color: Colors.red, size: 50)
-                      : SpinKitRing(
-                          color: primaryColor,
-                          size: 40.0,
-                        )),
+                      : Container(
+                          padding: const EdgeInsets.all(12),
+                          height: 60,
+                          width: 60,
+                          child: const Center(
+                              child: CircularProgressIndicator()))),
         ]);
       }),
     );
@@ -110,7 +109,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: foodprintPrimaryColorSwatch[50],
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(
@@ -139,10 +138,10 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                                 borderRadius: BorderRadius.circular(30.0)),
                             color: Colors.black87,
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: Text(
+                            child: const Text(
                               "Confirm",
                               style: TextStyle(
-                                  color: foodprintPrimaryColorSwatch[50],
+                                  color: Colors.white,
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold),
                             ),

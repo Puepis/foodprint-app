@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class ChangeUsernamePage extends StatefulWidget {
   final UserData userData;
@@ -30,7 +32,10 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
+        appBar: GradientAppBar(
+          gradient: LinearGradient(
+            colors: sweetMorningGradient,
+          ),
           centerTitle: true,
           title: const Text("Change Username"),
           leading: IconButton(

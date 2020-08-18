@@ -89,10 +89,6 @@ class RestaurantPreview extends StatelessWidget {
                                   height: 18.0,
                                   thickness: 2.0,
                                 ),
-                                //_buildSubheading(context),
-                                // const SizedBox(
-                                //   height: 16,
-                                // ),
                                 PreviewPhotoDescription(
                                     constraints: contentConstraints,
                                     photo: photos[0])

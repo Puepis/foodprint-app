@@ -1,6 +1,8 @@
 import 'package:bug_report/bug_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 /// The page where users can report a bug to the app's repository. 
 /// 
@@ -16,7 +18,10 @@ class ReportIssuePage extends StatelessWidget {
     final String repositoryName = DotEnv().env['GITHUB_REPOSITORY'];
     final String accessToken = DotEnv().env['GITHUB_ACCESS_TOKEN'];
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
+        gradient: LinearGradient(
+          colors: sweetMorningGradient,
+        ),
         centerTitle: true,
         title: const Text("Report an Issue"),
       ),

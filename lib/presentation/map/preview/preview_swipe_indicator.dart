@@ -20,7 +20,7 @@ class PreviewSwipeIndicator extends StatelessWidget {
         child: SizedBox(
           width: constraints.maxWidth * 0.08,
           child: const Divider(
-            color: Colors.grey,
+            color: Colors.black87,
             thickness: 3,
             height: 20,
           ),

@@ -5,7 +5,9 @@ import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   final UserData userData;
@@ -33,7 +35,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
+        appBar: GradientAppBar(
+          gradient: LinearGradient(
+            colors: sweetMorningGradient,
+          ),
           centerTitle: true,
           title: const Text("Change Password"),
           leading: IconButton(

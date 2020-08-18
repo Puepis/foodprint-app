@@ -44,9 +44,6 @@ class SplashPage extends StatelessWidget {
       ],
       child: const Scaffold(
         backgroundColor: Colors.white,
-        body: Center(
-          child: Text("SPLASH PAGE"),
-        ),
       ),
     );
   }

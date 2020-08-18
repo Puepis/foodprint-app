@@ -5,7 +5,9 @@ import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 import 'edit_profile.dart';
 
@@ -26,7 +28,11 @@ class EditProfilePage extends StatelessWidget {
         color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
 
     return Scaffold(
-        appBar: AppBar(
+        appBar: GradientAppBar(
+          gradient: LinearGradient(
+            colors: sweetMorningGradient,
+          ),
+          centerTitle: true,
           title: const Text("Edit Profile"),
         ),
         body: BlocListener<AccountBloc, AccountState>(
