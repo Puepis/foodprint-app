@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
+import 'package:foodprint/domain/core/exceptions.dart';
+import 'package:foodprint/infrastructure/local_storage/onboarding_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -17,6 +20,8 @@ part 'auth_bloc.freezed.dart';
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthRepository _authClient;
+  final OnboardingClient _onboardingClient =
+      OnboardingClient(const FlutterSecureStorage());
 
   AuthBloc(this._authClient) : super(const AuthState.initial());
 
@@ -27,8 +32,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield* event.map(
       authCheckStarted: (e) async* {
         final Option<JWT> result = await _authClient.getAccessToken();
-        yield result.fold(() => const AuthState.unauthenticated(),
-            (token) => AuthState.authenticated(token: token));
+        if (result.isSome()) {
+          yield AuthState.authenticated(token: result.getOrElse(() => null));
+        } else {
+          try {
+            await _onboardingClient.getAppLaunched();
+            yield const AuthState.unauthenticated();
+          } on NotPreviouslyLaunchedException {
+            await _onboardingClient.markAppLaunched();
+            yield const AuthState.firstAppLaunch();
+          }
+        }
       },
       loggedIn: (e) async* {
         yield const AuthState.loading();

@@ -12,6 +12,7 @@ import 'package:foodprint/presentation/splash/splash_page.dart';
 /// The user registration page that contains the [RegisterForm].
 class RegisterPage extends StatelessWidget {
   static const routeName = "/register";
+  static const fromOnboarding = "/from_onboarding";
   const RegisterPage({Key key}) : super(key: key);
 
   TextStyle get _smallTextStyle =>

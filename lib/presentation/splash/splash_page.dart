@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/onboarding/onboarding_page.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 
 /// The initial page that determines which page to show depending on the
@@ -38,6 +39,9 @@ class SplashPage extends StatelessWidget {
                       cxt,
                       LoginPage.routeOnLogout,
                       ModalRoute.withName(SplashPage.routeName));
+                },
+                firstAppLaunch: (_) {
+                  Navigator.pushNamed(context, OnboardingScreen.routeName);
                 });
           },
         ),

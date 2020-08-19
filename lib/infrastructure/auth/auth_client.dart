@@ -11,7 +11,7 @@ import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/exceptions.dart';
-import 'package:foodprint/infrastructure/local_storage/local_storage_client.dart';
+import 'package:foodprint/infrastructure/local_storage/token_storage_client.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 

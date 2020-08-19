@@ -5,6 +5,7 @@ import 'package:foodprint/presentation/home/drawer/profile/navigator.dart';
 import 'package:foodprint/presentation/home/home_screen.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile/profile_navigator_args.dart';
 
@@ -29,6 +30,8 @@ class RouteGenerator {
         return SlideLeftRoute(newPage: const LoginPage());
       case LoginPage.routeOnLogout:
         return FadeRoute(newPage: const LoginPage());
+      case RegisterPage.fromOnboarding:
+        return SlideLeftRoute(newPage: const RegisterPage());
       case HomeScreen.routeOnLogin:
         if (args is HomeScreenArgs) {
           return FadeRoute(

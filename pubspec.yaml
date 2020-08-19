@@ -82,7 +82,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/logo.png
+    - assets/images/
+    - assets/images/onboarding/
     - .env
     - google_fonts_rubik/
     - google_fonts_montserrat/
