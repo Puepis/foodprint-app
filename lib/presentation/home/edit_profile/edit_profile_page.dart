@@ -25,6 +25,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final TextEditingController _usernameController = TextEditingController();
 
   @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
     final token = userData.token;

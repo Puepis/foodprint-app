@@ -10,6 +10,7 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
+import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
@@ -21,7 +22,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 
 enum SortBy { latest, oldest, favourites, highestPrice, lowestPrice }
-enum SelectedPage { home, gallery }
+enum SelectedPage { map, gallery }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -30,10 +31,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  SelectedPage _page = SelectedPage.home;
+  SelectedPage _page = SelectedPage.map;
   SortBy _selectedSort = SortBy.latest;
   AnimationController _hide;
   bool _showFAB = true;
+  final PageController _pageController = PageController();
 
   /// Each entry in the list contains a photo paired with its corresponding location
   List<Tuple2<PhotoEntity, RestaurantEntity>> assocPhotos;
@@ -49,6 +51,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     _hide.dispose();
+    _pageController.dispose();
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
@@ -96,17 +99,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             state is GetLocationSuccess ? const FoodMap() : Container();
 
         return NotificationListener<ScrollNotification>(
-          onNotification: _page == SelectedPage.home
+          onNotification: _page == SelectedPage.map
               ? (_) => null
               : _handleScrollNotification,
           child: Scaffold(
+            drawerEnableOpenDragGesture: _page != SelectedPage.map,
             appBar: _buildAppBar(context),
             drawer: const AppDrawer(),
-            body: _page == SelectedPage.home
-                ? Stack(children: [mapScreen, _buildMapDrawerButton()])
-                : Gallery(
-                    sortBy: _selectedSort,
-                  ),
+            body: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Stack(children: [mapScreen, _buildMapDrawerButton()]),
+                Gallery(
+                  sortBy: _selectedSort,
+                )
+              ],
+            ),
             bottomNavigationBar: ClipRect(
               child: SizeTransition(
                 sizeFactor: _hide,
@@ -121,14 +130,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         IconButton(
                           iconSize: 30.0,
                           icon: const Icon(Icons.location_on),
+                          color: _page == SelectedPage.map
+                              ? const Color(0xFFFF916F)
+                              : Colors.black,
                           onPressed: () {
-                            setState(() => _page = SelectedPage.home);
+                            _pageController.jumpToPage(0);
+                            setState(() => _page = SelectedPage.map);
                           },
                         ),
                         IconButton(
                           iconSize: 30.0,
+                          color: _page == SelectedPage.gallery
+                              ? const Color(0xFFFF916F)
+                              : Colors.black,
                           icon: const Icon(Icons.collections),
                           onPressed: () {
+                            _pageController.jumpToPage(1);
                             setState(() => _page = SelectedPage.gallery);
                           },
                         )
@@ -208,7 +225,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /// The app bar is only shown in the gallery page
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return _page == SelectedPage.home
+    return _page == SelectedPage.map
         ? null
         : GradientAppBar(
             gradient: LinearGradient(
