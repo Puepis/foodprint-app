@@ -101,7 +101,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               : _handleScrollNotification,
           child: Scaffold(
             appBar: _buildAppBar(context),
-            drawerEnableOpenDragGesture: false,
             drawer: const AppDrawer(),
             body: _page == SelectedPage.home
                 ? Stack(children: [mapScreen, _buildMapDrawerButton()])

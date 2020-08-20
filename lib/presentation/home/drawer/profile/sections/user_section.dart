@@ -99,7 +99,7 @@ class _UserSectionState extends State<UserSection> {
             height: height,
             width: height,
             decoration: BoxDecoration(
-                color: foodprintPrimaryColorSwatch[50], borderRadius: radius),
+                color: foodprintPrimaryColorSwatch[100], borderRadius: radius),
             child: const Icon(
               Icons.person_outline,
               size: 100,

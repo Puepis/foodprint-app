@@ -10,6 +10,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.black12,
+    statusBarIconBrightness: Brightness.dark
+  ));
 
   // Add font licenses
   LicenseRegistry.addLicense(() async* {

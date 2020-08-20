@@ -16,16 +16,24 @@ class PreviewSwipeIndicator extends StatelessWidget {
           color: foodprintPrimaryColorSwatch[50],
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0))),
-      child: Center(
-        child: SizedBox(
-          width: constraints.maxWidth * 0.08,
-          child: const Divider(
-            color: Colors.black87,
-            thickness: 3,
-            height: 20,
-          ),
+      child: const Center(
+        child: Icon(
+          Icons.keyboard_arrow_up,
+          color: Colors.black,
+          size: 20,
         ),
       ),
     );
+  }
+
+  SizedBox buildDivider() {
+    return SizedBox(
+        width: constraints.maxWidth * 0.08,
+        child: const Divider(
+          color: Colors.black87,
+          thickness: 3,
+          height: 20,
+        ),
+      );
   }
 }

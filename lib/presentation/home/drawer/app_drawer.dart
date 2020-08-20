@@ -87,20 +87,20 @@ class AppDrawer extends StatelessWidget {
               children: [
                 if (url == null)
                   Container(
-                    height: 65,
-                    width: 65,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                         color: foodprintPrimaryColorSwatch[50],
                         borderRadius: BorderRadius.circular(100)),
                     child: const Icon(
                       Icons.person_outline,
-                      size: 52,
+                      size: 48,
                     ),
                   )
                 else
                   Container(
-                    height: 65,
-                    width: 65,
+                    height: 60,
+                    width: 60,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: CachedNetworkImage(
@@ -115,14 +115,17 @@ class AppDrawer extends StatelessWidget {
                   width: 15.0,
                 ),
                 Expanded(
-                  child: Text(username.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
-                      )),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(username.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ),
                 ),
               ],
             ),
