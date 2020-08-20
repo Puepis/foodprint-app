@@ -10,8 +10,8 @@ abstract class RegisterFormState with _$RegisterFormState {
     @required bool showErrorMessages,
     @required bool isSubmitting,
     @required
-        Option<Either<RegisterFailure, Unit>>
-            authFailureOrSuccessOption, // nothing happened yet
+        Option<Either<RegisterFailure, JWT>>
+            registerOption, // nothing happened yet
   }) = _RegisterFormState;
 
   factory RegisterFormState.initial() => RegisterFormState(
@@ -20,6 +20,6 @@ abstract class RegisterFormState with _$RegisterFormState {
       confirmationPassword: ConfirmationPassword(''),
       showErrorMessages: false,
       isSubmitting: false,
-      authFailureOrSuccessOption: none(),
+      registerOption: none(),
       passwordsMatch: true);
 }

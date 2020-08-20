@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
               _isSubmitting = true;
             });
           }
-          state.authFailureOrSuccessOption.fold(
+          state.loginOption.fold(
               () {},
               (either) => either.fold((failure) {
                     setState(() {
@@ -50,13 +50,13 @@ class _LoginFormState extends State<LoginForm> {
                             'Invalid login combination',
                       ),
                     ).show(context);
-                  }, (jwt) {
+                  }, (accessToken) {
                     setState(() {
                       _isSubmitting = false;
                     });
                     context
                         .bloc<AuthBloc>()
-                        .add(AuthEvent.loggedIn(token: jwt)); // authenticated
+                        .add(AuthEvent.loggedIn(token: accessToken)); // authenticated
                   }));
         },
         builder: (context, state) {

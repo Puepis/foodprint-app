@@ -580,20 +580,13 @@ class _$RegisterFormStateTearOff {
   const _$RegisterFormStateTearOff();
 
   _RegisterFormState call(
-      {@required
-          Username username,
-      @required
-          Password password,
-      @required
-          ConfirmationPassword confirmationPassword,
-      @required
-          bool passwordsMatch,
-      @required
-          bool showErrorMessages,
-      @required
-          bool isSubmitting,
-      @required
-          Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption}) {
+      {@required Username username,
+      @required Password password,
+      @required ConfirmationPassword confirmationPassword,
+      @required bool passwordsMatch,
+      @required bool showErrorMessages,
+      @required bool isSubmitting,
+      @required Option<Either<RegisterFailure, JWT>> registerOption}) {
     return _RegisterFormState(
       username: username,
       password: password,
@@ -601,7 +594,7 @@ class _$RegisterFormStateTearOff {
       passwordsMatch: passwordsMatch,
       showErrorMessages: showErrorMessages,
       isSubmitting: isSubmitting,
-      authFailureOrSuccessOption: authFailureOrSuccessOption,
+      registerOption: registerOption,
     );
   }
 }
@@ -616,7 +609,7 @@ mixin _$RegisterFormState {
   bool get passwordsMatch;
   bool get showErrorMessages;
   bool get isSubmitting;
-  Option<Either<RegisterFailure, Unit>> get authFailureOrSuccessOption;
+  Option<Either<RegisterFailure, JWT>> get registerOption;
 
   $RegisterFormStateCopyWith<RegisterFormState> get copyWith;
 }
@@ -632,7 +625,7 @@ abstract class $RegisterFormStateCopyWith<$Res> {
       bool passwordsMatch,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption});
+      Option<Either<RegisterFailure, JWT>> registerOption});
 }
 
 class _$RegisterFormStateCopyWithImpl<$Res>
@@ -651,7 +644,7 @@ class _$RegisterFormStateCopyWithImpl<$Res>
     Object passwordsMatch = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
-    Object authFailureOrSuccessOption = freezed,
+    Object registerOption = freezed,
   }) {
     return _then(_value.copyWith(
       username: username == freezed ? _value.username : username as Username,
@@ -667,9 +660,9 @@ class _$RegisterFormStateCopyWithImpl<$Res>
           : showErrorMessages as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
-          ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<RegisterFailure, Unit>>,
+      registerOption: registerOption == freezed
+          ? _value.registerOption
+          : registerOption as Option<Either<RegisterFailure, JWT>>,
     ));
   }
 }
@@ -687,7 +680,7 @@ abstract class _$RegisterFormStateCopyWith<$Res>
       bool passwordsMatch,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption});
+      Option<Either<RegisterFailure, JWT>> registerOption});
 }
 
 class __$RegisterFormStateCopyWithImpl<$Res>
@@ -708,7 +701,7 @@ class __$RegisterFormStateCopyWithImpl<$Res>
     Object passwordsMatch = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
-    Object authFailureOrSuccessOption = freezed,
+    Object registerOption = freezed,
   }) {
     return _then(_RegisterFormState(
       username: username == freezed ? _value.username : username as Username,
@@ -724,9 +717,9 @@ class __$RegisterFormStateCopyWithImpl<$Res>
           : showErrorMessages as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
-          ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<RegisterFailure, Unit>>,
+      registerOption: registerOption == freezed
+          ? _value.registerOption
+          : registerOption as Option<Either<RegisterFailure, JWT>>,
     ));
   }
 }
@@ -739,14 +732,14 @@ class _$_RegisterFormState implements _RegisterFormState {
       @required this.passwordsMatch,
       @required this.showErrorMessages,
       @required this.isSubmitting,
-      @required this.authFailureOrSuccessOption})
+      @required this.registerOption})
       : assert(username != null),
         assert(password != null),
         assert(confirmationPassword != null),
         assert(passwordsMatch != null),
         assert(showErrorMessages != null),
         assert(isSubmitting != null),
-        assert(authFailureOrSuccessOption != null);
+        assert(registerOption != null);
 
   @override
   final Username username;
@@ -761,11 +754,11 @@ class _$_RegisterFormState implements _RegisterFormState {
   @override
   final bool isSubmitting;
   @override
-  final Option<Either<RegisterFailure, Unit>> authFailureOrSuccessOption;
+  final Option<Either<RegisterFailure, JWT>> registerOption;
 
   @override
   String toString() {
-    return 'RegisterFormState(username: $username, password: $password, confirmationPassword: $confirmationPassword, passwordsMatch: $passwordsMatch, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
+    return 'RegisterFormState(username: $username, password: $password, confirmationPassword: $confirmationPassword, passwordsMatch: $passwordsMatch, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, registerOption: $registerOption)';
   }
 
   @override
@@ -790,11 +783,9 @@ class _$_RegisterFormState implements _RegisterFormState {
             (identical(other.isSubmitting, isSubmitting) ||
                 const DeepCollectionEquality()
                     .equals(other.isSubmitting, isSubmitting)) &&
-            (identical(other.authFailureOrSuccessOption,
-                    authFailureOrSuccessOption) ||
-                const DeepCollectionEquality().equals(
-                    other.authFailureOrSuccessOption,
-                    authFailureOrSuccessOption)));
+            (identical(other.registerOption, registerOption) ||
+                const DeepCollectionEquality()
+                    .equals(other.registerOption, registerOption)));
   }
 
   @override
@@ -806,7 +797,7 @@ class _$_RegisterFormState implements _RegisterFormState {
       const DeepCollectionEquality().hash(passwordsMatch) ^
       const DeepCollectionEquality().hash(showErrorMessages) ^
       const DeepCollectionEquality().hash(isSubmitting) ^
-      const DeepCollectionEquality().hash(authFailureOrSuccessOption);
+      const DeepCollectionEquality().hash(registerOption);
 
   @override
   _$RegisterFormStateCopyWith<_RegisterFormState> get copyWith =>
@@ -815,21 +806,14 @@ class _$_RegisterFormState implements _RegisterFormState {
 
 abstract class _RegisterFormState implements RegisterFormState {
   const factory _RegisterFormState(
-      {@required
-          Username username,
-      @required
-          Password password,
-      @required
-          ConfirmationPassword confirmationPassword,
-      @required
-          bool passwordsMatch,
-      @required
-          bool showErrorMessages,
-      @required
-          bool isSubmitting,
-      @required
-          Option<Either<RegisterFailure, Unit>>
-              authFailureOrSuccessOption}) = _$_RegisterFormState;
+          {@required Username username,
+          @required Password password,
+          @required ConfirmationPassword confirmationPassword,
+          @required bool passwordsMatch,
+          @required bool showErrorMessages,
+          @required bool isSubmitting,
+          @required Option<Either<RegisterFailure, JWT>> registerOption}) =
+      _$_RegisterFormState;
 
   @override
   Username get username;
@@ -844,7 +828,7 @@ abstract class _RegisterFormState implements RegisterFormState {
   @override
   bool get isSubmitting;
   @override
-  Option<Either<RegisterFailure, Unit>> get authFailureOrSuccessOption;
+  Option<Either<RegisterFailure, JWT>> get registerOption;
   @override
   _$RegisterFormStateCopyWith<_RegisterFormState> get copyWith;
 }

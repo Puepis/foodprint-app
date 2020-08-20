@@ -1,10 +1,10 @@
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/auth/register_form/register_form_bloc.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/common/text_fields.dart';
-import 'package:foodprint/presentation/login_page/login_page.dart';
 
 /// The user registration form.
 class RegisterForm extends StatefulWidget {
@@ -27,7 +27,7 @@ class _RegisterFormState extends State<RegisterForm> {
             _isSubmitting = true;
           });
         }
-        state.authFailureOrSuccessOption.fold(
+        state.registerOption.fold(
             () {},
             (either) => either.fold((failure) {
                   setState(() {
@@ -44,9 +44,13 @@ class _RegisterFormState extends State<RegisterForm> {
                           'Invalid register combination',
                     ),
                   ).show(context);
-                }, (success) {
-                  Navigator.pushNamed(
-                      context, LoginPage.routeOnRegisterSuccess);
+                }, (token) {
+                  setState(() {
+                    _isSubmitting = false;
+                  });
+                  context
+                      .bloc<AuthBloc>()
+                      .add(AuthEvent.loggedIn(token: token));
                 }));
       }, builder: (context, state) {
         return Form(

@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
             backgroundColor: backgroundColor,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () => onFinished,
+              onPressed: onFinished,
             ),
             actions: [
               IconButton(
