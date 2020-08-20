@@ -8,21 +8,28 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'edit_profile.dart';
 
 /// The page that allows users to edit their profile and delete their account.
-class EditProfilePage extends StatelessWidget {
-  final UserData userData;
+class EditProfilePage extends StatefulWidget {
   static const routeName = "edit_profile/";
-  const EditProfilePage({Key key, @required this.userData})
-      : assert(userData != null),
-        super(key: key);
+  const EditProfilePage({Key key}) : super(key: key);
+
+  @override
+  _EditProfilePageState createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final userData = context.watch<UserData>();
     final token = userData.token;
     final username = token.username;
+    _usernameController.text = username;
 
     const TextStyle _fieldTitleStyle = TextStyle(
         color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
@@ -64,7 +71,7 @@ class EditProfilePage extends StatelessWidget {
                   onTap: () => Navigator.pushNamed(
                       context, ChangeUsernamePage.routeName),
                   child: TextFormField(
-                    initialValue: username,
+                    controller: _usernameController,
                     cursorColor: primaryColor,
                     decoration: InputDecoration(
                       enabled: false,

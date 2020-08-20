@@ -7,14 +7,11 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class ChangeUsernamePage extends StatefulWidget {
-  final UserData userData;
-  final VoidCallback onUsernameChange;
   static const routeName = "change_username/";
-  const ChangeUsernamePage(
-      {Key key, @required this.userData, @required this.onUsernameChange})
-      : super(key: key);
+  const ChangeUsernamePage({Key key}) : super(key: key);
 
   @override
   _ChangeUsernamePageState createState() => _ChangeUsernamePageState();
@@ -26,7 +23,8 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
 
   @override
   Widget build(BuildContext context) {
-    final token = widget.userData.token;
+    final userData = context.watch<UserData>();
+    final token = userData.token;
     final currentUsername = token.username;
 
     return GestureDetector(
@@ -57,8 +55,8 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
             }
 
             if (state is UsernameChangeSuccess) {
-              widget.userData.updateToken(state.token);
-              widget.onUsernameChange();
+              userData.updateToken(state.token);
+              Navigator.of(context).pop();
             }
           },
           child: Padding(

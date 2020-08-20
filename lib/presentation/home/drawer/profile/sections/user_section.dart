@@ -17,10 +17,7 @@ import 'package:transparent_image/transparent_image.dart';
 /// from their device's gallery.
 class UserSection extends StatefulWidget {
   final UserData userData;
-  final VoidCallback onAvatarChange;
-  const UserSection(
-      {Key key, @required this.userData, @required this.onAvatarChange})
-      : super(key: key);
+  const UserSection({Key key, @required this.userData}) : super(key: key);
 
   @override
   _UserSectionState createState() => _UserSectionState();
@@ -53,7 +50,6 @@ class _UserSectionState extends State<UserSection> {
 
         if (state is AvatarChangeSuccess) {
           widget.userData.updateToken(state.token);
-          widget.onAvatarChange();
         }
       },
       child: Container(

@@ -8,6 +8,7 @@ import 'package:foodprint/presentation/login_page/login_page.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/router/home_screen_args.dart';
 import 'package:foodprint/presentation/router/profile/profile_navigator_args.dart';
+import 'package:provider/provider.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -18,7 +19,9 @@ class RouteGenerator {
       case ProfileNavigator.routeName:
         if (args is ProfileNavigatorArgs) {
           return MaterialPageRoute(
-            builder: (_) => ProfileNavigator(userData: args.userData),
+            builder: (_) => ChangeNotifierProvider.value(
+              value: args.userData,
+              child: ProfileNavigator()),
           );
         }
         return _errorRoute();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/home/edit_profile/edit_profile.dart';
 import 'package:foodprint/presentation/router/profile/spending_breakdown_page_args.dart';
 
@@ -8,10 +7,11 @@ import 'pages/profile_page.dart';
 import 'pages/spending_breakdown_page.dart';
 
 class ProfileNavigator extends StatefulWidget {
-  final UserData userData;
-  static const routeName = "/profile_page";
+  static const routeName = "/profile_navigator";
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-  ProfileNavigator({Key key, @required this.userData}) : super(key: key);
+  ProfileNavigator({
+    Key key,
+  }) : super(key: key);
 
   @override
   _ProfileNavigatorState createState() => _ProfileNavigatorState();
@@ -40,8 +40,7 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
           WidgetBuilder builder;
           switch (settings.name) {
             case ProfilePage.routeName:
-              builder = (_) => ProfilePage(
-                  userData: widget.userData, onFinished: onCancelRoute);
+              builder = (_) => ProfilePage(onFinished: onCancelRoute);
               break;
             case SpendingBreakdownPage.routeName:
               if (args is SpendingBreakdownPageArgs) {
@@ -54,16 +53,13 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
               }
               break;
             case EditProfilePage.routeName:
-              builder = (_) => EditProfilePage(userData: widget.userData);
+              builder = (_) => const EditProfilePage();
               break;
             case ChangeUsernamePage.routeName:
-              builder = (_) => ChangeUsernamePage(
-                    userData: widget.userData,
-                    onUsernameChange: onCancelRoute,
-                  );
+              builder = (_) => const ChangeUsernamePage();
               break;
             case ChangePasswordPage.routeName:
-              builder = (_) => ChangePasswordPage(userData: widget.userData);
+              builder = (_) => const ChangePasswordPage();
               break;
             default:
               throw Exception('Invalid route: ${settings.name}');

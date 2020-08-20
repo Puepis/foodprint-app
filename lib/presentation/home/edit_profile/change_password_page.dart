@@ -8,12 +8,11 @@ import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  final UserData userData;
   static const routeName = "change_password/";
-  const ChangePasswordPage({Key key, @required this.userData})
-      : super(key: key);
+  const ChangePasswordPage({Key key}) : super(key: key);
 
   static const _sectionTitleStyle = TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
@@ -31,7 +30,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final token = widget.userData.token;
+    final userData = context.watch<UserData>();
+    final token = userData.token;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
