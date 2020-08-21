@@ -24,10 +24,24 @@ class _FoodMapState extends State<FoodMap> {
   final Completer<GoogleMapController> _mapController = Completer();
   LatLng _currentPos;
   Map<String, Marker> _markers = {};
+  BitmapDescriptor currentLocationImage;
+
+  // Used to determine whether to show the recenter button
   bool _showRecenterButton = false;
   bool _wasInitial = true;
   MapType _currentMapType = MapType.normal;
   final double mapZoom = 16.0;
+
+  Future<void> _initializeImage() async {
+    currentLocationImage = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/images/dot.png");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeImage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +50,16 @@ class _FoodMapState extends State<FoodMap> {
       _markers = generateMarkers(userData);
 
       if (state is GetLocationSuccess) {
+        if (currentLocationImage != null) {
+          // Add location marker
+          final currentLocationMarker = Marker(
+              markerId: MarkerId("current"),
+              position: state.latlng,
+              icon: currentLocationImage);
+
+          _markers["current"] = currentLocationMarker;
+        }
+
         return Stack(children: [
           GoogleMap(
             mapType: _currentMapType,
@@ -49,6 +73,13 @@ class _FoodMapState extends State<FoodMap> {
             markers: Set<Marker>.of(_markers.values),
           ),
           _buildMapButtons(state),
+          Center(
+            child: Visibility(
+              visible: _showRecenterButton,
+              child: Image.asset(
+                "assets/images/crosshair.png"
+              )),
+          )
         ]);
       } else {
         return Container();

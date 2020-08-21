@@ -10,7 +10,6 @@ import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
