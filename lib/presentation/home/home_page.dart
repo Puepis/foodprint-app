@@ -248,26 +248,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   /// The popup menu for sorting gallery photos.
   PopupMenuButton<SortBy> _buildSortMenu() {
-    const menuTextStyle =
-        TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
     return PopupMenuButton<SortBy>(
-      initialValue: _selectedSort,
+      offset: const Offset(0, 10),
       tooltip: "Sort photos",
       onSelected: (result) => setState(() => _selectedSort = result),
       itemBuilder: (BuildContext context) => [
-        _buildSortItem(
-            SortBy.latest, "Date Taken", menuTextStyle, Icons.arrow_downward),
-        _buildSortItem(
-            SortBy.oldest, "Date Taken", menuTextStyle, Icons.arrow_upward),
-        _buildSortItem(
-            SortBy.highestPrice, "Price", menuTextStyle, Icons.arrow_downward),
-        _buildSortItem(
-            SortBy.lowestPrice, "Price", menuTextStyle, Icons.arrow_upward),
-        const PopupMenuItem<SortBy>(
+        _buildSortItem(SortBy.latest, "Date Taken", Icons.arrow_downward),
+        _buildSortItem(SortBy.oldest, "Date Taken", Icons.arrow_upward),
+        _buildSortItem(SortBy.highestPrice, "Price", Icons.arrow_downward),
+        _buildSortItem(SortBy.lowestPrice, "Price", Icons.arrow_upward),
+        PopupMenuItem<SortBy>(
           value: SortBy.favourites,
           child: Text(
             'Favourites',
-            style: menuTextStyle,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: _selectedSort == SortBy.favourites
+                  ? FontWeight.w600
+                  : FontWeight.normal,
+            ),
           ),
         ),
       ],
@@ -275,12 +274,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   PopupMenuItem<SortBy> _buildSortItem(
-      SortBy value, String text, TextStyle textStyle, IconData iconData) {
+      SortBy value, String text, IconData iconData) {
     return PopupMenuItem<SortBy>(
       value: value,
       child: Row(
         children: [
-          Text(text, style: textStyle),
+          Text(text,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: _selectedSort == value
+                    ? FontWeight.w600
+                    : FontWeight.normal,
+              )),
           const SizedBox(
             width: 4.0,
           ),
