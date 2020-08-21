@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 /// The page where users fill in the details about their photo.
-class SaveDetailsPage extends StatelessWidget {
+class SaveDetailsPage extends StatefulWidget {
   final VoidCallback onSave;
   final RestaurantEntity restaurant;
   final File imageFile;
@@ -18,6 +19,12 @@ class SaveDetailsPage extends StatelessWidget {
       : assert(onSave != null),
         super(key: key);
 
+  @override
+  _SaveDetailsPageState createState() => _SaveDetailsPageState();
+}
+
+class _SaveDetailsPageState extends State<SaveDetailsPage> {
+  bool _showAppBarTitle = false;
   Color get backgroundColor => Colors.white;
 
   @override
@@ -27,6 +34,13 @@ class SaveDetailsPage extends StatelessWidget {
       child: Scaffold(
           backgroundColor: backgroundColor,
           appBar: AppBar(
+            centerTitle: true,
+            title: _showAppBarTitle
+                ? const Text(
+                    "Fill in the details!",
+                    style: TextStyle(color: Colors.black),
+                  )
+                : null,
             leading: IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
@@ -39,14 +53,25 @@ class SaveDetailsPage extends StatelessWidget {
           body: ListView(
             shrinkWrap: true,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20, left: 20),
-                child: Text(
-                  "Fill in the details!",
-                  style: TextStyle(
-                      color: primaryColorDark,
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.bold),
+              VisibilityDetector(
+                key: const Key("title"),
+                onVisibilityChanged: (info) {
+                  // Show app bar title if scrolled out of view
+                  if (mounted) {
+                    setState(() {
+                      _showAppBarTitle = info.visibleFraction == 0;
+                    });
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 20),
+                  child: Text(
+                    "Fill in the details!",
+                    style: TextStyle(
+                        color: primaryColorDark,
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               const Padding(
@@ -63,9 +88,9 @@ class SaveDetailsPage extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 child: SaveDetailsForm(
-                  imageFile: imageFile,
-                  restaurant: restaurant,
-                  onSave: onSave,
+                  imageFile: widget.imageFile,
+                  restaurant: widget.restaurant,
+                  onSave: widget.onSave,
                 ),
               ),
             ],
