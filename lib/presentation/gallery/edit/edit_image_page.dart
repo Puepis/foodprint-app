@@ -36,37 +36,39 @@ class _EditImagePageState extends State<EditImagePage> {
               onPressed: () => Navigator.pop(context),
             ),
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(20),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    "Edit the details!",
-                    style: TextStyle(
-                        color: primaryColorDark,
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 2.5,
-                  ),
-                  const Text(
-                    "Feel free to make any changes",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  EditImageForm(
-                      onEdit: widget.onEdit,
-                      photo: widget.photo,
-                      restaurant: widget.restaurant),
-                ],
-              ))),
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 20),
+                child: Text(
+                  "Edit the details!",
+                  style: TextStyle(
+                      color: primaryColorDark,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 2.5),
+                child: Text(
+                  "Feel free to make any changes",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                child: EditImageForm(
+                    onEdit: widget.onEdit,
+                    photo: widget.photo,
+                    restaurant: widget.restaurant),
+              ),
+            ],
+          )),
     );
   }
 }

@@ -64,16 +64,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const Text("Username", style: _fieldTitleStyle),
-                const SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 20),
+                child: Text("Username", style: _fieldTitleStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                child: GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, ChangeUsernamePage.routeName),
                   child: TextFormField(
@@ -88,14 +88,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text("Password", style: _fieldTitleStyle),
-                const SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+                child: Text("Password", style: _fieldTitleStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                child: GestureDetector(
                   onTap: () => Navigator.pushNamed(
                       context, ChangePasswordPage.routeName),
                   child: TextFormField(
@@ -110,19 +110,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                AuthIdleButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
+                child: AuthIdleButton(
                     title: "Sign Out",
                     onPressed: () {
                       context.bloc<AuthBloc>().add(const LoggedOut());
                       Navigator.of(context).pop();
                     }),
-                const SizedBox(
-                  height: 15,
-                ),
-                FlatButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: FlatButton(
                   onPressed: () async {
                     final bool confirmed = await _confirmDeletion(context);
                     if (confirmed) {
@@ -149,8 +149,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }

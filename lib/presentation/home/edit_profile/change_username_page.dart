@@ -6,6 +6,7 @@ import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -59,55 +60,61 @@ class _ChangeUsernamePageState extends State<ChangeUsernamePage> {
               Navigator.of(context).pop();
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(20),
+          child: ScrollConfiguration(
+            behavior: NoGlowBehavior(),
             child: Form(
               key: _formKey,
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  const Text(
-                    "New Username",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.0),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    cursorColor: primaryColor,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(7.0)),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 20, left: 20),
+                    child: Text(
+                      "New Username",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0),
                     ),
-                    onSaved: (value) => newUsername = value,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter a username';
-                      } else if (value.length > 20) {
-                        return 'Username must not be longer than 20 characters';
-                      } else if (value == currentUsername) {
-                        return 'Please choose a different username';
-                      }
-                      return null;
-                    },
                   ),
-                  const SizedBox(
-                    height: 30,
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, top: 10, right: 20),
+                    child: TextFormField(
+                      cursorColor: primaryColor,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(7.0)),
+                      ),
+                      onSaved: (value) => newUsername = value,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter a username';
+                        } else if (value.length > 20) {
+                          return 'Username must not be longer than 20 characters';
+                        } else if (value == currentUsername) {
+                          return 'Please choose a different username';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
-                  AuthIdleButton(
-                    title: "Save",
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 30, left: 20, right: 20),
+                    child: AuthIdleButton(
+                      title: "Save",
+                      onPressed: () {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
 
-                        context.bloc<AccountBloc>().add(
-                            AccountEvent.usernameChanged(
-                                accessToken: token, newUsername: newUsername));
-                      }
-                    },
+                          context.bloc<AccountBloc>().add(
+                              AccountEvent.usernameChanged(
+                                  accessToken: token,
+                                  newUsername: newUsername));
+                        }
+                      },
+                    ),
                   )
                 ],
               ),

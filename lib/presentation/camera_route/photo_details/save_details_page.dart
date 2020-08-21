@@ -36,38 +36,40 @@ class SaveDetailsPage extends StatelessWidget {
             elevation: 0,
             backgroundColor: backgroundColor,
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(20),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    "Fill in the details!",
-                    style: TextStyle(
-                        color: primaryColorDark,
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 2.5,
-                  ),
-                  const Text(
-                    "Record your dining experience",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SaveDetailsForm(
-                    imageFile: imageFile,
-                    restaurant: restaurant,
-                    onSave: onSave,
-                  ),
-                ],
-              ))),
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, left: 20),
+                child: Text(
+                  "Fill in the details!",
+                  style: TextStyle(
+                      color: primaryColorDark,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 2.5),
+                child: Text(
+                  "Record your dining experience",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                child: SaveDetailsForm(
+                  imageFile: imageFile,
+                  restaurant: restaurant,
+                  onSave: onSave,
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

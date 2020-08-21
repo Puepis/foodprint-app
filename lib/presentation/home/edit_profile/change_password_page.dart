@@ -63,21 +63,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  const Text(
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, left: 20),
+                  child: Text(
                     "Old Password",
                     style: ChangePasswordPage._sectionTitleStyle,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                  child: TextFormField(
                     obscureText: !_showOldPassword,
                     cursorColor: primaryColor,
                     decoration: InputDecoration(
@@ -103,17 +103,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+                  child: Text(
                     "New Password",
                     style: ChangePasswordPage._sectionTitleStyle,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  child: TextFormField(
                     obscureText: !_showNewPassword,
                     enableInteractiveSelection: false,
                     cursorColor: primaryColor,
@@ -143,17 +143,17 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const Text(
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+                  child: Text(
                     "Confirm Password",
                     style: ChangePasswordPage._sectionTitleStyle,
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                  child: TextFormField(
                     obscureText: !_showConfirmPassword,
                     enableInteractiveSelection: false,
                     cursorColor: primaryColor,
@@ -180,10 +180,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       return 'Passwords must match';
                     },
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  AuthIdleButton(
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+                  child: AuthIdleButton(
                     title: "Save and Relog",
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
@@ -196,9 +196,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                 newPassword: newPassword));
                       }
                     },
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
