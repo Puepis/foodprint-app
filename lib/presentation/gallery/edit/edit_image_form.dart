@@ -3,23 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/gallery_photo.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:provider/provider.dart';
 
 /// The form used to edit the details of [photo].
 class EditImageForm extends StatefulWidget {
-  final PhotoEntity photo;
-  final RestaurantEntity restaurant;
-  final VoidCallback onEdit;
-  const EditImageForm(
-      {Key key,
-      @required this.photo,
-      @required this.restaurant,
-      @required this.onEdit})
-      : super(key: key);
+  const EditImageForm({Key key}) : super(key: key);
 
   @override
   _EditImageFormState createState() => _EditImageFormState();
@@ -60,11 +51,14 @@ class _EditImageFormState extends State<EditImageForm> {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
     final userData = context.watch<UserData>();
 
+    final galleryPhoto = context.watch<GalleryPhotoModel>();
+    final photo = galleryPhoto.photo;
+    final restaurant = galleryPhoto.restaurant;
+
     // Current valuesjk
-    final String currentName = widget.photo.details.name.getOrCrash();
-    final String currentPrice =
-        widget.photo.details.price.getOrCrash().toString();
-    final String currentComments = widget.photo.details.comments.getOrCrash();
+    final String currentName = photo.details.name.getOrCrash();
+    final String currentPrice = photo.details.price.getOrCrash().toString();
+    final String currentComments = photo.details.comments.getOrCrash();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
@@ -78,8 +72,10 @@ class _EditImageFormState extends State<EditImageForm> {
         ).show(context);
       }
       if (state is EditSuccess) {
-        userData.updatePhoto(widget.restaurant, state.newPhoto);
-        widget.onEdit();
+        // Update local foodprint
+        userData.updatePhoto(restaurant, state.newPhoto);
+        galleryPhoto.updatePhoto(state.newPhoto);
+        Navigator.of(context).pop();
       }
     }, builder: (context, state) {
       return Form(
@@ -197,11 +193,11 @@ class _EditImageFormState extends State<EditImageForm> {
                               // Edit photo
                               photoBloc.add(PhotoActionsEvent.edited(
                                 accessToken: userData.token,
-                                oldPhoto: widget.photo,
+                                oldPhoto: photo,
                                 newName: _itemName,
                                 newPrice: _price,
                                 newComments: _comments,
-                                isFavourite: widget.photo.isFavourite,
+                                isFavourite: photo.isFavourite,
                               ));
                             }
                           }),

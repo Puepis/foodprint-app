@@ -80,7 +80,7 @@ class AuthClient implements IAuthRepository {
     String refreshToken;
     try {
       refreshToken = await _storageClient.getRefreshToken();
-    } on TokenNotFoundException {
+    } on RefreshTokenNotFoundException {
       return none();
     }
 

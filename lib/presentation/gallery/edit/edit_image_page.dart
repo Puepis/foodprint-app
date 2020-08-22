@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/edit/edit_image_form.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class EditImagePage extends StatefulWidget {
   static const routeName = "edit_image/";
-  final PhotoEntity photo;
-  final RestaurantEntity restaurant;
-  final VoidCallback onEdit;
-  const EditImagePage(
-      {Key key, @required this.photo, @required this.restaurant, this.onEdit})
-      : super(key: key);
+  const EditImagePage({Key key}) : super(key: key);
   @override
   _EditImagePageState createState() => _EditImagePageState();
 }
@@ -79,13 +72,9 @@ class _EditImagePageState extends State<EditImagePage> {
                       color: Colors.grey),
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                child: EditImageForm(
-                    onEdit: widget.onEdit,
-                    photo: widget.photo,
-                    restaurant: widget.restaurant),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                child: EditImageForm(),
               ),
             ],
           )),

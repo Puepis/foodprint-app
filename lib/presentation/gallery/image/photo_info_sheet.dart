@@ -1,6 +1,7 @@
 import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodprint/presentation/data/gallery_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -15,12 +16,7 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 class PhotoInfoSheet extends StatefulWidget {
   const PhotoInfoSheet({
     Key key,
-    @required this.photo,
-    @required this.restaurant,
   }) : super(key: key);
-
-  final PhotoEntity photo;
-  final RestaurantEntity restaurant;
 
   @override
   _PhotoInfoSheetState createState() => _PhotoInfoSheetState();
@@ -47,9 +43,10 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
       );
 
   @override
-  void initState() {
-    super.initState();
-    _isFavourite = widget.photo.isFavourite;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final photo = context.read<GalleryPhotoModel>().photo;
+    _isFavourite = photo.isFavourite;
   }
 
   @override
@@ -59,6 +56,11 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
         locale: Localizations.localeOf(context).toString());
 
     final userData = context.watch<UserData>();
+
+    final galleryPhoto = context.watch<GalleryPhotoModel>();
+    final photo = galleryPhoto.photo;
+    final restaurant = galleryPhoto.restaurant;
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.66,
       decoration: const BoxDecoration(
@@ -81,16 +83,17 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
                         }
 
                         if (state is ChangeFavouriteSuccess) {
-                          context.read<UserData>().updatePhoto(
-                              widget.restaurant,
-                              widget.photo
-                                  .copyWith(isFavourite: state.isFavourite));
+                          final newPhoto =
+                              photo.copyWith(isFavourite: state.isFavourite);
+                          userData.updatePhoto(restaurant, newPhoto);
+                          galleryPhoto.updatePhoto(newPhoto);
                         }
                       },
                       child: Column(
                         children: [
                           _buildSwipeIndicator(constraints),
-                          _buildDetails(formatter, constraints, userData),
+                          _buildDetails(formatter, constraints, userData, photo,
+                              restaurant),
                         ],
                       )),
                   _buildEditButton(userData)
@@ -118,7 +121,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
   }
 
   Widget _buildDetails(NumberFormat formatter, BoxConstraints constraints,
-          UserData userData) =>
+          UserData userData, PhotoEntity photo, RestaurantEntity restaurant) =>
       Expanded(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
@@ -127,7 +130,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
             children: [
               Padding(
                 padding: EdgeInsets.only(right: constraints.maxWidth * 0.2),
-                child: Text(widget.photo.details.name.getOrCrash(),
+                child: Text(photo.details.name.getOrCrash(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -138,7 +141,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
               const SizedBox(
                 height: 5,
               ),
-              Text(formatter.format(widget.photo.details.price.getOrCrash()),
+              Text(formatter.format(photo.details.price.getOrCrash()),
                   style: TextStyle(color: Colors.green.shade500, fontSize: 20)),
               const Divider(
                 color: Colors.grey,
@@ -148,14 +151,14 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
               const SizedBox(
                 height: 10,
               ),
-              _buildDetailsBody(),
+              _buildDetailsBody(photo, restaurant),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: InkWell(
                   onTap: () {
                     setState(() => _isFavourite = !_isFavourite);
                     context.bloc<PhotoActionsBloc>().add(FavouriteChanged(
-                        photo: widget.photo,
+                        photo: photo,
                         newFavourite: _isFavourite,
                         accessToken: userData.token));
                   },
@@ -171,22 +174,23 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
         ),
       );
 
-  Expanded _buildDetailsBody() {
+  Expanded _buildDetailsBody(PhotoEntity photo, RestaurantEntity restaurant) {
+    final comments = photo.details.comments.getOrCrash();
+    final timestamp = photo.timestamp.toReadable();
+    final latitude = restaurant.latitude.getOrCrash().toStringAsFixed(3);
+    final longitude = restaurant.longitude.getOrCrash().toStringAsFixed(3);
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _createSection(
-              'COMMENTS', widget.photo.details.comments.getOrCrash()),
-          _sectionSpace,
-          _createSection('TIMESTAMP', widget.photo.timestamp.toReadable()),
-          _sectionSpace,
+          if (comments.isNotEmpty) _createSection('COMMENTS', comments),
+          _createSection('TIMESTAMP', timestamp),
           Text("LOCATION", style: _sectionTitleStyle),
           _sectionTitleDivider,
           const SizedBox(
             height: 5,
           ),
-          Text(widget.restaurant.name.getOrCrash(),
+          Text(restaurant.name.getOrCrash(),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: _sectionBodyStyle),
@@ -204,7 +208,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
                 width: 7.5,
               ),
               Text(
-                widget.restaurant.rating.getOrCrash().toString(),
+                restaurant.rating.getOrCrash().toString(),
                 style: _sectionBodyStyle,
               )
             ],
@@ -212,8 +216,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
           const SizedBox(
             height: 7.5,
           ),
-          Text(
-              "${widget.restaurant.latitude.getOrCrash().toStringAsFixed(3)}, ${widget.restaurant.longitude.getOrCrash().toStringAsFixed(3)}",
+          Text("$latitude, $longitude",
               style: _sectionBodyStyle.copyWith(fontSize: 12)),
         ],
       ),
@@ -227,8 +230,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
           icon: const Icon(Icons.edit),
           color: Theme.of(context).primaryColor,
           onPressed: () {
-            Navigator.of(context).pushNamed(EditImagePage.routeName,
-                arguments: widget.photo.copyWith(isFavourite: _isFavourite));
+            Navigator.of(context).pushNamed(EditImagePage.routeName);
           },
         ),
       );
@@ -248,6 +250,7 @@ class _PhotoInfoSheetState extends State<PhotoInfoSheet> {
             body,
             style: _sectionBodyStyle,
           ),
+          _sectionSpace,
         ],
       );
 }

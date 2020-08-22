@@ -32,21 +32,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     yield* event.map(
       authCheckStarted: (e) async* {
         final Option<JWT> result = await _authClient.getAccessToken();
-        if (result.isSome()) {
-          yield AuthState.authenticated(token: result.getOrElse(() => null));
-        } else {
+        yield* result.fold(() async* {
           try {
+            // Check if user has lauched the app before
             await _onboardingClient.getAppLaunched();
             yield const AuthState.unauthenticated();
           } on NotPreviouslyLaunchedException {
-            await _onboardingClient.markAppLaunched();
+            // await _onboardingClient.markAppLaunched();
             yield const AuthState.firstAppLaunch();
           }
-        }
+        }, (token) async* {
+          yield AuthState.authenticated(token: token, firstLogin: false);
+        });
       },
       loggedIn: (e) async* {
         yield const AuthState.loading();
-        yield AuthState.authenticated(token: e.token);
+        bool _firstLogin = false;
+        final username = e.token.username;
+        // Check if the user has logged in before
+        try {
+          await _onboardingClient.checkPreviousLogin(username);
+        } on NoPreviousLoginException {
+          _firstLogin = true;
+          //await _onboardingClient.markLoggedIn(username);
+        }
+        yield AuthState.authenticated(token: e.token, firstLogin: _firstLogin);
       },
       loggedOut: (e) async* {
         await _authClient.logout();

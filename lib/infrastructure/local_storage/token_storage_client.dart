@@ -14,7 +14,7 @@ class TokenStorageClient implements LocalTokenRepository {
     if (tokenString != null) {
       return tokenString;
     } else {
-      throw TokenNotFoundException();
+      throw RefreshTokenNotFoundException();
     }
   }
 

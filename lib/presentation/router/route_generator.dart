@@ -20,8 +20,7 @@ class RouteGenerator {
         if (args is ProfileNavigatorArgs) {
           return MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider.value(
-              value: args.userData,
-              child: ProfileNavigator()),
+                value: args.userData, child: ProfileNavigator()),
           );
         }
         return _errorRoute();

@@ -8,6 +8,7 @@ import 'package:foodprint/domain/core/value_transformers.dart';
 import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/data/gallery_photo.dart';
 import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.dart';
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -119,20 +120,20 @@ class Gallery extends StatelessWidget {
   /// Show the full image
   void _showFullImage(BuildContext context, PhotoEntity photo,
       RestaurantEntity restaurant, UserData data) {
-    Navigator.of(context).push(MaterialPageRoute(
+    final fullImageRoute = MaterialPageRoute(
         builder: (_) => MultiProvider(
                 // expose values
                 providers: [
+                  ChangeNotifierProvider(
+                      create: (_) => GalleryPhotoModel(
+                          photo: photo, restaurant: restaurant)),
                   ChangeNotifierProvider.value(value: data),
                   BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
                   BlocProvider.value(
                     value: context.bloc<FoodprintBloc>(),
                   )
-                ],
-                child: FullImageNavigator(
-                  photo: photo,
-                  restaurant: restaurant,
-                ))));
+                ], child: FullImageNavigator()));
+    Navigator.of(context).push(fullImageRoute);
   }
 
   /// Generates an association list of photos and sorts by the selected option

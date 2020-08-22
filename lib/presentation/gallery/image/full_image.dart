@@ -1,18 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/data/gallery_photo.dart';
+import 'package:provider/provider.dart';
 
 import 'image.dart';
 
 /// Displays the full image
 class FullImage extends StatefulWidget {
   static const routeName = "full_image/";
-  final PhotoEntity photo;
-  final RestaurantEntity restaurant;
-  const FullImage({Key key, this.photo, this.restaurant})
-      : super(key: key);
+  const FullImage({Key key}) : super(key: key);
 
   @override
   _FullImageState createState() => _FullImageState();
@@ -38,6 +35,9 @@ class _FullImageState extends State<FullImage> {
 
   @override
   Widget build(BuildContext context) {
+    final galleryPhoto = context.watch<GalleryPhotoModel>();
+    final photo = galleryPhoto.photo;
+
     if (_position != null) _handleScroll();
 
     return GestureDetector(
@@ -57,14 +57,14 @@ class _FullImageState extends State<FullImage> {
                   children: [
                     Center(
                       child: Hero(
-                        tag: widget.photo.timestamp.getOrCrash(),
+                        tag: photo.timestamp.getOrCrash(),
                         child: CachedNetworkImage(
                             fit: BoxFit.fitWidth,
                             fadeInDuration: const Duration(milliseconds: 150),
                             placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator(),
                                 ),
-                            imageUrl: widget.photo.url.getOrCrash()),
+                            imageUrl: photo.url.getOrCrash()),
                       ),
                     ),
                     if (_position != null)
@@ -81,12 +81,9 @@ class _FullImageState extends State<FullImage> {
                   ],
                 ),
               ),
-              PhotoInfoSheet(
-                photo: widget.photo,
-                restaurant: widget.restaurant,
-              )
+              const PhotoInfoSheet()
             ]),
-            )
+          )
         ]),
       ),
     );
