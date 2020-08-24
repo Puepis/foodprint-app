@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../walkthrough_model.dart';
 
 class CaptureOverlay extends StatelessWidget {
   const CaptureOverlay({
@@ -10,9 +7,8 @@ class CaptureOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final walkthrough = context.watch<WalkthroughModel>();
     return Opacity(
-      opacity: walkthrough.screen == 3 ? 0.85 : 0,
+      opacity: 0.85,
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

@@ -9,6 +9,7 @@ import 'package:foodprint/application/restaurants/nearby_search/restaurant_searc
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/data/user_location.dart';
 import 'package:foodprint/presentation/walkthrough/overlays/capture_overlay.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
 import 'package:provider/provider.dart';
 
 /// The page that displays the captured photo and searches for nearby restaurants
@@ -36,6 +37,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
 
     final nearbySearchBloc = context.bloc<RestaurantSearchBloc>();
     final manualSearchBloc = context.bloc<ManualSearchBloc>();
+    final walkthrough = context.watch<WalkthroughModel>();
 
     return Container(
       decoration: BoxDecoration(
@@ -84,7 +86,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   }
                 },
               )),
-          const CaptureOverlay(),
+          if (walkthrough.screen == 3) const CaptureOverlay(),
           Positioned(
               bottom: 20,
               right: 20,

@@ -33,6 +33,6 @@ class OnboardingClient {
 
   /// User has logged in on this device
   Future<void> markLoggedIn(String username) async {
-    await storage.write(key: "username", value: "logged_in");
+    await storage.write(key: username, value: "logged_in");
   }
 }
