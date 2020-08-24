@@ -17,6 +17,7 @@ class PreviewPhotoDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     final NumberFormat formatter = NumberFormat.simpleCurrency(
         locale: Localizations.localeOf(context).toString());
+    final comments = photo.details.comments.getOrCrash();
     return Expanded(
       child: Container(
         margin: const EdgeInsets.only(top: 4),
@@ -42,32 +43,33 @@ class PreviewPhotoDescription extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "COMMENTS",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: 40,
-                    child:
-                        Divider(height: 10, thickness: 2, color: primaryColor),
-                  ),
-                  Text(
-                    photo.details.comments.getOrCrash(),
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ],
+            if (comments.isNotEmpty)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "COMMENTS",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: 40,
+                      child: Divider(
+                          height: 10, thickness: 2, color: primaryColor),
+                    ),
+                    Text(
+                      comments,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

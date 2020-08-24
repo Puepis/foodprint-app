@@ -13,6 +13,7 @@ import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.da
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:provider/provider.dart';
 
 class NoGlowBehavior extends ScrollBehavior {
@@ -124,6 +125,8 @@ class Gallery extends StatelessWidget {
         builder: (_) => MultiProvider(
                 // expose values
                 providers: [
+                  ChangeNotifierProvider.value(
+                      value: context.read<WalkthroughModel>()),
                   ChangeNotifierProvider(
                       create: (_) => GalleryPhotoModel(
                           photo: photo, restaurant: restaurant)),

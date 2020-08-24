@@ -11,6 +11,10 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
+import 'package:foodprint/presentation/walkthrough/overlays/empty_gallery.dart';
+import 'package:foodprint/presentation/walkthrough/overlays/filled_gallery.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/home/drawer/app_drawer.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -81,110 +85,134 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final userData = context.watch<UserData>();
+    final walkthrough = context.watch<WalkthroughModel>();
 
-    return BlocConsumer<LocationBloc, LocationState>(
-      listener: (context, state) {
-        if (state is GetLocationFailure) {
-          Scaffold.of(context)..hideCurrentSnackBar();
-          FlushbarHelper.createError(
-              message: state.failure.map(
-                  permissionDenied: (_) => 'Location permission denied',
-                  locationServiceDisabled: (_) => 'Location service disabled',
-                  unexpected: (_) => 'Unexpected error')).show(context);
-        }
-      },
-      builder: (context, state) {
-        final mapScreen =
-            state is GetLocationSuccess ? const FoodMap() : Container();
+    return Stack(
+      children: [
+        BlocConsumer<LocationBloc, LocationState>(
+          listener: (context, state) {
+            if (state is GetLocationFailure) {
+              Scaffold.of(context)..hideCurrentSnackBar();
+              FlushbarHelper.createError(
+                  message: state.failure.map(
+                      permissionDenied: (_) => 'Location permission denied',
+                      locationServiceDisabled: (_) =>
+                          'Location service disabled',
+                      unexpected: (_) => 'Unexpected error')).show(context);
+            }
+          },
+          builder: (context, state) {
+            final mapScreen =
+                state is GetLocationSuccess ? const FoodMap() : Container();
 
-        return NotificationListener<ScrollNotification>(
-          onNotification: _page == SelectedPage.map
-              ? (_) => null
-              : _handleScrollNotification,
-          child: Scaffold(
-            drawerEnableOpenDragGesture: _page != SelectedPage.map,
-            appBar: _buildAppBar(context),
-            drawer: const AppDrawer(),
-            body: PageView(
-              controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                Stack(children: [mapScreen, _buildMapDrawerButton()]),
-                Gallery(
-                  sortBy: _selectedSort,
-                )
-              ],
-            ),
-            bottomNavigationBar: ClipRect(
-              child: SizeTransition(
-                sizeFactor: _hide,
-                axisAlignment: -1,
-                child: BottomAppBar(
-                  shape: const CircularNotchedRectangle(),
-                  child: Container(
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+            return NotificationListener<ScrollNotification>(
+              onNotification: _page == SelectedPage.map
+                  ? (_) => null
+                  : _handleScrollNotification,
+              child: Scaffold(
+                drawerEnableOpenDragGesture: _page != SelectedPage.map,
+                appBar: _buildAppBar(context),
+                drawer: const AppDrawer(),
+                body: PageView(
+                  controller: _pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    Stack(children: [
+                      mapScreen,
+                      _buildMapDrawerButton(),
+                      const FirstMapOverlay(),
+                      const FinalOverlay()
+                    ]),
+                    Stack(
                       children: [
-                        IconButton(
-                          iconSize: 30.0,
-                          icon: const Icon(Icons.location_on),
-                          color: _page == SelectedPage.map
-                              ? const Color(0xFFFF916F)
-                              : Colors.black,
-                          onPressed: () {
-                            _pageController.jumpToPage(0);
-                            setState(() => _page = SelectedPage.map);
-                          },
+                        Gallery(
+                          sortBy: _selectedSort,
                         ),
-                        IconButton(
-                          iconSize: 30.0,
-                          color: _page == SelectedPage.gallery
-                              ? const Color(0xFFFF916F)
-                              : Colors.black,
-                          icon: const Icon(Icons.collections),
-                          onPressed: () {
-                            _pageController.jumpToPage(1);
-                            setState(() => _page = SelectedPage.gallery);
-                          },
-                        )
+                        const EmptyGalleryOverlay(),
+                        const FilledGalleryOverlay()
                       ],
+                    )
+                  ],
+                ),
+                bottomNavigationBar: ClipRect(
+                  child: SizeTransition(
+                    sizeFactor: _hide,
+                    axisAlignment: -1,
+                    child: BottomAppBar(
+                      shape: const CircularNotchedRectangle(),
+                      child: Container(
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton(
+                              iconSize: 30.0,
+                              icon: const Icon(Icons.location_on),
+                              color: _page == SelectedPage.map
+                                  ? const Color(0xFFFF916F)
+                                  : Colors.black,
+                              onPressed: () {
+                                setState(() => _page = SelectedPage.map);
+                                _pageController.jumpToPage(0);
+                              },
+                            ),
+                            IconButton(
+                              iconSize: 30.0,
+                              color: _page == SelectedPage.gallery
+                                  ? const Color(0xFFFF916F)
+                                  : Colors.black,
+                              icon: const Icon(Icons.collections),
+                              onPressed: () {
+                                setState(() => _page = SelectedPage.gallery);
+                                _pageController.jumpToPage(1);
+                                if (walkthrough.screen == 1) {
+                                  walkthrough.next();
+                                }
+                              },
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            floatingActionButton: Visibility(
-              visible: _showFAB,
-              child: FloatingActionButton(
-                heroTag: "camera",
-                onPressed: () => (state is GetLocationSuccess)
-                    ? _toCamera(context, state.latlng, userData) // take picture
-                    : FlushbarHelper.createError(
-                            message: 'Location permission required')
-                        .show(context),
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: sweetMorningGradient.reversed.toList())),
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 35.0,
+                floatingActionButton: Visibility(
+                  visible: _showFAB,
+                  child: FloatingActionButton(
+                    heroTag: "camera",
+                    onPressed: () => walkthrough.screen != 1
+                        ? (state is GetLocationSuccess)
+                            ? _toCamera(context, state.latlng, userData,
+                                walkthrough) // take picture
+                            : FlushbarHelper.createError(
+                                    message: 'Location permission required')
+                                .show(context)
+                        : null,
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: sweetMorningGradient.reversed.toList())),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 35.0,
+                      ),
+                    ),
                   ),
                 ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
               ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-          ),
-        );
-      },
+            );
+          },
+        ),
+        const Overlay0()
+      ],
     );
   }
 
@@ -207,7 +235,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ));
 
   /// Animate transition to camera
-  void _toCamera(BuildContext cxt, LatLng location, UserData data) {
+  void _toCamera(BuildContext cxt, LatLng location, UserData data,
+      WalkthroughModel walkthrough) {
+    if (walkthrough.screen == 2) {
+      walkthrough.next();
+    }
     Navigator.of(cxt).push(
       SlideUpEnterRoute(
         newPage: MultiProvider(providers: [
@@ -215,6 +247,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               create: (context) =>
                   UserLocation(location.latitude, location.longitude)),
           ChangeNotifierProvider.value(value: data),
+          ChangeNotifierProvider.value(value: walkthrough),
           BlocProvider.value(value: cxt.bloc<PhotoActionsBloc>()),
           BlocProvider.value(value: cxt.bloc<FoodprintBloc>())
         ], child: CameraNavigator()),

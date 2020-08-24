@@ -5,6 +5,7 @@ import 'package:foodprint/application/location/location_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/injection.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
 import 'package:foodprint/presentation/home/loading_page.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
@@ -19,7 +20,9 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   static const routeOnLogin = "/on_login";
   final JWT token;
-  const HomeScreen({Key key, @required this.token}) : super(key: key);
+  final bool isFirstLogin;
+  const HomeScreen({Key key, @required this.token, this.isFirstLogin = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +49,20 @@ class HomeScreen extends StatelessWidget {
             }
 
             if (state is FetchFoodprintSuccess) {
-              return ChangeNotifierProvider(
-                create: (context) => UserData(
-                  foodprint: state.foodprint,
-                  token: token,
-                ),
+              return MultiProvider(
+                providers: [
+                  ChangeNotifierProvider(
+                    create: (context) => WalkthroughModel(
+                      showWalkthrough: isFirstLogin,
+                    ),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (context) => UserData(
+                      foodprint: state.foodprint,
+                      token: token,
+                    ),
+                  )
+                ],
                 child: const HomePage(),
               );
             }

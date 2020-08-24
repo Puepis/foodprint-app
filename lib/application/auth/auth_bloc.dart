@@ -42,7 +42,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {
-          yield AuthState.authenticated(token: token, firstLogin: false);
+          // TODO: Change to false after testing
+          yield AuthState.authenticated(token: token, firstLogin: true);
         });
       },
       loggedIn: (e) async* {

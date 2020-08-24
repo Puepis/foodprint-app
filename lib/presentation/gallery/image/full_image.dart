@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodprint/presentation/data/gallery_photo.dart';
+import 'package:foodprint/presentation/walkthrough/overlays/full_image_overlay.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:provider/provider.dart';
 
 import 'image.dart';
@@ -35,6 +37,7 @@ class _FullImageState extends State<FullImage> {
 
   @override
   Widget build(BuildContext context) {
+    final walkthrough = context.watch<WalkthroughModel>();
     final galleryPhoto = context.watch<GalleryPhotoModel>();
     final photo = galleryPhoto.photo;
 
@@ -45,46 +48,55 @@ class _FullImageState extends State<FullImage> {
         final dy = details.velocity.pixelsPerSecond.dy;
         if (dy > 0) Navigator.pop(context);
       },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: CustomScrollView(controller: _scrollController, slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate([
-              Container(
-                height: MediaQuery.of(context).size.height,
-                color: Colors.black,
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Hero(
-                        tag: photo.timestamp.getOrCrash(),
-                        child: CachedNetworkImage(
-                            fit: BoxFit.fitWidth,
-                            fadeInDuration: const Duration(milliseconds: 150),
-                            placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                            imageUrl: photo.url.getOrCrash()),
+      child: WillPopScope(
+        onWillPop: () async {
+          if (walkthrough.screen == 6) {
+            walkthrough.next();
+          }
+          return true;
+        },
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body: CustomScrollView(controller: _scrollController, slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.black,
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Hero(
+                          tag: photo.timestamp.getOrCrash(),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.fitWidth,
+                              fadeInDuration: const Duration(milliseconds: 150),
+                              placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              imageUrl: photo.url.getOrCrash()),
+                        ),
                       ),
-                    ),
-                    if (_position != null)
                       Align(
                         alignment: const Alignment(0, 0.95),
                         child: Icon(
-                          _position.pixels == _position.minScrollExtent
+                          _position == null ||
+                                  _position.pixels == _position.minScrollExtent
                               ? Icons.keyboard_arrow_up
                               : Icons.keyboard_arrow_down,
                           color: Colors.white,
-                          size: 30,
+                          size: 34,
                         ),
-                      )
-                  ],
+                      ),
+                      const FullImageOverlay()
+                    ],
+                  ),
                 ),
-              ),
-              const PhotoInfoSheet()
-            ]),
-          )
-        ]),
+                const PhotoInfoSheet()
+              ]),
+            )
+          ]),
+        ),
       ),
     );
   }

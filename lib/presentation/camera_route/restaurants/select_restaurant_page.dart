@@ -7,7 +7,9 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/restaurant_search_delegate.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/router/camera/save_details_args.dart';
+import 'package:foodprint/presentation/walkthrough/overlays/restaurant_overlay.dart';
 
 /// The page that displays a list of nearby [restaurants] for the user to
 /// select.
@@ -39,57 +41,59 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
   Widget build(BuildContext context) {
     final bloc = context.bloc<ManualSearchBloc>();
 
-    return BlocConsumer<ManualSearchBloc, ManualSearchState>(
-        listener: (context, state) {
-      if (state is SearchStateError) {
-        FlushbarHelper.createError(
-          message: state.failure.map(
-            requestDenied: (_) => 'Request denied',
-            unexpectedSearchFailure: (_) => 'Unexpected search failure',
-            overQueryLimit: (_) => 'Over query limit',
-            invalidRequest: (_) => 'Invalid request',
-            noInternet: (_) => 'No Internet Connection',
-            notFound: (_) => 'Place not found',
-          ),
-        ).show(context);
-      }
-    }, builder: (_, state) {
-      final Widget body = _buildBody(state, bloc);
+    return Stack(
+      children: [
+        BlocConsumer<ManualSearchBloc, ManualSearchState>(
+            listener: (context, state) {
+          if (state is SearchStateError) {
+            FlushbarHelper.createError(
+              message: state.failure.map(
+                requestDenied: (_) => 'Request denied',
+                unexpectedSearchFailure: (_) => 'Unexpected search failure',
+                overQueryLimit: (_) => 'Over query limit',
+                invalidRequest: (_) => 'Invalid request',
+                noInternet: (_) => 'No Internet Connection',
+                notFound: (_) => 'Place not found',
+              ),
+            ).show(context);
+          }
+        }, builder: (_, state) {
+          final Widget body = _buildBody(state, bloc);
 
-      return Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: AppBar(
-            leading: IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                ),
-                onPressed: () => Navigator.pop(context)),
-            backgroundColor: backgroundColor,
-            elevation: 0.0,
-            centerTitle: true,
-            actions: [
-              IconButton(
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.black,
-                  ),
-                  onPressed: () async {
-                    final String place_id = await showSearch(
-                        context: context,
-                        delegate: RestaurantSearchDelegate(
-                            widget.latitude, widget.longitude));
-                    if (place_id != null) {
-                      bloc.add(RestaurantDetailSearched(id: place_id));
-                    }
-                  })
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: body,
-          ));
-    });
+          return Scaffold(
+              backgroundColor: backgroundColor,
+              appBar: AppBar(
+                leading: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                    ),
+                    onPressed: () => Navigator.pop(context)),
+                backgroundColor: backgroundColor,
+                elevation: 0.0,
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                      onPressed: () async {
+                        final String place_id = await showSearch(
+                            context: context,
+                            delegate: RestaurantSearchDelegate(
+                                widget.latitude, widget.longitude));
+                        if (place_id != null) {
+                          bloc.add(RestaurantDetailSearched(id: place_id));
+                        }
+                      })
+                ],
+              ),
+              body: body);
+        }),
+        const RestaurantOverlay()
+      ],
+    );
   }
 
   /// Builds the scaffold body based on the [ManualBlocState]
@@ -110,13 +114,13 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
               color: Colors.green,
               size: 100,
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            const Text(
-              "Location Selected!",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20, top: 5),
+              child: Text(
+                "Location Selected!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(
               height: 40,
@@ -130,26 +134,29 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
       return ListView(
         shrinkWrap: true,
         children: [
-          Text(
-            widget.restaurants.isEmpty
-                ? "Try a manual search!"
-                : "Select your location!",
-            style: TextStyle(
-                fontSize: 35.0,
-                fontWeight: FontWeight.bold,
-                color: primaryColorDark),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, top: 20),
+            child: Text(
+              widget.restaurants.isEmpty
+                  ? "Try a manual search!"
+                  : "Select your location!",
+              style: TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColorDark),
+            ),
           ),
-          const SizedBox(
-            height: 2.5,
-          ),
-          Text(
-            widget.restaurants.isEmpty
-                ? "We couldn't find any places near you"
-                : "Here's what we found near you",
-            style: const TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.normal,
-                color: Colors.grey),
+          Padding(
+            padding: const EdgeInsets.only(top: 2.5, left: 20, right: 20),
+            child: Text(
+              widget.restaurants.isEmpty
+                  ? "We couldn't find any places near you"
+                  : "Here's what we found near you",
+              style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.grey),
+            ),
           ),
           const SizedBox(
             height: 40,
@@ -202,55 +209,62 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
 
   /// Returns the widget containing the restaurant buttons given the [context].
   Widget _buildRestaurantButtons(BuildContext context) {
-    return ListView.separated(
-        shrinkWrap: true,
-        itemCount: widget.restaurants.length,
-        separatorBuilder: (context, index) => const SizedBox(
-              height: 10,
-            ),
-        itemBuilder: (cxt, index) => _buildButton(index));
+    return ScrollConfiguration(
+      behavior: NoGlowBehavior(),
+      child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: widget.restaurants.length,
+          separatorBuilder: (context, index) => const SizedBox(
+                height: 10,
+              ),
+          itemBuilder: (cxt, index) => _buildButton(index)),
+    );
   }
 
   Widget _buildButton(int index) {
-    return Card(
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      color: primaryColor,
-      child: ListTile(
-          dense: true,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-          title: Text(widget.restaurants[index].name.getOrCrash(),
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w600)),
-          subtitle: Container(
-            margin: const EdgeInsets.only(top: 5),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.star,
-                  color: foodprintPrimaryColorSwatch[700],
-                  size: 20,
-                ),
-                const SizedBox(
-                  width: 5.0,
-                ),
-                Text(widget.restaurants[index].rating.getOrCrash().toString(),
-                    style: const TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w500)),
-              ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Card(
+        elevation: 5.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        color: primaryColor,
+        child: ListTile(
+            dense: true,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            title: Text(widget.restaurants[index].name.getOrCrash(),
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600)),
+            subtitle: Container(
+              margin: const EdgeInsets.only(top: 5),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: foodprintPrimaryColorSwatch[700],
+                    size: 20,
+                  ),
+                  const SizedBox(
+                    width: 5.0,
+                  ),
+                  Text(widget.restaurants[index].rating.getOrCrash().toString(),
+                      style: const TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.w500)),
+                ],
+              ),
             ),
-          ),
-          trailing: const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.black,
-            size: 20,
-          ),
-          onTap: _toDetails(widget.restaurants[index])),
+            trailing: const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.black,
+              size: 20,
+            ),
+            onTap: _toDetails(widget.restaurants[index])),
+      ),
     );
   }
 }

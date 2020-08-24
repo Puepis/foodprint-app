@@ -39,6 +39,7 @@ class RouteGenerator {
           return FadeRoute(
               newPage: HomeScreen(
             token: args.token,
+            isFirstLogin: args.firstLogin,
           ));
         }
         return _errorRoute();
