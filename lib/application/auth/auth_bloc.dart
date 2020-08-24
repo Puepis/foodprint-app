@@ -32,8 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _onboardingClient.checkPreviousLogin(username);
     } on NoPreviousLoginException {
       _firstLogin = true;
-      // TODO: Uncomment
-      //await _onboardingClient.markLoggedIn(username);
+      await _onboardingClient.markLoggedIn(username);
     }
     return _firstLogin;
   }
@@ -51,8 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await _onboardingClient.getAppLaunched();
             yield const AuthState.unauthenticated();
           } on NotPreviouslyLaunchedException {
-            // TODO: Uncomment
-            // await _onboardingClient.markAppLaunched();
+            await _onboardingClient.markAppLaunched();
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {
