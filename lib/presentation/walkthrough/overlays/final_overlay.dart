@@ -14,7 +14,7 @@ class FinalOverlay extends StatelessWidget {
     return Visibility(
       visible: walkthrough.screen == 7,
       child: Opacity(
-        opacity: 0.7,
+        opacity: 0.85,
         child: GestureDetector(
           onTap: walkthrough.finish,
           child: Container(

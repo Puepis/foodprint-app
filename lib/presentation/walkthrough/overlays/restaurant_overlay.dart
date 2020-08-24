@@ -14,7 +14,7 @@ class RestaurantOverlay extends StatelessWidget {
     return Visibility(
       visible: walkthrough.screen == 4,
       child: Opacity(
-        opacity: 0.7,
+        opacity: 0.85,
         child: Material(
           child: GestureDetector(
             onTap: walkthrough.next,

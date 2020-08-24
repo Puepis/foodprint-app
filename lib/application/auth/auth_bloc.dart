@@ -25,6 +25,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authClient) : super(const AuthState.initial());
 
+  Future<bool> checkfirstLogin(String username) async {
+    bool _firstLogin = false;
+    // Check if the user has logged in before
+    try {
+      await _onboardingClient.checkPreviousLogin(username);
+    } on NoPreviousLoginException {
+      _firstLogin = true;
+      // TODO: Uncomment
+      //await _onboardingClient.markLoggedIn(username);
+    }
+    return _firstLogin;
+  }
+
   @override
   Stream<AuthState> mapEventToState(
     AuthEvent event,
@@ -38,26 +51,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await _onboardingClient.getAppLaunched();
             yield const AuthState.unauthenticated();
           } on NotPreviouslyLaunchedException {
+            // TODO: Uncomment
             // await _onboardingClient.markAppLaunched();
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {
-          // TODO: Change to false after testing
-          yield AuthState.authenticated(token: token, firstLogin: true);
+          final isFirstLogin = await checkfirstLogin(token.username);
+          yield AuthState.authenticated(token: token, firstLogin: isFirstLogin);
         });
       },
       loggedIn: (e) async* {
         yield const AuthState.loading();
-        bool _firstLogin = false;
-        final username = e.token.username;
-        // Check if the user has logged in before
-        try {
-          await _onboardingClient.checkPreviousLogin(username);
-        } on NoPreviousLoginException {
-          _firstLogin = true;
-          //await _onboardingClient.markLoggedIn(username);
-        }
-        yield AuthState.authenticated(token: e.token, firstLogin: _firstLogin);
+        final isFirstLogin = await checkfirstLogin(e.token.username);
+        yield AuthState.authenticated(token: e.token, firstLogin: isFirstLogin);
       },
       loggedOut: (e) async* {
         await _authClient.logout();
