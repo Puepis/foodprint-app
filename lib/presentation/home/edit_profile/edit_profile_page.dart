@@ -118,8 +118,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 child: AuthIdleButton(
                     title: "Sign Out",
                     onPressed: () {
-                      context.bloc<AuthBloc>().add(const LoggedOut());
                       widget.onFinished();
+                      context.bloc<AuthBloc>().add(const LoggedOut());
                     }),
               ),
               Padding(
