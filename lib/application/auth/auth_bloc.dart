@@ -49,7 +49,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await _onboardingClient.getAppLaunched();
             yield const AuthState.unauthenticated();
           } on NotPreviouslyLaunchedException {
-            await _onboardingClient.markAppLaunched();
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {

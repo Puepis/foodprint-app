@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:foodprint/infrastructure/local_storage/onboarding_client.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
+import 'package:foodprint/presentation/splash/splash_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'page_content.dart';
@@ -19,6 +22,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final int _pages = 3;
   int _currentPage = 0;
   final PageController _pageController = PageController();
+  final OnboardingClient _onboardingClient =
+      OnboardingClient(const FlutterSecureStorage());
 
   List<Map<String, String>> onboardingData = [
     {
@@ -61,36 +66,39 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: media.height * 0.15),
-        child: Column(
-          children: [
-            Text(
-              "Foodprint",
-              style: GoogleFonts.rubik(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: primaryColorDark,
+    return WillPopScope(
+      onWillPop: exitApp,
+      child: Scaffold(
+        body: Padding(
+          padding: EdgeInsets.only(top: media.height * 0.15),
+          child: Column(
+            children: [
+              Text(
+                "Foodprint",
+                style: GoogleFonts.rubik(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColorDark,
+                ),
               ),
-            ),
-            Expanded(
-                flex: 3,
-                child: ScrollConfiguration(
-                  behavior: NoGlowBehavior(),
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: _pages,
-                    onPageChanged: (page) =>
-                        setState(() => _currentPage = page),
-                    itemBuilder: (context, index) => PageContent(
-                      image: onboardingData[index]["image"],
-                      text: onboardingData[index]['text'],
+              Expanded(
+                  flex: 3,
+                  child: ScrollConfiguration(
+                    behavior: NoGlowBehavior(),
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: _pages,
+                      onPageChanged: (page) =>
+                          setState(() => _currentPage = page),
+                      itemBuilder: (context, index) => PageContent(
+                        image: onboardingData[index]["image"],
+                        text: onboardingData[index]['text'],
+                      ),
                     ),
-                  ),
-                )),
-            bottomSection(media, context),
-          ],
+                  )),
+              bottomSection(media, context),
+            ],
+          ),
         ),
       ),
     );
@@ -112,8 +120,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               color: primaryColorDark,
-              onPressed: () {
+              onPressed: () async {
                 if (_currentPage == 2) {
+                  await _onboardingClient.markAppLaunched();
                   Navigator.pushReplacementNamed(
                       context, RegisterPage.fromOnboarding);
                 } else {
