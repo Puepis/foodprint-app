@@ -25,16 +25,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authClient) : super(const AuthState.initial());
 
-  Future<bool> checkfirstLogin(String username) async {
-    bool _firstLogin = false;
+  Future<bool> checkWalkthroughStatus(String username) async {
+    bool didComplete = true;
     // Check if the user has logged in before
     try {
-      await _onboardingClient.checkPreviousLogin(username);
-    } on NoPreviousLoginException {
-      _firstLogin = true;
-      await _onboardingClient.markLoggedIn(username);
+      await _onboardingClient.checkWalkthroughFinished(username);
+    } on WalkthroughUnfinishedException {
+      didComplete = false;
     }
-    return _firstLogin;
+    return didComplete;
   }
 
   @override
@@ -54,14 +53,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {
-          final isFirstLogin = await checkfirstLogin(token.username);
-          yield AuthState.authenticated(token: token, firstLogin: isFirstLogin);
+          final didCompleteWalkthrough =
+              await checkWalkthroughStatus(token.username);
+          yield AuthState.authenticated(
+              token: token, didCompleteWalkthrough: didCompleteWalkthrough);
         });
       },
       loggedIn: (e) async* {
         yield const AuthState.loading();
-        final isFirstLogin = await checkfirstLogin(e.token.username);
-        yield AuthState.authenticated(token: e.token, firstLogin: isFirstLogin);
+        final didCompleteWalkthrough =
+            await checkWalkthroughStatus(e.token.username);
+        yield AuthState.authenticated(
+            token: e.token, didCompleteWalkthrough: didCompleteWalkthrough);
       },
       loggedOut: (e) async* {
         await _authClient.logout();

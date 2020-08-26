@@ -4,12 +4,14 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:foodprint/domain/account/account_failure.dart';
 import 'package:foodprint/domain/account/i_account_repository.dart';
 import 'package:foodprint/domain/auth/i_auth_repository.dart';
 import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
+import 'package:foodprint/infrastructure/local_storage/onboarding_client.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart' show basename;
@@ -25,6 +27,8 @@ part 'account_bloc.freezed.dart';
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final IAccountRepository _accountClient;
   final IAuthRepository _authClient;
+  final OnboardingClient _onboardingClient =
+      OnboardingClient(const FlutterSecureStorage());
   AccountBloc(this._accountClient, this._authClient)
       : super(const AccountState.initial());
 
@@ -81,8 +85,14 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
     final Either<AccountFailure, JWT> result = await _accountClient
         .changeUsername(accessToken: token, newUsername: username);
-    yield result.fold((l) => UsernameChangeError(failure: l),
-        (r) => UsernameChangeSuccess(token: r));
+    yield* result.fold((l) async* {
+      yield UsernameChangeError(failure: l);
+    }, (r) async* {
+      /// Update the user's walkthrough status on the device
+      await _onboardingClient.transferWalkthroughStatus(
+          token.username, newUsername);
+      yield UsernameChangeSuccess(token: r);
+    });
   }
 
   Stream<AccountState> _mapPasswordChangedToState(
@@ -102,7 +112,11 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapAccountDeletedToState(JWT token) async* {
     final Either<AccountFailure, Unit> result =
         await _accountClient.deleteAccount(accessToken: token);
-    yield result.fold((l) => DeleteAccountError(failure: l),
-        (r) => const DeleteAccountSuccess());
+    yield* result.fold((l) async* {
+      yield DeleteAccountError(failure: l);
+    }, (r) async* {
+      await _onboardingClient.resetWalkthroughStatus(token.username);
+      yield const DeleteAccountSuccess();
+    });
   }
 }

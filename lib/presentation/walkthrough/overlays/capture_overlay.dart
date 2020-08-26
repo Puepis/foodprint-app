@@ -29,7 +29,7 @@ class CaptureOverlay extends StatelessWidget {
                   "Great photo - let's select your location!",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.normal),
                 ),
               ),

@@ -43,7 +43,7 @@ class NextPageButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(1000.0),
               onTap: () {
                 // Move to next walkthrough screen
-                if (walkthrough.screen == 3) {
+                if (walkthrough.screen == 5) {
                   walkthrough.next();
                 }
                 Navigator.of(context).pushNamed(SelectRestaurantPage.routeName,

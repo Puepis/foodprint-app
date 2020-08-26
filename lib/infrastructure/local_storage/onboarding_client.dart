@@ -24,15 +24,30 @@ class OnboardingClient {
     await storage.write(key: "onboard", value: "launched");
   }
 
-  /// Check if the user has logged in on this device before
-  Future<String> checkPreviousLogin(String username) async {
-    final prevLogin = await storage.read(key: username);
-    if (prevLogin != null) return prevLogin;
-    throw NoPreviousLoginException();
+  /// Check if walkthrough has been completed
+  Future<String> checkWalkthroughFinished(String username) async {
+    final finished = await storage.read(key: "${username}_walkthrough");
+    if (finished != null) return finished;
+    throw WalkthroughUnfinishedException();
   }
 
-  /// User has logged in on this device
-  Future<void> markLoggedIn(String username) async {
-    await storage.write(key: username, value: "logged_in");
+  /// User has finished the walkthrough
+  Future<void> markWalkthroughFinished(String username) async {
+    await storage.write(key: "${username}_walkthrough", value: "finished");
+  }
+
+  // Reset the user's walkthrough status
+  Future<void> resetWalkthroughStatus(String username) async {
+    await storage.delete(key: "${username}_walkthrough");
+  }
+
+  /// Called when the user switches their username
+  Future<void> transferWalkthroughStatus(
+      String username, String newUsername) async {
+    final status = await storage.read(key: "${username}_walkthrough");
+    if (status != null) {
+      await storage.write(key: "${newUsername}_walkthrough", value: status);
+    }
+    await storage.delete(key: "${username}_walkthrough");
   }
 }

@@ -379,10 +379,10 @@ class _$AuthStateTearOff {
   }
 
   Authenticated authenticated(
-      {@required JWT token, @required bool firstLogin}) {
+      {@required JWT token, @required bool didCompleteWalkthrough}) {
     return Authenticated(
       token: token,
-      firstLogin: firstLogin,
+      didCompleteWalkthrough: didCompleteWalkthrough,
     );
   }
 
@@ -406,7 +406,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -414,7 +414,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),
@@ -486,7 +486,7 @@ class _$Initial implements Initial {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -503,7 +503,7 @@ class _$Initial implements Initial {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),
@@ -559,7 +559,7 @@ abstract class $AuthenticatedCopyWith<$Res> {
   factory $AuthenticatedCopyWith(
           Authenticated value, $Res Function(Authenticated) then) =
       _$AuthenticatedCopyWithImpl<$Res>;
-  $Res call({JWT token, bool firstLogin});
+  $Res call({JWT token, bool didCompleteWalkthrough});
 }
 
 class _$AuthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
@@ -574,29 +574,31 @@ class _$AuthenticatedCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object token = freezed,
-    Object firstLogin = freezed,
+    Object didCompleteWalkthrough = freezed,
   }) {
     return _then(Authenticated(
       token: token == freezed ? _value.token : token as JWT,
-      firstLogin:
-          firstLogin == freezed ? _value.firstLogin : firstLogin as bool,
+      didCompleteWalkthrough: didCompleteWalkthrough == freezed
+          ? _value.didCompleteWalkthrough
+          : didCompleteWalkthrough as bool,
     ));
   }
 }
 
 class _$Authenticated implements Authenticated {
-  const _$Authenticated({@required this.token, @required this.firstLogin})
+  const _$Authenticated(
+      {@required this.token, @required this.didCompleteWalkthrough})
       : assert(token != null),
-        assert(firstLogin != null);
+        assert(didCompleteWalkthrough != null);
 
   @override
   final JWT token;
   @override
-  final bool firstLogin;
+  final bool didCompleteWalkthrough;
 
   @override
   String toString() {
-    return 'AuthState.authenticated(token: $token, firstLogin: $firstLogin)';
+    return 'AuthState.authenticated(token: $token, didCompleteWalkthrough: $didCompleteWalkthrough)';
   }
 
   @override
@@ -605,16 +607,16 @@ class _$Authenticated implements Authenticated {
         (other is Authenticated &&
             (identical(other.token, token) ||
                 const DeepCollectionEquality().equals(other.token, token)) &&
-            (identical(other.firstLogin, firstLogin) ||
-                const DeepCollectionEquality()
-                    .equals(other.firstLogin, firstLogin)));
+            (identical(other.didCompleteWalkthrough, didCompleteWalkthrough) ||
+                const DeepCollectionEquality().equals(
+                    other.didCompleteWalkthrough, didCompleteWalkthrough)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(token) ^
-      const DeepCollectionEquality().hash(firstLogin);
+      const DeepCollectionEquality().hash(didCompleteWalkthrough);
 
   @override
   $AuthenticatedCopyWith<Authenticated> get copyWith =>
@@ -624,7 +626,7 @@ class _$Authenticated implements Authenticated {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -634,14 +636,14 @@ class _$Authenticated implements Authenticated {
     assert(unauthenticated != null);
     assert(firstAppLaunch != null);
     assert(loading != null);
-    return authenticated(token, firstLogin);
+    return authenticated(token, didCompleteWalkthrough);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),
@@ -649,7 +651,7 @@ class _$Authenticated implements Authenticated {
   }) {
     assert(orElse != null);
     if (authenticated != null) {
-      return authenticated(token, firstLogin);
+      return authenticated(token, didCompleteWalkthrough);
     }
     return orElse();
   }
@@ -691,10 +693,11 @@ class _$Authenticated implements Authenticated {
 
 abstract class Authenticated implements AuthState {
   const factory Authenticated(
-      {@required JWT token, @required bool firstLogin}) = _$Authenticated;
+      {@required JWT token,
+      @required bool didCompleteWalkthrough}) = _$Authenticated;
 
   JWT get token;
-  bool get firstLogin;
+  bool get didCompleteWalkthrough;
   $AuthenticatedCopyWith<Authenticated> get copyWith;
 }
 
@@ -734,7 +737,7 @@ class _$Unauthenticated implements Unauthenticated {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -751,7 +754,7 @@ class _$Unauthenticated implements Unauthenticated {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),
@@ -839,7 +842,7 @@ class _$FirstAppLaunch implements FirstAppLaunch {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -856,7 +859,7 @@ class _$FirstAppLaunch implements FirstAppLaunch {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),
@@ -942,7 +945,7 @@ class _$Loading implements Loading {
   @optionalTypeArgs
   Result when<Result extends Object>({
     @required Result initial(),
-    @required Result authenticated(JWT token, bool firstLogin),
+    @required Result authenticated(JWT token, bool didCompleteWalkthrough),
     @required Result unauthenticated(),
     @required Result firstAppLaunch(),
     @required Result loading(),
@@ -959,7 +962,7 @@ class _$Loading implements Loading {
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
     Result initial(),
-    Result authenticated(JWT token, bool firstLogin),
+    Result authenticated(JWT token, bool didCompleteWalkthrough),
     Result unauthenticated(),
     Result firstAppLaunch(),
     Result loading(),

@@ -24,7 +24,7 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
     return navigator.maybePop();
   }
 
-  void onCancelRoute() => Navigator.pop(context);
+  void popNavigator() => Navigator.pop(context);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
           WidgetBuilder builder;
           switch (settings.name) {
             case ProfilePage.routeName:
-              builder = (_) => ProfilePage(onFinished: onCancelRoute);
+              builder = (_) => ProfilePage(onFinished: popNavigator);
               break;
             case SpendingBreakdownPage.routeName:
               if (args is SpendingBreakdownPageArgs) {
@@ -53,13 +53,17 @@ class _ProfileNavigatorState extends State<ProfileNavigator> {
               }
               break;
             case EditProfilePage.routeName:
-              builder = (_) => const EditProfilePage();
+              builder = (_) => EditProfilePage(
+                    onFinished: popNavigator,
+                  );
               break;
             case ChangeUsernamePage.routeName:
               builder = (_) => const ChangeUsernamePage();
               break;
             case ChangePasswordPage.routeName:
-              builder = (_) => const ChangePasswordPage();
+              builder = (_) => ChangePasswordPage(
+                    onFinished: popNavigator,
+                  );
               break;
             default:
               throw Exception('Invalid route: ${settings.name}');

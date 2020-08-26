@@ -1,44 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
 import 'package:provider/provider.dart';
 
 import '../walkthrough_model.dart';
 
 class FinalOverlay extends StatelessWidget {
+  final String username;
   const FinalOverlay({
     Key key,
+    @required this.username,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final walkthrough = context.watch<WalkthroughModel>();
-    return Visibility(
-      visible: walkthrough.screen == 7,
-      child: Opacity(
-        opacity: 0.85,
-        child: GestureDetector(
-          onTap: walkthrough.finish,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: const Color(0xFF454545),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Stack(
-                children: [
-                  Positioned(
-                    bottom: MediaQuery.of(context).size.height * 0.32,
-                    child: const Text(finalText,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 14)),
-                  ),
-                ],
-              ),
-            ),
-          ),
+    return GenericOverlay(
+      index: 9,
+      onTap: () async {
+        walkthrough.finish(username);
+      },
+      children: [
+        Positioned(
+          bottom: MediaQuery.of(context).size.height * 0.32,
+          child: const Text(finalText,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16)),
         ),
-      ),
+      ],
     );
   }
 }

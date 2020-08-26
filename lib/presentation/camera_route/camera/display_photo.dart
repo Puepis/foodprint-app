@@ -86,7 +86,7 @@ class _DisplayPhotoState extends State<DisplayPhoto> {
                   }
                 },
               )),
-          if (walkthrough.screen == 3) const CaptureOverlay(),
+          if (walkthrough.screen == 5) const CaptureOverlay(),
           Positioned(
               bottom: 20,
               right: 20,

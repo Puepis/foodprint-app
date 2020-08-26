@@ -12,7 +12,9 @@ import 'package:provider/provider.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   static const routeName = "change_password/";
-  const ChangePasswordPage({Key key}) : super(key: key);
+  final VoidCallback onFinished;
+  const ChangePasswordPage({Key key, @required this.onFinished})
+      : super(key: key);
 
   static const _sectionTitleStyle = TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
@@ -60,6 +62,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             }
 
             if (state is PasswordChangeSuccess) {
+              widget.onFinished();
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },

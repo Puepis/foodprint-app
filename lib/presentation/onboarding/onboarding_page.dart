@@ -18,6 +18,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final int _pages = 3;
   int _currentPage = 0;
+  final PageController _pageController = PageController();
 
   List<Map<String, String>> onboardingData = [
     {
@@ -34,14 +35,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
   ];
 
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
   List<Widget> _buildPageIndicator() {
     return List.generate(_pages, (index) => _buildIndicator(index));
   }
 
   Widget _buildIndicator(int index) {
     final isActive = index == _currentPage;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 150),
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       height: 8.0,
       width: isActive ? 22.0 : 14.0,
@@ -73,6 +79,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: ScrollConfiguration(
                   behavior: NoGlowBehavior(),
                   child: PageView.builder(
+                    controller: _pageController,
                     itemCount: _pages,
                     onPageChanged: (page) =>
                         setState(() => _currentPage = page),
@@ -82,41 +89,54 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                 )),
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: _buildPageIndicator()),
-                  const Spacer(),
-                  ButtonTheme(
-                    minWidth: media.width * 0.75,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      color: primaryColorDark,
-                      onPressed: () => Navigator.pushReplacementNamed(
-                          context, RegisterPage.fromOnboarding),
-                      child: const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text(
-                          "Continue",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
+            bottomSection(media, context),
           ],
         ),
+      ),
+    );
+  }
+
+  Expanded bottomSection(Size media, BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Column(
+        children: [
+          Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _buildPageIndicator()),
+          const Spacer(),
+          ButtonTheme(
+            minWidth: media.width * 0.75,
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              color: primaryColorDark,
+              onPressed: () {
+                if (_currentPage == 2) {
+                  Navigator.pushReplacementNamed(
+                      context, RegisterPage.fromOnboarding);
+                } else {
+                  setState(() {
+                    _pageController.jumpToPage(++_currentPage);
+                  });
+                }
+              },
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  "Continue",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const Spacer(),
+        ],
       ),
     );
   }

@@ -50,7 +50,7 @@ class _FullImageState extends State<FullImage> {
       },
       child: WillPopScope(
         onWillPop: () async {
-          if (walkthrough.screen == 6) {
+          if (walkthrough.screen == 8) {
             walkthrough.next();
           }
           return true;

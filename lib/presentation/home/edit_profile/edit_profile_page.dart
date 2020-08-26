@@ -15,7 +15,8 @@ import 'edit_profile.dart';
 /// The page that allows users to edit their profile and delete their account.
 class EditProfilePage extends StatefulWidget {
   static const routeName = "edit_profile/";
-  const EditProfilePage({Key key}) : super(key: key);
+  final VoidCallback onFinished;
+  const EditProfilePage({Key key, @required this.onFinished}) : super(key: key);
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -61,6 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             }
 
             if (state is DeleteAccountSuccess) {
+              widget.onFinished();
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
@@ -117,7 +119,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     title: "Sign Out",
                     onPressed: () {
                       context.bloc<AuthBloc>().add(const LoggedOut());
-                      Navigator.of(context).pop();
+                      widget.onFinished();
                     }),
               ),
               Padding(
@@ -160,7 +162,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: foodprintPrimaryColorSwatch[50],
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(

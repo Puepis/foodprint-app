@@ -31,7 +31,9 @@ class SplashPage extends StatelessWidget {
                       HomeScreen.routeOnLogin,
                       ModalRoute.withName(SplashPage.routeName),
                       arguments: HomeScreenArgs(
-                          token: result.token, firstLogin: result.firstLogin));
+                          token: result.token,
+                          didCompleteWalkthrough:
+                              result.didCompleteWalkthrough));
                 },
 
                 // Logged out

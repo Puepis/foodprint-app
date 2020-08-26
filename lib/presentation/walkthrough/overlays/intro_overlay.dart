@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../walkthrough_model.dart';
 
-class Overlay0 extends StatelessWidget {
-  const Overlay0({
+class IntroOverlay extends StatelessWidget {
+  const IntroOverlay({
     Key key,
   }) : super(key: key);
 
@@ -12,9 +12,9 @@ class Overlay0 extends StatelessWidget {
   Widget build(BuildContext context) {
     final walkthrough = context.watch<WalkthroughModel>();
     return Visibility(
-      visible: walkthrough.showWalkthrough && walkthrough.screen == 0,
+      visible: walkthrough.enabled && walkthrough.screen == 0,
       child: Opacity(
-        opacity: 0.9,
+        opacity: 0.92,
         child: Material(
           child: GestureDetector(
             onTap: walkthrough.next,
@@ -32,7 +32,7 @@ class Overlay0 extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontSize: 24)),
+                            fontSize: 28)),
                     SizedBox(
                       height: 18,
                     ),
@@ -40,7 +40,7 @@ class Overlay0 extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.normal,
                             color: Colors.white,
-                            fontSize: 14)),
+                            fontSize: 16)),
                   ],
                 ),
               ),
@@ -53,4 +53,4 @@ class Overlay0 extends StatelessWidget {
 }
 
 const text1 =
-    "Foodprint is your personal food journal that\nenables you to record all of your dining experiences around the world!\n\nThis tutorial will guide you through the main\nfeatures of the app.\n\nTap anywhere to get started!";
+    "Foodprint is your personal food journal that\nenables you to record all of your dining experiences around the world!\n\nThis tutorial will guide you through the main features of the app.\n\nTap anywhere to get started!";

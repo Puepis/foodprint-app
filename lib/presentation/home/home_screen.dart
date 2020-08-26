@@ -20,8 +20,9 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   static const routeOnLogin = "/on_login";
   final JWT token;
-  final bool isFirstLogin;
-  const HomeScreen({Key key, @required this.token, this.isFirstLogin = false})
+  final bool didCompleteWalkthrough;
+  const HomeScreen(
+      {Key key, @required this.token, this.didCompleteWalkthrough = false})
       : super(key: key);
 
   @override
@@ -53,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                 providers: [
                   ChangeNotifierProvider(
                     create: (context) => WalkthroughModel(
-                      showWalkthrough: isFirstLogin,
+                      enabled: !didCompleteWalkthrough,
                     ),
                   ),
                   ChangeNotifierProvider(

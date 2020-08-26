@@ -13,6 +13,7 @@ import 'package:foodprint/presentation/gallery/delete/delete_confirmation_tab.da
 import 'package:foodprint/presentation/gallery/image/image.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/home/home_page.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
 import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:provider/provider.dart';
 
@@ -35,61 +36,69 @@ class Gallery extends StatelessWidget {
     final userData = context.watch<UserData>();
     final foodprint = userData.foodprint;
     final photos = _sortFoodprint(foodprint);
+    final walkthrough = context.watch<WalkthroughModel>();
 
     // Build photos lazily
     return Container(
       color: Colors.grey.shade100,
       child: ScrollConfiguration(
         behavior: NoGlowBehavior(),
-        child: GridView.builder(
-          physics: const ClampingScrollPhysics(),
-          itemCount: photos.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-          ),
-          padding: const EdgeInsets.all(10.0),
-          itemBuilder: (context, index) {
-            final Tuple2<PhotoEntity, RestaurantEntity> pair = photos[index];
-            final PhotoEntity photo = pair.value1;
-            final RestaurantEntity restaurant = pair.value2;
+        child: Stack(
+          children: [
+            const EmptyGalleryOverlay(),
+            const FilledGalleryOverlay(),
+            GridView.builder(
+              physics: const ClampingScrollPhysics(),
+              itemCount: photos.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+              ),
+              padding: const EdgeInsets.all(10.0),
+              itemBuilder: (context, index) {
+                final Tuple2<PhotoEntity, RestaurantEntity> pair =
+                    photos[index];
+                final PhotoEntity photo = pair.value1;
+                final RestaurantEntity restaurant = pair.value2;
 
-            return Stack(children: [
-              GestureDetector(
-                onTap: () =>
-                    _showFullImage(context, photo, restaurant, userData),
-                child: SizedBox.expand(
-                  child: Card(
-                    color: Colors.black,
-                    elevation: 0.0,
-                    clipBehavior: Clip.antiAlias,
-                    child: Hero(
-                      tag: photo.timestamp.getOrCrash(),
-                      child: CachedNetworkImage(
-                          fit: BoxFit.fitWidth,
-                          fadeInDuration: const Duration(milliseconds: 150),
-                          placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          imageUrl: photo.url.getOrCrash()),
+                return Stack(children: [
+                  GestureDetector(
+                    onTap: () => _showFullImage(
+                        context, photo, restaurant, userData, walkthrough),
+                    child: SizedBox.expand(
+                      child: Card(
+                        color: Colors.black,
+                        elevation: 0.0,
+                        clipBehavior: Clip.antiAlias,
+                        child: Hero(
+                          tag: photo.timestamp.getOrCrash(),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.fitWidth,
+                              fadeInDuration: const Duration(milliseconds: 150),
+                              placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              imageUrl: photo.url.getOrCrash()),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Positioned(
-                top: 2.5,
-                right: 2.5,
-                child: IconButton(
-                  icon: const Icon(Icons.delete),
-                  iconSize: 25.0,
-                  color: Colors.grey.shade200,
-                  onPressed: () =>
-                      _onDeletePressed(context, photo, restaurant, userData),
-                ),
-              ),
-            ]);
-          },
+                  Positioned(
+                    top: 2.5,
+                    right: 2.5,
+                    child: IconButton(
+                      icon: const Icon(Icons.delete),
+                      iconSize: 25.0,
+                      color: Colors.grey.shade200,
+                      onPressed: () => _onDeletePressed(
+                          context, photo, restaurant, userData),
+                    ),
+                  ),
+                ]);
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -119,8 +128,13 @@ class Gallery extends StatelessWidget {
   }
 
   /// Show the full image
-  void _showFullImage(BuildContext context, PhotoEntity photo,
-      RestaurantEntity restaurant, UserData data) {
+  void _showFullImage(
+      BuildContext context,
+      PhotoEntity photo,
+      RestaurantEntity restaurant,
+      UserData data,
+      WalkthroughModel walkthrough) {
+    if (walkthrough.screen == 7) walkthrough.next();
     final fullImageRoute = MaterialPageRoute(
         builder: (_) => MultiProvider(
                 // expose values

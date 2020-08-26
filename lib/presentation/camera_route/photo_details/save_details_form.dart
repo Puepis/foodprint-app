@@ -8,6 +8,7 @@ import 'package:foodprint/application/restaurants/manual_search/manual_search_bl
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
 import 'package:provider/provider.dart';
 
 /// The form that users fill out which describes the photo that they have taken.
@@ -44,8 +45,8 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
     height: 10.0,
   );
 
-  final textfieldBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(7.0));
+  final textfieldBorder =
+      OutlineInputBorder(borderRadius: BorderRadius.circular(7.0));
 
   Row _buildSectionTitle(
           {String title, IconData iconData, Color iconColor = Colors.black}) =>
@@ -207,6 +208,12 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                     if (_formKey.currentState.validate()) {
                       // Save fields
                       _formKey.currentState.save();
+
+                      // Move to next walkthrough step
+                      final walkthrough = context.read<WalkthroughModel>();
+                      if (walkthrough.enabled && walkthrough.screen == 6) {
+                        walkthrough.next();
+                      }
 
                       // Fire off save event
                       photoBloc.add(PhotoActionsEvent.saved(

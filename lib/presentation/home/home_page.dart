@@ -11,8 +11,7 @@ import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/camera/camera.dart';
 import 'package:foodprint/presentation/core/animations/transitions.dart';
 import 'package:foodprint/presentation/core/styles/gradients.dart';
-import 'package:foodprint/presentation/walkthrough/overlays/empty_gallery.dart';
-import 'package:foodprint/presentation/walkthrough/overlays/filled_gallery.dart';
+import 'package:foodprint/presentation/walkthrough/overlays/initial_map_overlay.dart';
 import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
 import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
 import 'package:foodprint/presentation/gallery/gallery.dart';
@@ -105,6 +104,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             final mapScreen =
                 state is GetLocationSuccess ? const FoodMap() : Container();
 
+            final mapOverlays = [
+              const MapDescriptionOverlay(),
+              const ToGalleryOverlay(),
+              FinalOverlay(username: userData.token.username)
+            ];
+
             return NotificationListener<ScrollNotification>(
               onNotification: _page == SelectedPage.map
                   ? (_) => null
@@ -119,18 +124,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   children: [
                     Stack(children: [
                       mapScreen,
+                      const MenuButtonOverlay(),
                       _buildMapDrawerButton(),
-                      const FirstMapOverlay(),
-                      const FinalOverlay()
+                      ...mapOverlays,
                     ]),
-                    Stack(
-                      children: [
-                        Gallery(
-                          sortBy: _selectedSort,
-                        ),
-                        const EmptyGalleryOverlay(),
-                        const FilledGalleryOverlay()
-                      ],
+                    Gallery(
+                      sortBy: _selectedSort,
                     )
                   ],
                 ),
@@ -165,7 +164,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               onPressed: () {
                                 setState(() => _page = SelectedPage.gallery);
                                 _pageController.jumpToPage(1);
-                                if (walkthrough.screen == 1) {
+                                if (walkthrough.screen == 3) {
                                   walkthrough.next();
                                 }
                               },
@@ -180,7 +179,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   visible: _showFAB,
                   child: FloatingActionButton(
                     heroTag: "camera",
-                    onPressed: () => walkthrough.screen != 1
+                    onPressed: () => !walkthrough.enabled ||
+                            (walkthrough.screen >= 4 && walkthrough.screen < 7)
                         ? (state is GetLocationSuccess)
                             ? _toCamera(context, state.latlng, userData,
                                 walkthrough) // take picture
@@ -211,7 +211,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             );
           },
         ),
-        const Overlay0()
+        const IntroOverlay()
       ],
     );
   }
@@ -237,7 +237,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   /// Animate transition to camera
   void _toCamera(BuildContext cxt, LatLng location, UserData data,
       WalkthroughModel walkthrough) {
-    if (walkthrough.screen == 2) {
+    if (walkthrough.screen == 4) {
       walkthrough.next();
     }
     Navigator.of(cxt).push(
