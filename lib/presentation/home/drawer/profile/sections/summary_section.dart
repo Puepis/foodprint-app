@@ -12,46 +12,60 @@ class SummarySection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildStatCard(
-          title: summary.photos.length == 1 ? 'Photo' : 'Photos',
-          count: summary.photos.length.toString(),
-        ),
+            title: summary.photos.length == 1 ? 'Photo' : 'Photos',
+            count: summary.photos.length.toString(),
+            iconData: Icons.photo_outlined),
         _buildStatCard(
-          title: summary.numLocations == 1 ? 'Location' : 'Locations',
-          count: summary.numLocations.toString(),
-        ),
+            title: summary.numLocations == 1 ? 'Location' : 'Locations',
+            count: summary.numLocations.toString(),
+            iconData: Icons.location_on_outlined),
         _buildStatCard(
-          title: summary.numFavourites == 1 ? 'Favourite' : 'Favourites',
-          count: summary.numFavourites.toString(),
-        ),
+            title: summary.numFavourites == 1 ? 'Favourite' : 'Favourites',
+            count: summary.numFavourites.toString(),
+            iconData: Icons.favorite_border),
       ],
     );
   }
 
-  Expanded _buildStatCard({String count, String title}) => Expanded(
+  Expanded _buildStatCard({String count, String title, IconData iconData}) =>
+      Expanded(
         child: Container(
-          margin: const EdgeInsets.fromLTRB(6, 12, 6, 12),
+          margin: const EdgeInsets.fromLTRB(6, 12, 6, 16),
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              Text(
-                count,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+              Opacity(
+                opacity: 0.06,
+                child: Icon(
+                  iconData,
+                  size: 70,
+                  color: Colors.grey.shade100,
                 ),
               ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.orange.shade900,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    count,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

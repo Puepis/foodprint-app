@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_breakdown_chart.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:intl/intl.dart';
 
 class SpendingBreakdownPage extends StatefulWidget {
   final SpendingModel spending;
-  static const routeName = "/spending_breakdown";
+  static const routeName = "spending_breakdown/";
   const SpendingBreakdownPage({Key key, @required this.spending})
       : super(key: key);
 
@@ -62,7 +64,10 @@ class _SpendingBreakdownPageState extends State<SpendingBreakdownPage> {
     colors[_index] = focusColor;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: GradientAppBar(
+        gradient: LinearGradient(
+          colors: sweetMorningGradient,
+        ),
         centerTitle: true,
         title: const Text(
           "Spending Breakdown",

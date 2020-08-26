@@ -2,30 +2,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
-import 'package:foodprint/presentation/router/profile_page_args.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:foodprint/presentation/router/profile/profile_navigator_args.dart';
+import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import 'profile/navigator.dart';
 
 /// The main drawer displayed from the home page
 class AppDrawer extends StatelessWidget {
-  final JWT token;
-  final FoodprintEntity foodprint;
-  const AppDrawer({Key key, @required this.token, @required this.foodprint})
-      : assert(token != null),
-        assert(foodprint != null),
-        super(key: key);
+  const AppDrawer({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
-    final url =
-        JWT.getDecodedPayload(token.getOrCrash())['avatar_url'] as String;
+    final userData = context.watch<UserData>();
+    final token = userData.token;
+
+    final username = token.username;
+    final url = token.avatar_url;
 
     return Drawer(
       child: Column(
@@ -41,9 +39,8 @@ class AppDrawer extends StatelessWidget {
                       icon: Icons.person,
                       text: 'Profile',
                       onTap: () => Navigator.popAndPushNamed(
-                          context, ProfilePage.routeName,
-                          arguments: ProfilePageArgs(
-                              token: token, foodprint: foodprint))),
+                          context, ProfileNavigator.routeName,
+                          arguments: ProfileNavigatorArgs(userData: userData))),
                   _createDrawerItem(
                     icon: Icons.bug_report,
                     text: 'Report an issue',
@@ -74,7 +71,11 @@ class AppDrawer extends StatelessWidget {
   Widget _buildHeader(String username, String url) => DrawerHeader(
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
-      decoration: BoxDecoration(color: primaryColor),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: sweetMorningGradient.reversed.toList())),
       child: Container(
         padding: const EdgeInsets.all(15),
         child: Column(
@@ -86,20 +87,20 @@ class AppDrawer extends StatelessWidget {
               children: [
                 if (url == null)
                   Container(
-                    height: 65,
-                    width: 65,
+                    height: 60,
+                    width: 60,
                     decoration: BoxDecoration(
                         color: foodprintPrimaryColorSwatch[50],
                         borderRadius: BorderRadius.circular(100)),
                     child: const Icon(
                       Icons.person_outline,
-                      size: 52,
+                      size: 48,
                     ),
                   )
                 else
                   Container(
-                    height: 65,
-                    width: 65,
+                    height: 60,
+                    width: 60,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: CachedNetworkImage(
@@ -114,13 +115,17 @@ class AppDrawer extends StatelessWidget {
                   width: 15.0,
                 ),
                 Expanded(
-                  child: Text(username.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: GoogleFonts.rubik(
-                          fontSize: 26.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600)),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(username.toString(),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ),
                 ),
               ],
             ),
@@ -140,7 +145,7 @@ class AppDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 15.0),
               ),
               Text(
-                'v1.0.0',
+                'v2.0.0',
                 style: TextStyle(
                     fontSize: 15.0,
                     color: hintColor,
@@ -160,11 +165,7 @@ class AppDrawer extends StatelessWidget {
       ListTile(
         title: Row(
           children: [
-            Icon(
-              icon,
-              size: 26.0,
-              color: primaryColorDark,
-            ),
+            Icon(icon, size: 26.0, color: foodprintPrimaryColorSwatch[400]),
             const SizedBox(
               width: 20,
             ),

@@ -3,31 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
 import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/common/buttons.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
-import 'package:foodprint/presentation/router/update_account_args.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'edit_profile.dart';
 
 /// The page that allows users to edit their profile and delete their account.
-class EditProfilePage extends StatelessWidget {
-  final JWT token;
-  static const String routeName = "/edit_profile";
-  const EditProfilePage({Key key, @required this.token})
-      : assert(token != null),
-        super(key: key);
+class EditProfilePage extends StatefulWidget {
+  static const routeName = "edit_profile/";
+  final VoidCallback onFinished;
+  const EditProfilePage({Key key, @required this.onFinished}) : super(key: key);
+
+  @override
+  _EditProfilePageState createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  final TextEditingController _usernameController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final username =
-        JWT.getDecodedPayload(token.getOrCrash())['username'] as String;
+    final userData = context.watch<UserData>();
+    final token = userData.token;
+    final username = token.username;
+    _usernameController.text = username;
 
     const TextStyle _fieldTitleStyle = TextStyle(
         color: Colors.black, fontWeight: FontWeight.w500, fontSize: 16.0);
 
     return Scaffold(
-        appBar: AppBar(
+        appBar: GradientAppBar(
+          gradient: LinearGradient(
+            colors: sweetMorningGradient,
+          ),
+          centerTitle: true,
           title: const Text("Edit Profile"),
         ),
         body: BlocListener<AccountBloc, AccountState>(
@@ -43,67 +62,75 @@ class EditProfilePage extends StatelessWidget {
             }
 
             if (state is DeleteAccountSuccess) {
-              // Log out
+              widget.onFinished();
               context.bloc<AuthBloc>().add(const AuthEvent.loggedOut());
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const Text("Username", style: _fieldTitleStyle),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 20),
+                child: Text("Username", style: _fieldTitleStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                child: GestureDetector(
                   onTap: () => Navigator.pushNamed(
-                      context, ChangeUsernamePage.routeName,
-                      arguments: ChangeUsernameArgs(token)),
-                  enabled: true,
-                  initialValue: username,
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7.0)),
+                      context, ChangeUsernamePage.routeName),
+                  child: TextFormField(
+                    controller: _usernameController,
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text("Password", style: _fieldTitleStyle),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  enabled: true,
-                  initialValue: '********',
-                  cursorColor: primaryColor,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(7.0)),
-                  ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+                child: Text("Password", style: _fieldTitleStyle),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10, right: 20),
+                child: GestureDetector(
                   onTap: () => Navigator.pushNamed(
-                      context, ChangePasswordPage.routeName,
-                      arguments: ChangePasswordArgs(token)),
+                      context, ChangePasswordPage.routeName),
+                  child: TextFormField(
+                    initialValue: '********',
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      enabled: false,
+                      disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(7.0)),
+                    ),
+                  ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
-                AuthIdleButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 30, right: 20),
+                child: AuthIdleButton(
                     title: "Sign Out",
-                    onPressed: () =>
-                        context.bloc<AuthBloc>().add(const LoggedOut())),
-                const SizedBox(
-                  height: 15,
-                ),
-                FlatButton(
+                    onPressed: () {
+                      widget.onFinished();
+                      context.bloc<AuthBloc>().add(const LoggedOut());
+                    }),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: FlatButton(
                   onPressed: () async {
                     final bool confirmed = await _confirmDeletion(context);
                     if (confirmed) {
                       context
                           .bloc<AccountBloc>()
-                          .add(AccountDeleted(token: token));
+                          .add(AccountEvent.accountDeleted(accessToken: token));
                     }
                   },
                   child: Row(
@@ -124,8 +151,8 @@ class EditProfilePage extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }
@@ -135,7 +162,7 @@ class EditProfilePage extends StatelessWidget {
     return (await showDialog(
             context: context,
             builder: (context) => Dialog(
-                  backgroundColor: foodprintPrimaryColorSwatch[50],
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   child: Container(
@@ -162,7 +189,7 @@ class EditProfilePage extends StatelessWidget {
                             style:
                                 TextStyle(color: Colors.black, fontSize: 16.0),
                           ),
-                      ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

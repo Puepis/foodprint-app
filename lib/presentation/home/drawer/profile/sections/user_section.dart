@@ -6,9 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:foodprint/application/account/account_bloc.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -17,8 +16,8 @@ import 'package:transparent_image/transparent_image.dart';
 /// Here the user can edit their avatar either by taking a picture or selecting
 /// from their device's gallery.
 class UserSection extends StatefulWidget {
-  final JWT token;
-  const UserSection({Key key, @required this.token}) : super(key: key);
+  final UserData userData;
+  const UserSection({Key key, @required this.userData}) : super(key: key);
 
   @override
   _UserSectionState createState() => _UserSectionState();
@@ -27,11 +26,8 @@ class UserSection extends StatefulWidget {
 class _UserSectionState extends State<UserSection> {
   @override
   Widget build(BuildContext context) {
-    final username =
-        JWT.getDecodedPayload(widget.token.getOrCrash())['username'] as String;
-
-    final url = JWT.getDecodedPayload(widget.token.getOrCrash())['avatar_url']
-        as String;
+    final username = widget.userData.token.username;
+    final url = widget.userData.token.avatar_url;
 
     return BlocListener<AccountBloc, AccountState>(
       listener: (context, state) {
@@ -53,33 +49,34 @@ class _UserSectionState extends State<UserSection> {
         }
 
         if (state is AvatarChangeSuccess) {
-          // Refresh the app with new token
-          context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: state.token));
+          widget.userData.updateToken(state.token);
         }
       },
       child: Container(
+        height: MediaQuery.of(context).size.height * 0.2,
         padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            _buildAvatar(url),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 35),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+        child: LayoutBuilder(
+          builder: (context, constraints) => Row(
+            children: [
+              _buildAvatar(url, constraints),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 20),
+                    child: Text(
                       username,
                       style: const TextStyle(
-                        fontSize: 38,
+                        color: Colors.black,
+                        fontSize: 36,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -88,56 +85,57 @@ class _UserSectionState extends State<UserSection> {
   /// Displays the user's avatar
   ///
   /// The url is stored in the user's JWT and can be null
-  Widget _buildAvatar(String url) => Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.zero,
-            child: (url == null)
-                ? Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                        color: foodprintPrimaryColorSwatch[50],
-                        borderRadius: BorderRadius.circular(100)),
-                    child: const Icon(
-                      Icons.person_outline,
-                      size: 100,
-                    ),
-                  )
-                : Container(
-                    height: 120,
-                    width: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          fadeInDuration: const Duration(milliseconds: 150),
-                          placeholder: (context, url) =>
-                              Image.memory(kTransparentImage),
-                          imageUrl: url),
-                    ),
-                  ),
+  Widget _buildAvatar(String url, BoxConstraints constraints) {
+    final height = constraints.maxHeight;
+    final radius = BorderRadius.circular(100);
+    return Stack(
+      children: [
+        if (url == null)
+          Container(
+            height: height,
+            width: height,
+            decoration: BoxDecoration(
+                color: foodprintPrimaryColorSwatch[100], borderRadius: radius),
+            child: const Icon(
+              Icons.person_outline,
+              size: 100,
+            ),
+          )
+        else
+          Container(
+            height: height,
+            width: height,
+            child: ClipRRect(
+              borderRadius: radius,
+              child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  fadeInDuration: const Duration(milliseconds: 150),
+                  placeholder: (context, url) =>
+                      Image.memory(kTransparentImage),
+                  imageUrl: url),
+            ),
           ),
-          Positioned(
-            right: 0,
-            top: 0,
-            child: Container(
-                decoration: BoxDecoration(
-                    color: foodprintPrimaryColorSwatch[100],
-                    borderRadius: BorderRadius.circular(50)),
-                child: InkWell(
-                  onTap: _onEditAvatar,
-                  child: const Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: Icon(
-                      Icons.edit,
-                      size: 20.0,
-                    ),
+        Positioned(
+          right: 3,
+          top: 3,
+          child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(50)),
+              child: InkWell(
+                onTap: _onEditAvatar,
+                child: const Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: Icon(
+                    Icons.edit,
+                    size: 20.0,
                   ),
-                )),
-          ),
-        ],
-      );
+                ),
+              )),
+        ),
+      ],
+    );
+  }
 
   Future<void> _onEditAvatar() async {
     final result = await showDialog(
@@ -182,9 +180,8 @@ class _UserSectionState extends State<UserSection> {
       if (image != null) {
         final File _imageFile = File(image.path);
 
-        context
-            .bloc<AccountBloc>()
-            .add(AvatarChanged(newAvatarFile: _imageFile, token: widget.token));
+        context.bloc<AccountBloc>().add(AccountEvent.avatarChanged(
+            newAvatarFile: _imageFile, accessToken: widget.userData.token));
       }
     }
   }

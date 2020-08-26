@@ -46,12 +46,12 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
 
   Stream<LoginFormState> _mapUsernameChangedToState(String usernameStr) async* {
     yield state.copyWith(
-        username: Username(usernameStr), authFailureOrSuccessOption: none());
+        username: Username(usernameStr), loginOption: none());
   }
 
   Stream<LoginFormState> _mapPasswordChangedToState(String passwordStr) async* {
     yield state.copyWith(
-        password: Password(passwordStr), authFailureOrSuccessOption: none());
+        password: Password(passwordStr), loginOption: none());
   }
 
   Stream<LoginFormState> _mapLoginPressedToState() async* {
@@ -63,7 +63,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     if (isPasswordValid && isUsernameValid) {
       // In progress
       yield state.copyWith(
-          isSubmitting: true, authFailureOrSuccessOption: none());
+          isSubmitting: true, loginOption: none());
 
       // Attempt to login
       result = await _authClient.login(
@@ -72,7 +72,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     // Nonvalid input
     yield state.copyWith(
       isSubmitting: false,
-      authFailureOrSuccessOption: optionOf(result),
+      loginOption: optionOf(result),
       showErrorMessages: true,
     );
   }

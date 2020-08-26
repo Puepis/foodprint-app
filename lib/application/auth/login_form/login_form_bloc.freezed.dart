@@ -449,13 +449,13 @@ class _$LoginFormStateTearOff {
       @required Password password,
       @required bool showErrorMessages,
       @required bool isSubmitting,
-      @required Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption}) {
+      @required Option<Either<LoginFailure, JWT>> loginOption}) {
     return _LoginFormState(
       username: username,
       password: password,
       showErrorMessages: showErrorMessages,
       isSubmitting: isSubmitting,
-      authFailureOrSuccessOption: authFailureOrSuccessOption,
+      loginOption: loginOption,
     );
   }
 }
@@ -468,7 +468,7 @@ mixin _$LoginFormState {
   Password get password;
   bool get showErrorMessages;
   bool get isSubmitting;
-  Option<Either<LoginFailure, JWT>> get authFailureOrSuccessOption;
+  Option<Either<LoginFailure, JWT>> get loginOption;
 
   $LoginFormStateCopyWith<LoginFormState> get copyWith;
 }
@@ -482,7 +482,7 @@ abstract class $LoginFormStateCopyWith<$Res> {
       Password password,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption});
+      Option<Either<LoginFailure, JWT>> loginOption});
 }
 
 class _$LoginFormStateCopyWithImpl<$Res>
@@ -499,7 +499,7 @@ class _$LoginFormStateCopyWithImpl<$Res>
     Object password = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
-    Object authFailureOrSuccessOption = freezed,
+    Object loginOption = freezed,
   }) {
     return _then(_value.copyWith(
       username: username == freezed ? _value.username : username as Username,
@@ -509,9 +509,9 @@ class _$LoginFormStateCopyWithImpl<$Res>
           : showErrorMessages as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
-          ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<LoginFailure, JWT>>,
+      loginOption: loginOption == freezed
+          ? _value.loginOption
+          : loginOption as Option<Either<LoginFailure, JWT>>,
     ));
   }
 }
@@ -527,7 +527,7 @@ abstract class _$LoginFormStateCopyWith<$Res>
       Password password,
       bool showErrorMessages,
       bool isSubmitting,
-      Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption});
+      Option<Either<LoginFailure, JWT>> loginOption});
 }
 
 class __$LoginFormStateCopyWithImpl<$Res>
@@ -546,7 +546,7 @@ class __$LoginFormStateCopyWithImpl<$Res>
     Object password = freezed,
     Object showErrorMessages = freezed,
     Object isSubmitting = freezed,
-    Object authFailureOrSuccessOption = freezed,
+    Object loginOption = freezed,
   }) {
     return _then(_LoginFormState(
       username: username == freezed ? _value.username : username as Username,
@@ -556,9 +556,9 @@ class __$LoginFormStateCopyWithImpl<$Res>
           : showErrorMessages as bool,
       isSubmitting:
           isSubmitting == freezed ? _value.isSubmitting : isSubmitting as bool,
-      authFailureOrSuccessOption: authFailureOrSuccessOption == freezed
-          ? _value.authFailureOrSuccessOption
-          : authFailureOrSuccessOption as Option<Either<LoginFailure, JWT>>,
+      loginOption: loginOption == freezed
+          ? _value.loginOption
+          : loginOption as Option<Either<LoginFailure, JWT>>,
     ));
   }
 }
@@ -571,12 +571,12 @@ class _$_LoginFormState
       @required this.password,
       @required this.showErrorMessages,
       @required this.isSubmitting,
-      @required this.authFailureOrSuccessOption})
+      @required this.loginOption})
       : assert(username != null),
         assert(password != null),
         assert(showErrorMessages != null),
         assert(isSubmitting != null),
-        assert(authFailureOrSuccessOption != null);
+        assert(loginOption != null);
 
   @override
   final Username username;
@@ -587,11 +587,11 @@ class _$_LoginFormState
   @override
   final bool isSubmitting;
   @override
-  final Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption;
+  final Option<Either<LoginFailure, JWT>> loginOption;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LoginFormState(username: $username, password: $password, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, authFailureOrSuccessOption: $authFailureOrSuccessOption)';
+    return 'LoginFormState(username: $username, password: $password, showErrorMessages: $showErrorMessages, isSubmitting: $isSubmitting, loginOption: $loginOption)';
   }
 
   @override
@@ -603,8 +603,7 @@ class _$_LoginFormState
       ..add(DiagnosticsProperty('password', password))
       ..add(DiagnosticsProperty('showErrorMessages', showErrorMessages))
       ..add(DiagnosticsProperty('isSubmitting', isSubmitting))
-      ..add(DiagnosticsProperty(
-          'authFailureOrSuccessOption', authFailureOrSuccessOption));
+      ..add(DiagnosticsProperty('loginOption', loginOption));
   }
 
   @override
@@ -623,11 +622,9 @@ class _$_LoginFormState
             (identical(other.isSubmitting, isSubmitting) ||
                 const DeepCollectionEquality()
                     .equals(other.isSubmitting, isSubmitting)) &&
-            (identical(other.authFailureOrSuccessOption,
-                    authFailureOrSuccessOption) ||
-                const DeepCollectionEquality().equals(
-                    other.authFailureOrSuccessOption,
-                    authFailureOrSuccessOption)));
+            (identical(other.loginOption, loginOption) ||
+                const DeepCollectionEquality()
+                    .equals(other.loginOption, loginOption)));
   }
 
   @override
@@ -637,7 +634,7 @@ class _$_LoginFormState
       const DeepCollectionEquality().hash(password) ^
       const DeepCollectionEquality().hash(showErrorMessages) ^
       const DeepCollectionEquality().hash(isSubmitting) ^
-      const DeepCollectionEquality().hash(authFailureOrSuccessOption);
+      const DeepCollectionEquality().hash(loginOption);
 
   @override
   _$LoginFormStateCopyWith<_LoginFormState> get copyWith =>
@@ -646,16 +643,11 @@ class _$_LoginFormState
 
 abstract class _LoginFormState implements LoginFormState {
   const factory _LoginFormState(
-          {@required
-              Username username,
-          @required
-              Password password,
-          @required
-              bool showErrorMessages,
-          @required
-              bool isSubmitting,
-          @required
-              Option<Either<LoginFailure, JWT>> authFailureOrSuccessOption}) =
+          {@required Username username,
+          @required Password password,
+          @required bool showErrorMessages,
+          @required bool isSubmitting,
+          @required Option<Either<LoginFailure, JWT>> loginOption}) =
       _$_LoginFormState;
 
   @override
@@ -667,7 +659,7 @@ abstract class _LoginFormState implements LoginFormState {
   @override
   bool get isSubmitting;
   @override
-  Option<Either<LoginFailure, JWT>> get authFailureOrSuccessOption;
+  Option<Either<LoginFailure, JWT>> get loginOption;
   @override
   _$LoginFormStateCopyWith<_LoginFormState> get copyWith;
 }

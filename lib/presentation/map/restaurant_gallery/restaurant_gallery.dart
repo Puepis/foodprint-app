@@ -1,13 +1,16 @@
-import 'dart:async';
-import 'dart:ui' as ui;
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
+import 'package:foodprint/presentation/common/image_dimensions.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
 import 'package:intl/intl.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'landscape_photo.dart';
 part 'portrait_photo.dart';
@@ -22,56 +25,62 @@ class RestaurantGallery extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: foodprintPrimaryColorSwatch[50],
-      body: LayoutBuilder(builder: (context, constraints) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Text(
-                  restaurant.name.getOrCrash(),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 28,
+  Widget build(BuildContext context) => GestureDetector(
+        onVerticalDragEnd: (details) {
+          final dy = details.velocity.pixelsPerSecond.dy;
+          if (dy > 0) Navigator.pop(context);
+        },
+        child: Scaffold(
+          backgroundColor: foodprintPrimaryColorSwatch[50],
+          body: LayoutBuilder(builder: (context, constraints) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Text(
+                      restaurant.name.getOrCrash(),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(
+                    width: constraints.maxWidth * 0.3,
+                    child: Divider(
+                      color: Theme.of(context).primaryColor,
+                      height: 20,
+                      thickness: 2.0,
+                    ),
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.83,
+                    child: PhotoCarousel(
+                      restaurant: restaurant,
+                      constraints: constraints,
+                      photos: photos,
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
-                width: constraints.maxWidth * 0.3,
-                child: Divider(
-                  color: Theme.of(context).primaryColor,
-                  height: 20,
-                  thickness: 2.0,
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.83,
-                child: PhotoCarousel(
-                  constraints: constraints,
-                  photos: photos,
-                ),
-              )
-            ],
-          ),
-        );
-      }),
-    );
-  }
+            );
+          }),
+        ),
+      );
 }
 
 class PhotoCarousel extends StatefulWidget {
+  final RestaurantEntity restaurant;
   final List<PhotoEntity> photos;
   final BoxConstraints constraints;
-  const PhotoCarousel({Key key, this.photos, this.constraints})
+  const PhotoCarousel({Key key, this.restaurant, this.photos, this.constraints})
       : super(key: key);
 
   @override
@@ -120,9 +129,11 @@ class _PhotoCarouselState extends State<PhotoCarousel> {
     final photo = widget.photos[index];
 
     return PortraitPhoto(
-        photo: photo,
-        topPadding: topPadding,
-        constraints: widget.constraints,
-        formatter: formatter);
+      photo: photo,
+      topPadding: topPadding,
+      constraints: widget.constraints,
+      formatter: formatter,
+      restaurant: widget.restaurant,
+    );
   }
 }

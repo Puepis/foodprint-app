@@ -3,25 +3,26 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/application/restaurants/manual_search/manual_search_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough.dart';
+import 'package:provider/provider.dart';
 
 /// The form that users fill out which describes the photo that they have taken.
 class SaveDetailsForm extends StatefulWidget {
-  final JWT token;
   final RestaurantEntity restaurant;
   final File imageFile;
-  const SaveDetailsForm(
-      {Key key,
-      @required this.imageFile,
-      @required this.restaurant,
-      @required this.token})
-      : super(key: key);
+  final VoidCallback onSave;
+  const SaveDetailsForm({
+    Key key,
+    @required this.imageFile,
+    @required this.restaurant,
+    @required this.onSave,
+  })  : assert(onSave != null),
+        super(key: key);
   @override
   _SaveDetailsFormState createState() => _SaveDetailsFormState();
 }
@@ -44,6 +45,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
     height: 10.0,
   );
 
+  final textfieldBorder =
+      OutlineInputBorder(borderRadius: BorderRadius.circular(7.0));
+
   Row _buildSectionTitle(
           {String title, IconData iconData, Color iconColor = Colors.black}) =>
       Row(
@@ -62,6 +66,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   @override
   Widget build(BuildContext context) {
     final photoBloc = context.bloc<PhotoActionsBloc>();
+    final userData = context.watch<UserData>();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
@@ -75,8 +80,8 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
         ).show(context);
       }
       if (state is SaveSuccess) {
-        // Refresh the app
-        context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
+        userData.addPhoto(widget.restaurant, state.newPhoto);
+        widget.onSave();
       }
     }, builder: (context, state) {
       return Form(
@@ -93,8 +98,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
               maxLength: 50,
               decoration: InputDecoration(
                 hintStyle: _hintStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0)),
+                border: textfieldBorder,
                 hintText: 'What are you eating/drinking?',
               ),
               onSaved: (String value) {
@@ -117,11 +121,9 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
               maxLength: 8,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                hintText: "How much is it?",
-                hintStyle: _hintStyle,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(7.0)),
-              ),
+                  hintText: "How much is it?",
+                  hintStyle: _hintStyle,
+                  border: textfieldBorder),
               onSaved: (String value) {
                 _price = value.trim();
               },
@@ -157,8 +159,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 decoration: InputDecoration(
                   hintStyle: _hintStyle,
                   hintText: "Any thoughts?",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(7.0)),
+                  border: textfieldBorder,
                 ),
                 onSaved: (String value) {
                   _comments = value.trim();
@@ -166,7 +167,7 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 validator: (String value) {
                   return null;
                 }),
-            _buildSaveButton(state, photoBloc, context)
+            _buildSaveButton(state, photoBloc, userData)
           ],
         ),
       );
@@ -174,13 +175,13 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
   }
 
   Align _buildSaveButton(PhotoActionsState state, PhotoActionsBloc photoBloc,
-          BuildContext context) =>
+          UserData userData) =>
       Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
           child: FloatingActionButton.extended(
-            backgroundColor: primaryColor,
+            backgroundColor: primaryColorDark,
             label: const Text(
               'SAVE PHOTO',
               style: TextStyle(
@@ -205,17 +206,18 @@ class _SaveDetailsFormState extends State<SaveDetailsForm> {
                 ? null
                 : () {
                     if (_formKey.currentState.validate()) {
-                      // Get user id
-                      final id = UserID(int.parse(JWT
-                          .getDecodedPayload(widget.token.getOrCrash())['sub']
-                          .toString()));
-
                       // Save fields
                       _formKey.currentState.save();
 
+                      // Move to next walkthrough step
+                      final walkthrough = context.read<WalkthroughModel>();
+                      if (walkthrough.enabled && walkthrough.screen == 6) {
+                        walkthrough.next();
+                      }
+
                       // Fire off save event
                       photoBloc.add(PhotoActionsEvent.saved(
-                        userID: id,
+                        accessToken: userData.token,
                         imageFile: widget.imageFile,
                         itemName: _itemName,
                         price: _price,

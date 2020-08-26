@@ -1,64 +1,100 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/photo_details/save_details.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 /// The page where users fill in the details about their photo.
-class SaveDetailsPage extends StatelessWidget {
+class SaveDetailsPage extends StatefulWidget {
+  final VoidCallback onSave;
   final RestaurantEntity restaurant;
   final File imageFile;
-  final JWT token;
+  static const routeName = "save_details/";
   const SaveDetailsPage(
       {Key key,
       @required this.imageFile,
       @required this.restaurant,
-      @required this.token})
-      : super(key: key);
+      @required this.onSave})
+      : assert(onSave != null),
+        super(key: key);
 
-  Color get backgroundColor => foodprintPrimaryColorSwatch[50];
+  @override
+  _SaveDetailsPageState createState() => _SaveDetailsPageState();
+}
+
+class _SaveDetailsPageState extends State<SaveDetailsPage> {
+  bool _showAppBarTitle = false;
+  Color get backgroundColor => Colors.white;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: backgroundColor,
-        appBar: AppBar(
-          elevation: 0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
           backgroundColor: backgroundColor,
-        ),
-        body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                BlocProvider.value(
-                  value: context.bloc<FoodprintBloc>(),
-                )
-              ],
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
+          appBar: AppBar(
+            centerTitle: true,
+            title: _showAppBarTitle
+                ? const Text(
+                    "Fill in the details!",
+                    style: TextStyle(color: Colors.black),
+                  )
+                : null,
+            leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () => Navigator.pop(context)),
+            elevation: 0,
+            backgroundColor: backgroundColor,
+          ),
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              VisibilityDetector(
+                key: const Key("title"),
+                onVisibilityChanged: (info) {
+                  // Show app bar title if scrolled out of view
+                  if (mounted) {
+                    setState(() {
+                      _showAppBarTitle = info.visibleFraction == 0;
+                    });
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 20),
+                  child: Text(
                     "Fill in the details!",
                     style: TextStyle(
-                        color: primaryColor,
+                        color: primaryColorDark,
                         fontSize: 35.0,
                         fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SaveDetailsForm(
-                    imageFile: imageFile,
-                    restaurant: restaurant,
-                    token: token,
-                  ),
-                ],
+                ),
               ),
-            )));
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 2.5),
+                child: Text(
+                  "Record your dining experience",
+                  style: TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                child: SaveDetailsForm(
+                  imageFile: widget.imageFile,
+                  restaurant: widget.restaurant,
+                  onSave: widget.onSave,
+                ),
+              ),
+            ],
+          )),
+    );
   }
 }

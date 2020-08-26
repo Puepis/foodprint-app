@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodprint/presentation/core/styles/colors.dart';
 import 'package:foodprint/presentation/profile_page_models/spending_model.dart';
 import 'package:foodprint/presentation/home/drawer/profile/charts/spending_card_chart.dart';
 import 'package:foodprint/presentation/home/drawer/profile/pages/spending_breakdown_page.dart';
 import 'package:foodprint/presentation/home/drawer/profile/profile.dart';
-import 'package:foodprint/presentation/router/spending_breakdown_page_args.dart';
+import 'package:foodprint/presentation/router/profile/spending_breakdown_page_args.dart';
 import 'package:intl/intl.dart';
 
 class SpendingCard extends StatelessWidget {
@@ -24,9 +23,9 @@ class SpendingCard extends StatelessWidget {
           : null,
       child: Card(
         elevation: 5.0,
-        color: foodprintPrimaryColorSwatch[50],
-        margin: const EdgeInsets.fromLTRB(8, 0, 8, 16),
+        color: Colors.grey.shade200,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.fromLTRB(8, 0, 8, 16),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -46,6 +45,7 @@ class SpendingCard extends StatelessWidget {
                   ),
                   Icon(
                     Icons.arrow_forward_ios,
+                    size: 20,
                   )
                 ],
               ),

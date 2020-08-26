@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:foodprint/domain/auth/value_objects.dart';
+import 'package:foodprint/domain/auth/jwt_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:foodprint/domain/photos/i_photo_repository.dart';
-import 'package:foodprint/domain/photos/photo_detail_entity.dart';
 import 'package:foodprint/domain/photos/value_objects.dart';
 import 'package:foodprint/domain/photos/photo_failure.dart';
 import 'package:foodprint/domain/photos/photo_entity.dart';
@@ -21,9 +20,8 @@ class RemotePhotosClient implements IPhotoRepository {
 
   // Construct the JSON body for saving a photo
   static String _createSaveRequestBody(
-      UserID id, PhotoEntity photo, RestaurantID placeID, PhotoData imageData) {
+      PhotoEntity photo, RestaurantID placeID, PhotoData imageData) {
     return jsonEncode({
-      "userId": id.getOrCrash().toString(),
       "image": {
         "path": photo.storagePath.getOrCrash(),
         "data": imageData.getOrCrash().toString(),
@@ -52,41 +50,50 @@ class RemotePhotosClient implements IPhotoRepository {
 
   /// Save a new photo
   @override
-  Future<Either<PhotoFailure, Unit>> saveNewPhoto({
-    @required UserID userID,
+  Future<Either<PhotoFailure, PhotoEntity>> saveNewPhoto({
+    @required JWT accessToken,
     @required PhotoData data,
     @required PhotoEntity photo,
     @required RestaurantID placeID,
   }) async {
-    final String requestBody =
-        _createSaveRequestBody(userID, photo, placeID, data);
+    final String requestBody = _createSaveRequestBody(photo, placeID, data);
 
     http.Response res;
     try {
       res = await http.post("${DotEnv().env['SERVER_IP']}/api/photos/",
-          headers: {"Content-Type": 'application/json'}, body: requestBody);
+          headers: {
+            "Content-Type": 'application/json',
+            "authorization": "Bearer ${accessToken.getOrCrash()}"
+          },
+          body: requestBody);
     } on SocketException {
       return left(const PhotoFailure.noInternet());
     }
-
-    return _handleResponse(res);
+    if (res.statusCode == 200) {
+      return right(photo.copyWith(url: URL(res.body)));
+    } else if (res.statusCode == 401) {
+      return left(const PhotoFailure.invalidPhoto());
+    } else {
+      return left(const PhotoFailure.serverError());
+    }
   }
 
   /// Edit a photo on the server side
   @override
-  Future<Either<PhotoFailure, Unit>> updatePhotoDetails({
-    @required PhotoEntity oldPhoto,
-    @required PhotoDetailEntity details,
-    @required bool isFavourite,
+  Future<Either<PhotoFailure, Unit>> updatePhoto({
+    @required JWT accessToken,
+    @required PhotoEntity newPhoto,
   }) async {
     http.Response res;
     try {
       res = await http.put("${DotEnv().env['SERVER_IP']}/api/photos", body: {
-        "path": oldPhoto.storagePath.getOrCrash(),
-        "photo_name": details.name.getOrCrash(),
-        "price": details.price.getOrCrash().toString(),
-        "comments": details.comments.getOrCrash(),
-        "favourite": isFavourite.toString()
+        "path": newPhoto.storagePath.getOrCrash(),
+        "photo_name": newPhoto.details.name.getOrCrash(),
+        "price": newPhoto.details.price.getOrCrash().toString(),
+        "comments": newPhoto.details.comments.getOrCrash(),
+        "favourite": newPhoto.isFavourite.toString()
+      }, headers: {
+        "authorization": "Bearer ${accessToken.getOrCrash()}"
       });
     } on SocketException {
       return left(const PhotoFailure.noInternet());
@@ -98,12 +105,35 @@ class RemotePhotosClient implements IPhotoRepository {
   /// Delete a photo
   @override
   Future<Either<PhotoFailure, Unit>> deletePhoto({
+    @required JWT accessToken,
     @required PhotoEntity photo,
   }) async {
     http.Response res;
     try {
-      res = await http.delete("${DotEnv().env['SERVER_IP']}/api/photos/",
-          headers: {"photo_path": photo.storagePath.getOrCrash()});
+      res = await http
+          .delete("${DotEnv().env['SERVER_IP']}/api/photos/", headers: {
+        "photo_path": photo.storagePath.getOrCrash(),
+        "authorization": "Bearer ${accessToken.getOrCrash()}"
+      });
+    } on SocketException {
+      return left(const PhotoFailure.noInternet());
+    }
+
+    return _handleResponse(res);
+  }
+
+  @override
+  Future<Either<PhotoFailure, Unit>> updateFavourite(
+      {@required JWT accessToken, @required PhotoEntity updatedPhoto}) async {
+    http.Response res;
+    try {
+      res = await http
+          .put("${DotEnv().env['SERVER_IP']}/api/photos/favourite", body: {
+        "path": updatedPhoto.storagePath.getOrCrash(),
+        "favourite": updatedPhoto.isFavourite.toString()
+      }, headers: {
+        "authorization": "Bearer ${accessToken.getOrCrash()}"
+      });
     } on SocketException {
       return left(const PhotoFailure.noInternet());
     }

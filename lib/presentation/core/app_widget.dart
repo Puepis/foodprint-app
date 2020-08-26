@@ -8,6 +8,7 @@ import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/presentation/home/drawer/drawer.dart';
 import 'package:foodprint/presentation/legal/legal.dart';
 import 'package:foodprint/presentation/login_page/login_page.dart';
+import 'package:foodprint/presentation/onboarding/onboarding_page.dart';
 import 'package:foodprint/presentation/register_page/register_page.dart';
 import 'package:foodprint/presentation/router/route_generator.dart';
 import 'package:foodprint/presentation/splash/splash_page.dart';
@@ -36,7 +37,16 @@ class FoodprintApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Foodprint',
           theme: ThemeData(
-            brightness: Brightness.light,
+            appBarTheme: AppBarTheme(
+              iconTheme:
+                  Theme.of(context).iconTheme.copyWith(color: Colors.white),
+              color: foodprintPrimaryColorSwatch[500],
+              textTheme: Theme.of(context).textTheme.copyWith(
+                  headline6: GoogleFonts.rubik(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500)),
+            ),
             primaryColor: primaryColor,
             primaryColorDark: primaryColorDark,
             primarySwatch: primarySwatch,
@@ -44,14 +54,14 @@ class FoodprintApp extends StatelessWidget {
             errorColor: errorColor,
             hintColor: hintColor,
             hoverColor: hoverColor,
-            backgroundColor: bgColor,
+            backgroundColor: Colors.white,
             textTheme: GoogleFonts.rubikTextTheme(textTheme),
           ),
           debugShowCheckedModeBanner: false,
-          home: const LoginPage(),
           initialRoute: SplashPage.routeName,
           routes: {
             SplashPage.routeName: (context) => SplashPage(),
+            OnboardingScreen.routeName: (context) => const OnboardingScreen(),
             LoginPage.routeName: (context) => const LoginPage(),
             RegisterPage.routeName: (context) => const RegisterPage(),
             ReportIssuePage.routeName: (context) => const ReportIssuePage(),

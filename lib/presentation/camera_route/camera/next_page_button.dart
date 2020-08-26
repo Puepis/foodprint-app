@@ -1,31 +1,31 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:foodprint/application/foodprint/foodprint_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodprint/application/photos/photo_actions_bloc.dart';
 import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/camera_route/restaurants/select_restaurant_page.dart';
-import 'package:foodprint/presentation/core/animations/transitions.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_image.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_location.dart';
-import 'package:foodprint/presentation/inherited_widgets/inherited_user.dart';
+import 'package:foodprint/presentation/core/styles/gradients.dart';
+import 'package:foodprint/presentation/data/user_location.dart';
+import 'package:foodprint/presentation/router/camera/select_restaurant_args.dart';
+import 'package:foodprint/presentation/walkthrough/walkthrough_model.dart';
+import 'package:provider/provider.dart';
 
 /// The button that brings the user to the restaurant selection page.
 ///
 /// Passes the list of [restaurants] to the next page.
 class NextPageButton extends StatelessWidget {
+  final File imageFile;
   const NextPageButton({
     Key key,
     @required this.restaurants,
+    @required this.imageFile,
   }) : super(key: key);
 
   final List<RestaurantEntity> restaurants;
 
   @override
   Widget build(BuildContext context) {
-    final latitude = InheritedLocation.of(context).latitude;
-    final longitude = InheritedLocation.of(context).longitude;
-    final token = InheritedUser.of(context).token;
-    final imageFile = InheritedImage.of(context).imageFile;
+    final location = context.watch<UserLocation>();
+    final walkthrough = context.watch<WalkthroughModel>();
 
     return Container(
       width: 60,
@@ -34,26 +34,21 @@ class NextPageButton extends StatelessWidget {
           type: MaterialType.transparency,
           child: Ink(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              shape: BoxShape.circle,
-            ),
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: sweetMorningGradient)),
             child: InkWell(
               borderRadius: BorderRadius.circular(1000.0),
               onTap: () {
-                // Move to "choose your restaurant" page
-                Navigator.of(context).push(SlideLeftRoute(
-                    newPage: MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(value: context.bloc<PhotoActionsBloc>()),
-                    BlocProvider.value(value: context.bloc<FoodprintBloc>())
-                  ],
-                  child: SelectRestaurantPage(
-                      latitude: latitude,
-                      longitude: longitude,
-                      token: token,
-                      imageFile: imageFile,
-                      restaurants: restaurants),
-                )));
+                // Move to next walkthrough screen
+                if (walkthrough.screen == 5) {
+                  walkthrough.next();
+                }
+                Navigator.of(context).pushNamed(SelectRestaurantPage.routeName,
+                    arguments: SelectRestaurantArgs(imageFile, restaurants,
+                        location.latitude, location.longitude));
               },
               child: const Icon(
                 Icons.navigate_next,

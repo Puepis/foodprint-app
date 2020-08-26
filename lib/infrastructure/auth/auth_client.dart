@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -10,15 +11,15 @@ import 'package:foodprint/domain/auth/login_failure.dart';
 import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 import 'package:foodprint/domain/core/exceptions.dart';
-import 'package:foodprint/infrastructure/local_storage/local_storage_client.dart';
+import 'package:foodprint/infrastructure/local_storage/token_storage_client.dart';
 import 'package:injectable/injectable.dart';
 import 'package:http/http.dart' as http;
 
 /// Implements the authentication methods and communicates with the foodprint-backend.
 @LazySingleton(as: IAuthRepository)
 class AuthClient implements IAuthRepository {
-  final JWTStorageClient _storageClient =
-      JWTStorageClient(storage: const FlutterSecureStorage());
+  final TokenStorageClient _storageClient =
+      TokenStorageClient(storage: const FlutterSecureStorage());
 
   @override
   Future<Either<RegisterFailure, Unit>> register(
@@ -60,14 +61,12 @@ class AuthClient implements IAuthRepository {
     }
 
     if (res.statusCode == 200) {
-      final JWT jwt = JWT(token: res.body);
+      final json = jsonDecode(res.body);
+      final accessToken = JWT(token: json['accessToken'] as String);
+      final refreshToken = json['refreshToken'] as String;
 
-      if (jwt.isValid()) {
-        // Store token
-        await _storageClient.storeUserToken(jwt);
-        return right(jwt);
-      }
-      return left(const LoginFailure.serverError());
+      await _storageClient.storeRefreshToken(refreshToken);
+      return right(accessToken);
     } else if (res.statusCode == 401) {
       return left(const LoginFailure.invalidLoginCombination());
     } else {
@@ -76,38 +75,57 @@ class AuthClient implements IAuthRepository {
   }
 
   @override
-  Future<Option<JWT>> getUserToken() async {
+  Future<Option<JWT>> getAccessToken() async {
+    // Check if refresh token exists
+    String refreshToken;
     try {
-      final JWT jwt = await _storageClient.getUserToken(); // try to fetch token
-
-      // Check if token expired
-      final String token = jwt.getOrCrash();
-      final Map<String, dynamic> payload = JWT.getDecodedPayload(token);
-
-      final DateTime expiry =
-          DateTime.fromMillisecondsSinceEpoch((payload["exp"] as int) * 1000);
-
-      if (expiry.isAfter(DateTime.now())) {
-        // hasn't expired
-        return some(jwt);
-      }
-
-      // If token expired, delete and return none()
-      await _storageClient.deleteUserToken();
-      return none();
-    } on TokenNotFoundException {
+      refreshToken = await _storageClient.getRefreshToken();
+    } on RefreshTokenNotFoundException {
       return none();
     }
+
+    // Check if refresh token has expired
+    final String token = refreshToken;
+    final Map<String, dynamic> payload = JWT.getDecodedPayload(token);
+
+    final DateTime expiry =
+        DateTime.fromMillisecondsSinceEpoch((payload["exp"] as int) * 1000);
+
+    // Refresh token expired
+    if (expiry.isBefore(DateTime.now())) {
+      final id = payload['sub'] as String;
+      await _storageClient.deleteRefreshToken();
+
+      // Revoke refresh tokens
+      await http.post("${DotEnv().env['SERVER_IP']}/api/users/revoke_token",
+          body: {"id": id});
+      return none();
+    }
+
+    // Generate new access token
+    http.Response res;
+    try {
+      res = await http.post(
+          "${DotEnv().env['SERVER_IP']}/api/users/refresh_token",
+          body: {"refreshToken": token});
+    } on SocketException {
+      return none();
+    }
+
+    if (res.statusCode == 200) {
+      // Store the new refresh token and return the access token
+      final json = jsonDecode(res.body);
+      final accessToken = json['accessToken'];
+      final refreshToken = json['refreshToken'];
+      _storageClient.storeRefreshToken(refreshToken as String);
+      return some(JWT(token: accessToken as String));
+    }
+    return none();
   }
 
   // Log out the user
   @override
   Future<void> logout() async {
-    await _storageClient.deleteUserToken();
-  }
-
-  @override
-  Future<void> replaceToken({@required JWT newToken}) async {
-    await _storageClient.storeUserToken(newToken);
+    await _storageClient.deleteRefreshToken();
   }
 }

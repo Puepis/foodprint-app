@@ -18,17 +18,19 @@ import 'package:http/http.dart' as http;
 class AccountClient implements IAccountRepository {
   @override
   Future<Either<AccountFailure, JWT>> changeAvatar(
-      {@required UserID id,
+      {@required JWT accessToken,
       @required PhotoData data,
       @required String fileName}) async {
     http.Response res;
     try {
-      res = await http
-          .post("${DotEnv().env['SERVER_IP']}/api/users/avatar", body: {
-        "id": id.getOrCrash().toString(),
-        "avatar_data": data.getOrCrash().toString(),
-        "file_name": fileName
-      });
+      res = await http.post("${DotEnv().env['SERVER_IP']}/api/users/avatar",
+          body: {
+            "avatar_data": data.getOrCrash().toString(),
+            "file_name": fileName
+          },
+          headers: {
+            "authorization": "Bearer: ${accessToken.getOrCrash()}"
+          });
     } on SocketException {
       return left(const AccountFailure.noInternet());
     }
@@ -46,19 +48,20 @@ class AccountClient implements IAccountRepository {
 
   @override
   Future<Either<AccountFailure, Unit>> changePassword(
-      {@required UserID id,
+      {@required JWT accessToken,
       @required Password oldPassword,
       @required Password newPassword}) async {
     http.Response res;
     try {
       res = await http.post(
-        "${DotEnv().env['SERVER_IP']}/api/users/change/password",
-        body: {
-          "id": id.getOrCrash().toString(),
-          "old_password": oldPassword.getOrCrash(),
-          "new_password": newPassword.getOrCrash()
-        },
-      );
+          "${DotEnv().env['SERVER_IP']}/api/users/change/password",
+          body: {
+            "old_password": oldPassword.getOrCrash(),
+            "new_password": newPassword.getOrCrash()
+          },
+          headers: {
+            "authorization": "Bearer: ${accessToken.getOrCrash()}"
+          });
     } on SocketException {
       return left(const AccountFailure.noInternet());
     }
@@ -74,16 +77,13 @@ class AccountClient implements IAccountRepository {
 
   @override
   Future<Either<AccountFailure, JWT>> changeUsername(
-      {@required UserID id, @required Username newUsername}) async {
+      {@required JWT accessToken, @required Username newUsername}) async {
     http.Response res;
     try {
       res = await http.post(
-        "${DotEnv().env['SERVER_IP']}/api/users/change/username",
-        body: {
-          "id": id.getOrCrash().toString(),
-          "new_username": newUsername.getOrCrash()
-        },
-      );
+          "${DotEnv().env['SERVER_IP']}/api/users/change/username",
+          body: {"new_username": newUsername.getOrCrash()},
+          headers: {"authorization": "Bearer: ${accessToken.getOrCrash()}"});
     } on SocketException {
       return left(const AccountFailure.noInternet());
     }
@@ -100,15 +100,11 @@ class AccountClient implements IAccountRepository {
 
   @override
   Future<Either<AccountFailure, Unit>> deleteAccount(
-      {@required UserID id}) async {
+      {@required JWT accessToken}) async {
     http.Response res;
     try {
-      res = await http.delete(
-        "${DotEnv().env['SERVER_IP']}/api/users/delete",
-        headers: {
-          "id": id.getOrCrash().toString(),
-        },
-      );
+      res = await http.delete("${DotEnv().env['SERVER_IP']}/api/users/delete",
+          headers: {"authorization": "Bearer: ${accessToken.getOrCrash()}"});
     } on SocketException {
       return left(const AccountFailure.noInternet());
     }

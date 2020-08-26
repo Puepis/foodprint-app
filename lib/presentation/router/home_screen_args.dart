@@ -3,5 +3,6 @@ import 'package:foodprint/domain/auth/jwt_model.dart';
 
 class HomeScreenArgs {
   final JWT token;
-  HomeScreenArgs({@required this.token});
+  final bool didCompleteWalkthrough;
+  HomeScreenArgs({@required this.token, @required this.didCompleteWalkthrough});
 }

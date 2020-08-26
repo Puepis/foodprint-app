@@ -6,8 +6,9 @@ import 'package:foodprint/domain/auth/register_failure.dart';
 import 'package:foodprint/domain/auth/value_objects.dart';
 
 abstract class IAuthRepository {
-  // Get the user's stored JWT
-  Future<Option<JWT>> getUserToken();
+  /// Persist user login session or redirect to login page based on refresh
+  /// token.
+  Future<Option<JWT>> getAccessToken();
 
   Future<Either<RegisterFailure, Unit>> register({
     @required Username username,
@@ -21,7 +22,4 @@ abstract class IAuthRepository {
   });
 
   Future<void> logout();
-
-  /// Replaces the user's current JWT with [newToken]
-  Future<void> replaceToken({@required JWT newToken});
 }

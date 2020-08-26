@@ -2,27 +2,15 @@ import 'package:flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:foodprint/application/auth/auth_bloc.dart';
 import 'package:foodprint/application/photos/photo_actions_bloc.dart';
-import 'package:foodprint/domain/auth/jwt_model.dart';
-import 'package:foodprint/domain/foodprint/foodprint_entity.dart';
-import 'package:foodprint/domain/photos/photo_entity.dart';
-import 'package:foodprint/domain/restaurants/restaurant_entity.dart';
 import 'package:foodprint/presentation/core/styles/colors.dart';
+import 'package:foodprint/presentation/data/gallery_photo.dart';
+import 'package:foodprint/presentation/data/user_data.dart';
+import 'package:provider/provider.dart';
 
-/// The form used to edit the details of [photo]
+/// The form used to edit the details of [photo].
 class EditImageForm extends StatefulWidget {
-  final JWT token;
-  final PhotoEntity photo;
-  final FoodprintEntity foodprint;
-  final RestaurantEntity restaurant;
-  const EditImageForm(
-      {Key key,
-      @required this.token,
-      @required this.photo,
-      @required this.foodprint,
-      @required this.restaurant})
-      : super(key: key);
+  const EditImageForm({Key key}) : super(key: key);
 
   @override
   _EditImageFormState createState() => _EditImageFormState();
@@ -31,7 +19,6 @@ class EditImageForm extends StatefulWidget {
 class _EditImageFormState extends State<EditImageForm> {
   final _formKey = GlobalKey<FormState>();
   String _itemName, _price, _comments;
-  bool _isFavourite;
 
   final TextStyle _sectionTitleStyle = const TextStyle(
       color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18.0);
@@ -60,20 +47,18 @@ class _EditImageFormState extends State<EditImageForm> {
       );
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _isFavourite = widget.photo.isFavourite;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final PhotoActionsBloc photoBloc = context.bloc<PhotoActionsBloc>();
+    final userData = context.watch<UserData>();
+
+    final galleryPhoto = context.watch<GalleryPhotoModel>();
+    final photo = galleryPhoto.photo;
+    final restaurant = galleryPhoto.restaurant;
 
     // Current valuesjk
-    final String currentName = widget.photo.details.name.getOrCrash();
-    final String currentPrice =
-        widget.photo.details.price.getOrCrash().toString();
-    final String currentComments = widget.photo.details.comments.getOrCrash();
+    final String currentName = photo.details.name.getOrCrash();
+    final String currentPrice = photo.details.price.getOrCrash().toString();
+    final String currentComments = photo.details.comments.getOrCrash();
 
     return BlocConsumer<PhotoActionsBloc, PhotoActionsState>(
         listener: (context, state) {
@@ -87,8 +72,10 @@ class _EditImageFormState extends State<EditImageForm> {
         ).show(context);
       }
       if (state is EditSuccess) {
-        // Refresh the app
-        context.bloc<AuthBloc>().add(AuthEvent.loggedIn(token: widget.token));
+        // Update local foodprint
+        userData.updatePhoto(restaurant, state.newPhoto);
+        galleryPhoto.updatePhoto(state.newPhoto);
+        Navigator.of(context).pop();
       }
     }, builder: (context, state) {
       return Form(
@@ -97,34 +84,6 @@ class _EditImageFormState extends State<EditImageForm> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _isFavourite = !_isFavourite;
-                        });
-                      },
-                      child: Icon(
-                        _isFavourite ? Icons.favorite : Icons.favorite_border,
-                        color: Colors.red,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      "Favourite",
-                      style: _sectionTitleStyle,
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 30,
-            ),
             _buildSectionTitle(
                 title: "Item Name", iconData: Icons.restaurant_menu),
             _sectionHeadingSpace,
@@ -204,7 +163,7 @@ class _EditImageFormState extends State<EditImageForm> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 16.0, horizontal: 7.0),
                 child: FloatingActionButton.extended(
-                    backgroundColor: primaryColor,
+                    backgroundColor: primaryColorDark,
                     label: const Text(
                       'UPDATE',
                       style: TextStyle(
@@ -233,11 +192,12 @@ class _EditImageFormState extends State<EditImageForm> {
 
                               // Edit photo
                               photoBloc.add(PhotoActionsEvent.edited(
-                                oldPhoto: widget.photo,
+                                accessToken: userData.token,
+                                oldPhoto: photo,
                                 newName: _itemName,
                                 newPrice: _price,
                                 newComments: _comments,
-                                isFavourite: _isFavourite,
+                                isFavourite: photo.isFavourite,
                               ));
                             }
                           }),
