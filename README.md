@@ -19,7 +19,7 @@ Foodprint is a mobile application that allows users to capture and track their d
 </p>
 
 ## :sparkles: Features
-
+- An instructional walkthrough to guide new users.
 - A personal map displaying the user's visited dining locations.
 - A summary of the user's personal spending, separated by type (restaurant, cafe, bakery, bar).
 - A bug reporting tool using the [bug_report](https://github.com/Puepis/bug_report) package.
