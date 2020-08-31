@@ -23,11 +23,15 @@ Foodprint is a mobile application that allows users to capture and track their d
 - A personal map displaying the user's visited dining locations.
 - A summary of the user's personal spending, separated by type (restaurant, cafe, bakery, bar).
 - A bug reporting tool using the [bug_report](https://github.com/Puepis/bug_report) package.
-- Uses custom authentication and JWT authorization.
+- Custom authentication and JWT authorization.
 
-## :hammer: Built With
+## :hammer: Tech Stack 
 
-- [Flutter](https://flutter.dev/)
+Built with [Flutter](https://flutter.dev/).
+Developed in [Dart](https://dart.dev/).
+Created in Android Studio and VS Code.
+[Backend](https://github.com/Puepis/foodprint-backend) made with [TypeScript](https://www.typescriptlang.org/).
+
 
 ## :book: Author
 
