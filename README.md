@@ -27,11 +27,10 @@ Foodprint is a mobile application that allows users to capture and track their d
 
 ## :hammer: Tech Stack 
 
-Built with [Flutter](https://flutter.dev/).
-Developed in [Dart](https://dart.dev/).
-Created in Android Studio and VS Code.
+Built with [Flutter](https://flutter.dev/).\
+Developed in [Dart](https://dart.dev/).\
+Created in Android Studio and VS Code.\
 [Backend](https://github.com/Puepis/foodprint-backend) made with [TypeScript](https://www.typescriptlang.org/).
-
 
 ## :book: Author
 
