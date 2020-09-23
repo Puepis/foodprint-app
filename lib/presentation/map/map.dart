@@ -73,13 +73,14 @@ class _FoodMapState extends State<FoodMap> {
             markers: Set<Marker>.of(_markers.values),
           ),
           _buildMapButtons(state),
-          Center(
-            child: Visibility(
-              visible: _showRecenterButton,
-              child: Image.asset(
-                "assets/images/crosshair.png"
-              )),
-          )
+          // Crosshair
+          // Center(
+          //   child: Visibility(
+          //     visible: _showRecenterButton,
+          //     child: Image.asset(
+          //       "assets/images/crosshair.png"
+          //     )),
+          // )
         ]);
       } else {
         return Container();
