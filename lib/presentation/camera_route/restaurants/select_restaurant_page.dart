@@ -161,7 +161,10 @@ class _SelectRestaurantPageState extends State<SelectRestaurantPage> {
           const SizedBox(
             height: 40,
           ),
-          _buildRestaurantButtons(context),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: _buildRestaurantButtons(context),
+          ),
         ],
       );
     }
