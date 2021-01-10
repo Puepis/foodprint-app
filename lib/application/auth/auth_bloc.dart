@@ -41,17 +41,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
     yield* event.map(
+      // Authentication check
       authCheckStarted: (e) async* {
+        // Try to get access token
         final Option<JWT> result = await _authClient.getAccessToken();
         yield* result.fold(() async* {
+          // User is not logged in, check if they've launched the app before
           try {
-            // Check if user has lauched the app before
             await _onboardingClient.getAppLaunched();
             yield const AuthState.unauthenticated();
           } on NotPreviouslyLaunchedException {
             yield const AuthState.firstAppLaunch();
           }
         }, (token) async* {
+          // User is logged in, check if walkthrough has been completed
           final didCompleteWalkthrough =
               await checkWalkthroughStatus(token.username);
           yield AuthState.authenticated(

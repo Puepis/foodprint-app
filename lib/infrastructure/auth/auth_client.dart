@@ -74,6 +74,9 @@ class AuthClient implements IAuthRepository {
     }
   }
 
+  // Get a new access token using the current refresh token
+  // If the refresh token doesn't exist or is expired, return none()
+  // Otherwise, return the access token
   @override
   Future<Option<JWT>> getAccessToken() async {
     // Check if refresh token exists
@@ -93,7 +96,9 @@ class AuthClient implements IAuthRepository {
 
     // Refresh token expired
     if (expiry.isBefore(DateTime.now())) {
-      final id = payload['sub'] as String;
+      final id = payload['sub'].toString();
+
+      // Remove token from storage
       await _storageClient.deleteRefreshToken();
 
       // Revoke refresh tokens
@@ -102,7 +107,7 @@ class AuthClient implements IAuthRepository {
       return none();
     }
 
-    // Generate new access token
+    // Generate new access + refresh tokens
     http.Response res;
     try {
       res = await http.post(

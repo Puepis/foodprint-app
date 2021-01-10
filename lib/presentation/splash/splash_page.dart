@@ -24,7 +24,7 @@ class SplashPage extends StatelessWidget {
                 initial: (_) {},
                 loading: (_) {},
 
-                // Logged in
+                // Logged in, redirect to home screen
                 authenticated: (result) {
                   Navigator.pushNamedAndRemoveUntil(
                       cxt,
@@ -36,7 +36,7 @@ class SplashPage extends StatelessWidget {
                               result.didCompleteWalkthrough));
                 },
 
-                // Logged out
+                // Logged out, redirect to login page
                 unauthenticated: (_) {
                   Navigator.pushNamedAndRemoveUntil(
                       cxt,
