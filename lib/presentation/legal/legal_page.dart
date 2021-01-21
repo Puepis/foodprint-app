@@ -33,7 +33,7 @@ class LegalPage extends StatelessWidget {
             title: const Text("Software Licenses"),
             onTap: () => showLicensePage(
               context: context,
-              applicationVersion: '2.0.0',
+              applicationVersion: '2.0.1',
             ),
           )
         ],

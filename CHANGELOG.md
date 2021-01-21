@@ -1,4 +1,7 @@
 
+# 2.0.1
+- Fixed a bug affecting app launch for expired tokens
+
 # 2.0.0
 
 ## Breaking changes
